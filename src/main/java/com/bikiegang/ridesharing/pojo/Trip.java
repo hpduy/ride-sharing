@@ -6,24 +6,24 @@ package com.bikiegang.ridesharing.pojo;
 public class Trip {
     private long id;
     private long startTime;
-    private String driverId;
-    private String passengerId;
+    private String driverId = "";
+    private String passengerId = "";
     private double realDistance;
     private long endTime;
     private double pricePaid;
     private long sensitiveLocationId; // break or danger location
-    private String breakReason;
+    private String breakReason = "";
     private boolean breakTrip;
     private boolean dangerTrip;
 
     public Trip() {
     }
 
-    public Trip(long id, long startTime,String driverId, String passengerId) {
+    public Trip(long id, long startTime, String driverId, String passengerId) {
         this.id = id;
         this.startTime = startTime;
-        this.driverId = driverId;
-        this.passengerId = passengerId;
+        this.driverId = driverId == null ? "" : driverId;
+        this.passengerId = passengerId == null ? "" : passengerId;
     }
 
     public Trip(Trip that) {
@@ -32,11 +32,11 @@ public class Trip {
         this.endTime = that.endTime;
         this.pricePaid = that.pricePaid;
         this.sensitiveLocationId = that.sensitiveLocationId;
-        this.breakReason = that.breakReason;
+        this.breakReason = that.breakReason == null ? "" : that.breakReason;
         this.breakTrip = that.breakTrip;
         this.dangerTrip = that.dangerTrip;
-        this.driverId = that.driverId;
-        this.passengerId = that.passengerId;
+        this.driverId = that.driverId == null ? "" : that.driverId;
+        this.passengerId = that.passengerId == null ? "" : that.passengerId;
         this.realDistance = that.realDistance;
     }
 

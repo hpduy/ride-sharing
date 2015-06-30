@@ -19,7 +19,7 @@ import java.util.List;
 public class JackSonParsingTest {
     @Test
     public void parseObjectToJSon() throws JsonProcessingException {
-        Object user = new User("id","email","password","facebookId","googleId","twitterId","firstName","lastName", DateTimeUtil.now(),User.MALE,User.UNVERIFIED);
+        Object user = new User("id","email","password","facebookId","googleId","twitterId","firstName","lastName", "profilePic",DateTimeUtil.now(),User.MALE,User.UNVERIFIED);
         Object location = new Location(1.23,2.34,1,DateTimeUtil.now(),"266/52 ton dan");
         List<Object> objects = new ArrayList<>();
         objects.add(user);
@@ -44,9 +44,6 @@ public class JackSonParsingTest {
                 "  \"id\" : \"id\",\n" +
                 "  \"email\" : \"email\",\n" +
                 "  \"password\" : \"password\",\n" +
-                "  \"facebookId\" : \"facebookId\",\n" +
-                "  \"googleId\" : \"googleId\",\n" +
-                "  \"twitterId\" : \"twitterId\",\n" +
                 "  \"lastName\" : \"lastName\",\n" +
                 "  \"currentLocationId\" : 0,\n" +
                 "  \"birthDay\" : 1435251748,\n" +

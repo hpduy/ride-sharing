@@ -49,7 +49,7 @@ public class DateTimeUtil {
      * such as '1/2/1991 00:00:10' and '11/12/1891 00:00:50' is 40 second
      */
     public static long timeDistanceIgnoreDate(long dateOne, long dateTwo) {
-        return dateOne % SECONDS_PER_DAY - dateTwo % SECONDS_PER_DAY;
+        return Math.abs(dateOne % SECONDS_PER_DAY - dateTwo % SECONDS_PER_DAY);
     }
 
     /**
@@ -58,6 +58,6 @@ public class DateTimeUtil {
      * @return a time distance by second with sign (-) is dateOne before dateTwo (+) is dateOne after dateTwo
      */
     public static long timeDistance(long dateOne, long dateTwo) {
-        return dateOne - dateTwo;
+        return Math.abs(dateOne - dateTwo);
     }
 }

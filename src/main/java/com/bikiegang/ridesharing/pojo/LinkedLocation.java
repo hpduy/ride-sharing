@@ -8,21 +8,20 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class LinkedLocation extends Location {
     private int index;
     private long refId; // routeId or tripId
-    @JsonIgnore
     private int refType;
     //final field
     @JsonIgnore
-    private static final int FREE = 0;
+    public static final int FREE = 0;
     @JsonIgnore
-    private static final int IN_ROUTE = 1;
+    public static final int IN_ROUTE = 1;
     @JsonIgnore
-    private static final int IN_TRIP = 2;
+    public static final int IN_TRIP = 2;
 
     public LinkedLocation() {
     }
 
-    public LinkedLocation(double lat, double lng, long id, long createdTime, String address, int index, long refId, int refType) {
-        super(lat, lng, id, createdTime, address);
+    public LinkedLocation(Location location, int index, long refId, int refType) {
+        super(location);
         this.index = index;
         this.refId = refId;
         this.refType = refType;

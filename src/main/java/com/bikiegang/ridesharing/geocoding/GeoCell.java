@@ -15,9 +15,37 @@ import java.util.List;
  */
 public class GeoCell {
     public Hashtable<String, List<Long>> geoCellGrid = new Hashtable<>(); // <cellCode,List<latlngId>>
-    public final double CELL_LEN_IN_DEGREE = 0.01; // 0.01 ~= 1 km in real life
+    public final double CELL_LEN_IN_DEGREE = 0.005; // ~500m (0.01 ~= 1 km in real life)
     public final int CELLS_PER_DEGREE = (int) (1 / CELL_LEN_IN_DEGREE);
-
+    public String getCellCode(double lat, double lng){
+        int latId = (int) (lat / CELL_LEN_IN_DEGREE);
+        int lngId = (int) (lng / CELL_LEN_IN_DEGREE);
+        return latId + "#" + lngId;
+    }
+    public List<String> getCellCodesNeighbor(double lat, double lng){
+        int latId = (int) (lat / CELL_LEN_IN_DEGREE);
+        int lngId = (int) (lng / CELL_LEN_IN_DEGREE);
+        String cellCenter = latId + "#" + lngId;
+        String cellLeft=latId+"#"+(lngId-1);
+        String cellRight=latId+"#"+(lngId+1);
+        String cellDown=(latId-1)+"#"+lngId;
+        String cellUp=(latId+1)+"#"+lngId;
+        String cellUpLeft = (latId+1)+"#"+(lngId-1);
+        String cellUpRight = (latId+1)+"#"+(lngId+1);
+        String cellDownLeft = (latId-1)+"#"+(lngId-1);
+        String cellDownRight = (latId-1)+"#"+(lngId+1);
+        List<String> cellCodes = new ArrayList<>();
+        cellCodes.add(cellCenter);
+        cellCodes.add(cellLeft);
+        cellCodes.add(cellRight);
+        cellCodes.add(cellDown);
+        cellCodes.add(cellUp);
+        cellCodes.add(cellUpLeft);
+        cellCodes.add(cellUpRight);
+        cellCodes.add(cellDownLeft);
+        cellCodes.add(cellDownRight);
+        return cellCodes;
+    }
     public void putToCell(Location location) {
         putToCell(location.getLat(),location.getLng(),location.getId());
     }

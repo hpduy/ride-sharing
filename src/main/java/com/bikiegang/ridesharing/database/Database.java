@@ -25,7 +25,7 @@ public class Database {
     /*DATABASE-TABLE*/
     //CORE
     private HashMap<Long, Activity> activityHashMap = new HashMap<>();
-    private HashMap<Long, Broadcast> broadcastHashMap = new HashMap<>();
+    private HashMap<String, Broadcast> broadcastHashMap = new HashMap<>();
     private HashMap<Long, Circle> circleHashMap = new HashMap<>();
     private HashMap<Long, CircleMember> circleMemberHashMap = new HashMap<>();
     private HashMap<Long, CurrentLocation> currentLocationHashMap = new HashMap<>();
@@ -39,7 +39,7 @@ public class Database {
     private HashMap<String, User> userHashMap = new HashMap<>();
     private HashMap<Long, UserProfile> userProfileHashMap = new HashMap<>();
     private HashMap<Long, VerifiedCertificate> verifiedCertificateHashMap = new HashMap<>();
-
+    private HashMap<Long, RequestMakeTrip> requestMakeTripHashMap = new HashMap<>();
     //REFERENCE
     /**
      * USER
@@ -55,7 +55,7 @@ public class Database {
     /**
      * BROADCAST
      */
-    private HashMap<String, HashSet<Long>> userIdRFBroadcastes = new HashMap<>(); //<userId,<broadcastId>>
+    private HashMap<String, HashSet<String>> userIdRFBroadcastes = new HashMap<>(); //<userId,<broadcastId>>
 
     /**
      * CIRCLE MEMBER
@@ -73,6 +73,7 @@ public class Database {
      * ROUTE
      */
     private HashMap<String, HashSet<Long>> userIdRFRoutes = new HashMap<>(); // <userId,<routeId>>
+    private HashMap<Integer, HashSet<Long>> roleRFRoutes = new HashMap<>(); // <role,<routeId>>
     /**
      * TRIP
      */
@@ -124,7 +125,7 @@ public class Database {
         return activityHashMap;
     }
 
-    public HashMap<Long, Broadcast> getBroadcastHashMap() {
+    public HashMap<String, Broadcast> getBroadcastHashMap() {
         return broadcastHashMap;
     }
 
@@ -179,6 +180,11 @@ public class Database {
     public HashMap<Long, VerifiedCertificate> getVerifiedCertificateHashMap() {
         return verifiedCertificateHashMap;
     }
+
+    public HashMap<Long, RequestMakeTrip> getRequestMakeTripHashMap() {g
+        return requestMakeTripHashMap;
+    }
+
     /*REFERENCE GET-SET*/
 
     public HashMap<String, String> getFacebookRFUserId() {
@@ -201,7 +207,7 @@ public class Database {
         return userIdRFUserProfiles;
     }
 
-    public HashMap<String, HashSet<Long>> getUserIdRFBroadcastes() {
+    public HashMap<String, HashSet<String>> getUserIdRFBroadcastes() {
         return userIdRFBroadcastes;
     }
 
@@ -259,6 +265,10 @@ public class Database {
 
     public HashMap<String, HashSet<Long>> getUserIdRFActivities() {
         return userIdRFActivities;
+    }
+
+    public HashMap<Integer, HashSet<Long>> getRoleRFRoutes() {
+        return roleRFRoutes;
     }
 
     /*GEOCELL GET-SET*/

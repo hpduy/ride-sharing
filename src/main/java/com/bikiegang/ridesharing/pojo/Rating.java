@@ -7,11 +7,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 public class Rating {
     private long id;
-    private String assessorId;
+    private String assessorId = "";
     private long profileId;
     private int value;
     private long createdTime;
-    private String comment;
+    private String comment = "";
     //final field
     @JsonIgnore
     public static final int POSITIVE = 1;
@@ -25,20 +25,20 @@ public class Rating {
 
     public Rating(long id, String assessorId, long profileId, int value, long createdTime, String comment) {
         this.id = id;
-        this.assessorId = assessorId;
+        this.assessorId = assessorId == null ? "" : assessorId;
         this.profileId = profileId;
         this.value = value;
         this.createdTime = createdTime;
-        this.comment = comment;
+        this.comment = comment == null ? "" : comment;
     }
 
     public Rating(Rating that) {
         this.id = that.id;
-        this.assessorId = that.assessorId;
+        this.assessorId = that.assessorId == null ? "" : that.assessorId;
         this.profileId = that.profileId;
         this.value = that.value;
         this.createdTime = that.createdTime;
-        this.comment = that.comment;
+        this.comment = that.comment == null ? "" : that.comment;
     }
 
     public long getId() {

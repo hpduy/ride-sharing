@@ -1,6 +1,7 @@
 package com.bikiegang.ridesharing.pojo;
 
-import com.bikiegang.ridesharing.pojo.type.RouteType;
+import com.bikiegang.ridesharing.utilities.DateTimeUtil;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Created by hpduy17 on 6/24/15.
@@ -11,19 +12,41 @@ public class Route {
     private double sumDistance;
     private long estimatedTime;
     private double estimatedPrice;
+    private double ownerPrice;
     private double estimatedFuel;
-    private String creatorId;
-    private RouteType type;
+    private String creatorId = "";
+    private int role; // user role
+    private int type;
+    /**
+     * ROUTE TYPE
+     */
+    @JsonIgnore
+    public static final int INSTANT = 0;
+    @JsonIgnore
+    public static final int SINGLE_FUTURE = 1;
+    @JsonIgnore
+    public static final int MULTIPLE_FUTURE = 2;
+    /**
+     * ESTIMATE PARAMETER
+     */
+    @JsonIgnore
+    public static final double DEFAULT_FUEL_1KM = 1.0 / 50; // 1l -> 50km => 1km = 1/50l
+    @JsonIgnore
+    public static final long DEFAULT_VELOCITY = 30 * 1000 / DateTimeUtil.HOURS; // m/s ( default velocity in HCMC 30km/h)
+    @JsonIgnore
+    public static final double DEFAULT_PRICE_1KM = 4000; // 4000vnd / 1km
 
     public Route() {
     }
 
-    public Route(long id, long goTime, double sumDistance, RouteType type, String creatorId) {
+    public Route(long id, long goTime, double sumDistance, int type, String creatorId, int role, double ownerPrice) {
         this.id = id;
         this.goTime = goTime;
         this.sumDistance = sumDistance;
         this.type = type;
-        this.creatorId = creatorId;
+        this.role = role;
+        this.creatorId = creatorId == null ? "" : creatorId;
+        this.ownerPrice = ownerPrice;
     }
 
     public Route(Route that) {
@@ -33,8 +56,10 @@ public class Route {
         this.estimatedTime = that.estimatedTime;
         this.estimatedPrice = that.estimatedPrice;
         this.estimatedFuel = that.estimatedFuel;
-        this.creatorId = that.creatorId;
+        this.creatorId = that.creatorId == null ? "" : that.creatorId;
+        this.role = that.role;
         this.type = that.type;
+        this.ownerPrice = that.ownerPrice;
     }
 
     public long getId() {
@@ -93,11 +118,27 @@ public class Route {
         this.creatorId = creatorId;
     }
 
-    public RouteType getType() {
+    public int getType() {
         return type;
     }
 
-    public void setType(RouteType type) {
+    public void setType(int type) {
         this.type = type;
+    }
+
+    public int getRole() {
+        return role;
+    }
+
+    public void setRole(int role) {
+        this.role = role;
+    }
+
+    public double getOwnerPrice() {
+        return ownerPrice;
+    }
+
+    public void setOwnerPrice(double ownerPrice) {
+        this.ownerPrice = ownerPrice;
     }
 }

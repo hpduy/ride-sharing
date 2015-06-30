@@ -8,11 +8,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class TripFeedback {
     private long id;
     private long tripId;
-    private String userFeedBackId;
-    private String userBeFeedbackId;
+    private String userFeedBackId = "";
+    private String userBeFeedbackId = "";
     private int value;
     private long createdTime;
-    private String comment;
+    private String comment = "";
     //final field
     @JsonIgnore
     public static final int POSITIVE = 1;
@@ -29,18 +29,19 @@ public class TripFeedback {
         this.tripId = tripId;
         this.value = value;
         this.createdTime = createdTime;
-        this.comment = comment;
-        this.userFeedBackId = userFeedBackId;
-        this.userBeFeedbackId = userBeFeedbackId;
+        this.comment = comment == null ? "" : comment;
+        this.userFeedBackId = userFeedBackId == null ? "" : userFeedBackId;
+        this.userBeFeedbackId = userBeFeedbackId == null ? "" : userBeFeedbackId;
     }
+
     public TripFeedback(TripFeedback that) {
         this.id = that.id;
         this.tripId = that.tripId;
         this.value = that.value;
         this.createdTime = that.createdTime;
-        this.comment = that.comment;
-        this.userFeedBackId = that.userFeedBackId;
-        this.userBeFeedbackId = that.userBeFeedbackId;
+        this.comment = that.comment == null ? "" : that.comment;
+        this.userFeedBackId = that.userFeedBackId == null ? "" : that.userFeedBackId;
+        this.userBeFeedbackId = that.userBeFeedbackId == null ? "" : that.userBeFeedbackId;
     }
 
     public long getId() {

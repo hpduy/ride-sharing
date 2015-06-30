@@ -5,10 +5,10 @@ package com.bikiegang.ridesharing.pojo;
  */
 public class Endorse {
     private long id;
-    private String endorserId;
-    private String endorsedUserId;
+    private String endorserId = "";
+    private String endorsedUserId = "";
     private long circleId;
-    private String comment;
+    private String comment = "";
     private long createdTime;
 
     public Endorse() {
@@ -16,19 +16,19 @@ public class Endorse {
 
     public Endorse(long id, String endorserId, String endorsedUserId, long circleId, String comment, long createdTime) {
         this.id = id;
-        this.endorserId = endorserId;
-        this.endorsedUserId = endorsedUserId;
+        this.endorserId = endorserId == null ? "" : endorserId;
+        this.endorsedUserId = endorsedUserId == null ? "" : endorsedUserId;
         this.circleId = circleId;
-        this.comment = comment;
+        this.comment = comment == null ? "" : comment;
         this.createdTime = createdTime;
     }
 
     public Endorse(Endorse that) {
         this.id = that.id;
-        this.endorserId = that.endorserId;
-        this.endorsedUserId = that.endorsedUserId;
+        this.endorserId = that.endorserId == null ? "" : that.endorserId;
+        this.endorsedUserId = that.endorsedUserId == null ? "" : that.endorsedUserId;
         this.circleId = that.circleId;
-        this.comment = that.comment;
+        this.comment = that.comment == null ? "" : that.comment;
         this.createdTime = that.createdTime;
     }
 

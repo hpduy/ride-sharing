@@ -45,6 +45,7 @@ public class StringProcessUtil {
             new DecimalFormat("0.000000"),
             new DecimalFormat("0.0000000")
     };
+
     public static String formatNumber(double f, int decimals) {
         if (f == NO_NUM)
             return "?";
@@ -52,6 +53,7 @@ public class StringProcessUtil {
             return FORMATTER[decimals].format(f);
         }
     }
+
     public static String toUrlFriendly(String s) {
         int maxLength = Math.min(s.length(), 236);
         char[] buffer = new char[maxLength];
@@ -134,5 +136,8 @@ public class StringProcessUtil {
         return sb.toString();
     }
 
+    public String getStringValue(String input) {
+        return input == null ? "" : input;
+    }
 
 }

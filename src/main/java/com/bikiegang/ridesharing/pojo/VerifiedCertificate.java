@@ -1,21 +1,36 @@
 package com.bikiegang.ridesharing.pojo;
 
-import com.bikiegang.ridesharing.pojo.type.CertificateType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Created by hpduy17 on 6/24/15.
  */
 public class VerifiedCertificate {
-    private long id;
-    private String image;
-    private String note;
-    private long createdTime;
-    private CertificateType type;
-    private String ownerId;
-    private String endorserId;
-    private int status;
+    protected long id;
+    protected String image = "";
+    protected String note = "";
+    protected long createdTime;
+    protected int type;
+    protected String ownerId = "";
+    protected String endorserId = "";
+    protected int status;
     // final field
+    /**
+     * GENDER
+     */
+    @JsonIgnore
+    public static final int VISA = 1;
+    @JsonIgnore
+    public static final int PASSPORT = 2;
+    @JsonIgnore
+    public static final int IDENTIFY_CARD = 3;
+    @JsonIgnore
+    public static final int STUDENT_CARD = 4;
+    @JsonIgnore
+    public static final int DRIVER_LICENSE = 5;
+    /**
+     * STATUS
+     */
     @JsonIgnore
     public static final int WAITING = 0;
     @JsonIgnore
@@ -26,25 +41,25 @@ public class VerifiedCertificate {
     public VerifiedCertificate() {
     }
 
-    public VerifiedCertificate(long id, String image, String note, long createdTime, CertificateType type, String ownerId, String endorserId, int status) {
+    public VerifiedCertificate(long id, String image, String note, long createdTime, int type, String ownerId, String endorserId, int status) {
         this.id = id;
-        this.image = image;
-        this.note = note;
+        this.image = image == null ? "" : image;
+        this.note = note == null ? "" : note;
         this.createdTime = createdTime;
         this.type = type;
-        this.ownerId = ownerId;
-        this.endorserId = endorserId;
+        this.ownerId = ownerId == null ? "" : ownerId;
+        this.endorserId = endorserId == null ? "" : endorserId;
         this.status = status;
     }
 
     public VerifiedCertificate(VerifiedCertificate that) {
         this.id = that.id;
-        this.image = that.image;
-        this.note = that.note;
+        this.image = that.image == null ? "" : that.image;
+        this.note = that.note == null ? "" : that.note;
         this.createdTime = that.createdTime;
         this.type = that.type;
-        this.ownerId = that.ownerId;
-        this.endorserId = that.endorserId;
+        this.ownerId = that.ownerId == null ? "" : that.ownerId;
+        this.endorserId = that.endorserId == null ? "" : that.endorserId;
         this.status = that.status;
     }
 
@@ -80,11 +95,11 @@ public class VerifiedCertificate {
         this.createdTime = createdTime;
     }
 
-    public CertificateType getType() {
+    public int getType() {
         return type;
     }
 
-    public void setType(CertificateType type) {
+    public void setType(int type) {
         this.type = type;
     }
 

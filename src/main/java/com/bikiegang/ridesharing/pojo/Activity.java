@@ -7,9 +7,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 public class Activity {
     private long id;
-    private String ownerId;
-    private String posUserId;
-    private String negUserId;
+    private String ownerId = "";
+    private String posUserId = "";
+    private String negUserId = "";
     private long createdTime;
     private int action;
     private long ref;
@@ -35,19 +35,20 @@ public class Activity {
 
     public Activity(long id, String ownerId, String posUserId, String negUserId, long createdTime, int action, long ref, boolean isRead) {
         this.id = id;
-        this.ownerId = ownerId;
-        this.posUserId = posUserId;
-        this.negUserId = negUserId;
+        this.ownerId = ownerId == null ? "" : ownerId;
+        this.posUserId = posUserId == null ? "" : posUserId;
+        this.negUserId = negUserId == null ? "" : negUserId;
         this.createdTime = createdTime;
         this.action = action;
         this.ref = ref;
         this.isRead = isRead;
     }
+
     public Activity(Activity that) {
         this.id = that.id;
-        this.ownerId = that.ownerId;
-        this.posUserId = that.posUserId;
-        this.negUserId = that.negUserId;
+        this.ownerId = that.ownerId == null ? "" : that.ownerId;
+        this.posUserId = that.posUserId == null ? "" : that.posUserId;
+        this.negUserId = that.negUserId == null ? "" : that.negUserId;
         this.createdTime = that.createdTime;
         this.action = that.action;
         this.ref = that.ref;

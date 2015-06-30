@@ -14,18 +14,18 @@ public class Circle {
 
     //final field
     @JsonIgnore
-    public static final int PUBLIC = 0;
+    public static final int PUBLIC = 1;
     @JsonIgnore
-    public static final int CLOSED = 1;
+    public static final int CLOSED = 2;
     @JsonIgnore
-    public static final int STATIC = 2;
+    public static final int STATIC = 3;
 
     public Circle() {
     }
 
     public Circle(long id, String name, String description, long createdTime, int status) {
         this.id = id;
-        this.name = name;
+        this.name = name ==  null ? "" : name;
         this.description = description;
         this.createdTime = createdTime;
         this.status = status;

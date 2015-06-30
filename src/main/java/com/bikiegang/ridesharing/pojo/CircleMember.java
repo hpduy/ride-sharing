@@ -6,7 +6,7 @@ package com.bikiegang.ridesharing.pojo;
 public class CircleMember {
     private long id;
     private long circleId;
-    private String memberId;
+    private String memberId = "";
     private long createdTime;
 
     public CircleMember() {
@@ -18,6 +18,7 @@ public class CircleMember {
         this.memberId = memberId;
         this.createdTime = createdTime;
     }
+
     public CircleMember(CircleMember that) {
         this.id = that.id;
         this.circleId = that.circleId;

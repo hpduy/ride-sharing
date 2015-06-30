@@ -4,29 +4,29 @@ package com.bikiegang.ridesharing.pojo;
  * Created by hpduy17 on 6/25/15.
  */
 public class UserProfile {
-    private long id;
-    private String userId;
-    private String name;
-    private String description;
-    private long createdTime;
+    protected long id;
+    protected String userId = "";
+    protected String name = "";
+    protected String description = "";
+    protected long createdTime;
 
     public UserProfile() {
     }
 
     public UserProfile(long id, String name, String description, long createdTime, String userId) {
         this.id = id;
-        this.name = name;
-        this.description = description;
+        this.name = name == null ? "" : name;
+        this.description = description == null ? "" : description;
         this.createdTime = createdTime;
-        this.userId = userId;
+        this.userId = userId == null ? "" : userId;
     }
 
     public UserProfile(UserProfile that) {
         this.id = that.id;
-        this.name = that.name;
-        this.description = that.description;
+        this.name = that.name == null ? "" : that.name;
+        this.description = that.description == null ? "" : that.description;
         this.createdTime = that.createdTime;
-        this.userId = that.userId;
+        this.userId = that.userId == null ? "" : that.userId;
     }
 
     public long getId() {

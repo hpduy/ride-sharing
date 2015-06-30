@@ -7,7 +7,8 @@ public class Location extends LatLng {
     protected long id;
     protected long createdTime;
     protected long estimatedTime;
-    protected String address;
+    protected String address = "";
+
     public Location() {
 
     }
@@ -16,7 +17,7 @@ public class Location extends LatLng {
         super(lat, lng);
         this.id = id;
         this.createdTime = createdTime;
-        this.address = address;
+        this.address = address == null ? "" : address;
     }
 
     public Location(Location that) {
@@ -24,12 +25,9 @@ public class Location extends LatLng {
         this.id = that.id;
         this.createdTime = that.createdTime;
         this.estimatedTime = that.estimatedTime;
-        this.address = that.address;
+        this.address = that.address == null ? "" : that.address;
     }
 
-    public String test(){
-        return "test";
-    }
     public long getId() {
         return id;
     }

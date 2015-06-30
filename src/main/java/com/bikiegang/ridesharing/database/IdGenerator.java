@@ -7,7 +7,6 @@ import java.util.Set;
  */
 public class IdGenerator {
     private static long activityId = 0;
-    private static long broadCastId = 0;
     private static long circleId = 0;
     private static long circleMemberId = 0;
     private static long currentLocationId = 0;
@@ -30,15 +29,6 @@ public class IdGenerator {
         }
         while (idSet.contains(activityId));
         return activityId;
-    }
-
-    public static synchronized long getBroadCastId() {
-        Set<Long> idSet = database.getBroadcastHashMap().keySet();
-        do {
-            broadCastId++;
-        }
-        while (idSet.contains(broadCastId));
-        return broadCastId;
     }
 
     public static synchronized long getCircleId() {
