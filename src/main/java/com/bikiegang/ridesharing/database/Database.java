@@ -55,7 +55,7 @@ public class Database {
     /**
      * BROADCAST
      */
-    private HashMap<String, HashSet<String>> userIdRFBroadcastes = new HashMap<>(); //<userId,<broadcastId>>
+    private HashMap<String, HashSet<String>> userIdRFBroadcasts = new HashMap<>(); //<userId,<broadcastId>>
 
     /**
      * CIRCLE MEMBER
@@ -181,7 +181,7 @@ public class Database {
         return verifiedCertificateHashMap;
     }
 
-    public HashMap<Long, RequestMakeTrip> getRequestMakeTripHashMap() {g
+    public HashMap<Long, RequestMakeTrip> getRequestMakeTripHashMap() {
         return requestMakeTripHashMap;
     }
 
@@ -207,8 +207,8 @@ public class Database {
         return userIdRFUserProfiles;
     }
 
-    public HashMap<String, HashSet<String>> getUserIdRFBroadcastes() {
-        return userIdRFBroadcastes;
+    public HashMap<String, HashSet<String>> getUserIdRFBroadcasts() {
+        return userIdRFBroadcasts;
     }
 
     public HashMap<String, HashSet<Long>> getUserIdRFCircles() {

@@ -1,12 +1,5 @@
 package com.bikiegang.ridesharing;
 
-/**
- * Created with IntelliJ IDEA.
- * User: jayen
- * Date: 9/11/12
- * Time: 12:04 PM
- */
-
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.http.HttpSessionAttributeListener;
