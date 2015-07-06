@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * Created by hpduy17 on 6/24/15.
  */
 public class Broadcast {
-    private String id = "";
+    private String id = ""; // <deviceId#userId>
     private String userId = "";
     private String deviceId = "";
     private String regId;

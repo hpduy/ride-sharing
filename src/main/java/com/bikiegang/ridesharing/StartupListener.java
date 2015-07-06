@@ -1,5 +1,8 @@
 package com.bikiegang.ridesharing;
 
+import com.bikiegang.ridesharing.utilities.ApiDocumentGenerator;
+import com.bikiegang.ridesharing.utilities.Path;
+
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.http.HttpSessionAttributeListener;
@@ -13,7 +16,7 @@ public class StartupListener implements ServletContextListener, HttpSessionListe
     // Public constructor is required by servlet spec
     public StartupListener() {
         Charset charset = Charset.defaultCharset();
-        if (! charset.equals(Charset.forName("UTF-8"))) {
+        if (!charset.equals(Charset.forName("UTF-8"))) {
 //            org.apache.commons.logging.LogFactory.getLog(getClass()).error("You should use UTF-8 but are using: " + charset);
         }
     }
@@ -26,6 +29,12 @@ public class StartupListener implements ServletContextListener, HttpSessionListe
            initialized(when the Web application is deployed). 
            You can initialize servlet context related data here.
         */
+        try {
+            Path.buildRoot();
+            ApiDocumentGenerator.generate();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
 
     }
 

@@ -3,7 +3,6 @@ package com.bikiegang.ridesharing.database;
 
 import com.bikiegang.ridesharing.geocoding.GeoCell;
 import com.bikiegang.ridesharing.pojo.*;
-import kyotocabinet.DB;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -80,6 +79,11 @@ public class Database {
     private HashMap<String, HashSet<Long>> driverIdRFTrips = new HashMap<>(); // <userId,<tripId>>
     private HashMap<String, HashSet<Long>> passengerIdRFTrips = new HashMap<>(); // <userId,<tripId>>
     /**
+     * REQUEST MAKE TRIP
+     */
+    private HashMap<String,HashMap<Long,Long>> senderRequestsBox = new HashMap<>(); //<senderId,<receiverRouteId,requestIds>>
+    private HashMap<String,HashMap<Long,List<Long>>> receiverRequestsBox = new HashMap<>(); //<receiverId,<receiverRouteId,<requestIds>>>
+    /**
      * TRIP FEEDBACK
      */
     private HashMap<String, HashSet<Long>> userFeedbackIdRFTrips = new HashMap<>(); // <userId,<tripId>>
@@ -103,20 +107,18 @@ public class Database {
      * ACTIVITY
      */
     private HashMap<String, HashSet<Long>> userIdRFActivities = new HashMap<>();//<userId,<activityId>>
-    //GEOCELL
+    /**
+     * GEOCELL
+     */
     private GeoCell geoCellDriver = new GeoCell(); // for route
     private GeoCell geoCellPassenger = new GeoCell();// for route
     private GeoCell geoCellCurrentLocation = new GeoCell();
 
     /*PERSONAL FUNCTION*/
     public static void restore() {
-
     }
 
     public static void backup() {
-        DB kyotoDB = new DB();
-
-
     }
      /*GET-SET Function*/
     /*CORE GET-SET*/
@@ -271,7 +273,16 @@ public class Database {
         return roleRFRoutes;
     }
 
+    public HashMap<String, HashMap<Long, Long>> getSenderRequestsBox() {
+        return senderRequestsBox;
+    }
+
+    public HashMap<String, HashMap<Long, List<Long>>> getReceiverRequestsBox() {
+        return receiverRequestsBox;
+    }
+
     /*GEOCELL GET-SET*/
+
     public GeoCell getGeoCellDriver() {
         return geoCellDriver;
     }

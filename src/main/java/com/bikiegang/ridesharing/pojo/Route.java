@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Route {
     private long id;
     private long goTime;
+    private long arriveTime;
     private double sumDistance;
     private long estimatedTime;
     private double estimatedPrice;
@@ -39,9 +40,10 @@ public class Route {
     public Route() {
     }
 
-    public Route(long id, long goTime, double sumDistance, int type, String creatorId, int role, double ownerPrice) {
+    public Route(long id, long goTime,long arriveTime, double sumDistance, int type, String creatorId, int role, double ownerPrice) {
         this.id = id;
         this.goTime = goTime;
+        this.arriveTime = arriveTime;
         this.sumDistance = sumDistance;
         this.type = type;
         this.role = role;
@@ -52,6 +54,7 @@ public class Route {
     public Route(Route that) {
         this.id = that.id;
         this.goTime = that.goTime;
+        this.arriveTime = that.arriveTime;
         this.sumDistance = that.sumDistance;
         this.estimatedTime = that.estimatedTime;
         this.estimatedPrice = that.estimatedPrice;

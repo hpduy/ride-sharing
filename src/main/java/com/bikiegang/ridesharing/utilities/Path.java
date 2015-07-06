@@ -10,9 +10,9 @@ import java.io.IOException;
  */
 public class Path {
     @NotNull
-    private static final String dbPathRootWindows = "C:\\RideSharing";
+    private static final String dbPathRootWindows = "C:\\cloudbike";
     @NotNull
-    private static final String dbPathRootUNIX = "/RideSharing/";
+    private static final String dbPathRootUNIX = "/cloudbike/";
     private static String dataPath,imagePath,logPath;
     private static String serverAddress = "";
 

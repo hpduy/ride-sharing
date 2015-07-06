@@ -19,7 +19,7 @@ public class IdGenerator {
     private static long tripFeedbackId = 0;
     private static long userProfileId = 0;
     private static long verifiedCertificateId = 0;
-
+    private static long requestMakeTripId = 0;
     private static Database database = Database.getInstance();
 
     public static synchronized long getActivityId() {
@@ -137,5 +137,14 @@ public class IdGenerator {
         }
         while (idSet.contains(verifiedCertificateId));
         return verifiedCertificateId;
+    }
+
+    public static synchronized long getRequestMakeTripId() {
+        Set<Long> idSet = database.getRequestMakeTripHashMap().keySet();
+        do {
+            requestMakeTripId++;
+        }
+        while (idSet.contains(requestMakeTripId));
+        return requestMakeTripId;
     }
 }

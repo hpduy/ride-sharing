@@ -54,7 +54,8 @@ public class CurrentLocationController {
         currentLocation.setAddress(request.getAddress());
         currentLocation.setUserId(request.getUserId());
         currentLocation.setPreviousLocationId(user.getCurrentLocationId());
-        //insert
+        //insert to geo cell
+        database.getGeoCellCurrentLocation().putToCell(currentLocation);
         if (dao.insert(currentLocation)) {
             //update
             user.setCurrentLocationId(currentLocation.getId());
