@@ -9,20 +9,25 @@ public class RequestMakeTrip implements PojoBase {
     private String senderId = "";
     private String receiverId = "";
     private long createdTime;
-    private long senderRouteId;
+    private long receiverRouteId;
     private int status;
 
-  
+    @JsonIgnore
+    public static final int WAITING = 0;
+    @JsonIgnore
+    public static final int ACCEPT = 1;
+    @JsonIgnore
+    public static final int DENY = 2;
 
     public RequestMakeTrip() {
     }
 
-    public RequestMakeTrip(long id, String senderId, String receiverId, long createdTime, long senderRouteId, int status) {
+    public RequestMakeTrip(long id, String senderId, String receiverId, long createdTime, long receiverRouteId, int status) {
         this.id = id;
         this.senderId = senderId == null ? "" : senderId;
         this.receiverId = receiverId == null ? "" : receiverId;
         this.createdTime = createdTime;
-        this.senderRouteId = senderRouteId;
+        this.receiverRouteId = receiverRouteId;
         this.status = status;
     }
 
@@ -31,7 +36,7 @@ public class RequestMakeTrip implements PojoBase {
         this.senderId = that.senderId == null ? "" : that.senderId;
         this.receiverId = that.receiverId == null ? "" : that.receiverId;
         this.createdTime = that.createdTime;
-        this.senderRouteId = that.senderRouteId;
+        this.receiverRouteId = that.receiverRouteId;
         this.status = that.status;
     }
 
@@ -67,12 +72,12 @@ public class RequestMakeTrip implements PojoBase {
         this.createdTime = createdTime;
     }
 
-    public long getSenderRouteId() {
-        return senderRouteId;
+    public long getReceiverRouteId() {
+        return receiverRouteId;
     }
 
-    public void setSenderRouteId(long senderRouteId) {
-        this.senderRouteId = senderRouteId;
+    public void setReceiverRouteId(long receiverRouteId) {
+        this.receiverRouteId = receiverRouteId;
     }
 
     public int getStatus() {

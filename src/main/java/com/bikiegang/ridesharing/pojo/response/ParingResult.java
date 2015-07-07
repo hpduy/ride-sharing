@@ -5,8 +5,6 @@ import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.Route;
 import com.bikiegang.ridesharing.pojo.User;
 
-import java.util.List;
-
 /**
  * Created by hpduy17 on 6/30/15.
  */
@@ -22,11 +20,11 @@ public class ParingResult {
     private int currentRole;
     private long routeId;
     private CurrentLocation currentLocation;
-    private List<LatLng> listLocation;
+    private LatLng[] locations;
     private double price;
     private long goTime;
 
-    public ParingResult(User user, Route route, List<LatLng> locations, CurrentLocation currentLocation) {
+    public ParingResult(User user, Route route, LatLng[] locations, CurrentLocation currentLocation) {
         this.id = user.getId();
         this.firstName = user.getLastName();
         this.lastName = user.getLastName();
@@ -37,7 +35,7 @@ public class ParingResult {
         this.isBusy = user.isBusy();
         this.currentRole = user.getCurrentRole();
         this.currentLocation = currentLocation;
-        this.listLocation = locations;
+        this.locations = locations;
         this.price = route.getOwnerPrice();
         this.goTime = route.getGoTime();
         this.routeId = route.getId();
@@ -131,12 +129,12 @@ public class ParingResult {
         this.currentLocation = currentLocation;
     }
 
-    public List<LatLng> getListLocation() {
-        return listLocation;
+    public LatLng[] getListLocation() {
+        return locations;
     }
 
-    public void setListLocation(List<LatLng> listLocation) {
-        this.listLocation = listLocation;
+    public void setListLocation(LatLng[] locations) {
+        this.locations = locations;
     }
 
     public double getPrice() {

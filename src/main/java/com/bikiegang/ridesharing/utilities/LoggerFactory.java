@@ -14,7 +14,7 @@ public class LoggerFactory {
         Logger logger = Logger.getLogger(c);
         try {
             Layout layout = new PatternLayout("%d{yyyy/MM/dd hh:mm:ss} %5p %c{1}:%L - %m%n");
-            String logFilePath = Path.getLogPath()+ File.separator+"fun-ride.log";
+            String logFilePath = Path.getLogPath()+ File.separator+"cloudbike.log";
             File logFile = new File(logFilePath);
             if(!logFile.exists())
                 logFile.createNewFile();

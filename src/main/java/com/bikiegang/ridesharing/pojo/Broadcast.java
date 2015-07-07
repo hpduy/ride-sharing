@@ -3,9 +3,8 @@ package com.bikiegang.ridesharing.pojo;
 /**
  * Created by hpduy17 on 6/24/15.
  */
-public class Broadcast implements PojoBase {
-
-    private String id = "";
+public class Broadcast {
+    private String id = ""; // <deviceId#userId>
     private String userId = "";
     private String deviceId = "";
     private String regId;

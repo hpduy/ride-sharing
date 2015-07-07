@@ -8,6 +8,7 @@ import com.bikiegang.ridesharing.geocoding.TimezoneMapper;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.*;
 import com.bikiegang.ridesharing.pojo.request.CreateRouteRequest;
+import com.bikiegang.ridesharing.pojo.request.ParingRequest;
 import com.bikiegang.ridesharing.pojo.response.ParingResult;
 import com.bikiegang.ridesharing.utilities.DateTimeUtil;
 
@@ -87,7 +88,7 @@ public class RouteController {
         //insert route
         if (dao.insert(route)) {
             // estimate & location mapping
-            long estTime = route.getGoTime();
+//            long estTime = route.getGoTime();
             long refId = route.getId();
             int refType = LinkedLocation.IN_ROUTE;
             int role = route.getRole();
@@ -117,14 +118,25 @@ public class RouteController {
             route.setEstimatedPrice(sumDistance * Route.DEFAULT_PRICE_1KM);
             //update route
             if (dao.update(route)) {
-                return Parser.ObjectToJSon(false, "Create and estimate route successfully");
+                return Parser.ObjectToJSon(true, "Create and estimate route successfully");
             }
-            return Parser.ObjectToJSon(false, "Create route successfully but cannot estimate its");
+            return Parser.ObjectToJSon(true, "Create route successfully but cannot estimate its");
         }
         return Parser.ObjectToJSon(false, "Cannot create route");
     }
-
-    public String Paring(Route route) throws Exception {
+    public String paring(ParingRequest request) throws Exception {
+       if(request.getRouteId() <= 0){
+           return Parser.ObjectToJSon(false, "'routeId' is invalid");
+       }
+        return paring(request.getRouteId());
+    }
+    public String paring(long routeId) throws Exception {
+        Route route = database.getRouteHashMap().get(routeId);
+        if(null == route)
+            Parser.ObjectToJSon(false, "Route cannot found");
+        return paring(route);
+    }
+    public String paring(Route route) throws Exception {
         List<ParingResult> results = new ArrayList<>();
         HashMap<String,Long> paringResult = new HashMap<>();
         switch (route.getRole()){
@@ -149,7 +161,7 @@ public class RouteController {
                             locations.add(new LatLng(location));
                         }
                     }
-                    results.add(new ParingResult(user,userRoute,locations,currentLocation));
+                    results.add(new ParingResult(user,userRoute,locations.toArray(new LatLng[locations.size()]),currentLocation));
                 }
             }
         }
