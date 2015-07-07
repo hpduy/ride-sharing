@@ -1,23 +1,15 @@
 package com.bikiegang.ridesharing.pojo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 /**
  * Created by hpduy17 on 6/24/15.
  */
-public class Broadcast {
+public class Broadcast implements PojoBase {
+
     private String id = "";
     private String userId = "";
     private String deviceId = "";
     private String regId;
     private int os;
-    //final field
-    @JsonIgnore
-    public static final int ANDROID = 1;
-    @JsonIgnore
-    public static final int IOS = 2;
-    @JsonIgnore
-    public static final int WINDOW_PHONE = 3;
 
     public Broadcast() {
     }

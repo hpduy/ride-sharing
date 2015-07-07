@@ -1,6 +1,5 @@
 package com.bikiegang.ridesharing.pojo;
 
-import org.jetbrains.annotations.NotNull;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -49,7 +48,7 @@ public class LatLng {
      * This is the Equirectangular approximation. It's a little slower than the Region.distanceInMetres()
      * formula.
      */
-    public double distanceInMetres(@NotNull LatLng other) {
+    public double distanceInMetres(LatLng other) {
         double lngDelta = Math.abs(lng - other.lng);
         if (lngDelta > 180)
             lngDelta = 360 - lngDelta;
@@ -57,7 +56,7 @@ public class LatLng {
         double p2 = (lat - other.lat);
         return EarthRadius * radians * Math.sqrt(p1 * p1 + p2 * p2);
     }
-    public double distanceInMetresWay2(@NotNull LatLng other) {
+    public double distanceInMetresWay2(LatLng other) {
         double deltaLat = toRadian(other.lat - lat);
         double deltaLon = toRadian(other.lng - lng);
         double a = Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +

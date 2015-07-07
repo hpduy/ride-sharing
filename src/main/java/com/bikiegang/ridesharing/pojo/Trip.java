@@ -3,7 +3,7 @@ package com.bikiegang.ridesharing.pojo;
 /**
  * Created by hpduy17 on 6/24/15.
  */
-public class Trip {
+public class Trip  implements PojoBase{
     private long id;
     private long startTime;
     private String driverId = "";

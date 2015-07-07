@@ -3,7 +3,8 @@ package com.bikiegang.ridesharing.pojo;
 /**
  * Created by hpduy17 on 6/22/15.
  */
-public class Location extends LatLng {
+public class Location extends LatLng implements PojoBase {
+
     protected long id;
     protected long createdTime;
     protected long estimatedTime;

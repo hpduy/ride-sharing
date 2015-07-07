@@ -6,7 +6,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 /**
  * Created by hpduy17 on 6/24/15.
  */
-public class Route {
+public class Route implements PojoBase {
+
     private long id;
     private long goTime;
     private double sumDistance;
@@ -17,6 +18,10 @@ public class Route {
     private String creatorId = "";
     private int role; // user role
     private int type;
+
+    /**
+     * ROUTE TYPE
+     */
     /**
      * ROUTE TYPE
      */

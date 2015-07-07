@@ -1,11 +1,10 @@
 package com.bikiegang.ridesharing.pojo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 /**
  * Created by hpduy17 on 6/25/15.
  */
-public class Activity {
+public class Activity implements PojoBase {
+
     private long id;
     private String ownerId = "";
     private String posUserId = "";
@@ -15,20 +14,6 @@ public class Activity {
     private long ref;
     private boolean isRead;
     //final field
-    @JsonIgnore
-    public static final int POST_ROUTE = 1;
-    @JsonIgnore
-    public static final int RATING = 2;
-    @JsonIgnore
-    public static final int FEEDBACK = 3;
-    @JsonIgnore
-    public static final int COMMENT = 4;
-    @JsonIgnore
-    public static final int JOIN_CIRCLE = 5;
-    @JsonIgnore
-    public static final int MAKE_A_TRIP = 6;
-    @JsonIgnore
-    public static final int FINISH_A_TRIP = 7;
 
     public Activity() {
     }

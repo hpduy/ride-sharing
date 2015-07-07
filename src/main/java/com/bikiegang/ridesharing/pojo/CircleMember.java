@@ -3,7 +3,7 @@ package com.bikiegang.ridesharing.pojo;
 /**
  * Created by hpduy17 on 6/24/15.
  */
-public class CircleMember {
+public class CircleMember implements PojoBase {
     private long id;
     private long circleId;
     private String memberId = "";

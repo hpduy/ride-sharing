@@ -1,11 +1,10 @@
 package com.bikiegang.ridesharing.pojo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Created by hpduy17 on 6/30/15.
  */
-public class RequestMakeTrip {
+public class RequestMakeTrip implements PojoBase {
     private long id;
     private String senderId = "";
     private String receiverId = "";
@@ -13,12 +12,7 @@ public class RequestMakeTrip {
     private long senderRouteId;
     private int status;
 
-    @JsonIgnore
-    public static final int WAITING = 0;
-    @JsonIgnore
-    public static final int ACCEPT = 0;
-    @JsonIgnore
-    public static final int DENY = 0;
+  
 
     public RequestMakeTrip() {
     }

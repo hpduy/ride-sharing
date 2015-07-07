@@ -1,35 +1,27 @@
 package com.bikiegang.ridesharing.pojo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 /**
  * Created by hpduy17 on 6/24/15.
  */
-public class Circle {
+public class Circle implements PojoBase {
+
     private long id;
     private String name;
     private String description;
     private long createdTime;
     private int status;
 
-    //final field
-    @JsonIgnore
-    public static final int PUBLIC = 1;
-    @JsonIgnore
-    public static final int CLOSED = 2;
-    @JsonIgnore
-    public static final int STATIC = 3;
-
     public Circle() {
     }
 
     public Circle(long id, String name, String description, long createdTime, int status) {
         this.id = id;
-        this.name = name ==  null ? "" : name;
+        this.name = name == null ? "" : name;
         this.description = description;
         this.createdTime = createdTime;
         this.status = status;
     }
+
     public Circle(Circle that) {
         this.id = that.id;
         this.name = that.name;

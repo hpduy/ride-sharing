@@ -1,9 +1,12 @@
 package com.bikiegang.ridesharing.pojo;
 
+import com.bikiegang.ridesharing.da.ActivityDA;
+
 /**
  * Created by hpduy17 on 6/25/15.
  */
-public class UserProfile {
+public class UserProfile implements PojoBase {
+
     protected long id;
     protected String userId = "";
     protected String name = "";

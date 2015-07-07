@@ -3,7 +3,7 @@ package com.bikiegang.ridesharing.pojo;
 /**
  * Created by hpduy17 on 6/22/15.
  */
-public class CurrentLocation extends Location {
+public class CurrentLocation extends Location  implements PojoBase{
     private String userId = "";
     private long previousLocationId;
 

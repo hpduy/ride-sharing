@@ -1,11 +1,10 @@
 package com.bikiegang.ridesharing.pojo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Created by hpduy17 on 6/25/15.
  */
-public class Rating {
+public class Rating implements PojoBase {
     private long id;
     private String assessorId = "";
     private long profileId;
@@ -13,12 +12,7 @@ public class Rating {
     private long createdTime;
     private String comment = "";
     //final field
-    @JsonIgnore
-    public static final int POSITIVE = 1;
-    @JsonIgnore
-    public static final int NEUTRAL = 0;
-    @JsonIgnore
-    public static final int NEGATIVE = -1;
+  
 
     public Rating() {
     }

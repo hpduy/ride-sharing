@@ -5,11 +5,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 /**
  * Created by hpduy17 on 6/22/15.
  */
-public class LinkedLocation extends Location {
+public class LinkedLocation extends Location implements PojoBase {
+
     private int index;
     private long refId; // routeId or tripId
     private int refType;
     //final field
+
     @JsonIgnore
     public static final int FREE = 0;
     @JsonIgnore
@@ -26,6 +28,7 @@ public class LinkedLocation extends Location {
         this.refId = refId;
         this.refType = refType;
     }
+
     public LinkedLocation(LinkedLocation that) {
         super(that.lat, that.lng, that.id, that.createdTime, that.address);
         this.index = that.index;

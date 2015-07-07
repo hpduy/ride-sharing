@@ -6,7 +6,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 /**
  * Created by hpduy17 on 6/24/15.
  */
-public class User {
+public class User implements PojoBase {
+
     private String id = "";
     private String email = "";
     private String password = "";
@@ -23,6 +24,7 @@ public class User {
     private int status;
     private boolean isBusy;
     private int currentRole;
+
     // final field & dont print to JSON;
     /**
      * GENDER
@@ -47,7 +49,6 @@ public class User {
     public static final int DRIVER = 1;
     @JsonIgnore
     public static final int PASSENGER = 2;
-
 
     public User() {
     }
@@ -95,7 +96,6 @@ public class User {
         this.birthDay = that.getBirthDay() <= 0 ? this.birthDay : that.getBirthDay();
         this.gender = that.getGender() <= 0 ? this.gender : that.getGender();
     }
-
 
     public String getId() {
         return id;

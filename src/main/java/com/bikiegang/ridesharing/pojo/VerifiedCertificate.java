@@ -1,11 +1,10 @@
 package com.bikiegang.ridesharing.pojo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Created by hpduy17 on 6/24/15.
  */
-public class VerifiedCertificate {
+public class VerifiedCertificate implements PojoBase {
     protected long id;
     protected String image = "";
     protected String note = "";
@@ -15,29 +14,7 @@ public class VerifiedCertificate {
     protected String endorserId = "";
     protected int status;
     // final field
-    /**
-     * GENDER
-     */
-    @JsonIgnore
-    public static final int VISA = 1;
-    @JsonIgnore
-    public static final int PASSPORT = 2;
-    @JsonIgnore
-    public static final int IDENTIFY_CARD = 3;
-    @JsonIgnore
-    public static final int STUDENT_CARD = 4;
-    @JsonIgnore
-    public static final int DRIVER_LICENSE = 5;
-    /**
-     * STATUS
-     */
-    @JsonIgnore
-    public static final int WAITING = 0;
-    @JsonIgnore
-    public static final int AVAILABLE = 1;
-    @JsonIgnore
-    public static final int OUT_OF_DATE = 2;
-
+   
     public VerifiedCertificate() {
     }
 

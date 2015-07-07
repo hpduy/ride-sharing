@@ -3,7 +3,7 @@ package com.bikiegang.ridesharing.pojo;
 /**
  * Created by hpduy17 on 6/24/15.
  */
-public class Endorse {
+public class Endorse  implements PojoBase{
     private long id;
     private String endorserId = "";
     private String endorsedUserId = "";
