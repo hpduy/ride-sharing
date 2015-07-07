@@ -1,5 +1,7 @@
 package com.bikiegang.ridesharing.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 /**
  * Created by hpduy17 on 6/30/15.

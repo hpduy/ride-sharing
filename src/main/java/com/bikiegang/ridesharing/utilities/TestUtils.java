@@ -129,7 +129,7 @@ public class TestUtils {
     }
 
     public static Route CreateRoute() {
-        Route result = new Route(RandomUtils.nextLong(), RandomUtils.nextLong(),
+        Route result = new Route(RandomUtils.nextLong(), RandomUtils.nextLong(), RandomUtils.nextLong(),
                 RandomUtils.nextDouble(), RandomUtils.nextInt(), RandomStringUtils.randomAlphabetic(20),
                 RandomUtils.nextInt(), RandomUtils.nextDouble());
 

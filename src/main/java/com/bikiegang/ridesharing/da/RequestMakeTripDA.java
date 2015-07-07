@@ -59,7 +59,7 @@ public class RequestMakeTripDA implements IDA {
                 stmt.setString(2, value.getSenderId());
                 stmt.setString(3, value.getReceiverId());
                 stmt.setLong(4, value.getCreatedTime());
-                stmt.setLong(5, value.getSenderRouteId());
+                stmt.setLong(5, value.getReceiverRouteId());
                 stmt.setInt(6, value.getStatus());
 
                 int row = stmt.executeUpdate();
@@ -88,7 +88,7 @@ public class RequestMakeTripDA implements IDA {
                 stmt.setString(2, value.getSenderId());
                 stmt.setString(3, value.getReceiverId());
                 stmt.setLong(4, value.getCreatedTime());
-                stmt.setLong(5, value.getSenderRouteId());
+                stmt.setLong(5, value.getReceiverRouteId());
                 stmt.setInt(6, value.getStatus());
                 stmt.setLong(7, value.getId());
 
