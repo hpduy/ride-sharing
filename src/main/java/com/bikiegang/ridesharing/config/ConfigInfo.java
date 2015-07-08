@@ -273,18 +273,22 @@ public class ConfigInfo {
                 + "`senderId`,\n"
                 + "`receiverId`,\n"
                 + "`createdTime`,\n"
-                + "`senderRouteId`,\n"
-                + "`status`)\n"
+                + "`status`,\n"
+                + "`senderRole`,\n"
+                + "`driverRouteId`,\n"
+                + "`passengerRouteId`)\n"
                 + "VALUES\n"
-                + "(?,?,?,?,?,?);";
+                + "(?,?,?,?,?,?,?,?);";
         REQUESTMAKETRIP_UPDATE_QUERY = "UPDATE `ridesharing_db`.`RequestMakeTrip`\n"
                 + "SET\n"
                 + "`id` = ?,\n"
                 + "`senderId` = ?,\n"
                 + "`receiverId` = ?,\n"
                 + "`createdTime` = ?,\n"
-                + "`senderRouteId` = ?,\n"
-                + "`status` = ?\n"
+                + "`status` = ?,\n"
+                + "`senderRole` = ?,\n"
+                + "`driverRouteId` = ?,\n"
+                + "`passengerRouteId` = ?\n"
                 + "WHERE `id` = ?;";
         REQUESTMAKETRIP_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`RequestMakeTrip`\n"
                 + "WHERE `id` = ?;";

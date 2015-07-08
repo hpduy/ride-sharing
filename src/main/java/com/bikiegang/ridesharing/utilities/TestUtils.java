@@ -121,9 +121,10 @@ public class TestUtils {
     }
 
     public static RequestMakeTrip CreateRequestMakeTrip() {
-        RequestMakeTrip result = new RequestMakeTrip(RandomUtils.nextLong(), RandomStringUtils.randomAlphabetic(20),
-                RandomStringUtils.randomAlphabetic(20), RandomUtils.nextLong(),
-                RandomUtils.nextLong(), RandomUtils.nextInt());
+        RequestMakeTrip result = new RequestMakeTrip(RandomUtils.nextLong(),
+                RandomStringUtils.randomAlphabetic(20), RandomStringUtils.randomAlphabetic(20), RandomUtils.nextLong(),
+                RandomUtils.nextLong(),
+                RandomUtils.nextLong(), RandomUtils.nextLong(), RandomUtils.nextInt(), RandomUtils.nextInt());
 
         return result;
     }
@@ -138,7 +139,8 @@ public class TestUtils {
 
     public static Trip CreateTrip() {
         Trip result = new Trip(RandomUtils.nextLong(), RandomUtils.nextLong(),
-                RandomStringUtils.randomAlphabetic(20), RandomStringUtils.randomAlphabetic(20));
+                RandomStringUtils.randomAlphabetic(20), RandomStringUtils.randomAlphabetic(20),
+                RandomUtils.nextLong(), RandomUtils.nextLong());
 
         return result;
     }

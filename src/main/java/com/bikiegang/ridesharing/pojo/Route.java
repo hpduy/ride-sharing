@@ -91,14 +91,6 @@ public class Route implements PojoBase {
         this.goTime = goTime;
     }
 
-    public long getArriveTime() {
-        return arriveTime;
-    }
-
-    public void setArriveTime(long arriveTime) {
-        this.arriveTime = arriveTime;
-    }
-
     public double getSumDistance() {
         return sumDistance;
     }
