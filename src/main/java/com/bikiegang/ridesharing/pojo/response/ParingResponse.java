@@ -1,14 +1,11 @@
 package com.bikiegang.ridesharing.pojo.response;
 
-import com.bikiegang.ridesharing.pojo.CurrentLocation;
-import com.bikiegang.ridesharing.pojo.LatLng;
-import com.bikiegang.ridesharing.pojo.Route;
-import com.bikiegang.ridesharing.pojo.User;
+import com.bikiegang.ridesharing.pojo.*;
 
 /**
  * Created by hpduy17 on 6/30/15.
  */
-public class ParingResult {
+public class ParingResponse {
     private String id = "";
     private String firstName = "";
     private String lastName = "";
@@ -19,12 +16,12 @@ public class ParingResult {
     private boolean isBusy;
     private int currentRole;
     private long routeId;
-    private CurrentLocation currentLocation;
+    private Location currentLocation;
     private LatLng[] locations;
     private double price;
     private long goTime;
 
-    public ParingResult(User user, Route route, LatLng[] locations, CurrentLocation currentLocation) {
+    public ParingResponse(User user, Route route, LatLng[] locations, CurrentLocation currentLocation) {
         this.id = user.getId();
         this.firstName = user.getLastName();
         this.lastName = user.getLastName();
@@ -121,11 +118,11 @@ public class ParingResult {
         this.routeId = routeId;
     }
 
-    public CurrentLocation getCurrentLocation() {
+    public Location getCurrentLocation() {
         return currentLocation;
     }
 
-    public void setCurrentLocation(CurrentLocation currentLocation) {
+    public void setCurrentLocation(Location currentLocation) {
         this.currentLocation = currentLocation;
     }
 

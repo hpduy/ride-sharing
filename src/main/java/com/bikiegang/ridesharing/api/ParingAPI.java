@@ -9,7 +9,7 @@ package com.bikiegang.ridesharing.api;
 import com.bikiegang.ridesharing.controller.RouteController;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.request.ParingRequest;
-import com.bikiegang.ridesharing.pojo.response.ParingResult;
+import com.bikiegang.ridesharing.pojo.response.ParingResponse;
 import com.bikiegang.ridesharing.utilities.LoggerFactory;
 import org.apache.log4j.Logger;
 
@@ -25,7 +25,7 @@ import java.io.PrintWriter;
 public class ParingAPI extends HttpServlet {
     private Logger logger = LoggerFactory.createLogger(this.getClass());
     public Class requestClass = ParingRequest.class;
-    public Class responseClass = ParingResult.class;
+    public Class responseClass = ParingResponse.class;
     public boolean responseIsArray = true;
 
     /**

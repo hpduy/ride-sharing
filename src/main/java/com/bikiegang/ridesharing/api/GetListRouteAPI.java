@@ -6,9 +6,10 @@
 
 package com.bikiegang.ridesharing.api;
 
-import com.bikiegang.ridesharing.controller.CurrentLocationController;
+import com.bikiegang.ridesharing.controller.RouteController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.request.UpdateCurrentLocationRequest;
+import com.bikiegang.ridesharing.pojo.request.GetListRouteRequest;
+import com.bikiegang.ridesharing.pojo.response.RouteInfoResponse;
 import com.bikiegang.ridesharing.utilities.LoggerFactory;
 import org.apache.log4j.Logger;
 
@@ -21,11 +22,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class UpdateCurrentLocationAPI extends HttpServlet {
+public class GetListRouteAPI extends HttpServlet {
     private Logger logger = LoggerFactory.createLogger(this.getClass());
-    public Class requestClass = UpdateCurrentLocationRequest.class;
-    public Class responseClass = null;
-    public boolean responseIsArray = false;
+    public Class requestClass = GetListRouteRequest.class;
+    public Class responseClass = RouteInfoResponse.class;
+    public boolean responseIsArray = true;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -48,9 +49,9 @@ public class UpdateCurrentLocationAPI extends HttpServlet {
             while ((line = reader.readLine()) != null) {
                 jsonData.append(line);
             }
-            UpdateCurrentLocationRequest updateCurrentLocationRequest = (UpdateCurrentLocationRequest) Parser.JSonToObject(jsonData.toString(), UpdateCurrentLocationRequest.class);
-            CurrentLocationController controller = new CurrentLocationController();
-            out.print(controller.updateUserCurrentLocation(updateCurrentLocationRequest));
+            GetListRouteRequest getListRouteRequest = (GetListRouteRequest) Parser.JSonToObject(jsonData.toString(), GetListRouteRequest.class);
+            RouteController controller = new RouteController();
+            out.print(controller.getListRoute(getListRouteRequest));
         } catch (Exception ex) {
             logger.error(ex.getStackTrace());
             out.print(Parser.ObjectToJSon(false, ex.getMessage()));
@@ -95,6 +96,6 @@ public class UpdateCurrentLocationAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Update user current location";
+        return "Get routes has created by user";
     }
 }

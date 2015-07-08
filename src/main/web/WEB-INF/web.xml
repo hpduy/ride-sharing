@@ -7,12 +7,94 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          version ="3.0">
-    <display-name>Marqet Server</display-name>
+    <display-name>Cloud Bike Server</display-name>
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
     <!-- API -->
-
+    <!--**ROUTE**-->
+    <servlet>
+        <servlet-name>CreateRouteAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.CreateRouteAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CreateRouteAPI</servlet-name>
+        <url-pattern>/CreateRouteAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>GetListRouteAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.GetListRouteAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetListRouteAPI</servlet-name>
+        <url-pattern>/GetListRouteAPI</url-pattern>
+    </servlet-mapping>
+    <!--**USER**-->
+    <servlet>
+        <servlet-name>LoginAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.LoginAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoginAPI</servlet-name>
+        <url-pattern>/LoginAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>UpdateBroadcastAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.UpdateBroadcastAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UpdateBroadcastAPI</servlet-name>
+        <url-pattern>/UpdateBroadcastAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>UpdateUserCurrentRoleAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.UpdateUserCurrentRoleAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UpdateUserCurrentRoleAPI</servlet-name>
+        <url-pattern>/UpdateUserCurrentRoleAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>UpdateCurrentLocationAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.UpdateCurrentLocationAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UpdateCurrentLocationAPI</servlet-name>
+        <url-pattern>/UpdateCurrentLocationAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>RegisterAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.RegisterAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RegisterAPI</servlet-name>
+        <url-pattern>/RegisterAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>UpdateProfileAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.UpdateProfileAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UpdateProfileAPI</servlet-name>
+        <url-pattern>/UpdateProfileAPI</url-pattern>
+    </servlet-mapping>
+    <!--**TRIP**-->
+    <servlet>
+        <servlet-name>RequestMakeTripAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.RequestMakeTripAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RequestMakeTripAPI</servlet-name>
+        <url-pattern>/RequestMakeTripAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>ReplyMakeTripAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.ReplyMakeTripAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ReplyMakeTripAPI</servlet-name>
+        <url-pattern>/ReplyMakeTripAPI</url-pattern>
+    </servlet-mapping>
     <listener>
         <listener-class>com.bikiegang.ridesharing.StartupListener</listener-class>
     </listener>

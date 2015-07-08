@@ -126,7 +126,7 @@ public class ApiDocument {
     }
 
     public String toNiceString(int type) {
-        String result = "{\n";
+        String result = "{";
         LinkedHashMap<String, ApiParameter> src = null;
         switch (type) {
             case 1:
@@ -141,24 +141,31 @@ public class ApiDocument {
         if (src.size() == 0)
             return "empty";
         result += toNiceString(src);
-        result += "}\n";
+        result += "}";
         if (responseIsArray && type == 2) {
-            result = "[\n" + result + "]\n";
+            result = "[" + result + "]";
         }
         return result;
     }
 
     private String toNiceString(LinkedHashMap<String, ApiParameter> src) {
         String result = "";
+        int count = 0;
         for (String paramName : src.keySet()) {
             ApiParameter param = src.get(paramName);
-            result += "\t" + paramName;
-            result += "(" + param.dataType + ")";
-            result += " - " + (param.isRequired ? "required" : "optional");
+            result += "\"" + paramName+"\"";
+            //result += " - " + (param.isRequired ? "required" : "optional");
             if (!isPrimaryType(param.getDataType()) && !param.getDataType().equals("String")) {
                 result += " : [{" + toNiceString(param.getChildParameter()).replaceAll("\\n", "") + "}]";
+            }else{
+                result += ":\"" + param.dataType + "\"";
             }
-            result += "\n";
+            if(count<src.keySet().size()-1){
+                result+=",";
+            }
+            count++;
+
+            result += " ";
         }
         return result;
     }

@@ -8,8 +8,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CreateRouteRequest {
-    private long id;
-    private long time;
+    private long goTime;
+    private long arriveTime;
     private double price;
     private long expiredTime; // use for multiple future
     private double lat;
@@ -18,20 +18,20 @@ public class CreateRouteRequest {
     private Location[] locations;
     private int type;
 
-    public long getId() {
-        return id;
+    public long getGoTime() {
+        return goTime;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setGoTime(long goTime) {
+        this.goTime = goTime;
     }
 
-    public long getTime() {
-        return time;
+    public long getArriveTime() {
+        return arriveTime;
     }
 
-    public void setTime(long time) {
-        this.time = time;
+    public void setArriveTime(long arriveTime) {
+        this.arriveTime = arriveTime;
     }
 
     public double getLat() {

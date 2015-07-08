@@ -12,4 +12,5 @@ out/*
 **/*.iml
 *.iml
 target/*
+nb-configuration.xml
 .idea/*

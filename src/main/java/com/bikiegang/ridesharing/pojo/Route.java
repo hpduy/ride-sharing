@@ -19,10 +19,6 @@ public class Route implements PojoBase {
     private String creatorId = "";
     private int role; // user role
     private int type;
-
-    /**
-     * ROUTE TYPE
-     */
     /**
      * ROUTE TYPE
      */
@@ -84,6 +80,14 @@ public class Route implements PojoBase {
 
     public void setGoTime(long goTime) {
         this.goTime = goTime;
+    }
+
+    public long getArriveTime() {
+        return arriveTime;
+    }
+
+    public void setArriveTime(long arriveTime) {
+        this.arriveTime = arriveTime;
     }
 
     public double getSumDistance() {
