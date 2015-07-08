@@ -11,7 +11,8 @@ public class RequestMakeTrip implements PojoBase {
     private String senderId = "";
     private String receiverId = "";
     private long createdTime;
-    private long receiverRouteId;
+    private long driverRouteId;
+    private long passengerRouteId;
     private int status;
 
     @JsonIgnore
@@ -24,12 +25,13 @@ public class RequestMakeTrip implements PojoBase {
     public RequestMakeTrip() {
     }
 
-    public RequestMakeTrip(long id, String senderId, String receiverId, long createdTime, long receiverRouteId, int status) {
+    public RequestMakeTrip(long id, String senderId, String receiverId, long createdTime, long receiverRouteId, long driverRouteId, long passengerRouteId, int status) {
         this.id = id;
         this.senderId = senderId == null ? "" : senderId;
         this.receiverId = receiverId == null ? "" : receiverId;
         this.createdTime = createdTime;
-        this.receiverRouteId = receiverRouteId;
+        this.driverRouteId = driverRouteId;
+        this.passengerRouteId = passengerRouteId;
         this.status = status;
     }
 
@@ -38,7 +40,8 @@ public class RequestMakeTrip implements PojoBase {
         this.senderId = that.senderId == null ? "" : that.senderId;
         this.receiverId = that.receiverId == null ? "" : that.receiverId;
         this.createdTime = that.createdTime;
-        this.receiverRouteId = that.receiverRouteId;
+        this.driverRouteId = that.driverRouteId;
+        this.passengerRouteId = that.passengerRouteId;
         this.status = that.status;
     }
 
@@ -74,12 +77,20 @@ public class RequestMakeTrip implements PojoBase {
         this.createdTime = createdTime;
     }
 
-    public long getReceiverRouteId() {
-        return receiverRouteId;
+    public long getDriverRouteId() {
+        return driverRouteId;
     }
 
-    public void setReceiverRouteId(long receiverRouteId) {
-        this.receiverRouteId = receiverRouteId;
+    public void setDriverRouteId(long driverRouteId) {
+        this.driverRouteId = driverRouteId;
+    }
+
+    public long getPassengerRouteId() {
+        return passengerRouteId;
+    }
+
+    public void setPassengerRouteId(long passengerRouteId) {
+        this.passengerRouteId = passengerRouteId;
     }
 
     public int getStatus() {

@@ -30,12 +30,17 @@ public class RequestMakeTripController {
         if (request.getReceiverRouteId() <= 0) {
             return Parser.ObjectToJSon(false, "'receiverRouteId' is invalid");
         }
+        if (request.getSenderRouteId() <= 0) {
+            return Parser.ObjectToJSon(false, "'senderRouteId' is invalid");
+        }
+        if (request.getSenderRole() != User.DRIVER && request.getSenderRole() != User.PASSENGER) {
+            return Parser.ObjectToJSon(false, "'senderRole' is invalid");
+        }
         RequestMakeTrip requestMakeTrip = new RequestMakeTrip();
         requestMakeTrip.setId(IdGenerator.getRequestMakeTripId());
         requestMakeTrip.setReceiverId(request.getReceiverId());
         requestMakeTrip.setSenderId(request.getSenderId());
         requestMakeTrip.setStatus(RequestMakeTrip.WAITING);
-        requestMakeTrip.setReceiverRouteId(request.getReceiverRouteId());
         requestMakeTrip.setCreatedTime(DateTimeUtil.now());
         if (dao.insert(requestMakeTrip)) {
             return Parser.ObjectToJSon(true, "The request have been sent successfully");
@@ -88,7 +93,7 @@ public class RequestMakeTripController {
                 sender.setIsBusy(true);
                 receiver.setIsBusy(true);
                 // Deny all request similar of other user in receiver box
-                denyRequest(receiver.getId(), requestMakeTrip.getReceiverRouteId());
+                //git denyRequest(receiver.getId(), requestMakeTrip.getReceiverRouteId());
                 //TODO make a trip
 
             }
