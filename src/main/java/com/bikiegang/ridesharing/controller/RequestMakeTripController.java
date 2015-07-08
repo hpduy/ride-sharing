@@ -104,7 +104,6 @@ public class RequestMakeTripController {
                 long routeId = requestMakeTrip.getSenderRole() == User.DRIVER ? requestMakeTrip.getPassengerRouteId(): requestMakeTrip.getDriverRouteId();
                 denyRequest(receiver.getId(), routeId );
                 //TODO make a trip
-
             }
             return Parser.ObjectToJSon(true, "Reply successfully");
         }
