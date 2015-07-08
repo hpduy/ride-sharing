@@ -34,8 +34,8 @@
  
    static
    {
-     String HOME_PATH = System.getProperty("apppath");
-     String APP_ENV = System.getProperty("appenv");
+     String HOME_PATH = "."; System.getProperty("apppath");
+     String APP_ENV = "development";//System.getProperty("appenv");
  
      if (APP_ENV == null) APP_ENV = "";
      if (!"".equals(APP_ENV)) APP_ENV = APP_ENV + ".";

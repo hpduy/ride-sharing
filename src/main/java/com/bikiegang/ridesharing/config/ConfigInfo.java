@@ -13,7 +13,7 @@ public class ConfigInfo {
 
     public static String RIDESHARING_DB = "ridesharing_db";
     public static String REDIS_SERVER = "redis_server";
-    public static String RIDESHARING_WORKER_GEARMAN;
+    public static String RIDESHARING_WORKER_GEARMAN = "ridesharing_gearman";
 
     public static String ACTIVITY_INSERT_QUERY;
     public static String ACTIVITY_UPDATE_QUERY;
@@ -298,9 +298,10 @@ public class ConfigInfo {
                 + "`estimatedFuel`,\n"
                 + "`creatorId`,\n"
                 + "`role`,\n"
-                + "`type`)\n"
+                + "`type`,\n"
+                + "`arriveTime`)\n"
                 + "VALUES\n"
-                + "(?,?,?,?,?,?,?,?,?,?);";
+                + "(?,?,?,?,?,?,?,?,?,?,?);";
         ROUTE_UPDATE_QUERY = "UPDATE `ridesharing_db`.`Route`\n"
                 + "SET\n"
                 + "`id` = ?,\n"
@@ -312,7 +313,8 @@ public class ConfigInfo {
                 + "`estimatedFuel` = ?,\n"
                 + "`creatorId` = ?,\n"
                 + "`role` = ?,\n"
-                + "`type` = ?\n"
+                + "`type` = ?,\n"
+                + "`arriveTime` = ?\n"
                 + "WHERE `id` = ?;";
         ROUTE_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`Route`\n"
                 + "WHERE `id` = ?;";

@@ -2,7 +2,6 @@ package com.bikiegang.ridesharing;
 
 import com.bikiegang.ridesharing.utilities.ApiDocumentGenerator;
 import com.bikiegang.ridesharing.utilities.Path;
-
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.http.HttpSessionAttributeListener;
@@ -26,9 +25,9 @@ public class StartupListener implements ServletContextListener, HttpSessionListe
     // -------------------------------------------------------
     public void contextInitialized(ServletContextEvent sce) {
         /* This method is called when the servlet context is
-           initialized(when the Web application is deployed). 
-           You can initialize servlet context related data here.
-        */
+         initialized(when the Web application is deployed). 
+         You can initialize servlet context related data here.
+         */
         try {
             Path.buildRoot();
             ApiDocumentGenerator.generate();
@@ -38,12 +37,11 @@ public class StartupListener implements ServletContextListener, HttpSessionListe
 
     }
 
-
     public void contextDestroyed(ServletContextEvent sce) {
         /* This method is invoked when the Servlet Context 
-           (the Web application) is undeployed or 
-           Application Server shuts down.
-        */
+         (the Web application) is undeployed or 
+         Application Server shuts down.
+         */
 
     }
 
@@ -61,22 +59,21 @@ public class StartupListener implements ServletContextListener, HttpSessionListe
     // -------------------------------------------------------
     // HttpSessionAttributeListener implementation
     // -------------------------------------------------------
-
     public void attributeAdded(HttpSessionBindingEvent sbe) {
         /* This method is called when an attribute 
-           is added to a session.
-        */
+         is added to a session.
+         */
     }
 
     public void attributeRemoved(HttpSessionBindingEvent sbe) {
         /* This method is called when an attribute
-           is removed from a session.
-        */
+         is removed from a session.
+         */
     }
 
     public void attributeReplaced(HttpSessionBindingEvent sbe) {
         /* This method is invoked when an attibute
-           is replaced in a session.
-        */
+         is replaced in a session.
+         */
     }
 }

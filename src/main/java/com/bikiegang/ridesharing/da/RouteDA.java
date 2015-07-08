@@ -65,6 +65,7 @@ public class RouteDA implements IDA {
                 stmt.setString(8, value.getCreatorId());
                 stmt.setInt(9, value.getRole());
                 stmt.setInt(10, value.getType());
+                stmt.setLong(11, value.getArriveTime());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {
@@ -98,7 +99,8 @@ public class RouteDA implements IDA {
                 stmt.setString(8, value.getCreatorId());
                 stmt.setInt(9, value.getRole());
                 stmt.setInt(10, value.getType());
-                stmt.setLong(11, value.getId());
+                stmt.setLong(11, value.getArriveTime());
+                stmt.setLong(12, value.getId());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {
