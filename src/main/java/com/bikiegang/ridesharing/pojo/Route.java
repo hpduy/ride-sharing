@@ -11,6 +11,7 @@ public class Route implements PojoBase {
     private long id;
     private long goTime;
     private long arriveTime;
+
     private double sumDistance;
     private long estimatedTime;
     private double estimatedPrice;
@@ -41,7 +42,7 @@ public class Route implements PojoBase {
     public Route() {
     }
 
-    public Route(long id, long goTime,long arriveTime, double sumDistance, int type, String creatorId, int role, double ownerPrice) {
+    public Route(long id, long goTime, long arriveTime, double sumDistance, int type, String creatorId, int role, double ownerPrice) {
         this.id = id;
         this.goTime = goTime;
         this.arriveTime = arriveTime;
@@ -66,6 +67,14 @@ public class Route implements PojoBase {
         this.ownerPrice = that.ownerPrice;
     }
 
+    public long getArriveTime() {
+        return arriveTime;
+    }
+
+    public void setArriveTime(long arriveTime) {
+        this.arriveTime = arriveTime;
+    }
+
     public long getId() {
         return id;
     }
@@ -80,14 +89,6 @@ public class Route implements PojoBase {
 
     public void setGoTime(long goTime) {
         this.goTime = goTime;
-    }
-
-    public long getArriveTime() {
-        return arriveTime;
-    }
-
-    public void setArriveTime(long arriveTime) {
-        this.arriveTime = arriveTime;
     }
 
     public double getSumDistance() {

@@ -35,7 +35,7 @@
  
      MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
      try {
-       mbs.registerMBean(this, new ObjectName("com.nct.gearman:type=" + serviceName));
+       mbs.registerMBean(this, new ObjectName("com.annn.framework.gearman:type=" + serviceName));
      } catch (Exception e) {
        logger.error(LogUtil.stackTrace(e));
      }
