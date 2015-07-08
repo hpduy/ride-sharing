@@ -15,15 +15,19 @@ public class Trip  implements PojoBase{
     private String breakReason = "";
     private boolean breakTrip;
     private boolean dangerTrip;
+    private long driverRouteId;
+    private long passengerRouteId;
 
     public Trip() {
     }
 
-    public Trip(long id, long startTime, String driverId, String passengerId) {
+    public Trip(long id, long startTime, String driverId, String passengerId, long driverRouteId, long passengerRouteId) {
         this.id = id;
         this.startTime = startTime;
         this.driverId = driverId == null ? "" : driverId;
         this.passengerId = passengerId == null ? "" : passengerId;
+        this.driverRouteId = driverRouteId;
+        this.passengerRouteId = passengerRouteId;
     }
 
     public Trip(Trip that) {
@@ -38,6 +42,8 @@ public class Trip  implements PojoBase{
         this.driverId = that.driverId == null ? "" : that.driverId;
         this.passengerId = that.passengerId == null ? "" : that.passengerId;
         this.realDistance = that.realDistance;
+        this.driverRouteId = that.driverRouteId;
+        this.passengerRouteId = that.passengerRouteId;
     }
 
     public long getId() {
@@ -126,5 +132,21 @@ public class Trip  implements PojoBase{
 
     public void setDangerTrip(boolean dangerTrip) {
         this.dangerTrip = dangerTrip;
+    }
+
+    public long getDriverRouteId() {
+        return driverRouteId;
+    }
+
+    public void setDriverRouteId(long driverRouteId) {
+        this.driverRouteId = driverRouteId;
+    }
+
+    public long getPassengerRouteId() {
+        return passengerRouteId;
+    }
+
+    public void setPassengerRouteId(long passengerRouteId) {
+        this.passengerRouteId = passengerRouteId;
     }
 }
