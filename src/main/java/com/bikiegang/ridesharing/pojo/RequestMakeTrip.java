@@ -10,6 +10,7 @@ public class RequestMakeTrip implements PojoBase {
     private long id;
     private String senderId = "";
     private String receiverId = "";
+    private int senderRole;
     private long createdTime;
     private long driverRouteId;
     private long passengerRouteId;
@@ -25,13 +26,14 @@ public class RequestMakeTrip implements PojoBase {
     public RequestMakeTrip() {
     }
 
-    public RequestMakeTrip(long id, String senderId, String receiverId, long createdTime, long receiverRouteId, long driverRouteId, long passengerRouteId, int status) {
+    public RequestMakeTrip(long id, String senderId, String receiverId, long createdTime, long receiverRouteId, long driverRouteId, long passengerRouteId, int senderRole,int status) {
         this.id = id;
         this.senderId = senderId == null ? "" : senderId;
         this.receiverId = receiverId == null ? "" : receiverId;
         this.createdTime = createdTime;
         this.driverRouteId = driverRouteId;
         this.passengerRouteId = passengerRouteId;
+        this.senderRole = senderRole;
         this.status = status;
     }
 
@@ -42,6 +44,7 @@ public class RequestMakeTrip implements PojoBase {
         this.createdTime = that.createdTime;
         this.driverRouteId = that.driverRouteId;
         this.passengerRouteId = that.passengerRouteId;
+        this.senderRole = that.senderRole;
         this.status = that.status;
     }
 
@@ -91,6 +94,14 @@ public class RequestMakeTrip implements PojoBase {
 
     public void setPassengerRouteId(long passengerRouteId) {
         this.passengerRouteId = passengerRouteId;
+    }
+
+    public int getSenderRole() {
+        return senderRole;
+    }
+
+    public void setSenderRole(int senderRole) {
+        this.senderRole = senderRole;
     }
 
     public int getStatus() {
