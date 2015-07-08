@@ -41,6 +41,14 @@ public class RequestMakeTripController {
         requestMakeTrip.setReceiverId(request.getReceiverId());
         requestMakeTrip.setSenderId(request.getSenderId());
         requestMakeTrip.setStatus(RequestMakeTrip.WAITING);
+        if(request.getSenderRole() == User.DRIVER){
+            requestMakeTrip.setDriverRouteId(request.getSenderRouteId());
+            requestMakeTrip.setPassengerRouteId(request.getReceiverRouteId());
+        }else {
+            requestMakeTrip.setDriverRouteId(request.getReceiverRouteId());
+            requestMakeTrip.setPassengerRouteId(request.getSenderRouteId());
+        }
+        requestMakeTrip.setSenderRole(request.getSenderRole());
         requestMakeTrip.setCreatedTime(DateTimeUtil.now());
         if (dao.insert(requestMakeTrip)) {
             return Parser.ObjectToJSon(true, "The request have been sent successfully");
@@ -93,7 +101,8 @@ public class RequestMakeTripController {
                 sender.setIsBusy(true);
                 receiver.setIsBusy(true);
                 // Deny all request similar of other user in receiver box
-                //git denyRequest(receiver.getId(), requestMakeTrip.getReceiverRouteId());
+                long routeId = requestMakeTrip.getSenderRole() == User.DRIVER ? requestMakeTrip.getPassengerRouteId(): requestMakeTrip.getDriverRouteId();
+                denyRequest(receiver.getId(), routeId );
                 //TODO make a trip
 
             }
