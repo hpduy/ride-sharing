@@ -6,6 +6,7 @@ import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.LoginRequest;
 import com.bikiegang.ridesharing.pojo.request.RegisterRequest;
+import com.bikiegang.ridesharing.pojo.request.UpdateCurrentRoleRequest;
 import com.bikiegang.ridesharing.pojo.request.UpdateProfileRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -231,6 +232,23 @@ public class UserController {
             return Parser.ObjectToJSon(true, "Update successfully", user);
         }
         return Parser.ObjectToJSon(false, "Cannot update profile");
+    }
+    public String updateCurrentRole(UpdateCurrentRoleRequest request) throws JsonProcessingException {
+        if (request.getUserId() == null || request.getUserId().equals("")) {
+            return Parser.ObjectToJSon(false, "'userId' is not found");
+        }
+        if (request.getRole() != User.DRIVER && request.getRole() != User.PASSENGER) {
+            return Parser.ObjectToJSon(false, "'role' is invalid");
+        }
+        User user = database.getUserHashMap().get(request.getUserId());
+        if (user == null) {
+            return Parser.ObjectToJSon(false, "User is not found, maybe id is invalid");
+        }
+        user.setCurrentRole(request.getRole());
+        if (dao.update(user)) {
+            return Parser.ObjectToJSon(true, "Update current role successfully", user);
+        }
+        return Parser.ObjectToJSon(false, "Cannot update current role");
     }
 
 }

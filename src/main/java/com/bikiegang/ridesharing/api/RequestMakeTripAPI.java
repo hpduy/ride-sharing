@@ -6,9 +6,8 @@
 
 package com.bikiegang.ridesharing.api;
 
-import com.bikiegang.ridesharing.controller.RouteController;
+import com.bikiegang.ridesharing.controller.RequestMakeTripController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.request.CreateRouteRequest;
 import com.bikiegang.ridesharing.pojo.request.RequestMakeTripRequest;
 import com.bikiegang.ridesharing.utilities.LoggerFactory;
 import org.apache.log4j.Logger;
@@ -27,6 +26,7 @@ public class RequestMakeTripAPI extends HttpServlet {
     public Class requestClass = RequestMakeTripRequest.class;
     public Class responseClass = null;
     public boolean responseIsArray = false;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -48,9 +48,9 @@ public class RequestMakeTripAPI extends HttpServlet {
             while ((line = reader.readLine()) != null) {
                 jsonData.append(line);
             }
-            CreateRouteRequest createRouteRequest = (CreateRouteRequest) Parser.JSonToObject(jsonData.toString(), CreateRouteRequest.class);
-            RouteController controller = new RouteController();
-            out.print(controller.createRoute(createRouteRequest));
+            RequestMakeTripRequest requestMakeTripRequest = (RequestMakeTripRequest) Parser.JSonToObject(jsonData.toString(), RequestMakeTripRequest.class);
+            RequestMakeTripController controller = new RequestMakeTripController();
+            out.print(controller.sendRequestMakeTrip(requestMakeTripRequest));
         } catch (Exception ex) {
             logger.error(ex.getStackTrace());
             out.print(Parser.ObjectToJSon(false, ex.getMessage()));

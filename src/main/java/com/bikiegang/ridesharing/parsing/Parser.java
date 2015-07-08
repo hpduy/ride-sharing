@@ -32,25 +32,33 @@ public class Parser {
 
     public static String ObjectToJSon(boolean success) throws JsonProcessingException {
         String message = "Process fail, please feedback to server guys, thank you";
-        if(success){
+        if (success) {
             message = "Mission completed";
         }
-        return toJson(new Parser(success,message));
+        return toJson(new Parser(success, message));
 
     }
+
     public static String ObjectToJSon(boolean success, String message) throws JsonProcessingException {
-       return toJson(new Parser(success,message));
+        return toJson(new Parser(success, message));
     }
-    public static String ObjectToJSon(boolean success,String message, Object result) throws JsonProcessingException {
-        return toJson(new Parser(success,message,result));
+
+    public static String ObjectToJSon(boolean success, String message, Object result) throws JsonProcessingException {
+        return toJson(new Parser(success, message, result));
     }
+
+    public static String ObjectToJSon(Object result) throws JsonProcessingException {
+        return toJson(result);
+    }
+
     private static String toJson(Object o) throws JsonProcessingException {
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
         return ow.writeValueAsString(o);
     }
+
     public static Object JSonToObject(String src, Class type) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        Object result = mapper.readValue(src,type);
+        Object result = mapper.readValue(src, type);
         return result;
     }
 

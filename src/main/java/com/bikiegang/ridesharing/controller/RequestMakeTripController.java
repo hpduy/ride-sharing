@@ -89,8 +89,8 @@ public class RequestMakeTripController {
                 receiver.setIsBusy(true);
                 // Deny all request similar of other user in receiver box
                 denyRequest(receiver.getId(), requestMakeTrip.getReceiverRouteId());
-
                 //TODO make a trip
+
             }
             return Parser.ObjectToJSon(true, "Reply successfully");
         }
