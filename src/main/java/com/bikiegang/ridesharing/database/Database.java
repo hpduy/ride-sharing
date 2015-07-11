@@ -1,6 +1,8 @@
 package com.bikiegang.ridesharing.database;
 
 
+import com.bikiegang.ridesharing.cache.RideSharingCA;
+import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.geocoding.GeoCell;
 import com.bikiegang.ridesharing.pojo.*;
 
@@ -115,10 +117,13 @@ public class Database {
     private GeoCell geoCellCurrentLocation = new GeoCell();
 
     /*PERSONAL FUNCTION*/
-    public static void restore() {
+    public void restore() {
+        RideSharingCA rideSharingCA = RideSharingCA.getInstance(ConfigInfo.REDIS_SERVER);
+        //restore
+       assert(rideSharingCA.RestoreDatabase());
     }
 
-    public static void backup() {
+    public void backup() {
     }
      /*GET-SET Function*/
     /*CORE GET-SET*/

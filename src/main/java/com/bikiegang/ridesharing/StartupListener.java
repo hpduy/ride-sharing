@@ -1,7 +1,8 @@
 package com.bikiegang.ridesharing;
 
-import com.bikiegang.ridesharing.utilities.ApiDocumentGenerator;
+import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.utilities.Path;
+
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.http.HttpSessionAttributeListener;
@@ -30,7 +31,7 @@ public class StartupListener implements ServletContextListener, HttpSessionListe
          */
         try {
             Path.buildRoot();
-            ApiDocumentGenerator.generate();
+            Database.getInstance().restore();
         } catch (Exception ex) {
             ex.printStackTrace();
         }

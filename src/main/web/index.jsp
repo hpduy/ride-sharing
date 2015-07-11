@@ -8,9 +8,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
   <head>
-    <title>RIDE SHARING</title>
+    <title>CLOUD BIKE</title>
   </head>
   <body>
-
+  <h1>CLOUD BIKE SERVER</h1>
+  <h3>UNDER CONSTRUCTION</h3>
   </body>
 </html>
