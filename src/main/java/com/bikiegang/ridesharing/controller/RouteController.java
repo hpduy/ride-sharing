@@ -2,20 +2,15 @@ package com.bikiegang.ridesharing.controller;
 
 import com.bikiegang.ridesharing.dao.RouteDao;
 import com.bikiegang.ridesharing.database.Database;
-import com.bikiegang.ridesharing.database.IdGenerator;
-import com.bikiegang.ridesharing.geocoding.Pairing;
-import com.bikiegang.ridesharing.geocoding.TimezoneMapper;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.*;
-import com.bikiegang.ridesharing.pojo.request.CreateRouteRequest;
+import com.bikiegang.ridesharing.pojo.Route;
 import com.bikiegang.ridesharing.pojo.request.GetListRouteRequest;
-import com.bikiegang.ridesharing.pojo.request.ParingRequest;
-import com.bikiegang.ridesharing.pojo.response.ParingResponse;
 import com.bikiegang.ridesharing.pojo.response.RouteInfoResponse;
-import com.bikiegang.ridesharing.utilities.DateTimeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * Created by hpduy17 on 6/29/15.
@@ -43,7 +38,7 @@ public class RouteController {
         return Parser.ObjectToJSon(true, "Get list route success", responses);
     }
 
-
+/*
     public String createRoute(CreateRouteRequest request) throws Exception {
         if (null == request.getCreatorId() || request.getCreatorId().equals("")) {
             return Parser.ObjectToJSon(false, "'creatorId' is not found");
@@ -203,6 +198,6 @@ public class RouteController {
         }
         return Parser.ObjectToJSon(true, "Paring successfully", results);
     }
-
+*/
 }
 

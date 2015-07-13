@@ -6,10 +6,10 @@ package com.bikiegang.ridesharing.pojo;
 public class Trip  implements PojoBase{
     private long id;
     private long startTime;
+    private long endTime;
     private String driverId = "";
     private String passengerId = "";
     private double realDistance;
-    private long endTime;
     private double pricePaid;
     private long sensitiveLocationId; // break or danger location
     private String breakReason = "";
@@ -17,35 +17,42 @@ public class Trip  implements PojoBase{
     private boolean dangerTrip;
     private long driverRouteId;
     private long passengerRouteId;
-
+    private String tripTrailPolyLine ="";
     public Trip() {
     }
 
-    public Trip(long id, long startTime, String driverId, String passengerId, long driverRouteId, long passengerRouteId) {
+    public Trip(long id, long startTime, long endTime, String driverId, String passengerId, double realDistance, double pricePaid, long sensitiveLocationId, String breakReason, boolean breakTrip, boolean dangerTrip, long driverRouteId, long passengerRouteId, String tripTrailPolyLine) {
         this.id = id;
         this.startTime = startTime;
-        this.driverId = driverId == null ? "" : driverId;
-        this.passengerId = passengerId == null ? "" : passengerId;
+        this.endTime = endTime;
+        this.driverId = driverId;
+        this.passengerId = passengerId;
+        this.realDistance = realDistance;
+        this.pricePaid = pricePaid;
+        this.sensitiveLocationId = sensitiveLocationId;
+        this.breakReason = breakReason;
+        this.breakTrip = breakTrip;
+        this.dangerTrip = dangerTrip;
         this.driverRouteId = driverRouteId;
         this.passengerRouteId = passengerRouteId;
+        this.tripTrailPolyLine = tripTrailPolyLine;
     }
-
     public Trip(Trip that) {
         this.id = that.id;
         this.startTime = that.startTime;
         this.endTime = that.endTime;
+        this.driverId = that.driverId;
+        this.passengerId = that.passengerId;
+        this.realDistance = that.realDistance;
         this.pricePaid = that.pricePaid;
         this.sensitiveLocationId = that.sensitiveLocationId;
-        this.breakReason = that.breakReason == null ? "" : that.breakReason;
+        this.breakReason = that.breakReason;
         this.breakTrip = that.breakTrip;
         this.dangerTrip = that.dangerTrip;
-        this.driverId = that.driverId == null ? "" : that.driverId;
-        this.passengerId = that.passengerId == null ? "" : that.passengerId;
-        this.realDistance = that.realDistance;
         this.driverRouteId = that.driverRouteId;
         this.passengerRouteId = that.passengerRouteId;
+        this.tripTrailPolyLine = that.tripTrailPolyLine;
     }
-
     public long getId() {
         return id;
     }
@@ -149,4 +156,13 @@ public class Trip  implements PojoBase{
     public void setPassengerRouteId(long passengerRouteId) {
         this.passengerRouteId = passengerRouteId;
     }
+
+    public String getTripTrailPolyLine() {
+        return tripTrailPolyLine;
+    }
+
+    public void setTripTrailPolyLine(String tripTrailPolyLine) {
+        this.tripTrailPolyLine = tripTrailPolyLine;
+    }
 }
+

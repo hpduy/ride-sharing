@@ -2,6 +2,7 @@ package com.bikiegang.ridesharing.pojo;
 
 import com.bikiegang.ridesharing.utilities.DateTimeUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.json.simple.JSONObject;
 
 /**
  * Created by hpduy17 on 6/24/15.
@@ -11,15 +12,16 @@ public class Route implements PojoBase {
     private long id;
     private long goTime;
     private long arriveTime;
-
     private double sumDistance;
     private long estimatedTime;
-    private double estimatedPrice;
+    private double estimatedPrice; // use when role is passenger
     private double ownerPrice;
     private double estimatedFuel;
     private String creatorId = "";
     private int role; // user role
     private int type;
+    private String routeTrailPolyLine = "";
+    private JSONObject rawRoutingResult = new JSONObject();
     /**
      * ROUTE TYPE
      */
@@ -37,12 +39,12 @@ public class Route implements PojoBase {
     @JsonIgnore
     public static final long DEFAULT_VELOCITY = 30 * 1000 / DateTimeUtil.HOURS; // m/s ( default velocity in HCMC 30km/h)
     @JsonIgnore
-    public static final double DEFAULT_PRICE_1KM = 4000; // 4000vnd / 1km
+    public static final double DEFAULT_PRICE_1KM = 3000; // 3000vnd / 1km
 
     public Route() {
     }
 
-    public Route(long id, long goTime, long arriveTime, double sumDistance, int type, String creatorId, int role, double ownerPrice) {
+    public Route(long id, long goTime, long arriveTime, double sumDistance, int type, String creatorId, int role, double ownerPrice, String routeTrailPolyLine, JSONObject rawRoutingResult) {
         this.id = id;
         this.goTime = goTime;
         this.arriveTime = arriveTime;
@@ -51,6 +53,8 @@ public class Route implements PojoBase {
         this.role = role;
         this.creatorId = creatorId == null ? "" : creatorId;
         this.ownerPrice = ownerPrice;
+        this.routeTrailPolyLine = routeTrailPolyLine;
+        this.rawRoutingResult = rawRoutingResult;
     }
 
     public Route(Route that) {
@@ -65,6 +69,8 @@ public class Route implements PojoBase {
         this.role = that.role;
         this.type = that.type;
         this.ownerPrice = that.ownerPrice;
+        this.routeTrailPolyLine = that.routeTrailPolyLine;
+        this.rawRoutingResult = that.rawRoutingResult;
     }
 
     public long getArriveTime() {
@@ -153,5 +159,21 @@ public class Route implements PojoBase {
 
     public void setOwnerPrice(double ownerPrice) {
         this.ownerPrice = ownerPrice;
+    }
+
+    public String getRouteTrailPolyLine() {
+        return routeTrailPolyLine;
+    }
+
+    public void setRouteTrailPolyLine(String routeTrailPolyLine) {
+        this.routeTrailPolyLine = routeTrailPolyLine;
+    }
+
+    public JSONObject getRawRoutingResult() {
+        return rawRoutingResult;
+    }
+
+    public void setRawRoutingResult(JSONObject rawRoutingResult) {
+        this.rawRoutingResult = rawRoutingResult;
     }
 }

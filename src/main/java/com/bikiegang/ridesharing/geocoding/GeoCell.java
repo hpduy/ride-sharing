@@ -1,9 +1,8 @@
 package com.bikiegang.ridesharing.geocoding;
 
-import com.bikiegang.ridesharing.pojo.CurrentLocation;
 import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.LinkedLocation;
-import com.bikiegang.ridesharing.pojo.Location;
+import com.bikiegang.ridesharing.utilities.DateTimeUtil;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -14,7 +13,7 @@ import java.util.List;
  * Created by hpduy17 on 6/22/15.
  */
 public class GeoCell {
-    public Hashtable<String, List<Long>> geoCellGrid = new Hashtable<>(); // <cellCode,List<latlngId>>
+    public Hashtable<String, List<String>> geoCellGrid = new Hashtable<>(); // <cellCode,List<ObjectId>>
     public final double CELL_LEN_IN_DEGREE = 0.005; // ~500m (0.01 ~= 1 km in real life)
     public final int CELLS_PER_DEGREE = (int) (1 / CELL_LEN_IN_DEGREE);
     public String getCellCode(double lat, double lng){
@@ -46,43 +45,59 @@ public class GeoCell {
         cellCodes.add(cellDownRight);
         return cellCodes;
     }
-    public void putToCell(Location location) {
-        putToCell(location.getLat(),location.getLng(),location.getId());
+    public void updateInCell(LatLng oldLocation , LatLng newLocation, String id) {
+        int oldLatId = (int) (oldLocation.getLat() / CELL_LEN_IN_DEGREE);
+        int oldLngId = (int) (oldLocation.getLng() / CELL_LEN_IN_DEGREE);
+        int newLatId = (int) (newLocation.getLat() / CELL_LEN_IN_DEGREE);
+        int newLngId = (int) (newLocation.getLng() / CELL_LEN_IN_DEGREE);
+        String oldCellCode = oldLatId + "#" + oldLngId;
+        String newCellCode = newLatId + "#" + newLngId;
+        // remove
+        List<String> oldLocationList = geoCellGrid.get(oldCellCode);
+        if (oldLocationList != null) {
+            oldLocationList.remove(id);
+            geoCellGrid.put(oldCellCode, oldLocationList);
+        }
+        // put new
+        List<String> newLocationList = geoCellGrid.get(newCellCode);
+        if (newLocationList == null)
+            newLocationList = new ArrayList<>();
+        if (!newLocationList.contains(id))
+            newLocationList.add(String.valueOf(id));
+        geoCellGrid.put(newCellCode, newLocationList);
+    }
+    public void putToCell(LatLng location, String id) {
+        putToCell(location.getLat(), location.getLng(), id);
     }
     public void putToCell(LinkedLocation location) {
-        putToCell(location.getLat(),location.getLng(),location.getId());
+        putToCell(location.getLat(), location.getLng(), String.valueOf(location.getId()));
     }
-    public void putToCell(CurrentLocation location) {
-        putToCell(location.getLat(),location.getLng(),location.getId());
-    }
-    public void putToCell(double lat, double lng, long id) {
+    public void putToCell(double lat, double lng, String id) {
         int latId = (int) (lat / CELL_LEN_IN_DEGREE);
         int lngId = (int) (lng / CELL_LEN_IN_DEGREE);
         String cellCode = latId + "#" + lngId;
-        List<Long> locationList = geoCellGrid.get(cellCode);
+        List<String> locationList = geoCellGrid.get(cellCode);
         if (locationList == null)
             locationList = new ArrayList<>();
         if (!locationList.contains(id))
-            locationList.add(id);
+            locationList.add(String.valueOf(id));
         geoCellGrid.put(cellCode, locationList);
     }
-    public void removeFromCell(Location location){
-        removeFromCell(location.getLat(), location.getLng(), location.getId());
+    public void removeFromCell(LatLng location, String id){
+        removeFromCell(location.getLat(), location.getLng(), id);
     }
     public void removeFromCell(LinkedLocation location){
-        removeFromCell(location.getLat(),location.getLng(),location.getId());
+        removeFromCell(location.getLat(),location.getLng(),String.valueOf(location.getId()));
     }
-    public void removeFromCell(CurrentLocation location){
-        removeFromCell(location.getLat(),location.getLng(),location.getId());
-    }
-    public void removeFromCell(double lat, double lng, double id) {
+    public void removeFromCell(double lat, double lng, String id) {
         int latId = (int) (lat / CELL_LEN_IN_DEGREE);
         int lngId = (int) (lng / CELL_LEN_IN_DEGREE);
         String cellCode = latId + "#" + lngId;
-        List<Long> locationList = geoCellGrid.get(cellCode);
-        if (locationList != null)
+        List<String> locationList = geoCellGrid.get(cellCode);
+        if (locationList != null) {
             locationList.remove(id);
-        geoCellGrid.put(cellCode, locationList);
+            geoCellGrid.put(cellCode, locationList);
+        }
     }
 
     private List<String> getCellCodes(LatLng center, double latSpan, double lngSpan) {
@@ -103,8 +118,8 @@ public class GeoCell {
         return ids;
     }
 
-    public List<Long> getLocationInFrame(LatLng center, double latSpan, double lngSpan) {
-        HashSet<Long> locationList = new HashSet<>();
+    public List<String> getLocationInFrame(LatLng center, double latSpan, double lngSpan) {
+        HashSet<String> locationList = new HashSet<>();
         List<String> cellCodes = getCellCodes(center, latSpan, lngSpan);
         for (String code : cellCodes) {
             locationList.addAll(getLocationInCell(code));
@@ -112,29 +127,29 @@ public class GeoCell {
         return new ArrayList<>(locationList);
     }
 
-    public List<Long> getLocationInFrame(double lat1, double lng1, double lat2, double lng2) {
+    public List<String> getLocationInFrame(double lat1, double lng1, double lat2, double lng2) {
         double latSpan = Math.abs(lat1 - lat2);
         double lngSpan = Math.abs(lng1 - lng2);
-        LatLng center = new LatLng((lat1 + lat2) / 2, (lng1 + lng2) / 2);
+        LatLng center = new LatLng((lat1 + lat2) / 2, (lng1 + lng2) / 2, DateTimeUtil.now());
         return getLocationInFrame(center, latSpan, lngSpan);
     }
 
-    public List<Long> getLocationInCell(String cellCode){
-        List<Long> temp = geoCellGrid.get(cellCode);
+    public List<String> getLocationInCell(String cellCode){
+        List<String> temp = geoCellGrid.get(cellCode);
         if (temp != null)
             return temp;
         return new ArrayList();
     }
 
-    public List<Long> getLocationInCell(double lat, double lng){
+    public List<String> getLocationInCell(double lat, double lng){
         int latId = (int) (lat / CELL_LEN_IN_DEGREE);
         int lngId = (int) (lng / CELL_LEN_IN_DEGREE);
         String cellCode = latId + "#" + lngId;
         return getLocationInCell(cellCode);
     }
 
-    public List<Long> getLocationInCellAndNeighbor(double lat, double lng){
-        HashSet<Long> locationList = new HashSet<>();
+    public List<String> getLocationInCellAndNeighbor(double lat, double lng){
+        HashSet<String> locationList = new HashSet<>();
         int latId = (int) (lat / CELL_LEN_IN_DEGREE);
         int lngId = (int) (lng / CELL_LEN_IN_DEGREE);
         String cellCenter = latId + "#" + lngId;

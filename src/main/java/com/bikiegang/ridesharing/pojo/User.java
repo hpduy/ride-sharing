@@ -18,7 +18,7 @@ public class User implements PojoBase {
     private String lastName = "";
     private String profilePicture = "";
     private String phone = "";
-    private long currentLocationId;
+    private LatLng currentLocation = new LatLng();
     private long birthDay;
     private int gender;
     private int status;
@@ -84,7 +84,7 @@ public class User implements PojoBase {
         this.birthDay = that.birthDay;
         this.gender = that.gender;
         this.currentRole = that.currentRole;
-        this.currentLocationId = that.currentLocationId;
+        this.currentLocation = that.currentLocation;
         this.status = that.status;
         this.isBusy = that.isBusy;
     }
@@ -201,12 +201,12 @@ public class User implements PojoBase {
         this.currentRole = currentRole;
     }
 
-    public long getCurrentLocationId() {
-        return currentLocationId;
+    public LatLng getCurrentLocation() {
+        return currentLocation;
     }
 
-    public void setCurrentLocationId(long currentLocationId) {
-        this.currentLocationId = currentLocationId;
+    public void setCurrentLocation(LatLng currentLocation) {
+        this.currentLocation = currentLocation;
     }
 
     public int getStatus() {

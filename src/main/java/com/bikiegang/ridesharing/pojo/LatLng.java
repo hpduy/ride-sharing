@@ -11,20 +11,20 @@ public class LatLng {
     public static final Pattern latlngPattern = Pattern.compile("-?[0-9]{1,2}(.[0-9]+)?(,|%2C|%252C)-?[0-9]{1,3}.(.[0-9]+)?");
     protected double lat;
     protected double lng;
-
+    protected long time;
     public LatLng() {
-        this.lat = 0;
-        this.lng = 0;
     }
 
-    public LatLng(double lat, double lng) {
+    public LatLng(double lat, double lng, long time) {
         this.lat = lat;
         this.lng = lng;
+        this.time = time;
     }
 
     public LatLng(LatLng that) {
         this.lat = that.lat;
         this.lng = that.lng;
+        this.time = that.time;
     }
 
     public LatLng(String coordinate) {
@@ -87,5 +87,13 @@ public class LatLng {
 
     public void setLng(double lng) {
         this.lng = lng;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
     }
 }

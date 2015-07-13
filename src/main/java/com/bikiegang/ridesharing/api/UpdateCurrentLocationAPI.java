@@ -6,7 +6,7 @@
 
 package com.bikiegang.ridesharing.api;
 
-import com.bikiegang.ridesharing.controller.CurrentLocationController;
+import com.bikiegang.ridesharing.controller.UserController;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.request.UpdateCurrentLocationRequest;
 import com.bikiegang.ridesharing.utilities.LoggerFactory;
@@ -49,7 +49,7 @@ public class UpdateCurrentLocationAPI extends HttpServlet {
                 jsonData.append(line);
             }
             UpdateCurrentLocationRequest updateCurrentLocationRequest = (UpdateCurrentLocationRequest) Parser.JSonToObject(jsonData.toString(), UpdateCurrentLocationRequest.class);
-            CurrentLocationController controller = new CurrentLocationController();
+            UserController controller = new UserController();
             out.print(controller.updateUserCurrentLocation(updateCurrentLocationRequest));
         } catch (Exception ex) {
             logger.error(ex.getStackTrace());

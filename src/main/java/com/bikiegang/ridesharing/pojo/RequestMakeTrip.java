@@ -111,4 +111,5 @@ public class RequestMakeTrip implements PojoBase {
     public void setStatus(int status) {
         this.status = status;
     }
+
 }

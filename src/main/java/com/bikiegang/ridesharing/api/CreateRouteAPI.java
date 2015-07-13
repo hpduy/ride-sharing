@@ -49,7 +49,7 @@ public class CreateRouteAPI extends HttpServlet {
             }
             CreateRouteRequest createRouteRequest = (CreateRouteRequest) Parser.JSonToObject(jsonData.toString(), CreateRouteRequest.class);
             RouteController controller = new RouteController();
-            out.print(controller.createRoute(createRouteRequest));
+//            out.print(controller.createRoute(createRouteRequest));
         } catch (Exception ex) {
             logger.error(ex.getStackTrace());
             out.print(Parser.ObjectToJSon(false, ex.getMessage()));

@@ -51,7 +51,7 @@ public class ParingAPI extends HttpServlet {
             }
             ParingRequest paringRequest = (ParingRequest) Parser.JSonToObject(jsonData.toString(), ParingRequest.class);
             RouteController controller = new RouteController();
-            out.print(controller.paring(paringRequest));
+//            out.print(controller.paring(paringRequest));
         } catch (Exception ex) {
             logger.error(ex.getStackTrace());
             out.print(Parser.ObjectToJSon(false, ex.getMessage()));

@@ -5,8 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 /**
  * Created by hpduy17 on 6/22/15.
  */
-public class LinkedLocation extends Location implements PojoBase {
-
+public class LinkedLocation extends LatLng implements PojoBase {
+    private long id;
+    private long estimatedTime;
     private int index;
     private long refId; // routeId or tripId
     private int refType;
@@ -22,15 +23,19 @@ public class LinkedLocation extends Location implements PojoBase {
     public LinkedLocation() {
     }
 
-    public LinkedLocation(Location location, int index, long refId, int refType) {
-        super(location);
+
+    public LinkedLocation(double lat, double lng, long time, long id, long estimatedTime, int index, long refId, int refType) {
+        super(lat, lng, time);
+        this.id = id;
+        this.estimatedTime = estimatedTime;
         this.index = index;
         this.refId = refId;
         this.refType = refType;
     }
-
     public LinkedLocation(LinkedLocation that) {
-        super(that.lat, that.lng, that.id, that.createdTime, that.address);
+        super(that.lat, that.lng, that.time);
+        this.id = that.id;
+        this.estimatedTime = that.estimatedTime;
         this.index = that.index;
         this.refId = that.refId;
         this.refType = that.refType;
@@ -58,5 +63,21 @@ public class LinkedLocation extends Location implements PojoBase {
 
     public void setRefType(int refType) {
         this.refType = refType;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getEstimatedTime() {
+        return estimatedTime;
+    }
+
+    public void setEstimatedTime(long estimatedTime) {
+        this.estimatedTime = estimatedTime;
     }
 }

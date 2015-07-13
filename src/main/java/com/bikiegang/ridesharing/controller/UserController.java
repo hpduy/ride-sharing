@@ -3,11 +3,9 @@ package com.bikiegang.ridesharing.controller;
 import com.bikiegang.ridesharing.dao.UserDao;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.parsing.Parser;
+import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.User;
-import com.bikiegang.ridesharing.pojo.request.LoginRequest;
-import com.bikiegang.ridesharing.pojo.request.RegisterRequest;
-import com.bikiegang.ridesharing.pojo.request.UpdateCurrentRoleRequest;
-import com.bikiegang.ridesharing.pojo.request.UpdateProfileRequest;
+import com.bikiegang.ridesharing.pojo.request.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
@@ -37,7 +35,7 @@ public class UserController {
         if (null == registerRequest.getFacebookId() || registerRequest.getFacebookId().equals("")) {
             return Parser.ObjectToJSon(false, "'facebookId' is not found");
         }
-        if(database.getFacebookRFUserId().keySet().contains(registerRequest.getFacebookId())){
+        if (database.getFacebookRFUserId().keySet().contains(registerRequest.getFacebookId())) {
             return Parser.ObjectToJSon(false, "'facebookId' has been used");
         }
         User user = new User();
@@ -68,7 +66,7 @@ public class UserController {
         if (null == registerRequest.getPassword() || registerRequest.getPassword().equals("")) {
             return Parser.ObjectToJSon(false, "'password' is not found");
         }
-        if(database.getEmailRFUserId().keySet().contains(registerRequest.getEmail())){
+        if (database.getEmailRFUserId().keySet().contains(registerRequest.getEmail())) {
             return Parser.ObjectToJSon(false, "'email' has been used");
         }
         User user = new User();
@@ -85,7 +83,7 @@ public class UserController {
         if (null == registerRequest.getGoogleId() || registerRequest.getGoogleId().equals("")) {
             return Parser.ObjectToJSon(false, "'googleId' is not found");
         }
-        if(database.getGoogleRFUserId().keySet().contains(registerRequest.getGoogleId())){
+        if (database.getGoogleRFUserId().keySet().contains(registerRequest.getGoogleId())) {
             return Parser.ObjectToJSon(false, "'googleId' has been used");
         }
         User user = new User();
@@ -113,7 +111,7 @@ public class UserController {
         if (null == registerRequest.getGoogleId() || registerRequest.getGoogleId().equals("")) {
             return Parser.ObjectToJSon(false, "'twitterId' is not found");
         }
-        if(database.getTwitterRFUserId().keySet().contains(registerRequest.getTwitterId())){
+        if (database.getTwitterRFUserId().keySet().contains(registerRequest.getTwitterId())) {
             return Parser.ObjectToJSon(false, "'twitterId' has been used");
         }
         User user = new User();
@@ -233,6 +231,7 @@ public class UserController {
         }
         return Parser.ObjectToJSon(false, "Cannot update profile");
     }
+
     public String updateCurrentRole(UpdateCurrentRoleRequest request) throws JsonProcessingException {
         if (request.getUserId() == null || request.getUserId().equals("")) {
             return Parser.ObjectToJSon(false, "'userId' is not found");
@@ -251,4 +250,32 @@ public class UserController {
         return Parser.ObjectToJSon(false, "Cannot update current role");
     }
 
+    public String updateUserCurrentLocation(UpdateCurrentLocationRequest request) throws JsonProcessingException {
+        if (null == request.getUserId() || request.getUserId().equals("")) {
+            return Parser.ObjectToJSon(false, "'userId' is not found (empty or null)");
+        }
+        if (request.getLat() == 0 && request.getLng() == 0) {
+            return Parser.ObjectToJSon(false, "Latitude and Longitude is invalid (0,0)");
+        }
+        if (request.getTime() < 0) {
+            return Parser.ObjectToJSon(false, "Epoch time is invalid (< 0)");
+        }
+        //get user
+        User user = database.getUserHashMap().get(request.getUserId());
+        if (user == null) {
+            return Parser.ObjectToJSon(false, "User is not exits");
+        }
+        //save old LatLng
+        LatLng oldLocation = new LatLng(user.getCurrentLocation());
+        // update current location
+        user.getCurrentLocation().setLat(request.getLat());
+        user.getCurrentLocation().setLng(request.getLng());
+        user.getCurrentLocation().setTime(request.getTime());
+        database.getGeoCellCurrentLocation().updateInCell(oldLocation,user.getCurrentLocation(),user.getId());
+        if (dao.update(user)) {
+            Parser.ObjectToJSon(true, "Update current location successfully");
+
+        }
+        return Parser.ObjectToJSon(false, "Cannot insert current location to database");
+    }
 }
