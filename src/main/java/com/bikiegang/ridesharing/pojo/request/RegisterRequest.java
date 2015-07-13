@@ -125,4 +125,5 @@ public class RegisterRequest {
     public void setType(int type) {
         this.type = type;
     }
+
 }
