@@ -1,16 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package com.bikiegang.ridesharing.da;
-
-/**
- *
- * @author root
- */
-public class Test {
-
+///*
+// * To change this license header, choose License Headers in Project Properties.
+// * To change this template file, choose Tools | Templates
+// * and open the template in the editor.
+// */
+//package com.bikiegang.ridesharing.da;
+//
+//import com.bikiegang.ridesharing.pojo.Activity;
+//import com.bikiegang.ridesharing.utilities.Const;
+//import org.apache.commons.lang.RandomStringUtils;
+//import org.apache.commons.lang.math.RandomUtils;
+//
+///**
+// *
+// * @author root
+// */
+//public class Test {
+//
 //    public static void main(String[] args) {
 //        IDA a = new ActivityDA();
 //        Activity createValue = createValue();
@@ -27,5 +32,5 @@ public class Test {
 //
 //        return value;
 //    }
-
-}
+//
+//}

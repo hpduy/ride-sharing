@@ -1,6 +1,6 @@
 package com.bikiegang.ridesharing.pojo.request;
 
-import com.bikiegang.ridesharing.pojo.Location;
+import com.bikiegang.ridesharing.pojo.LatLng;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -15,7 +15,7 @@ public class CreateRouteRequest {
     private double lat;
     private double lng;
     private String creatorId;
-    private Location[] locations;
+    private LatLng[] locations;
     private int type;
 
     public long getGoTime() {
@@ -66,11 +66,11 @@ public class CreateRouteRequest {
         this.type = type;
     }
 
-    public Location[] getLocations() {
+    public LatLng[] getLocations() {
         return locations;
     }
 
-    public void setLocations(Location[] locations) {
+    public void setLocations(LatLng[] locations) {
         this.locations = locations;
     }
 

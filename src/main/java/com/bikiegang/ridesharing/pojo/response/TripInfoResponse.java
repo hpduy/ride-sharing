@@ -1,16 +1,13 @@
 package com.bikiegang.ridesharing.pojo.response;
 
-import com.bikiegang.ridesharing.database.Database;
-import com.bikiegang.ridesharing.pojo.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.bikiegang.ridesharing.pojo.LatLng;
+import com.bikiegang.ridesharing.pojo.Trip;
 
 /**
  * Created by hpduy17 on 7/8/15.
  */
 public class TripInfoResponse extends Trip {
-    private Location driverCurrentLocation;
+    private LatLng driverCurrentLocation;
     private LatLng[] tripLocations;
     private long passengerRoute;
 
@@ -19,48 +16,48 @@ public class TripInfoResponse extends Trip {
 
     public TripInfoResponse(Trip that) {
         super(that);
-        // get current location of the driver and trip locations base on passenger trip
-        // or locations both of them go through out
-        Database database = Database.getInstance();
-        User driver = database.getUserHashMap().get(that.getDriverId());
-        CurrentLocation location = database.getCurrentLocationHashMap().get(driver.getCurrentLocationId());
-        if (location == null) {
-            driverCurrentLocation = new Location();
-        }
-        driverCurrentLocation = new Location(location);
-        // get list Trip location
-
-        List<Long> linkedLocationIds = database.getTripIdRFLinkedLocations().get(that.getId());
-        if (linkedLocationIds != null) {
-            List<LatLng> locations = new ArrayList<>();
-            for (long id : linkedLocationIds) {
-                LinkedLocation l = database.getLinkedLocationHashMap().get(id);
-                if (l != null) {
-                    locations.add(new LatLng(l));
-                }
-            }
-            tripLocations = locations.toArray(new LatLng[locations.size()]);
-        } else {
-            List<LatLng> locations = new ArrayList<>();
-            List<Long> linkedRouteLocationIds = database.getRouteIdRFLinkedLocations().get(that.getPassengerRouteId());
-            if (linkedRouteLocationIds != null) {
-                for (long id : linkedRouteLocationIds) {
-                    LinkedLocation l = database.getLinkedLocationHashMap().get(id);
-                    if (l != null) {
-                        locations.add(new LatLng(l));
-                    }
-                }
-            }
-            tripLocations = locations.toArray(new LatLng[locations.size()]);
-        }
+//        // get current location of the driver and trip locations base on passenger trip
+//        // or locations both of them go through out
+//        Database database = Database.getInstance();
+//        User driver = database.getUserHashMap().get(that.getDriverId());
+//        LatLng location = driver.getCurrentLocation();
+//        if (location == null) {
+//            driverCurrentLocation = new LatLng();
+//        }
+//        driverCurrentLocation = new LatLng(location);
+//        // get list Trip location
+//
+//        List<Long> linkedLocationIds = database.getTripIdRFLinkedLocations().get(that.getId());
+//        if (linkedLocationIds != null) {
+//            List<LatLng> locations = new ArrayList<>();
+//            for (long id : linkedLocationIds) {
+//                LinkedLocation l = database.getLinkedLocationHashMap().get(id);
+//                if (l != null) {
+//                    locations.add(new LatLng(l));
+//                }
+//            }
+//            tripLocations = locations.toArray(new LatLng[locations.size()]);
+//        } else {
+//            List<LatLng> locations = new ArrayList<>();
+//            List<Long> linkedRouteLocationIds = database.getRouteIdRFLinkedLocations().get(that.getPassengerRouteId());
+//            if (linkedRouteLocationIds != null) {
+//                for (long id : linkedRouteLocationIds) {
+//                    LinkedLocation l = database.getLinkedLocationHashMap().get(id);
+//                    if (l != null) {
+//                        locations.add(new LatLng(l));
+//                    }
+//                }
+//            }
+//            tripLocations = locations.toArray(new LatLng[locations.size()]);
+//        }
 
     }
 
-    public Location getDriverCurrentLocation() {
+    public LatLng getDriverCurrentLocation() {
         return driverCurrentLocation;
     }
 
-    public void setDriverCurrentLocation(Location driverCurrentLocation) {
+    public void setDriverCurrentLocation(LatLng driverCurrentLocation) {
         this.driverCurrentLocation = driverCurrentLocation;
     }
 

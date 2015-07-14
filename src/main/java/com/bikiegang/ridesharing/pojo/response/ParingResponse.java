@@ -16,12 +16,12 @@ public class ParingResponse {
     private boolean isBusy;
     private int currentRole;
     private long routeId;
-    private Location currentLocation;
+    private LatLng currentLocation;
     private LatLng[] locations;
     private double price;
     private long goTime;
 
-    public ParingResponse(User user, Route route, LatLng[] locations, CurrentLocation currentLocation) {
+    public ParingResponse(User user, Route route, LatLng[] locations, LatLng currentLocation) {
         this.id = user.getId();
         this.firstName = user.getLastName();
         this.lastName = user.getLastName();
@@ -118,12 +118,20 @@ public class ParingResponse {
         this.routeId = routeId;
     }
 
-    public Location getCurrentLocation() {
+    public LatLng getCurrentLocation() {
         return currentLocation;
     }
 
-    public void setCurrentLocation(Location currentLocation) {
+    public void setCurrentLocation(LatLng currentLocation) {
         this.currentLocation = currentLocation;
+    }
+
+    public LatLng[] getLocations() {
+        return locations;
+    }
+
+    public void setLocations(LatLng[] locations) {
+        this.locations = locations;
     }
 
     public LatLng[] getListLocation() {
