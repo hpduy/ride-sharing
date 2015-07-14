@@ -1,6 +1,5 @@
 package com.bikiegang.ridesharing.database;
 
-
 import com.bikiegang.ridesharing.cache.RideSharingCA;
 import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.geocoding.GeoCell;
@@ -14,6 +13,7 @@ import java.util.List;
  * Created by hpduy17 on 6/16/15.
  */
 public class Database {
+
     private static Database ourInstance = new Database();
 
     public static Database getInstance() {
@@ -39,12 +39,12 @@ public class Database {
     private HashMap<String, String> googleRFUserId = new HashMap<>();//<ggId, userId>
     private HashMap<String, String> twitterRFUserId = new HashMap<>();//<twId, userId>
     private HashMap<String, String> emailRFUserId = new HashMap<>();//<email, userId>
-     /**
+    /**
      * BROADCAST
      */
     private HashMap<String, HashSet<String>> userIdRFBroadcasts = new HashMap<>(); //<userId,<broadcastId>>
 
-     /**
+    /**
      * ROUTE
      */
     private HashMap<String, HashSet<Long>> userIdRFRoutes = new HashMap<>(); // <userId,<routeId>>
@@ -57,9 +57,9 @@ public class Database {
     /**
      * REQUEST MAKE TRIP
      */
-    private HashMap<String,HashMap<Long,Long>> senderRequestsBox = new HashMap<>(); //<senderId,<receiverRouteId,requestIds>>
-    private HashMap<String,HashMap<Long,List<Long>>> receiverRequestsBox = new HashMap<>(); //<receiverId,<receiverRouteId,<requestIds>>>
-     /**
+    private HashMap<String, HashMap<Long, Long>> senderRequestsBox = new HashMap<>(); //<senderId,<receiverRouteId,requestIds>>
+    private HashMap<String, HashMap<Long, List<Long>>> receiverRequestsBox = new HashMap<>(); //<receiverId,<receiverRouteId,<requestIds>>>
+    /**
      * LINKED LOCATION
      */
     private HashMap<Long, List<Long>> routeIdRFLinkedLocations = new HashMap<>(); //<routeId,<LinkedLocationId>>
@@ -71,16 +71,16 @@ public class Database {
     private GeoCell geoCellPassenger = new GeoCell();// for route
     private GeoCell geoCellCurrentLocation = new GeoCell();
 
-    /*PERSONAL FUNCTION*/
+//    /*PERSONAL FUNCTION*/
     public void restore() {
         RideSharingCA rideSharingCA = RideSharingCA.getInstance(ConfigInfo.REDIS_SERVER);
         //restore
-       assert(rideSharingCA.RestoreDatabase());
+        assert (rideSharingCA.RestoreDatabase());
     }
 
     public void backup() {
     }
-     /*GET-SET Function*/
+    /*GET-SET Function*/
     /*CORE GET-SET*/
 
     public HashMap<String, Broadcast> getBroadcastHashMap() {
@@ -108,7 +108,6 @@ public class Database {
     }
 
     /*REFERENCE GET-SET*/
-
     public HashMap<String, String> getFacebookRFUserId() {
         return facebookRFUserId;
     }
@@ -129,7 +128,6 @@ public class Database {
         return userIdRFBroadcasts;
     }
 
-
     public HashMap<String, HashSet<Long>> getUserIdRFRoutes() {
         return userIdRFRoutes;
     }
@@ -141,7 +139,6 @@ public class Database {
     public HashMap<String, HashSet<Long>> getPassengerIdRFTrips() {
         return passengerIdRFTrips;
     }
-
 
     public HashMap<Long, List<Long>> getRouteIdRFLinkedLocations() {
         return routeIdRFLinkedLocations;
@@ -160,7 +157,6 @@ public class Database {
     }
 
     /*GEOCELL GET-SET*/
-
     public GeoCell getGeoCellDriver() {
         return geoCellDriver;
     }
