@@ -5,32 +5,27 @@
  */
 package com.bikiegang.ridesharing.da;
 
-import com.bikiegang.ridesharing.pojo.Activity;
-import com.bikiegang.ridesharing.utilities.Const;
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.math.RandomUtils;
-
 /**
  *
  * @author root
  */
 public class Test {
 
-    public static void main(String[] args) {
-        IDA a = new ActivityDA();
-        Activity createValue = createValue();
-        boolean DoAction = a.DoAction(createValue, Const.RideSharing.ActionType.INSERT);
-        System.out.println(DoAction);
-        DoAction = a.DoAction(createValue, Const.RideSharing.ActionType.UPDATE);
-        System.out.println(DoAction);
-    }
-
-    public static Activity createValue() {
-        Activity value = new Activity(RandomUtils.nextLong(), RandomStringUtils.randomAlphanumeric(20),
-                RandomStringUtils.randomAlphanumeric(20), RandomStringUtils.randomAlphanumeric(20),
-                RandomUtils.nextLong(), RandomUtils.nextInt(), RandomUtils.nextLong(), true);
-
-        return value;
-    }
+//    public static void main(String[] args) {
+//        IDA a = new ActivityDA();
+//        Activity createValue = createValue();
+//        boolean DoAction = a.DoAction(createValue, Const.RideSharing.ActionType.INSERT);
+//        System.out.println(DoAction);
+//        DoAction = a.DoAction(createValue, Const.RideSharing.ActionType.UPDATE);
+//        System.out.println(DoAction);
+//    }
+//
+//    public static Activity createValue() {
+//        Activity value = new Activity(RandomUtils.nextLong(), RandomStringUtils.randomAlphanumeric(20),
+//                RandomStringUtils.randomAlphanumeric(20), RandomStringUtils.randomAlphanumeric(20),
+//                RandomUtils.nextLong(), RandomUtils.nextInt(), RandomUtils.nextLong(), true);
+//
+//        return value;
+//    }
 
 }
