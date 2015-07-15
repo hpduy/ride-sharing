@@ -1,6 +1,8 @@
 package com.bikiegang.ridesharing.pojo;
 
 
+import com.bikiegang.ridesharing.utilities.DateTimeUtil;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,7 +16,11 @@ public class LatLng {
     protected long time;
     public LatLng() {
     }
-
+    public LatLng(double lat, double lng) {
+        this.lat = lat;
+        this.lng = lng;
+        this.time = DateTimeUtil.now();
+    }
     public LatLng(double lat, double lng, long time) {
         this.lat = lat;
         this.lng = lng;

@@ -15,7 +15,7 @@
     <!--**ROUTE**-->
     <servlet>
         <servlet-name>CreateRouteAPI</servlet-name>
-        <servlet-class>com.bikiegang.ridesharing.api.CreateRouteAPI</servlet-class>
+        <servlet-class>com.bikiegang.ridesharing.api.oldApi.CreateRouteAPI</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>CreateRouteAPI</servlet-name>
@@ -23,7 +23,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>GetListRouteAPI</servlet-name>
-        <servlet-class>com.bikiegang.ridesharing.api.GetListRouteAPI</servlet-class>
+        <servlet-class>com.bikiegang.ridesharing.api.oldApi.GetListRouteAPI</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>GetListRouteAPI</servlet-name>
@@ -32,7 +32,7 @@
     <!--**USER**-->
     <servlet>
         <servlet-name>LoginAPI</servlet-name>
-        <servlet-class>com.bikiegang.ridesharing.api.LoginAPI</servlet-class>
+        <servlet-class>com.bikiegang.ridesharing.api.oldApi.LoginAPI</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginAPI</servlet-name>
@@ -40,7 +40,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>UpdateBroadcastAPI</servlet-name>
-        <servlet-class>com.bikiegang.ridesharing.api.UpdateBroadcastAPI</servlet-class>
+        <servlet-class>com.bikiegang.ridesharing.api.oldApi.UpdateBroadcastAPI</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>UpdateBroadcastAPI</servlet-name>
@@ -48,7 +48,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>UpdateUserCurrentRoleAPI</servlet-name>
-        <servlet-class>com.bikiegang.ridesharing.api.UpdateUserCurrentRoleAPI</servlet-class>
+        <servlet-class>com.bikiegang.ridesharing.api.oldApi.UpdateUserCurrentRoleAPI</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>UpdateUserCurrentRoleAPI</servlet-name>
@@ -56,7 +56,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>UpdateCurrentLocationAPI</servlet-name>
-        <servlet-class>com.bikiegang.ridesharing.api.UpdateCurrentLocationAPI</servlet-class>
+        <servlet-class>com.bikiegang.ridesharing.api.oldApi.UpdateCurrentLocationAPI</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>UpdateCurrentLocationAPI</servlet-name>
@@ -64,7 +64,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>RegisterAPI</servlet-name>
-        <servlet-class>com.bikiegang.ridesharing.api.RegisterAPI</servlet-class>
+        <servlet-class>com.bikiegang.ridesharing.api.oldApi.RegisterAPI</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>RegisterAPI</servlet-name>
@@ -72,7 +72,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>UpdateProfileAPI</servlet-name>
-        <servlet-class>com.bikiegang.ridesharing.api.UpdateProfileAPI</servlet-class>
+        <servlet-class>com.bikiegang.ridesharing.api.oldApi.UpdateProfileAPI</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>UpdateProfileAPI</servlet-name>
@@ -81,7 +81,7 @@
     <!--**TRIP**-->
     <servlet>
         <servlet-name>RequestMakeTripAPI</servlet-name>
-        <servlet-class>com.bikiegang.ridesharing.api.RequestMakeTripAPI</servlet-class>
+        <servlet-class>com.bikiegang.ridesharing.api.oldApi.RequestMakeTripAPI</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>RequestMakeTripAPI</servlet-name>
@@ -89,7 +89,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>ReplyMakeTripAPI</servlet-name>
-        <servlet-class>com.bikiegang.ridesharing.api.ReplyMakeTripAPI</servlet-class>
+        <servlet-class>com.bikiegang.ridesharing.api.oldApi.ReplyMakeTripAPI</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ReplyMakeTripAPI</servlet-name>

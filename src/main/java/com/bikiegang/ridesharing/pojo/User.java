@@ -1,6 +1,6 @@
 package com.bikiegang.ridesharing.pojo;
 
-import com.bikiegang.ridesharing.pojo.request.UpdateProfileRequest;
+import com.bikiegang.ridesharing.pojo.request.old.UpdateProfileRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
@@ -13,13 +13,15 @@ public class User implements PojoBase {
     private String password = "";
     private String facebookId = "";
     private String googleId = "";
+    private String linkedInId = "";
+    private String selfIntro = "";
     private String twitterId = "";
     private String firstName = "";
     private String lastName = "";
-    private String profilePicture = "";
+    private String profilePictureLink = "";
     private String phone = "";
     private LatLng currentLocation = new LatLng();
-    private long birthDay;
+    private String birthDay;
     private int gender;
     private int status;
     private boolean isBusy;
@@ -51,18 +53,21 @@ public class User implements PojoBase {
     public static final int PASSENGER = 2;
 
     public User() {
+
     }
 
-    public User(String id, String email, String password, String facebookId, String googleId, String twitterId, String firstName, String lastName, String profilePicture, String phone, long birthDay, int gender, int status, boolean isBusy) {
+    public User(String id, String email, String password, String facebookId, String googleId, String twitterId, String linkedInId, String selfIntro, String firstName, String lastName, String profilePictureLink, String phone, String birthDay, int gender, int status, boolean isBusy) {
         this.id = id == null ? "" : id;
         this.email = email == null ? "" : email;
         this.password = password == null ? "" : password;
         this.facebookId = facebookId == null ? "" : facebookId;
         this.googleId = googleId == null ? "" : googleId;
         this.twitterId = twitterId == null ? "" : twitterId;
+        this.linkedInId = linkedInId == null ? "" : linkedInId;
+        this.selfIntro = selfIntro == null ? "" : selfIntro;
         this.firstName = firstName == null ? "" : firstName;
         this.lastName = lastName == null ? "" : lastName;
-        this.profilePicture = profilePicture == null ? "" : profilePicture;
+        this.profilePictureLink = profilePictureLink == null ? "" : profilePictureLink;
         this.phone = phone == null ? "" : phone;
         this.birthDay = birthDay;
         this.gender = gender;
@@ -77,9 +82,11 @@ public class User implements PojoBase {
         this.facebookId = that.facebookId == null ? "" : that.facebookId;
         this.googleId = that.googleId == null ? "" : that.googleId;
         this.twitterId = that.twitterId == null ? "" : that.twitterId;
+        this.linkedInId = that.linkedInId == null ? "" : that.linkedInId;
+        this.selfIntro = that.selfIntro == null ? "" : that.selfIntro;
         this.firstName = that.firstName == null ? "" : that.firstName;
         this.lastName = that.lastName == null ? "" : that.lastName;
-        this.profilePicture = that.profilePicture == null ? "" : that.profilePicture;
+        this.profilePictureLink = that.profilePictureLink == null ? "" : that.profilePictureLink;
         this.phone = that.phone == null ? "" : that.phone;
         this.birthDay = that.birthDay;
         this.gender = that.gender;
@@ -92,8 +99,7 @@ public class User implements PojoBase {
     public void updateUserProfile(UpdateProfileRequest that) {
         this.firstName = that.getFirstName() == null ? this.firstName : that.getFirstName();
         this.lastName = that.getLastName() == null ? this.lastName : that.getLastName();
-        this.profilePicture = that.getProfilePicture() == null ? this.profilePicture : that.getProfilePicture();
-        this.birthDay = that.getBirthDay() <= 0 ? this.birthDay : that.getBirthDay();
+        this.profilePictureLink = that.getProfilePicture() == null ? this.profilePictureLink : that.getProfilePicture();
         this.gender = that.getGender() <= 0 ? this.gender : that.getGender();
     }
 
@@ -161,12 +167,12 @@ public class User implements PojoBase {
         this.lastName = lastName;
     }
 
-    public String getProfilePicture() {
-        return profilePicture;
+    public String getProfilePictureLink() {
+        return profilePictureLink;
     }
 
-    public void setProfilePicture(String profilePicture) {
-        this.profilePicture = profilePicture;
+    public void setProfilePictureLink(String profilePictureLink) {
+        this.profilePictureLink = profilePictureLink;
     }
 
     public String getPhone() {
@@ -177,11 +183,27 @@ public class User implements PojoBase {
         this.phone = phone;
     }
 
-    public long getBirthDay() {
+    public String getLinkedInId() {
+        return linkedInId;
+    }
+
+    public void setLinkedInId(String linkedInId) {
+        this.linkedInId = linkedInId;
+    }
+
+    public String getSelfIntro() {
+        return selfIntro;
+    }
+
+    public void setSelfIntro(String selfIntro) {
+        this.selfIntro = selfIntro;
+    }
+
+    public String getBirthDay() {
         return birthDay;
     }
 
-    public void setBirthDay(long birthDay) {
+    public void setBirthDay(String birthDay) {
         this.birthDay = birthDay;
     }
 

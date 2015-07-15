@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 public class LinkedLocation extends LatLng implements PojoBase {
     private long id;
-    private long estimatedTime;
+    private long estimatedTime; // duration from first location
     private int index;
     private long refId; // routeId or tripId
     private int refType;

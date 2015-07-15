@@ -4,7 +4,7 @@ import com.bikiegang.ridesharing.dao.BroadcastDao;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.Broadcast;
-import com.bikiegang.ridesharing.pojo.request.UpdateBroadcastRequest;
+import com.bikiegang.ridesharing.pojo.request.old.UpdateBroadcastRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**

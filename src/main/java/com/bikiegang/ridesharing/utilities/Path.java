@@ -4,6 +4,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Created by hpduy17 on 6/16/15.
@@ -13,8 +15,10 @@ public class Path {
     private static final String dbPathRootWindows = "C:\\cloudbike";
     @NotNull
     private static final String dbPathRootUNIX = "/cloudbike/";
+    private static final String serverPort = "8080";
     private static String dataPath,imagePath,logPath;
     private static String serverAddress = "";
+    private static String defaultAvatar = "";
 
     public static void buildRoot() throws IOException {
         String root;
@@ -36,6 +40,16 @@ public class Path {
         }
         if (!fileLog.exists()) {
             fileLog.mkdirs();
+        }
+    }
+
+    public static String getProfilePictureUrlFromPath(String profilePicturePath){
+        try {
+            URL url = new URL(profilePicturePath);
+            return url.toString();
+        } catch (MalformedURLException e) {
+            // it wasn't a URL
+            return Path.getServerAddress() + (profilePicturePath.replaceAll(" ","").equals("") ? defaultAvatar : profilePicturePath);
         }
     }
 
@@ -63,5 +77,10 @@ public class Path {
 
     public static String getServerAddress() {
         return serverAddress;
+    }
+
+    public static void setServerAddress(String serverAddress) {
+
+        Path.serverAddress = "http://"+serverAddress+":"+serverPort;
     }
 }

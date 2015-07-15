@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
+import java.net.InetAddress;
 import java.nio.charset.Charset;
 
 public class StartupListener implements ServletContextListener, HttpSessionListener, HttpSessionAttributeListener {
@@ -30,6 +31,7 @@ public class StartupListener implements ServletContextListener, HttpSessionListe
          You can initialize servlet context related data here.
          */
         try {
+            Path.setServerAddress(InetAddress.getLocalHost().getHostAddress());
             Path.buildRoot();
             Database.getInstance().restore();
         } catch (Exception ex) {

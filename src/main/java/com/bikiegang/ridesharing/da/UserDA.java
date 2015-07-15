@@ -64,7 +64,7 @@
 //                stmt.setString(6, value.getTwitterId());
 //                stmt.setString(7, value.getFirstName());
 //                stmt.setString(8, value.getLastName());
-//                stmt.setString(9, value.getProfilePicture());
+//                stmt.setString(9, value.getProfilePictureLink());
 //                stmt.setString(10, value.getPhone());
 //                stmt.setLong(11, value.getCurrentLocationId());
 //                stmt.setLong(12, value.getBirthDay());
@@ -103,7 +103,7 @@
 //                stmt.setString(6, value.getTwitterId());
 //                stmt.setString(7, value.getFirstName());
 //                stmt.setString(8, value.getLastName());
-//                stmt.setString(9, value.getProfilePicture());
+//                stmt.setString(9, value.getProfilePictureLink());
 //                stmt.setString(10, value.getPhone());
 //                stmt.setLong(11, value.getCurrentLocationId());
 //                stmt.setLong(12, value.getBirthDay());

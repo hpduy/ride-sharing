@@ -2,7 +2,7 @@ package com.bikiegang.ridesharing.pojo;
 
 import com.bikiegang.ridesharing.utilities.DateTimeUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.json.simple.JSONObject;
+import org.json.JSONObject;
 
 /**
  * Created by hpduy17 on 6/24/15.
@@ -13,7 +13,7 @@ public class Route implements PojoBase {
     private long goTime;
     private long arriveTime;
     private double sumDistance;
-    private long estimatedTime;
+    private long estimatedTime; // duration from first location
     private double estimatedPrice; // use when role is passenger
     private double ownerPrice;
     private double estimatedFuel;
@@ -72,6 +72,7 @@ public class Route implements PojoBase {
         this.routeTrailPolyLine = that.routeTrailPolyLine;
         this.rawRoutingResult = that.rawRoutingResult;
     }
+
 
     public long getArriveTime() {
         return arriveTime;

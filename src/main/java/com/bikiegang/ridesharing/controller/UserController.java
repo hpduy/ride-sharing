@@ -6,7 +6,12 @@ import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.*;
+import com.bikiegang.ridesharing.pojo.request.old.*;
+import com.bikiegang.ridesharing.pojo.response.SortUserDetailResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by hpduy17 on 6/26/15.
@@ -42,7 +47,7 @@ public class UserController {
         user.setId("fb_" + registerRequest.getFacebookId());
         user.setFacebookId(registerRequest.getFacebookId());
         if (null != registerRequest.getProfilePicture())
-            user.setProfilePicture(registerRequest.getProfilePicture());
+            user.setProfilePictureLink(registerRequest.getProfilePicture());
         if (null != registerRequest.getEmail())
             user.setEmail(registerRequest.getEmail());
         if (null != registerRequest.getPhone())
@@ -90,7 +95,7 @@ public class UserController {
         user.setId("gg_" + registerRequest.getGoogleId());
         user.setGoogleId(registerRequest.getGoogleId());
         if (null != registerRequest.getProfilePicture())
-            user.setProfilePicture(registerRequest.getProfilePicture());
+            user.setProfilePictureLink(registerRequest.getProfilePicture());
         if (null != registerRequest.getEmail())
             user.setEmail(registerRequest.getEmail());
         if (null != registerRequest.getPhone())
@@ -118,7 +123,7 @@ public class UserController {
         user.setId("tw_" + registerRequest.getTwitterId());
         user.setTwitterId(registerRequest.getTwitterId());
         if (null != registerRequest.getProfilePicture())
-            user.setProfilePicture(registerRequest.getProfilePicture());
+            user.setProfilePictureLink(registerRequest.getProfilePicture());
         if (null != registerRequest.getEmail())
             user.setEmail(registerRequest.getEmail());
         if (null != registerRequest.getPhone())
@@ -271,11 +276,50 @@ public class UserController {
         user.getCurrentLocation().setLat(request.getLat());
         user.getCurrentLocation().setLng(request.getLng());
         user.getCurrentLocation().setTime(request.getTime());
-        database.getGeoCellCurrentLocation().updateInCell(oldLocation,user.getCurrentLocation(),user.getId());
+        database.getGeoCellCurrentLocation().updateInCell(oldLocation, user.getCurrentLocation(), user.getId());
         if (dao.update(user)) {
             Parser.ObjectToJSon(true, "Update current location successfully");
 
         }
         return Parser.ObjectToJSon(false, "Cannot insert current location to database");
+    }
+
+    public String getUsersAroundFromMe(GetUsersAroundFromMeRequest request) throws JsonProcessingException {
+        if (null == request.getUserId() || request.getUserId().equals("")) {
+            if(Database.databaseStatus == Database.TESTING){
+                //TODO: Check database state and  create temp data
+            }else {
+                return Parser.ObjectToJSon(false, "'userId' is not found");
+            }
+        }
+        if (request.getCenterLat() == 0 && request.getCenterLng() == 0) {
+            return Parser.ObjectToJSon(false, "Latitude and Longitude is invalid (0,0)");
+        }
+        if (request.getRadius() < 0) {
+            return Parser.ObjectToJSon(false, "Radius is invalid (< 0)");
+        }
+        LatLng center = new LatLng(request.getCenterLat(), request.getCenterLng());
+        List<String> userIds = database.getGeoCellCurrentLocation().getIdsInFrame(center, request.getRadius());
+        List<User> users = getUsersFromUserIds(userIds);
+        List<SortUserDetailResponse> userDetails = new ArrayList<>();
+        for(User user : users){
+            SortUserDetailResponse detail = new SortUserDetailResponse(user);
+            userDetails.add(detail);
+        }
+        return Parser.ObjectToJSon(true,"Get list users success",userDetails);
+    }
+
+    public List<User> getUsersFromUserIds(List<String> ids) {
+
+        List<User> users = new ArrayList<>();
+        if (ids != null) {
+            for (String id : ids) {
+                User user = database.getUserHashMap().get(id);
+                if (null != user) {
+                    users.add(user);
+                }
+            }
+        }
+        return users;
     }
 }

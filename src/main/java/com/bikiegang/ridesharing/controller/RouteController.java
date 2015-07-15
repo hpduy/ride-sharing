@@ -4,8 +4,8 @@ import com.bikiegang.ridesharing.dao.RouteDao;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.Route;
-import com.bikiegang.ridesharing.pojo.request.GetListRouteRequest;
-import com.bikiegang.ridesharing.pojo.response.RouteInfoResponse;
+import com.bikiegang.ridesharing.pojo.request.old.GetListRouteRequest;
+import com.bikiegang.ridesharing.pojo.response.old.RouteInfoResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.ArrayList;
@@ -37,6 +37,7 @@ public class RouteController {
         }
         return Parser.ObjectToJSon(true, "Get list route success", responses);
     }
+
 
 /*
     public String createRoute(CreateRouteRequest request) throws Exception {

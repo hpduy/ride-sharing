@@ -23,6 +23,13 @@ public class Database {
     private Database() {
     }
 
+    // STATIC DATABASE STATUS
+    public static int databaseStatus = Database.DEVELOPMENT;
+    //FINAL STATE
+    public static final int DEVELOPMENT = 0;
+    public static final int PRODUCTION = 1;
+    public static final int TESTING = 2;
+
     /*DATABASE-TABLE*/
     //CORE
     private HashMap<String, Broadcast> broadcastHashMap = new HashMap<>();
