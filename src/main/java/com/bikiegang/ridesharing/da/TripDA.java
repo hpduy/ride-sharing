@@ -66,6 +66,9 @@ public class TripDA implements IDA {
                 stmt.setString(9, value.getBreakReason());
                 stmt.setBoolean(10, value.isBreakTrip());
                 stmt.setBoolean(11, value.isDangerTrip());
+                stmt.setLong(12, value.getDriverRouteId());
+                stmt.setLong(13, value.getPassengerRouteId());
+                stmt.setString(14, value.getTripTrailPolyLine());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {
@@ -100,7 +103,10 @@ public class TripDA implements IDA {
                 stmt.setString(9, value.getBreakReason());
                 stmt.setBoolean(10, value.isBreakTrip());
                 stmt.setBoolean(11, value.isDangerTrip());
-                stmt.setLong(12, value.getId());
+                stmt.setLong(12, value.getDriverRouteId());
+                stmt.setLong(13, value.getPassengerRouteId());
+                stmt.setString(14, value.getTripTrailPolyLine());
+                stmt.setLong(15, value.getId());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {
