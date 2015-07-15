@@ -17,7 +17,7 @@ public class RegisterRequest {
     private String lastName;
     private String profilePicture;
     private String phone;
-    private long birthDay;
+    private String birthDay;
     private int gender;
     private int type;
     //final field
@@ -94,11 +94,11 @@ public class RegisterRequest {
         this.profilePicture = profilePicture;
     }
 
-    public long getBirthDay() {
+    public String getBirthDay() {
         return birthDay;
     }
 
-    public void setBirthDay(long birthDay) {
+    public void setBirthDay(String birthDay) {
         this.birthDay = birthDay;
     }
 

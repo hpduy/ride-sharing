@@ -5,15 +5,16 @@
  */
 package com.bikiegang.ridesharing.da;
 
+import com.bikiegang.ridesharing.annn.framework.dbconn.ClientManager;
+import com.bikiegang.ridesharing.annn.framework.dbconn.ManagerIF;
 import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.pojo.PojoBase;
 import com.bikiegang.ridesharing.pojo.Route;
 import com.bikiegang.ridesharing.utilities.Const;
-import com.bikiegang.ridesharing.annn.framework.dbconn.ClientManager;
-import com.bikiegang.ridesharing.annn.framework.dbconn.ManagerIF;
+import org.apache.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import org.apache.log4j.Logger;
 
 /**
  *
@@ -67,7 +68,7 @@ public class RouteDA implements IDA {
                 stmt.setInt(10, value.getRole());
                 stmt.setInt(11, value.getType());
                 stmt.setString(12, value.getRouteTrailPolyLine());
-                stmt.setString(13, value.getRawRoutingResult().toJSONString());
+                stmt.setString(13, value.getRawRoutingResult().toString());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {
@@ -103,7 +104,7 @@ public class RouteDA implements IDA {
                 stmt.setInt(10, value.getRole());
                 stmt.setInt(11, value.getType());
                 stmt.setString(12, value.getRouteTrailPolyLine());
-                stmt.setString(13, value.getRawRoutingResult().toJSONString());
+                stmt.setString(13, value.getRawRoutingResult().toString());
                 stmt.setLong(14, value.getId());
 
                 int row = stmt.executeUpdate();

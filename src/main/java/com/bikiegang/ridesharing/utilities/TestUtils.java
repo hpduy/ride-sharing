@@ -13,7 +13,7 @@ import com.bikiegang.ridesharing.pojo.Trip;
 import com.bikiegang.ridesharing.pojo.User;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.math.RandomUtils;
-import org.json.simple.JSONObject;
+import org.json.JSONObject;
 
 /**
  *
@@ -89,8 +89,7 @@ public class TestUtils {
                 RandomStringUtils.randomAlphabetic(20), RandomStringUtils.randomAlphabetic(20), RandomStringUtils.randomAlphabetic(20),
                 RandomStringUtils.randomAlphabetic(20), RandomStringUtils.randomAlphabetic(20), RandomStringUtils.randomAlphabetic(20),
                 RandomStringUtils.randomAlphabetic(20), RandomStringUtils.randomAlphabetic(20), RandomStringUtils.randomAlphabetic(20),
-                RandomUtils.nextLong(), RandomUtils.nextInt(), RandomUtils.nextInt(), true);
-
+                RandomStringUtils.randomAlphabetic(20),RandomStringUtils.randomAlphabetic(20),RandomStringUtils.randomAlphabetic(20), RandomUtils.nextInt(), RandomUtils.nextInt(), true);
         return result;
     }
 
