@@ -14,7 +14,7 @@ public class SortUserDetailResponse {
     private String profilePicture = "";
     private String phone = "";
     private LatLng currentLocation = new LatLng();
-    private long birthDay;
+    private String birthDay;
     private int gender;
     private int status;
     private int currentRole;
@@ -85,11 +85,11 @@ public class SortUserDetailResponse {
         this.currentLocation = currentLocation;
     }
 
-    public long getBirthDay() {
+    public String getBirthDay() {
         return birthDay;
     }
 
-    public void setBirthDay(long birthDay) {
+    public void setBirthDay(String birthDay) {
         this.birthDay = birthDay;
     }
 
