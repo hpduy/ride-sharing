@@ -1,7 +1,6 @@
 package com.bikiegang.ridesharing.pojo.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.json.JSONObject;
 
 /**
  * Created by hpduy17 on 7/15/15.
@@ -9,7 +8,7 @@ import org.json.JSONObject;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AutoSearchParingRequest {
     private String creatorId;
-    private JSONObject googleRoutingResult;
+    private String googleRoutingResult;
 
     public String getCreatorId() {
         return creatorId;
@@ -19,11 +18,11 @@ public class AutoSearchParingRequest {
         this.creatorId = creatorId;
     }
 
-    public JSONObject getGoogleRoutingResult() {
+    public String getGoogleRoutingResult() {
         return googleRoutingResult;
     }
 
-    public void setGoogleRoutingResult(JSONObject googleRoutingResult) {
+    public void setGoogleRoutingResult(String googleRoutingResult) {
         this.googleRoutingResult = googleRoutingResult;
     }
 }

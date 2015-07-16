@@ -16,9 +16,12 @@ import com.bikiegang.ridesharing.pojo.request.GetRouteDetailRequest;
 import com.bikiegang.ridesharing.pojo.response.AutoSearchParingResponse;
 import com.bikiegang.ridesharing.pojo.response.RouteDetailResponse;
 import com.bikiegang.ridesharing.pojo.response.RouteSortDetailResponse;
+import com.bikiegang.ridesharing.pojo.response.UserDetailWithRouteDetailResponse;
 import com.bikiegang.ridesharing.utilities.DateTimeUtil;
+import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -76,7 +79,7 @@ public class RouteController {
         if (route == null) {
             return Parser.ObjectToJSon(false, "Route is not found");
         }
-        RouteDetailResponse routeDetailResponse = new RouteDetailResponse(getRouteSortDetail(route), route.getRawRoutingResult());
+        RouteDetailResponse routeDetailResponse = new RouteDetailResponse(getRouteSortDetail(route), route.getRawRoutingResult().toString());
         return Parser.ObjectToJSon(true, "Get route detail successfully", routeDetailResponse);
     }
 
@@ -86,63 +89,80 @@ public class RouteController {
         if (null == request.getCreatorId() || request.getCreatorId().equals("")) {
             return Parser.ObjectToJSon(false, "'creatorId' is not found");
         }
-        if (null == request.getGoogleRoutingResult() || request.getGoogleRoutingResult().length() <= 0) {
+        if (null == request.getGoogleRoutingResult() || request.getGoogleRoutingResult().equals("")) {
             return Parser.ObjectToJSon(false, "'googleRoutingResult' is invalid");
         }
         // create fake route
         Route fakeRoute = new Route();
         fakeRoute.setGoTime(DateTimeUtil.now());
-        fakeRoute.setRawRoutingResult(request.getGoogleRoutingResult());
+        fakeRoute.setRawRoutingResult(new JSONObject(request.getGoogleRoutingResult()));
         fakeRoute.setRole(0);
         fakeRoute.setCreatorId(request.getCreatorId());
         fakeRoute.setType(Route.INSTANT);
         List<LinkedLocation> fakeLocation = new FetchingDataFromGoogleRouting().fetch(fakeRoute);
         if (fakeLocation != null) {
             HashMap<Integer, List<Route>> routes = new Pairing().pair(fakeRoute, fakeLocation);
+            for (int key : routes.keySet()) {
+                List<Route> routeList = routes.get(key);
+                List<UserDetailWithRouteDetailResponse> details = new ArrayList<>();
+                for (Route r : routeList) {
+                    User creator = database.getUserHashMap().get(r.getCreatorId());
+                    if (null != creator) {
+                        RouteDetailResponse routeDetailResponse = new RouteDetailResponse(getRouteSortDetail(r), r.getRawRoutingResult().toString());
+                        UserDetailWithRouteDetailResponse userRouteDetail = new UserDetailWithRouteDetailResponse(creator, routeDetailResponse);
+                        details.add(userRouteDetail);
+                    }
+                }
+                if (key == User.DRIVER) {
+                    response.setDrivers(details.toArray(new UserDetailWithRouteDetailResponse[details.size()]));
+                } else {
+                    response.setPassenger(details.toArray(new UserDetailWithRouteDetailResponse[details.size()]));
+                }
+            }
         }
-        //TODO: fill data to response
-        return Parser.ObjectToJSon(true,"Paring successfully", response);
+        return Parser.ObjectToJSon(true, "Paring successfully", response);
     }
+
     public String createRoute(CreateRouteRequest request) throws Exception {
         RouteSortDetailResponse[] routes = null;
         if (null == request.getCreatorId() || request.getCreatorId().equals("")) {
             return Parser.ObjectToJSon(false, "'creatorId' is not found");
         }
-        if (null == request.getGoogleRoutingResult() || request.getGoogleRoutingResult().length() <= 0) {
+        if (null == request.getGoogleRoutingResult() || request.getGoogleRoutingResult().equals("")) {
             return Parser.ObjectToJSon(false, "'googleRoutingResult' is invalid");
         }
         Route route = new Route();
         route.setId(IdGenerator.getRouteId());
         route.setRole(request.getRole());
-        if(request.getGoTime() > DateTimeUtil.now()){
+        if (request.getGoTime() > DateTimeUtil.now()) {
             route.setGoTime(request.getGoTime());
             route.setType(Route.SINGLE_FUTURE);
-        }else{
+        } else {
             route.setGoTime(DateTimeUtil.now());
             route.setType(Route.INSTANT);
         }
         route.setCreatorId(request.getCreatorId());
-        route.setRawRoutingResult(request.getGoogleRoutingResult());
+        route.setRawRoutingResult(new JSONObject(request.getGoogleRoutingResult()));
         //fetch data
         List<LinkedLocation> locations = new FetchingDataFromGoogleRouting().fetch(route);
-        if(null != locations){
+        if (null != locations) {
             LinkedLocationController controller = new LinkedLocationController();
-            for(LinkedLocation location: locations){
-                controller.insertLinkLocation(location,route.getRole());
+            for (LinkedLocation location : locations) {
+                controller.insertLinkLocation(location, route.getRole());
             }
         }
         // check price
-        if(request.getPrice() < 0){
+        if (request.getPrice() < 0) {
             route.setOwnerPrice(DEFAULT_PRICE);
-        }else{
-            route.setOwnerPrice(request.getPrice()/route.getSumDistance());
+        } else {
+            route.setOwnerPrice(request.getPrice() / route.getSumDistance());
         }
-        if(dao.insert(route)) {
+        if (dao.insert(route)) {
             HashMap<Integer, List<Route>> paringResults = new Pairing().pair(route);
             List<Route> result;
-            if(route.getRole() == User.PASSENGER){
+            if (route.getRole() == User.PASSENGER) {
                 result = paringResults.get(User.DRIVER);
-            }else {
+            } else {
                 result = paringResults.get(User.PASSENGER);
             }
             routes = getListRouteSortDetailFromRoutes(result);

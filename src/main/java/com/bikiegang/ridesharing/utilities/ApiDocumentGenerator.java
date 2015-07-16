@@ -21,6 +21,7 @@ public class ApiDocumentGenerator {
         Set<Class<? extends HttpServlet>> allClasses =
                 reflections.getSubTypesOf(HttpServlet.class);
         for (Class cls : allClasses) {
+
             HttpServlet api = (HttpServlet) Class.forName(cls.getName()).newInstance();
             String[] names = cls.getName().split("[.]");
             String apiName = names[names.length - 1];

@@ -23,7 +23,7 @@ import java.io.PrintWriter;
 
 public class RequestMakeTripAPI extends HttpServlet {
     private Logger logger = LoggerFactory.createLogger(this.getClass());
-    public Class requestClass = RequestMakeTripAPI.class;
+    public Class requestClass = RequestMakeTripRequest.class;
     public Class responseClass = null;
     public boolean responseIsArray = false;
 

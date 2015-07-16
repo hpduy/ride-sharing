@@ -153,15 +153,15 @@ public class ApiDocument {
         int count = 0;
         for (String paramName : src.keySet()) {
             ApiParameter param = src.get(paramName);
-            result += "\"" + paramName+"\"";
+            result += "\"" + paramName + "\"";
             //result += " - " + (param.isRequired ? "required" : "optional");
             if (!isPrimaryType(param.getDataType()) && !param.getDataType().equals("String")) {
                 result += " : [{" + toNiceString(param.getChildParameter()).replaceAll("\\n", "") + "}]";
-            }else{
+            } else {
                 result += ":\"" + param.dataType + "\"";
             }
-            if(count<src.keySet().size()-1){
-                result+=",";
+            if (count < src.keySet().size() - 1) {
+                result += ",";
             }
             count++;
 

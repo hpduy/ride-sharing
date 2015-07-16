@@ -1,7 +1,6 @@
 package com.bikiegang.ridesharing.pojo.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.json.JSONObject;
 
 /**
  * Created by hpduy17 on 7/15/15.
@@ -12,7 +11,7 @@ public class CreateRouteRequest {
     private int role;
     private long goTime;
     private double price = -1;
-    private JSONObject googleRoutingResult;
+    private String googleRoutingResult;
 
     public String getCreatorId() {
         return creatorId;
@@ -46,11 +45,11 @@ public class CreateRouteRequest {
         this.price = price;
     }
 
-    public JSONObject getGoogleRoutingResult() {
+    public String getGoogleRoutingResult() {
         return googleRoutingResult;
     }
 
-    public void setGoogleRoutingResult(JSONObject googleRoutingResult) {
+    public void setGoogleRoutingResult(String googleRoutingResult) {
         this.googleRoutingResult = googleRoutingResult;
     }
 }

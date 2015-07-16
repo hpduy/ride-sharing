@@ -1,8 +1,10 @@
 package com.bikiegang.ridesharing;
 
 import com.bikiegang.ridesharing.geocoding.FetchingDataFromGoogleRouting;
+import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.LinkedLocation;
 import com.bikiegang.ridesharing.pojo.Route;
+import com.bikiegang.ridesharing.pojo.request.CreateRouteRequest;
 import com.bikiegang.ridesharing.utilities.Path;
 import org.json.JSONObject;
 import org.junit.Test;
@@ -371,5 +373,17 @@ public class RouteTest {
                 System.out.println("("+location.getLat()+","+location.getLng()+") :: index:"+location.getIndex() +" -- time:"+location.getEstimatedTime());
             }
         }
+    }
+
+    @Test
+    public void createRoute() throws IOException {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("creatorId","Duy");
+        jsonObject.put("role",1);
+        jsonObject.put("goTime",123);
+        jsonObject.put("price",123);
+        jsonObject.put("googleRoutingResult",new JSONObject(json).toString());
+        CreateRouteRequest request = (CreateRouteRequest) Parser.JSonToObject(jsonObject.toString(),CreateRouteRequest.class);
+        System.out.print(request);
     }
 }

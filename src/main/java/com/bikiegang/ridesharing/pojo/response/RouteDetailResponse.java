@@ -1,26 +1,24 @@
 package com.bikiegang.ridesharing.pojo.response;
 
-import org.json.JSONObject;
-
 /**
  * Created by hpduy17 on 7/8/15.
  */
 public class RouteDetailResponse extends RouteSortDetailResponse {
-    private JSONObject googleRoutingResult;
+    private String googleRoutingResult;
 
     public RouteDetailResponse() {
     }
 
-    public RouteDetailResponse(RouteSortDetailResponse that, JSONObject googleRoutingResult) {
+    public RouteDetailResponse(RouteSortDetailResponse that, String googleRoutingResult) {
         super(that);
         this.googleRoutingResult = googleRoutingResult;
     }
 
-    public JSONObject getGoogleRoutingResult() {
+    public String getGoogleRoutingResult() {
         return googleRoutingResult;
     }
 
-    public void setGoogleRoutingResult(JSONObject googleRoutingResult) {
+    public void setGoogleRoutingResult(String googleRoutingResult) {
         this.googleRoutingResult = googleRoutingResult;
     }
 }
