@@ -8,6 +8,7 @@ import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.Trip;
 import com.bikiegang.ridesharing.utilities.Const;
+import java.util.HashSet;
 import org.apache.log4j.Logger;
 
 /**
@@ -27,8 +28,25 @@ public class TripDao {
             }
             //Step 1: put in hashmap
             database.getTripHashMap().put(obj.getId(), obj);
+            HashSet<Long> setRfDrive = database.getDriverIdRFTrips().get(obj.getDriverId());
+            HashSet<Long> setRfPassenger = database.getPassengerIdRFTrips()
+                    .get(obj.getPassengerId());
+            if (setRfDrive == null) {
+                setRfDrive = new HashSet<>();
+            }
+            if (setRfPassenger == null) {
+                setRfPassenger = new HashSet<>();
+            }
+            setRfDrive.add(obj.getId());
+            setRfPassenger.add(obj.getId());
+
             //Step 2: put redis
-            result = cache.hset(obj.getClass().getName(), String.valueOf(obj.getId()), JSONUtil.Serialize(obj));
+            result = cache.hset(obj.getClass().getName(), String.valueOf(obj.getId()),
+                    JSONUtil.Serialize(obj));
+            result &= cache.hset(obj.getClass().getName() + ":drive", obj.getDriverId(),
+                    JSONUtil.Serialize(setRfDrive));
+            result &= cache.hset(obj.getClass().getName() + ":passenger", obj.getPassengerId(),
+                    JSONUtil.Serialize(setRfPassenger));
             if (result) {
                 //Step 3: put job gearman
                 short actionType = Const.RideSharing.ActionType.INSERT;
@@ -37,12 +55,14 @@ public class TripDao {
                 result &= GClientManager.getInstance(ConfigInfo.RIDESHARING_WORKER_GEARMAN).push(job);
                 if (!result) {
                     logger.error(String.format("Can't not insert DB with value=%s", obj));
+                } else {
+                    logger.info(String.format("Insert Trip success with value=%s",
+                            JSONUtil.Serialize(obj)));
                 }
             } else {
                 logger.error(String.format("Can't not insert redis with key=%s, field=%s, value=%s",
                         obj.getClass().getName(), String.valueOf(obj.getId()), JSONUtil.Serialize(obj)));
             }
-            result = true;
         } catch (Exception ex) {
 
             logger.error(ex.getStackTrace());
@@ -59,7 +79,24 @@ public class TripDao {
             }
             //Step 1: put in hashmap
             database.getTripHashMap().remove(obj.getId());
+            HashSet<Long> setRfDrive = database.getDriverIdRFTrips().get(obj.getDriverId());
+            HashSet<Long> setRfPassenger = database.getPassengerIdRFTrips()
+                    .get(obj.getPassengerId());
+            if (setRfDrive == null) {
+                setRfDrive = new HashSet<>();
+            }
+            if (setRfPassenger == null) {
+                setRfPassenger = new HashSet<>();
+            }
+            setRfDrive.remove((Long) obj.getId());
+            setRfPassenger.remove((Long) obj.getId());
             //Step 2: put redis
+            result = cache.hdel(obj.getClass().getName(), String.valueOf(obj.getId()));
+            result &= cache.hset(obj.getClass().getName() + ":drive", obj.getDriverId(),
+                    JSONUtil.Serialize(setRfDrive));
+            result &= cache.hset(obj.getClass().getName() + ":passenger", obj.getPassengerId(),
+                    JSONUtil.Serialize(setRfPassenger));
+
             if (result) {
                 //Step 3: put job gearman
                 short actionType = Const.RideSharing.ActionType.DELETE;
@@ -68,12 +105,14 @@ public class TripDao {
                 result &= GClientManager.getInstance(ConfigInfo.RIDESHARING_WORKER_GEARMAN).push(job);
                 if (!result) {
                     logger.error(String.format("Can't not delete DB with value=%s", obj));
+                } else {
+                    logger.info(String.format("Remove Trip success with value=%s",
+                            JSONUtil.Serialize(obj)));
                 }
             } else {
                 logger.error(String.format("Can't not delete redis with key=%s, field=%s, value=%s",
                         obj.getClass().getName(), String.valueOf(obj.getId()), JSONUtil.Serialize(obj)));
             }
-            result = true;
         } catch (Exception ex) {
 
             logger.error(ex.getStackTrace());
@@ -87,7 +126,7 @@ public class TripDao {
         try {
             if (obj == null) {
                 return false;
-            }
+            }   
             //Step 1: put in hashmap
             database.getTripHashMap().put(obj.getId(), obj);
             //Step 2: put redis
@@ -100,12 +139,14 @@ public class TripDao {
                 result &= GClientManager.getInstance(ConfigInfo.RIDESHARING_WORKER_GEARMAN).push(job);
                 if (!result) {
                     logger.error(String.format("Can't not update DB with value=%s", obj));
+                } else {
+                    logger.info(String.format("Update Trip success with value=%s",
+                            JSONUtil.Serialize(obj)));
                 }
             } else {
                 logger.error(String.format("Can't not update redis with key=%s, field=%s, value=%s",
                         obj.getClass().getName(), String.valueOf(obj.getId()), JSONUtil.Serialize(obj)));
             }
-            result = true;
         } catch (Exception ex) {
 
             logger.error(ex.getStackTrace());
