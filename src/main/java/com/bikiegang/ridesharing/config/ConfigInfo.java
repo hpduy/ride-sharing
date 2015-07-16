@@ -190,9 +190,11 @@ public class ConfigInfo {
                 + "`gender`,\n"
                 + "`status`,\n"
                 + "`isBusy`,\n"
-                + "`currentRole`)\n"
+                + "`currentRole`,\n"
+                + "`linkedInId`,\n"
+                + "`selfIntro`)\n"
                 + "VALUES\n"
-                + "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                + "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
         USER_UPDATE_QUERY = "UPDATE `ridesharing_db`.`User`\n"
                 + "SET\n"
                 + "`id` = ?,\n"
@@ -210,7 +212,9 @@ public class ConfigInfo {
                 + "`gender` = ?,\n"
                 + "`status` = ?,\n"
                 + "`isBusy` = ?,\n"
-                + "`currentRole` = ?\n"
+                + "`currentRole` = ?,\n"
+                + "`linkedInId` = ?,\n"
+                + "`selfIntro` = ?\n"
                 + "WHERE `id` = ?;";
         USER_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`User`\n"
                 + "WHERE `id` = ?;";

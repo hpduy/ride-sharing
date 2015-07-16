@@ -8,6 +8,7 @@ import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.Route;
 import com.bikiegang.ridesharing.utilities.Const;
+import java.util.HashSet;
 import org.apache.log4j.Logger;
 
 /**
@@ -27,8 +28,26 @@ public class RouteDao {
             }
             //Step 1: put in hashmap
             database.getRouteHashMap().put(obj.getId(), obj);
+            HashSet<Long> setRfRole = database.getRoleRFRoutes().get(obj.getRole());
+            HashSet<Long> setRfUser = database.getUserIdRFRoutes().get(obj.getCreatorId());
+            if (setRfRole == null) {
+                setRfRole = new HashSet<>();
+            }
+            if (setRfUser == null) {
+                setRfUser = new HashSet<>();
+            }
+
+            setRfRole.add(obj.getId());
+            setRfUser.add(obj.getId());
+
             //Step 2: put redis
-            result = cache.hset(obj.getClass().getName(), String.valueOf(obj.getId()), JSONUtil.Serialize(obj));
+            result = cache.hset(obj.getClass().getName(), String.valueOf(obj.getId()),
+                    JSONUtil.Serialize(obj));
+            result &= cache.hset(obj.getClass().getName() + ":user", String.valueOf(obj.getCreatorId()),
+                    JSONUtil.Serialize(setRfUser));
+            result &= cache.hset(obj.getClass().getName() + ":role", String.valueOf(obj.getRole()),
+                    JSONUtil.Serialize(setRfRole));
+
             if (result) {
                 //Step 3: put job gearman
                 short actionType = Const.RideSharing.ActionType.INSERT;
@@ -37,14 +56,17 @@ public class RouteDao {
                 result &= GClientManager.getInstance(ConfigInfo.RIDESHARING_WORKER_GEARMAN).push(job);
                 if (!result) {
                     logger.error(String.format("Can't not insert DB with value=%s", obj));
+                } else {
+                    logger.info(String.format("Insert Route success with value "
+                            + "=%s", JSONUtil.Serialize(obj)));
                 }
             } else {
-                logger.error(String.format("Can't not insert redis with key=%s, field=%s, value=%s",
-                        obj.getClass().getName(), String.valueOf(obj.getId()), JSONUtil.Serialize(obj)));
+                logger.error(String.format("Can't not insert redis with key=%s, "
+                        + "field=%s, value=%s",
+                        obj.getClass().getName(), String.valueOf(obj.getId()),
+                        JSONUtil.Serialize(obj)));
             }
-            result = true;
         } catch (Exception ex) {
-
             logger.error(ex.getStackTrace());
             ex.printStackTrace();
         }
@@ -59,7 +81,25 @@ public class RouteDao {
             }
             //Step 1: put in hashmap
             database.getRouteHashMap().remove(obj.getId());
+            HashSet<Long> mapRfRole = database.getRoleRFRoutes().get(obj.getRole());
+            HashSet<Long> mapRfUser = database.getUserIdRFRoutes().get(obj.getCreatorId());
+            if (mapRfRole == null) {
+                mapRfRole = new HashSet<>();
+            }
+            if (mapRfUser == null) {
+                mapRfUser = new HashSet<>();
+            }
+
+            mapRfRole.remove(obj.getId());
+            mapRfUser.remove(obj.getId());
+
             //Step 2: put redis
+            result = cache.hdel(obj.getClass().getName(),
+                    String.valueOf(obj.getId()));
+            result &= cache.hset(obj.getClass().getName() + ":user",
+                    String.valueOf(obj.getCreatorId()), JSONUtil.Serialize(mapRfUser));
+            result &= cache.hset(obj.getClass().getName() + ":role",
+                    String.valueOf(obj.getCreatorId()), JSONUtil.Serialize(mapRfRole));
             if (result) {
                 //Step 3: put job gearman
                 short actionType = Const.RideSharing.ActionType.DELETE;
@@ -68,12 +108,14 @@ public class RouteDao {
                 result &= GClientManager.getInstance(ConfigInfo.RIDESHARING_WORKER_GEARMAN).push(job);
                 if (!result) {
                     logger.error(String.format("Can't not delete DB with value=%s", obj));
+                } else {
+                    logger.info(String.format("Remove Route success with value "
+                            + "=%s", JSONUtil.Serialize(obj)));
                 }
             } else {
                 logger.error(String.format("Can't not delete redis with key=%s, field=%s, value=%s",
                         obj.getClass().getName(), String.valueOf(obj.getId()), JSONUtil.Serialize(obj)));
             }
-            result = true;
         } catch (Exception ex) {
 
             logger.error(ex.getStackTrace());
@@ -100,12 +142,14 @@ public class RouteDao {
                 result &= GClientManager.getInstance(ConfigInfo.RIDESHARING_WORKER_GEARMAN).push(job);
                 if (!result) {
                     logger.error(String.format("Can't not update DB with value=%s", obj));
+                } else {
+                    logger.info(String.format("Update Route success with value "
+                            + "=%s", JSONUtil.Serialize(obj)));
                 }
             } else {
                 logger.error(String.format("Can't not update redis with key=%s, field=%s, value=%s",
                         obj.getClass().getName(), String.valueOf(obj.getId()), JSONUtil.Serialize(obj)));
             }
-            result = true;
         } catch (Exception ex) {
 
             logger.error(ex.getStackTrace());

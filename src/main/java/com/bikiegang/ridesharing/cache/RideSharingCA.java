@@ -91,6 +91,17 @@ public class RideSharingCA {
         return result;
     }
 
+    public boolean hdel(String key, String field) throws Exception {
+        boolean result = false;
+        try {
+            redisClient.hdel(buildKeyWithPrefix(key), new String[]{field});
+            result = true;
+        } catch (Exception ex) {
+            _logger.error(ex.getMessage(), ex);
+        }
+        return result;
+    }
+
     public String hget(String key, String field) throws Exception {
         String result = "";
         try {

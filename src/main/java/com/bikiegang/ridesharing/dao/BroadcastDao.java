@@ -8,6 +8,7 @@ import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.Broadcast;
 import com.bikiegang.ridesharing.utilities.Const;
+import java.util.HashSet;
 import org.apache.log4j.Logger;
 
 /**
@@ -27,8 +28,16 @@ public class BroadcastDao {
             }
             //Step 1: put in hashmap
             database.getBroadcastHashMap().put(obj.getId(), obj);
+            HashSet<String> get = database.getUserIdRFBroadcasts().get(obj.getUserId());
+            if (get == null) {
+                get = new HashSet<>();
+            }
+            get.add(obj.getId());
+            database.getUserIdRFBroadcasts().put(obj.getUserId(), get);
+
             //Step 2: put redis
             result = cache.hset(obj.getClass().getName(), String.valueOf(obj.getId()), JSONUtil.Serialize(obj));
+            result &= cache.hset(obj.getClass().getName() + ":user", obj.getUserId(), JSONUtil.Serialize(get));
             if (result) {
                 //Step 3: put job gearman
                 short actionType = Const.RideSharing.ActionType.INSERT;
@@ -37,12 +46,13 @@ public class BroadcastDao {
                 result &= GClientManager.getInstance(ConfigInfo.RIDESHARING_WORKER_GEARMAN).push(job);
                 if (!result) {
                     logger.error(String.format("Can't not insert DB with value=%s", obj));
+                } else {
+                    logger.info(String.format("Insert Broadcast success with value=%s", JSONUtil.Serialize(obj)));
                 }
             } else {
                 logger.error(String.format("Can't not insert redis with key=%s, field=%s, value=%s",
                         obj.getClass().getName(), String.valueOf(obj.getId()), JSONUtil.Serialize(obj)));
             }
-            result = true;
         } catch (Exception ex) {
 
             logger.error(ex.getStackTrace());
@@ -57,9 +67,19 @@ public class BroadcastDao {
             if (obj == null) {
                 return false;
             }
-            //Step 1: put in hashmap
+            //Step 1: remove in hashmap
             database.getBroadcastHashMap().remove(obj.getId());
-            //Step 2: put redis
+            HashSet<String> get = database.getUserIdRFBroadcasts().get(obj.getUserId());
+            if (get == null) {
+                get = new HashSet<>();
+            }
+            get.remove(obj.getId());
+
+            //Step 2: remove redis
+            result = cache.hdel(obj.getClass().getName(), obj.getId());
+            result &= cache.hset(obj.getClass().getName() + ":user",
+                    obj.getUserId(), JSONUtil.Serialize(get));
+
             if (result) {
                 //Step 3: put job gearman
                 short actionType = Const.RideSharing.ActionType.DELETE;
@@ -68,12 +88,13 @@ public class BroadcastDao {
                 result &= GClientManager.getInstance(ConfigInfo.RIDESHARING_WORKER_GEARMAN).push(job);
                 if (!result) {
                     logger.error(String.format("Can't not delete DB with value=%s", obj));
+                } else {
+                    logger.info(String.format("Delete Broadcast success with value=%s", JSONUtil.Serialize(obj)));
                 }
             } else {
                 logger.error(String.format("Can't not delete redis with key=%s, field=%s, value=%s",
                         obj.getClass().getName(), String.valueOf(obj.getId()), JSONUtil.Serialize(obj)));
             }
-            result = true;
         } catch (Exception ex) {
 
             logger.error(ex.getStackTrace());
@@ -83,14 +104,15 @@ public class BroadcastDao {
     }
 
     public boolean update(Broadcast obj) {
-       boolean result = false;
+        boolean result = false;
         try {
             if (obj == null) {
                 return false;
             }
-            //Step 1: put in hashmap
+            //Step 1: Update in hashmap
             database.getBroadcastHashMap().put(obj.getId(), obj);
-            //Step 2: put redis
+
+            //Step 2: Update redis
             result = cache.hset(obj.getClass().getName(), String.valueOf(obj.getId()), JSONUtil.Serialize(obj));
             if (result) {
                 //Step 3: put job gearman
@@ -100,12 +122,13 @@ public class BroadcastDao {
                 result &= GClientManager.getInstance(ConfigInfo.RIDESHARING_WORKER_GEARMAN).push(job);
                 if (!result) {
                     logger.error(String.format("Can't not update DB with value=%s", obj));
+                } else {
+                    logger.info(String.format("Update broadcast with value=%s", JSONUtil.Serialize(obj)));
                 }
             } else {
                 logger.error(String.format("Can't not update redis with key=%s, field=%s, value=%s",
                         obj.getClass().getName(), String.valueOf(obj.getId()), JSONUtil.Serialize(obj)));
             }
-            result = true;
         } catch (Exception ex) {
 
             logger.error(ex.getStackTrace());

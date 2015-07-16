@@ -88,8 +88,11 @@ public class TestUtils {
         User result = new User(RandomStringUtils.randomAlphabetic(20),
                 RandomStringUtils.randomAlphabetic(20), RandomStringUtils.randomAlphabetic(20), RandomStringUtils.randomAlphabetic(20),
                 RandomStringUtils.randomAlphabetic(20), RandomStringUtils.randomAlphabetic(20), RandomStringUtils.randomAlphabetic(20),
-                RandomStringUtils.randomAlphabetic(20), RandomStringUtils.randomAlphabetic(20), RandomStringUtils.randomAlphabetic(20),
-                RandomStringUtils.randomAlphabetic(20),RandomStringUtils.randomAlphabetic(20),RandomStringUtils.randomAlphabetic(20), RandomUtils.nextInt(), RandomUtils.nextInt(), true);
+                RandomStringUtils.randomAlphabetic(20), RandomStringUtils.randomAlphabetic(20),
+                RandomStringUtils.randomAlphabetic(20),
+                RandomStringUtils.randomAlphabetic(20),RandomStringUtils.randomAlphabetic(20),
+                RandomStringUtils.randomAlphabetic(10), RandomUtils.nextInt(),
+                RandomUtils.nextInt(), true);
         return result;
     }
 
