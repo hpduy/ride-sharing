@@ -4,12 +4,12 @@
  * and open the template in the editor.
  */
 
-package com.bikiegang.ridesharing.api.oldApi;
+package com.bikiegang.ridesharing.api;
 
-import com.bikiegang.ridesharing.controller.UserController;
+import com.bikiegang.ridesharing.controller.RouteController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.User;
-import com.bikiegang.ridesharing.pojo.request.old.RegisterRequest;
+import com.bikiegang.ridesharing.pojo.request.AutoSearchParingRequest;
+import com.bikiegang.ridesharing.pojo.response.AutoSearchParingResponse;
 import com.bikiegang.ridesharing.utilities.LoggerFactory;
 import org.apache.log4j.Logger;
 
@@ -22,11 +22,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class RegisterAPI extends HttpServlet {
+public class AutoParingWhenSearchAPI extends HttpServlet {
     private Logger logger = LoggerFactory.createLogger(this.getClass());
-    public Class requestClass = RegisterRequest.class;
-    public Class responseClass = User.class;
+    public Class requestClass = AutoSearchParingRequest.class;
+    public Class responseClass = AutoSearchParingResponse.class;
     public boolean responseIsArray = false;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -34,7 +35,7 @@ public class RegisterAPI extends HttpServlet {
      * @param request  raw request
      * @param response raw response
      * @throws ServletException if a raw-specific error occurs
-     * @throws IOException            if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -48,16 +49,19 @@ public class RegisterAPI extends HttpServlet {
             while ((line = reader.readLine()) != null) {
                 jsonData.append(line);
             }
-            RegisterRequest registerRequest = (RegisterRequest) Parser.JSonToObject(jsonData.toString(),RegisterRequest.class);
-            UserController controller = new UserController();
-            out.print(controller.register(registerRequest));
-        }catch (Exception ex){
+            logger.info("Request::"+jsonData.toString());
+            AutoSearchParingRequest autoSearchParingRequest = (AutoSearchParingRequest) Parser.JSonToObject(jsonData.toString(), AutoSearchParingRequest.class);
+            RouteController controller = new RouteController();
+            String result = controller.autoSearchParing(autoSearchParingRequest);
+            logger.info("Request::"+result);
+            out.print(result);
+        } catch (Exception ex) {
             logger.error(ex.getStackTrace());
             out.print(Parser.ObjectToJSon(false, ex.getMessage()));
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold default state="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -65,7 +69,7 @@ public class RegisterAPI extends HttpServlet {
      * @param request  raw request
      * @param response raw response
      * @throws ServletException if a raw-specific error occurs
-     * @throws IOException            if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -80,7 +84,7 @@ public class RegisterAPI extends HttpServlet {
      * @param request  raw request
      * @param response raw response
      * @throws ServletException if a raw-specific error occurs
-     * @throws IOException            if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -95,6 +99,6 @@ public class RegisterAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Register new account by  email, facebookId, googleId and twitterId";
+        return "Update user current location";
     }
 }

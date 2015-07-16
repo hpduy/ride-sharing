@@ -4,11 +4,11 @@
  * and open the template in the editor.
  */
 
-package com.bikiegang.ridesharing.api.oldApi;
+package com.bikiegang.ridesharing.api;
 
-import com.bikiegang.ridesharing.controller.UserController;
+import com.bikiegang.ridesharing.controller.RequestMakeTripController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.request.old.UpdateCurrentLocationRequest;
+import com.bikiegang.ridesharing.pojo.request.RequestMakeTripRequest;
 import com.bikiegang.ridesharing.utilities.LoggerFactory;
 import org.apache.log4j.Logger;
 
@@ -21,9 +21,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class UpdateCurrentLocationAPI extends HttpServlet {
+public class RequestMakeTripAPI extends HttpServlet {
     private Logger logger = LoggerFactory.createLogger(this.getClass());
-    public Class requestClass = UpdateCurrentLocationRequest.class;
+    public Class requestClass = RequestMakeTripAPI.class;
     public Class responseClass = null;
     public boolean responseIsArray = false;
 
@@ -48,9 +48,12 @@ public class UpdateCurrentLocationAPI extends HttpServlet {
             while ((line = reader.readLine()) != null) {
                 jsonData.append(line);
             }
-            UpdateCurrentLocationRequest updateCurrentLocationRequest = (UpdateCurrentLocationRequest) Parser.JSonToObject(jsonData.toString(), UpdateCurrentLocationRequest.class);
-            UserController controller = new UserController();
-            out.print(controller.updateUserCurrentLocation(updateCurrentLocationRequest));
+            logger.info("Request::"+jsonData.toString());
+            RequestMakeTripRequest requestMakeTripRequest = (RequestMakeTripRequest) Parser.JSonToObject(jsonData.toString(), RequestMakeTripRequest.class);
+            RequestMakeTripController controller = new RequestMakeTripController();
+            String result = controller.sendRequestMakeTrip(requestMakeTripRequest);
+            logger.info("Request::"+result);
+            out.print(result);
         } catch (Exception ex) {
             logger.error(ex.getStackTrace());
             out.print(Parser.ObjectToJSon(false, ex.getMessage()));

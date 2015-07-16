@@ -9,7 +9,7 @@ package com.bikiegang.ridesharing.api;
 import com.bikiegang.ridesharing.controller.UserController;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.request.GetUsersAroundFromMeRequest;
-import com.bikiegang.ridesharing.pojo.response.SortUserDetailResponse;
+import com.bikiegang.ridesharing.pojo.response.UserSortDetailResponse;
 import com.bikiegang.ridesharing.utilities.LoggerFactory;
 import org.apache.log4j.Logger;
 
@@ -25,7 +25,7 @@ import java.io.PrintWriter;
 public class GetUsersAroundFromMeAPI extends HttpServlet {
     private Logger logger = LoggerFactory.createLogger(this.getClass());
     public Class requestClass = GetUsersAroundFromMeRequest.class;
-    public Class responseClass = SortUserDetailResponse[].class;
+    public Class responseClass = UserSortDetailResponse[].class;
     public boolean responseIsArray = false;
 
     /**

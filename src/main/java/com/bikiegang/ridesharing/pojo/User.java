@@ -1,6 +1,5 @@
 package com.bikiegang.ridesharing.pojo;
 
-import com.bikiegang.ridesharing.pojo.request.old.UpdateProfileRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
@@ -96,12 +95,6 @@ public class User implements PojoBase {
         this.isBusy = that.isBusy;
     }
 
-    public void updateUserProfile(UpdateProfileRequest that) {
-        this.firstName = that.getFirstName() == null ? this.firstName : that.getFirstName();
-        this.lastName = that.getLastName() == null ? this.lastName : that.getLastName();
-        this.profilePictureLink = that.getProfilePicture() == null ? this.profilePictureLink : that.getProfilePicture();
-        this.gender = that.getGender() <= 0 ? this.gender : that.getGender();
-    }
 
     public String getId() {
         return id;

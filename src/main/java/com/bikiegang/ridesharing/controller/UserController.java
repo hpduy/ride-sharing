@@ -2,14 +2,16 @@ package com.bikiegang.ridesharing.controller;
 
 import com.bikiegang.ridesharing.dao.UserDao;
 import com.bikiegang.ridesharing.database.Database;
+import com.bikiegang.ridesharing.geocoding.PolyLineProcess;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.*;
-import com.bikiegang.ridesharing.pojo.request.old.*;
-import com.bikiegang.ridesharing.pojo.response.SortUserDetailResponse;
+import com.bikiegang.ridesharing.pojo.response.UserDetailWithRoutesResponse;
+import com.bikiegang.ridesharing.pojo.response.UserSortDetailResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +22,9 @@ public class UserController {
     private UserDao dao = new UserDao();
     private Database database = Database.getInstance();
 
+    /**
+     * REGISTER
+     */
     public String register(RegisterRequest registerRequest) throws JsonProcessingException {
         if (registerRequest.getType() == 0)
             return Parser.ObjectToJSon(false, "'type' is not found");
@@ -140,6 +145,9 @@ public class UserController {
         return Parser.ObjectToJSon(false, "Cannot register now. Try again later!");
     }
 
+    /**
+     * LOGIN
+     */
     public String login(LoginRequest loginRequest) throws JsonProcessingException {
         if (loginRequest.getType() == 0)
             return Parser.ObjectToJSon(false, "'type' is not found");
@@ -222,76 +230,25 @@ public class UserController {
         return Parser.ObjectToJSon(true, "Login successfully", user);
     }
 
-    public String updateProfile(UpdateProfileRequest updateRequest) throws JsonProcessingException {
-        if (updateRequest.getId() == null || updateRequest.getId().equals("")) {
-            return Parser.ObjectToJSon(false, "'id' is not found");
-        }
-        User user = database.getUserHashMap().get(updateRequest.getId());
-        if (user == null) {
-            return Parser.ObjectToJSon(false, "User is not found, maybe id is invalid");
-        }
-        user.updateUserProfile(updateRequest);
-        if (dao.update(user)) {
-            return Parser.ObjectToJSon(true, "Update successfully", user);
-        }
-        return Parser.ObjectToJSon(false, "Cannot update profile");
-    }
-
-    public String updateCurrentRole(UpdateCurrentRoleRequest request) throws JsonProcessingException {
-        if (request.getUserId() == null || request.getUserId().equals("")) {
+    /**
+     * GET USER INFO
+     */
+    public String getUserDetailWithRoutes(GetUserDetailRequest request) throws IOException {
+        if (null == request.getUserId() || request.getUserId().equals("")) {
             return Parser.ObjectToJSon(false, "'userId' is not found");
         }
-        if (request.getRole() != User.DRIVER && request.getRole() != User.PASSENGER) {
-            return Parser.ObjectToJSon(false, "'role' is invalid");
-        }
         User user = database.getUserHashMap().get(request.getUserId());
         if (user == null) {
-            return Parser.ObjectToJSon(false, "User is not found, maybe id is invalid");
+            return Parser.ObjectToJSon(false, "User is not found by userId");
         }
-        user.setCurrentRole(request.getRole());
-        if (dao.update(user)) {
-            return Parser.ObjectToJSon(true, "Update current role successfully", user);
-        }
-        return Parser.ObjectToJSon(false, "Cannot update current role");
-    }
-
-    public String updateUserCurrentLocation(UpdateCurrentLocationRequest request) throws JsonProcessingException {
-        if (null == request.getUserId() || request.getUserId().equals("")) {
-            return Parser.ObjectToJSon(false, "'userId' is not found (empty or null)");
-        }
-        if (request.getLat() == 0 && request.getLng() == 0) {
-            return Parser.ObjectToJSon(false, "Latitude and Longitude is invalid (0,0)");
-        }
-        if (request.getTime() < 0) {
-            return Parser.ObjectToJSon(false, "Epoch time is invalid (< 0)");
-        }
-        //get user
-        User user = database.getUserHashMap().get(request.getUserId());
-        if (user == null) {
-            return Parser.ObjectToJSon(false, "User is not exits");
-        }
-        //save old LatLng
-        LatLng oldLocation = new LatLng(user.getCurrentLocation());
-        // update current location
-        user.getCurrentLocation().setLat(request.getLat());
-        user.getCurrentLocation().setLng(request.getLng());
-        user.getCurrentLocation().setTime(request.getTime());
-        database.getGeoCellCurrentLocation().updateInCell(oldLocation, user.getCurrentLocation(), user.getId());
-        if (dao.update(user)) {
-            Parser.ObjectToJSon(true, "Update current location successfully");
-
-        }
-        return Parser.ObjectToJSon(false, "Cannot insert current location to database");
+        //get list route of user
+        List<Long> routeIds = new ArrayList<>(database.getUserIdRFRoutes().get(user.getId()));
+        UserDetailWithRoutesResponse response = new UserDetailWithRoutesResponse(user, new RouteController().getListRouteSortDetail(routeIds));
+        return Parser.ObjectToJSon(true, "Get detail successfully", response);
     }
 
     public String getUsersAroundFromMe(GetUsersAroundFromMeRequest request) throws JsonProcessingException {
-        if (null == request.getUserId() || request.getUserId().equals("")) {
-            if(Database.databaseStatus == Database.TESTING){
-                //TODO: Check database state and  create temp data
-            }else {
-                return Parser.ObjectToJSon(false, "'userId' is not found");
-            }
-        }
+
         if (request.getCenterLat() == 0 && request.getCenterLng() == 0) {
             return Parser.ObjectToJSon(false, "Latitude and Longitude is invalid (0,0)");
         }
@@ -301,12 +258,12 @@ public class UserController {
         LatLng center = new LatLng(request.getCenterLat(), request.getCenterLng());
         List<String> userIds = database.getGeoCellCurrentLocation().getIdsInFrame(center, request.getRadius());
         List<User> users = getUsersFromUserIds(userIds);
-        List<SortUserDetailResponse> userDetails = new ArrayList<>();
-        for(User user : users){
-            SortUserDetailResponse detail = new SortUserDetailResponse(user);
+        List<UserSortDetailResponse> userDetails = new ArrayList<>();
+        for (User user : users) {
+            UserSortDetailResponse detail = new UserSortDetailResponse(user);
             userDetails.add(detail);
         }
-        return Parser.ObjectToJSon(true,"Get list users success",userDetails);
+        return Parser.ObjectToJSon(true, "Get list users success", userDetails);
     }
 
     public List<User> getUsersFromUserIds(List<String> ids) {
@@ -321,5 +278,26 @@ public class UserController {
             }
         }
         return users;
+    }
+
+    /**
+     * UPDATE USER
+     */
+    public String updateCurrentLocation(UpdateCurrentLocationRequest request) throws JsonProcessingException {
+        if (null == request.getCurrentPolyLine() || request.getCurrentPolyLine().equals("")) {
+            return Parser.ObjectToJSon(false, "'currentPolyLine' is not found");
+        }
+        if (null == request.getUserId() || request.getUserId().equals("")) {
+            return Parser.ObjectToJSon(false, "'userId' is not found");
+        }
+        User user = database.getUserHashMap().get(request.getUserId());
+        if (user == null) {
+            return Parser.ObjectToJSon(false, "User is not found by userId");
+        }
+        List<LatLng> currentList = PolyLineProcess.decodePoly(request.getCurrentPolyLine());
+        if (null != currentList && currentList.size() > 0) {
+            user.setCurrentLocation(currentList.get(currentList.size() - 1));
+        }
+        return Parser.ObjectToJSon(true, "Update current location successfully");
     }
 }

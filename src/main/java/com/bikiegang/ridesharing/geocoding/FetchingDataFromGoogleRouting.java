@@ -2,10 +2,7 @@ package com.bikiegang.ridesharing.geocoding;
 
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.database.IdGenerator;
-import com.bikiegang.ridesharing.geocoding.GoogleRoutingObject.Bound;
-import com.bikiegang.ridesharing.geocoding.GoogleRoutingObject.GoogleRoute;
-import com.bikiegang.ridesharing.geocoding.GoogleRoutingObject.RoutingResult;
-import com.bikiegang.ridesharing.geocoding.GoogleRoutingObject.Step;
+import com.bikiegang.ridesharing.geocoding.GoogleRoutingObject.*;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.LinkedLocation;
@@ -40,8 +37,6 @@ public class FetchingDataFromGoogleRouting {
         //update route info
         GoogleRoute googleRoute = routingResult.getRoutes()[0];
         route.setSumDistance(googleRoute.getLegs()[0].getDistance().getValue());
-        // get locations from route
-        String polyline = googleRoute.getOverview_polyline().getPoints();
         // create linkLocation
         List<LinkedLocation> locations = getLocations(googleRoute,route.getId());
         route.setEstimatedTime(locations.get(locations.size()-1).getEstimatedTime());
@@ -123,6 +118,22 @@ public class FetchingDataFromGoogleRouting {
         RoutingResult routingResult = (RoutingResult) Parser.JSonToObject(route.getRawRoutingResult().toString(), RoutingResult.class);
         GoogleRoute googleRoute = routingResult.getRoutes()[0];
         return googleRoute.getBounds();
+    }
+    public GoogleRoute getRouteFromRoutingResult(Route route) throws IOException {
+        if (null == route.getRawRoutingResult() || route.getRawRoutingResult().length() <= 0) {
+            if (null == route)
+                logger.info("Route is null");
+            else
+                logger.info("JSONObject is null or empty");
+            return null;
+        }
+        if (route.getId() <= 0) {
+            logger.info("Route missing id --> auto set routeId");
+            route.setId(IdGenerator.getRouteId());
+        }
+        RoutingResult routingResult = (RoutingResult) Parser.JSonToObject(route.getRawRoutingResult().toString(), RoutingResult.class);
+        GoogleRoute googleRoute = routingResult.getRoutes()[0];
+        return googleRoute;
     }
 
 }

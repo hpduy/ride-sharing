@@ -1,12 +1,12 @@
-package com.bikiegang.ridesharing.pojo.request.old;
+package com.bikiegang.ridesharing.pojo.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
- * Created by hpduy17 on 6/29/15.
+ * Created by hpduy17 on 7/15/15.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class GetListRouteRequest {
+public class GetUserDetailRequest {
     private String userId;
 
     public String getUserId() {
@@ -16,4 +16,5 @@ public class GetListRouteRequest {
     public void setUserId(String userId) {
         this.userId = userId;
     }
+
 }

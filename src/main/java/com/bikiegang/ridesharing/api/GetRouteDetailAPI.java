@@ -4,12 +4,12 @@
  * and open the template in the editor.
  */
 
-package com.bikiegang.ridesharing.api.oldApi;
+package com.bikiegang.ridesharing.api;
 
 import com.bikiegang.ridesharing.controller.RouteController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.request.old.GetListRouteRequest;
-import com.bikiegang.ridesharing.pojo.response.old.RouteInfoResponse;
+import com.bikiegang.ridesharing.pojo.request.GetRouteDetailRequest;
+import com.bikiegang.ridesharing.pojo.response.RouteDetailResponse;
 import com.bikiegang.ridesharing.utilities.LoggerFactory;
 import org.apache.log4j.Logger;
 
@@ -22,11 +22,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class GetListRouteAPI extends HttpServlet {
+public class GetRouteDetailAPI extends HttpServlet {
     private Logger logger = LoggerFactory.createLogger(this.getClass());
-    public Class requestClass = GetListRouteRequest.class;
-    public Class responseClass = RouteInfoResponse.class;
-    public boolean responseIsArray = true;
+    public Class requestClass = GetRouteDetailRequest.class;
+    public Class responseClass = RouteDetailResponse.class;
+    public boolean responseIsArray = false;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -49,9 +49,12 @@ public class GetListRouteAPI extends HttpServlet {
             while ((line = reader.readLine()) != null) {
                 jsonData.append(line);
             }
-            GetListRouteRequest getListRouteRequest = (GetListRouteRequest) Parser.JSonToObject(jsonData.toString(), GetListRouteRequest.class);
+            logger.info("Request::"+jsonData.toString());
+            GetRouteDetailRequest getRouteDetailRequest = (GetRouteDetailRequest) Parser.JSonToObject(jsonData.toString(), GetRouteDetailRequest.class);
             RouteController controller = new RouteController();
-            out.print(controller.getListRoute(getListRouteRequest));
+            String result = controller.getRouteDetail(getRouteDetailRequest);
+            logger.info("Request::"+result);
+            out.print(result);
         } catch (Exception ex) {
             logger.error(ex.getStackTrace());
             out.print(Parser.ObjectToJSon(false, ex.getMessage()));
@@ -96,6 +99,6 @@ public class GetListRouteAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Get routes has created by user";
+        return "Update user current location";
     }
 }

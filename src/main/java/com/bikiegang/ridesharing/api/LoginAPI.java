@@ -4,12 +4,12 @@
  * and open the template in the editor.
  */
 
-package com.bikiegang.ridesharing.api.oldApi;
+package com.bikiegang.ridesharing.api;
 
 import com.bikiegang.ridesharing.controller.UserController;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.User;
-import com.bikiegang.ridesharing.pojo.request.old.LoginRequest;
+import com.bikiegang.ridesharing.pojo.request.LoginRequest;
 import com.bikiegang.ridesharing.utilities.LoggerFactory;
 import org.apache.log4j.Logger;
 
@@ -49,16 +49,19 @@ public class LoginAPI extends HttpServlet {
             while ((line = reader.readLine()) != null) {
                 jsonData.append(line);
             }
+            logger.info("Request::"+jsonData.toString());
             LoginRequest loginRequest = (LoginRequest) Parser.JSonToObject(jsonData.toString(), LoginRequest.class);
             UserController controller = new UserController();
-            out.print(controller.login(loginRequest));
+            String result = controller.login(loginRequest);
+            logger.info("Request::"+result);
+            out.print(result);
         } catch (Exception ex) {
             logger.error(ex.getStackTrace());
             out.print(Parser.ObjectToJSon(false, ex.getMessage()));
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold default state="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -96,6 +99,6 @@ public class LoginAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Login by email, facebookId, googleId and twitterId";
+        return "Update user current location";
     }
 }

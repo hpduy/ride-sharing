@@ -7,33 +7,27 @@ import com.bikiegang.ridesharing.utilities.Path;
 /**
  * Created by hpduy17 on 7/8/15.
  */
-public class SortUserDetailResponse {
+public class UserSortDetailResponse {
     private String id = "";
     private String firstName = "";
     private String lastName = "";
-    private String profilePicture = "";
-    private String phone = "";
+    private String profilePictureLink = "";
     private LatLng currentLocation = new LatLng();
     private String birthDay;
-    private int gender;
     private int status;
-    private int currentRole;
 
-    public SortUserDetailResponse() {
+    public UserSortDetailResponse() {
     }
 
-    public SortUserDetailResponse(User user) {
+    public UserSortDetailResponse(User user) {
         if(null != user) {
             this.id = user.getId();
             this.firstName = user.getFirstName();
             this.lastName = user.getLastName();
-            this.profilePicture = Path.getProfilePictureUrlFromPath(user.getProfilePictureLink());
-            this.phone = user.getPhone();
+            this.profilePictureLink = Path.getProfilePictureUrlFromPath(user.getProfilePictureLink());
             this.currentLocation = user.getCurrentLocation();
             this.birthDay = user.getBirthDay();
-            this.gender = user.getGender();
             this.status = user.getStatus();
-            this.currentRole = user.getCurrentRole();
         }
     }
 
@@ -61,20 +55,12 @@ public class SortUserDetailResponse {
         this.lastName = lastName;
     }
 
-    public String getProfilePicture() {
-        return profilePicture;
+    public String getProfilePictureLink() {
+        return profilePictureLink;
     }
 
-    public void setProfilePicture(String profilePicture) {
-        this.profilePicture = profilePicture;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setProfilePictureLink(String profilePictureLink) {
+        this.profilePictureLink = profilePictureLink;
     }
 
     public LatLng getCurrentLocation() {
@@ -93,13 +79,6 @@ public class SortUserDetailResponse {
         this.birthDay = birthDay;
     }
 
-    public int getGender() {
-        return gender;
-    }
-
-    public void setGender(int gender) {
-        this.gender = gender;
-    }
 
     public int getStatus() {
         return status;
@@ -109,11 +88,4 @@ public class SortUserDetailResponse {
         this.status = status;
     }
 
-    public int getCurrentRole() {
-        return currentRole;
-    }
-
-    public void setCurrentRole(int currentRole) {
-        this.currentRole = currentRole;
-    }
 }

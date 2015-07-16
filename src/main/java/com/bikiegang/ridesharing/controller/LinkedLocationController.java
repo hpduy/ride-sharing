@@ -2,6 +2,11 @@ package com.bikiegang.ridesharing.controller;
 
 import com.bikiegang.ridesharing.dao.LinkedLocationDao;
 import com.bikiegang.ridesharing.database.Database;
+import com.bikiegang.ridesharing.database.IdGenerator;
+import com.bikiegang.ridesharing.geocoding.GeoCell;
+import com.bikiegang.ridesharing.pojo.LinkedLocation;
+import com.bikiegang.ridesharing.pojo.User;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
  * Created by hpduy17 on 6/29/15.
@@ -9,14 +14,13 @@ import com.bikiegang.ridesharing.database.Database;
 public class LinkedLocationController {
     private LinkedLocationDao dao = new LinkedLocationDao();
     private Database database = Database.getInstance();
-   /* public String insertLinkLocation(Location location, int index, long refId, int refType, int role) throws JsonProcessingException {
-        if (location.getLat() == 0 && location.getLng() == 0) {
-            return Parser.ObjectToJSon(false, "Latitude and Longitude is invalid (0,0)");
+    public void insertLinkLocation(LinkedLocation linkedLocation, int role) throws JsonProcessingException {
+        if (linkedLocation.getLat() == 0 && linkedLocation.getLng() == 0) {
+            return;
         }
-        if (location.getCreatedTime() < 0) {
-            return Parser.ObjectToJSon(false, "Epoch time is invalid (< 0)");
+        if (linkedLocation.getTime() < 0) {
+            return;
         }
-        LinkedLocation linkedLocation = new LinkedLocation(location,index,refId,refType);
         linkedLocation.setId(IdGenerator.getLinkedLocationId());
         if(dao.insert(linkedLocation)){
             //Geo Cell
@@ -26,14 +30,11 @@ public class LinkedLocationController {
             if(role == User.PASSENGER)
                 geoCell = database.getGeoCellPassenger();
             if(null == geoCell)
-                return Parser.ObjectToJSon(false, "Role is invalid");
-            geoCell.putToCell(location);
-            return Parser.ObjectToJSon(true, "Insert linked location successfully");
+                return;
+            geoCell.putToCell(linkedLocation);
         }
-        return Parser.ObjectToJSon(false, "Cannot insert linked location");
-
     }
 
-*/
+
 
 }

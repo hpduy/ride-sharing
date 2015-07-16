@@ -46,6 +46,7 @@ public class Database {
     private HashMap<String, String> googleRFUserId = new HashMap<>();//<ggId, userId>
     private HashMap<String, String> twitterRFUserId = new HashMap<>();//<twId, userId>
     private HashMap<String, String> emailRFUserId = new HashMap<>();//<email, userId>
+    private HashMap<String, String> linkedInRFUserId = new HashMap<>();//<lkId, userId>
     /**
      * BROADCAST
      */
@@ -161,6 +162,10 @@ public class Database {
 
     public HashMap<String, HashMap<Long, List<Long>>> getReceiverRequestsBox() {
         return receiverRequestsBox;
+    }
+
+    public HashMap<String, String> getLinkedInRFUserId() {
+        return linkedInRFUserId;
     }
 
     /*GEOCELL GET-SET*/

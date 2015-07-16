@@ -2,14 +2,24 @@ package com.bikiegang.ridesharing.controller;
 
 import com.bikiegang.ridesharing.dao.RouteDao;
 import com.bikiegang.ridesharing.database.Database;
+import com.bikiegang.ridesharing.database.IdGenerator;
+import com.bikiegang.ridesharing.geocoding.FetchingDataFromGoogleRouting;
+import com.bikiegang.ridesharing.geocoding.GoogleRoutingObject.GoogleRoute;
+import com.bikiegang.ridesharing.geocoding.Pairing;
 import com.bikiegang.ridesharing.parsing.Parser;
+import com.bikiegang.ridesharing.pojo.LinkedLocation;
 import com.bikiegang.ridesharing.pojo.Route;
-import com.bikiegang.ridesharing.pojo.request.old.GetListRouteRequest;
-import com.bikiegang.ridesharing.pojo.response.old.RouteInfoResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.bikiegang.ridesharing.pojo.User;
+import com.bikiegang.ridesharing.pojo.request.AutoSearchParingRequest;
+import com.bikiegang.ridesharing.pojo.request.CreateRouteRequest;
+import com.bikiegang.ridesharing.pojo.request.GetRouteDetailRequest;
+import com.bikiegang.ridesharing.pojo.response.AutoSearchParingResponse;
+import com.bikiegang.ridesharing.pojo.response.RouteDetailResponse;
+import com.bikiegang.ridesharing.pojo.response.RouteSortDetailResponse;
+import com.bikiegang.ridesharing.utilities.DateTimeUtil;
 
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -18,187 +28,128 @@ import java.util.List;
 public class RouteController {
     private RouteDao dao = new RouteDao();
     private Database database = Database.getInstance();
+    public static final double DEFAULT_PRICE = 3; //3000 vnd/km -> 3 vnd/m
 
-    public String getListRoute(GetListRouteRequest request) throws JsonProcessingException {
-        if (null == request.getUserId() || request.getUserId().equals("")) {
-            return Parser.ObjectToJSon(false, "'userId' is not found");
-        }
-        HashSet<Long> routeIds = database.getUserIdRFRoutes().get(request.getUserId());
-        if (null == routeIds || routeIds.size() == 0) {
-            return Parser.ObjectToJSon(true, "You do not have route", new ArrayList<>());
-        }
-        List<RouteInfoResponse> responses = new ArrayList<>();
-        for (long rId : routeIds) {
-            Route route = database.getRouteHashMap().get(rId);
-            if (null != route) {
-                RouteInfoResponse response = new RouteInfoResponse(route);
-                responses.add(response);
+    public RouteSortDetailResponse[] getListRouteSortDetail(List<Long> routeIds) throws IOException {
+        RouteSortDetailResponse[] routeSortDetails = new RouteSortDetailResponse[routeIds.size()];
+        for (int i = 0; i < routeIds.size(); i++) {
+            long id = routeIds.get(i);
+            Route r = database.getRouteHashMap().get(id);
+            if (null != r) {
+                routeSortDetails[i] = getRouteSortDetail(r);
             }
         }
-        return Parser.ObjectToJSon(true, "Get list route success", responses);
+        return routeSortDetails;
     }
 
-
-/*
-    public String createRoute(CreateRouteRequest request) throws Exception {
-        if (null == request.getCreatorId() || request.getCreatorId().equals("")) {
-            return Parser.ObjectToJSon(false, "'creatorId' is not found");
+    public RouteSortDetailResponse[] getListRouteSortDetailFromRoutes(List<Route> routes) throws IOException {
+        RouteSortDetailResponse[] routeSortDetails = new RouteSortDetailResponse[routes.size()];
+        for (int i = 0; i < routes.size(); i++) {
+            routeSortDetails[i] = getRouteSortDetail(routes.get(i));
         }
-        if (request.getLat() == 0 && request.getLng() == 0) {
-            return Parser.ObjectToJSon(false, "Latitude and Longitude is invalid (0,0)");
-        }
-        if (request.getGoTime() <= 0 && request.getArriveTime() <= 0) {
-            return Parser.ObjectToJSon(false, "Time is invalid (<= 0)");
-        }
-        if (request.getGoTime() > 0 && request.getArriveTime() > 0 && request.getArriveTime() < request.getGoTime()) {
-            return Parser.ObjectToJSon(false, "Arrive time cannot less than go time");
-        }
-        if (request.getType() != Route.SINGLE_FUTURE && request.getType() != Route.INSTANT && request.getType() != Route.MULTIPLE_FUTURE) {
-            return Parser.ObjectToJSon(false, "Type is invalid (type: INSTANT-0, SINGLE_FUTURE-1, MULTIPLE_FUTURE-2)");
-        }
-        if (null == request.getLocations() || request.getLocations().length < 2) {
-            return Parser.ObjectToJSon(false, "Number of locations in route must more than 2");
-        }
-
-        //get user
-        User user = database.getUserHashMap().get(request.getCreatorId());
-        if (user == null) {
-            return Parser.ObjectToJSon(false, "User is not exits");
-        }
-        if (user.getCurrentRole() != User.DRIVER && user.getCurrentRole() != User.PASSENGER) {
-            return Parser.ObjectToJSon(false, "Role is invalid");
-        }
-        //TODO: check need to use TZ or Not
-        String tzId = TimezoneMapper.latLngToTimezoneString(request.getLat(), request.getLng());
-        TimeZone timeZone = TimeZone.getTimeZone(tzId);
-        long goTime = DateTimeUtil.now();
-        long arriveTime = 0;
-        if (null != timeZone && request.getGoTime() != 0) {
-            goTime = request.getGoTime();
-            goTime += timeZone.getOffset(goTime);
-            arriveTime = request.getArriveTime();
-            arriveTime += timeZone.getOffset(arriveTime);
-        }
-        if (request.getType() != Route.MULTIPLE_FUTURE) {
-            return insertRoute(request, goTime, arriveTime, user, request.getType());
-        }
-        // type = multiple future -> multiple insert
-        if (request.getExpiredTime() < request.getGoTime()) {
-            return Parser.ObjectToJSon(false, "Expired Time is invalid");
-        }
-        boolean success = false;
-        String message = "";
-        Object result = null;
-        int firstTime = 1;
-        while (goTime <= request.getExpiredTime()) {
-            Parser parser = (Parser) Parser.JSonToObject(insertRoute(request, goTime, arriveTime, user, Route.SINGLE_FUTURE), Parser.class);
-            success = success || parser.isSuccess();
-            message = "Result create route in " + goTime + " : " + parser.getMessage() + "\n";
-            if (firstTime == 1) {
-                result = parser.getResult();
-                firstTime++;
-            }
-            goTime += 24 * DateTimeUtil.HOURS;
-        }
-        return Parser.ObjectToJSon(success, message, result);
+        return routeSortDetails;
     }
 
-    private String insertRoute(CreateRouteRequest request, long goTime, long arriveTime, User user, int type) throws Exception {
-        // time process
-        Route route = new Route();
-        route.setId(IdGenerator.getRouteId());
-        route.setCreatorId(request.getCreatorId());
-        route.setGoTime(goTime);
-        route.setArriveTime(arriveTime);
-        route.setType(type);
-        route.setRole(user.getCurrentRole());
-        route.setOwnerPrice(request.getPrice());
-        //insert route
-        if (dao.insert(route)) {
-            // estimate & location mapping
-//            long estTime = route.getGoTime();
-            long refId = route.getId();
-            int refType = LinkedLocation.IN_ROUTE;
-            int role = route.getRole();
-            int index = 0;
-            int prev = 0;
-            LinkedLocationController controller = new LinkedLocationController();
-            double sumDistance = 0;
-            for (int i = 0; i < request.getLocations().length; i++) {
-                Location location = request.getLocations()[i];
-                //get distance from prev location
-                double distance = location.distanceInMetres(request.getLocations()[prev]);
-                //get time distance from the first stop ( t = S/v)
-                long timeDistanceFromFirstStop = (long) ((sumDistance + distance) / Route.DEFAULT_VELOCITY);
-                location.setCreatedTime(DateTimeUtil.now());
-                location.setEstimatedTime(route.getGoTime() + timeDistanceFromFirstStop);
-                Parser parser = (Parser) Parser.JSonToObject(controller.insertLinkLocation(location, i, refId, refType, role), Parser.class);
-                if (parser.isSuccess()) {
-                    index++;
-                    sumDistance += distance;
-                    prev = i;
-                }
-            }
-            //estimate some fields
-            route.setSumDistance(sumDistance);
-            route.setEstimatedFuel(sumDistance * Route.DEFAULT_FUEL_1KM);
-            route.setEstimatedTime((long) (sumDistance / Route.DEFAULT_VELOCITY));
-            route.setEstimatedPrice(sumDistance * Route.DEFAULT_PRICE_1KM);
-            //update route
-            try {
-                dao.update(route);
-            } catch (Exception ignored) {
-            }
-            return paring(route);
+    public RouteSortDetailResponse getRouteSortDetail(Route route) throws IOException {
+        GoogleRoute googleRoute = new FetchingDataFromGoogleRouting().getRouteFromRoutingResult(route);
+        RouteSortDetailResponse routeSortDetail = new RouteSortDetailResponse();
+        routeSortDetail.setId(route.getId());
+        routeSortDetail.setRole(route.getRole());
+        routeSortDetail.setUnitPrice(route.getOwnerPrice());
+        routeSortDetail.setStartAddress(googleRoute.getLegs()[0].getStart_address());
+        routeSortDetail.setEndAddress(googleRoute.getLegs()[0].getEnd_address());
+        int numberOfRequest = 0;
+        try {
+            numberOfRequest = database.getReceiverRequestsBox().get(route.getCreatorId()).get(route.getId()).size();
+        } catch (Exception ignored) {
+
         }
-        return Parser.ObjectToJSon(false, "Creating route cannot complete");
+        routeSortDetail.setNumberOfRequest(numberOfRequest);
+        return routeSortDetail;
     }
 
-    public String paring(ParingRequest request) throws Exception {
+    public String getRouteDetail(GetRouteDetailRequest request) throws IOException {
         if (request.getRouteId() <= 0) {
             return Parser.ObjectToJSon(false, "'routeId' is invalid");
         }
-        return paring(request.getRouteId());
-    }
-
-    public String paring(long routeId) throws Exception {
-        Route route = database.getRouteHashMap().get(routeId);
-        if (null == route)
-            Parser.ObjectToJSon(false, "Route cannot found");
-        return paring(route);
-    }
-
-    public String paring(Route route) throws Exception {
-        List<ParingResponse> results = new ArrayList<>();
-        HashMap<String, Long> paringResult = new HashMap<>();
-        switch (route.getRole()) {
-            case User.DRIVER:
-                paringResult = new Pairing().getListPassengerCompatible(route);
-                break;
-            case User.PASSENGER:
-                paringResult = new Pairing().getListDriverCompatible(route);
-                break;
+        Route route = database.getRouteHashMap().get(request.getRouteId());
+        if (route == null) {
+            return Parser.ObjectToJSon(false, "Route is not found");
         }
-        for (String userId : paringResult.keySet()) {
-            User user = database.getUserHashMap().get(userId);
-            Route userRoute = database.getRouteHashMap().get(paringResult.get(userId));
-            if (user != null && userRoute != null) {
-                CurrentLocation currentLocation = database.getCurrentLocationHashMap().get(user.getCurrentLocationId());
-                List<Long> locationIds = database.getRouteIdRFLinkedLocations().get(userRoute.getId());
-                if (currentLocation != null && locationIds != null) {
-                    List<LatLng> locations = new ArrayList<>();
-                    for (long id : locationIds) {
-                        LinkedLocation location = database.getLinkedLocationHashMap().get(id);
-                        if (location != null) {
-                            locations.add(new LatLng(location));
-                        }
-                    }
-                    results.add(new ParingResponse(user, userRoute, locations.toArray(new LatLng[locations.size()]), currentLocation));
-                }
+        RouteDetailResponse routeDetailResponse = new RouteDetailResponse(getRouteSortDetail(route), route.getRawRoutingResult());
+        return Parser.ObjectToJSon(true, "Get route detail successfully", routeDetailResponse);
+    }
+
+    public String autoSearchParing(AutoSearchParingRequest request) throws Exception {
+        AutoSearchParingResponse response = new AutoSearchParingResponse();
+        RouteSortDetailResponse[] route = null;
+        if (null == request.getCreatorId() || request.getCreatorId().equals("")) {
+            return Parser.ObjectToJSon(false, "'creatorId' is not found");
+        }
+        if (null == request.getGoogleRoutingResult() || request.getGoogleRoutingResult().length() <= 0) {
+            return Parser.ObjectToJSon(false, "'googleRoutingResult' is invalid");
+        }
+        // create fake route
+        Route fakeRoute = new Route();
+        fakeRoute.setGoTime(DateTimeUtil.now());
+        fakeRoute.setRawRoutingResult(request.getGoogleRoutingResult());
+        fakeRoute.setRole(0);
+        fakeRoute.setCreatorId(request.getCreatorId());
+        fakeRoute.setType(Route.INSTANT);
+        List<LinkedLocation> fakeLocation = new FetchingDataFromGoogleRouting().fetch(fakeRoute);
+        if (fakeLocation != null) {
+            HashMap<Integer, List<Route>> routes = new Pairing().pair(fakeRoute, fakeLocation);
+        }
+        //TODO: fill data to response
+        return Parser.ObjectToJSon(true,"Paring successfully", response);
+    }
+    public String createRoute(CreateRouteRequest request) throws Exception {
+        RouteSortDetailResponse[] routes = null;
+        if (null == request.getCreatorId() || request.getCreatorId().equals("")) {
+            return Parser.ObjectToJSon(false, "'creatorId' is not found");
+        }
+        if (null == request.getGoogleRoutingResult() || request.getGoogleRoutingResult().length() <= 0) {
+            return Parser.ObjectToJSon(false, "'googleRoutingResult' is invalid");
+        }
+        Route route = new Route();
+        route.setId(IdGenerator.getRouteId());
+        route.setRole(request.getRole());
+        if(request.getGoTime() > DateTimeUtil.now()){
+            route.setGoTime(request.getGoTime());
+            route.setType(Route.SINGLE_FUTURE);
+        }else{
+            route.setGoTime(DateTimeUtil.now());
+            route.setType(Route.INSTANT);
+        }
+        route.setCreatorId(request.getCreatorId());
+        route.setRawRoutingResult(request.getGoogleRoutingResult());
+        //fetch data
+        List<LinkedLocation> locations = new FetchingDataFromGoogleRouting().fetch(route);
+        if(null != locations){
+            LinkedLocationController controller = new LinkedLocationController();
+            for(LinkedLocation location: locations){
+                controller.insertLinkLocation(location,route.getRole());
             }
         }
-        return Parser.ObjectToJSon(true, "Paring successfully", results);
+        // check price
+        if(request.getPrice() < 0){
+            route.setOwnerPrice(DEFAULT_PRICE);
+        }else{
+            route.setOwnerPrice(request.getPrice()/route.getSumDistance());
+        }
+        if(dao.insert(route)) {
+            HashMap<Integer, List<Route>> paringResults = new Pairing().pair(route);
+            List<Route> result;
+            if(route.getRole() == User.PASSENGER){
+                result = paringResults.get(User.DRIVER);
+            }else {
+                result = paringResults.get(User.PASSENGER);
+            }
+            routes = getListRouteSortDetailFromRoutes(result);
+            return Parser.ObjectToJSon(true, "Create route successfully", routes);
+        }
+        return Parser.ObjectToJSon(true, "Cannot create route");
     }
-*/
+
 }
 

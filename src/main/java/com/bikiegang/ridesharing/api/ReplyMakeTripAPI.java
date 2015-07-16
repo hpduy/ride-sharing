@@ -4,11 +4,11 @@
  * and open the template in the editor.
  */
 
-package com.bikiegang.ridesharing.api.oldApi;
+package com.bikiegang.ridesharing.api;
 
-import com.bikiegang.ridesharing.controller.BroadcastController;
+import com.bikiegang.ridesharing.controller.RequestMakeTripController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.request.old.UpdateBroadcastRequest;
+import com.bikiegang.ridesharing.pojo.request.ReplyMakeTripRequest;
 import com.bikiegang.ridesharing.utilities.LoggerFactory;
 import org.apache.log4j.Logger;
 
@@ -21,9 +21,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class UpdateBroadcastAPI extends HttpServlet {
+public class ReplyMakeTripAPI extends HttpServlet {
     private Logger logger = LoggerFactory.createLogger(this.getClass());
-    public Class requestClass = UpdateBroadcastRequest.class;
+    public Class requestClass = ReplyMakeTripRequest.class;
     public Class responseClass = null;
     public boolean responseIsArray = false;
 
@@ -48,17 +48,19 @@ public class UpdateBroadcastAPI extends HttpServlet {
             while ((line = reader.readLine()) != null) {
                 jsonData.append(line);
             }
-            UpdateBroadcastRequest updateBroadcastRequest
-                    = (UpdateBroadcastRequest) Parser.JSonToObject(jsonData.toString(), UpdateBroadcastRequest.class);
-            BroadcastController controller = new BroadcastController();
-            out.print(controller.updateBroadcast(updateBroadcastRequest));
+            logger.info("Request::"+jsonData.toString());
+            ReplyMakeTripRequest replyMakeTripRequest = (ReplyMakeTripRequest) Parser.JSonToObject(jsonData.toString(), ReplyMakeTripRequest.class);
+            RequestMakeTripController controller = new RequestMakeTripController();
+            String result = controller.replyRequestMakeTrip(replyMakeTripRequest);
+            logger.info("Request::"+result);
+            out.print(result);
         } catch (Exception ex) {
             logger.error(ex.getStackTrace());
             out.print(Parser.ObjectToJSon(false, ex.getMessage()));
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold default state="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -96,6 +98,6 @@ public class UpdateBroadcastAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Update user broadcast for notification";
+        return "Update user current location";
     }
 }

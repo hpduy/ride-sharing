@@ -4,11 +4,12 @@
  * and open the template in the editor.
  */
 
-package com.bikiegang.ridesharing.api.oldApi;
+package com.bikiegang.ridesharing.api;
 
-import com.bikiegang.ridesharing.controller.RequestMakeTripController;
+import com.bikiegang.ridesharing.controller.UserController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.request.old.RequestMakeTripRequest;
+import com.bikiegang.ridesharing.pojo.User;
+import com.bikiegang.ridesharing.pojo.request.RegisterRequest;
 import com.bikiegang.ridesharing.utilities.LoggerFactory;
 import org.apache.log4j.Logger;
 
@@ -21,10 +22,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class RequestMakeTripAPI extends HttpServlet {
+public class RegisterAPI extends HttpServlet {
     private Logger logger = LoggerFactory.createLogger(this.getClass());
-    public Class requestClass = RequestMakeTripRequest.class;
-    public Class responseClass = null;
+    public Class requestClass = RegisterRequest.class;
+    public Class responseClass = User.class;
     public boolean responseIsArray = false;
 
     /**
@@ -48,9 +49,12 @@ public class RequestMakeTripAPI extends HttpServlet {
             while ((line = reader.readLine()) != null) {
                 jsonData.append(line);
             }
-            RequestMakeTripRequest requestMakeTripRequest = (RequestMakeTripRequest) Parser.JSonToObject(jsonData.toString(), RequestMakeTripRequest.class);
-            RequestMakeTripController controller = new RequestMakeTripController();
-            out.print(controller.sendRequestMakeTrip(requestMakeTripRequest));
+            logger.info("Request::"+jsonData.toString());
+            RegisterRequest registerRequest = (RegisterRequest) Parser.JSonToObject(jsonData.toString(), RegisterRequest.class);
+            UserController controller = new UserController();
+            String result = controller.register(registerRequest);
+            logger.info("Request::"+result);
+            out.print(result);
         } catch (Exception ex) {
             logger.error(ex.getStackTrace());
             out.print(Parser.ObjectToJSon(false, ex.getMessage()));
@@ -95,6 +99,6 @@ public class RequestMakeTripAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Send a request to the partner";
+        return "Update user current location";
     }
 }

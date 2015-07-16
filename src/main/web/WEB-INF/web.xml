@@ -15,24 +15,24 @@
     <!--**ROUTE**-->
     <servlet>
         <servlet-name>CreateRouteAPI</servlet-name>
-        <servlet-class>com.bikiegang.ridesharing.api.oldApi.CreateRouteAPI</servlet-class>
+        <servlet-class>com.bikiegang.ridesharing.api.CreateRouteAPI</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>CreateRouteAPI</servlet-name>
         <url-pattern>/CreateRouteAPI</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>GetListRouteAPI</servlet-name>
-        <servlet-class>com.bikiegang.ridesharing.api.oldApi.GetListRouteAPI</servlet-class>
+        <servlet-name>GetRouteDetailAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.GetRouteDetailAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>GetListRouteAPI</servlet-name>
-        <url-pattern>/GetListRouteAPI</url-pattern>
+        <servlet-name>GetRouteDetailAPI</servlet-name>
+        <url-pattern>/GetRouteDetailAPI</url-pattern>
     </servlet-mapping>
     <!--**USER**-->
     <servlet>
         <servlet-name>LoginAPI</servlet-name>
-        <servlet-class>com.bikiegang.ridesharing.api.oldApi.LoginAPI</servlet-class>
+        <servlet-class>com.bikiegang.ridesharing.api.LoginAPI</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginAPI</servlet-name>
@@ -40,23 +40,15 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>UpdateBroadcastAPI</servlet-name>
-        <servlet-class>com.bikiegang.ridesharing.api.oldApi.UpdateBroadcastAPI</servlet-class>
+        <servlet-class>com.bikiegang.ridesharing.api.UpdateBroadcastAPI</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>UpdateBroadcastAPI</servlet-name>
         <url-pattern>/UpdateBroadcastAPI</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>UpdateUserCurrentRoleAPI</servlet-name>
-        <servlet-class>com.bikiegang.ridesharing.api.oldApi.UpdateUserCurrentRoleAPI</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>UpdateUserCurrentRoleAPI</servlet-name>
-        <url-pattern>/UpdateUserCurrentRoleAPI</url-pattern>
-    </servlet-mapping>
-    <servlet>
         <servlet-name>UpdateCurrentLocationAPI</servlet-name>
-        <servlet-class>com.bikiegang.ridesharing.api.oldApi.UpdateCurrentLocationAPI</servlet-class>
+        <servlet-class>com.bikiegang.ridesharing.api.UpdateCurrentLocationAPI</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>UpdateCurrentLocationAPI</servlet-name>
@@ -64,24 +56,16 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>RegisterAPI</servlet-name>
-        <servlet-class>com.bikiegang.ridesharing.api.oldApi.RegisterAPI</servlet-class>
+        <servlet-class>com.bikiegang.ridesharing.api.RegisterAPI</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>RegisterAPI</servlet-name>
         <url-pattern>/RegisterAPI</url-pattern>
     </servlet-mapping>
-    <servlet>
-        <servlet-name>UpdateProfileAPI</servlet-name>
-        <servlet-class>com.bikiegang.ridesharing.api.oldApi.UpdateProfileAPI</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>UpdateProfileAPI</servlet-name>
-        <url-pattern>/UpdateProfileAPI</url-pattern>
-    </servlet-mapping>
     <!--**TRIP**-->
     <servlet>
         <servlet-name>RequestMakeTripAPI</servlet-name>
-        <servlet-class>com.bikiegang.ridesharing.api.oldApi.RequestMakeTripAPI</servlet-class>
+        <servlet-class>com.bikiegang.ridesharing.api.RequestMakeTripAPI</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>RequestMakeTripAPI</servlet-name>
@@ -89,7 +73,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>ReplyMakeTripAPI</servlet-name>
-        <servlet-class>com.bikiegang.ridesharing.api.oldApi.ReplyMakeTripAPI</servlet-class>
+        <servlet-class>com.bikiegang.ridesharing.api.ReplyMakeTripAPI</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ReplyMakeTripAPI</servlet-name>

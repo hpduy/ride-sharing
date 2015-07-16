@@ -4,12 +4,12 @@
  * and open the template in the editor.
  */
 
-package com.bikiegang.ridesharing.api.oldApi;
+package com.bikiegang.ridesharing.api;
 
-import com.bikiegang.ridesharing.controller.RouteController;
+import com.bikiegang.ridesharing.controller.UserController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.request.old.ParingRequest;
-import com.bikiegang.ridesharing.pojo.response.old.ParingResponse;
+import com.bikiegang.ridesharing.pojo.request.GetUserDetailRequest;
+import com.bikiegang.ridesharing.pojo.response.UserDetailWithRoutesResponse;
 import com.bikiegang.ridesharing.utilities.LoggerFactory;
 import org.apache.log4j.Logger;
 
@@ -22,11 +22,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class ParingAPI extends HttpServlet {
+public class GetUsersDetailWithRoutesAPI extends HttpServlet {
     private Logger logger = LoggerFactory.createLogger(this.getClass());
-    public Class requestClass = ParingRequest.class;
-    public Class responseClass = ParingResponse.class;
-    public boolean responseIsArray = true;
+    public Class requestClass = GetUserDetailRequest.class;
+    public Class responseClass = UserDetailWithRoutesResponse.class;
+    public boolean responseIsArray = false;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -49,9 +49,12 @@ public class ParingAPI extends HttpServlet {
             while ((line = reader.readLine()) != null) {
                 jsonData.append(line);
             }
-            ParingRequest paringRequest = (ParingRequest) Parser.JSonToObject(jsonData.toString(), ParingRequest.class);
-            RouteController controller = new RouteController();
-//            out.print(controller.paring(paringRequest));
+            logger.info("Request::"+jsonData.toString());
+            GetUserDetailRequest getUserDetailRequest = (GetUserDetailRequest) Parser.JSonToObject(jsonData.toString(), GetUserDetailRequest.class);
+            UserController controller = new UserController();
+            String result = controller.getUserDetailWithRoutes(getUserDetailRequest);
+            logger.info("Request::"+result);
+            out.print(result);
         } catch (Exception ex) {
             logger.error(ex.getStackTrace());
             out.print(Parser.ObjectToJSon(false, ex.getMessage()));
@@ -96,6 +99,6 @@ public class ParingAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Find user partners with user's route";
+        return "Update user current location";
     }
 }

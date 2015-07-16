@@ -4,11 +4,11 @@
  * and open the template in the editor.
  */
 
-package com.bikiegang.ridesharing.api.oldApi;
+package com.bikiegang.ridesharing.api;
 
-import com.bikiegang.ridesharing.controller.RouteController;
+import com.bikiegang.ridesharing.controller.UserController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.request.old.CreateRouteRequest;
+import com.bikiegang.ridesharing.pojo.request.UpdateCurrentLocationRequest;
 import com.bikiegang.ridesharing.utilities.LoggerFactory;
 import org.apache.log4j.Logger;
 
@@ -21,11 +21,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class CreateRouteAPI extends HttpServlet {
+public class UpdateCurrentLocationAPI extends HttpServlet {
     private Logger logger = LoggerFactory.createLogger(this.getClass());
-    public Class requestClass = CreateRouteRequest.class;
+    public Class requestClass = UpdateCurrentLocationRequest.class;
     public Class responseClass = null;
     public boolean responseIsArray = false;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -47,9 +48,12 @@ public class CreateRouteAPI extends HttpServlet {
             while ((line = reader.readLine()) != null) {
                 jsonData.append(line);
             }
-            CreateRouteRequest createRouteRequest = (CreateRouteRequest) Parser.JSonToObject(jsonData.toString(), CreateRouteRequest.class);
-            RouteController controller = new RouteController();
-//            out.print(controller.createRoute(createRouteRequest));
+            logger.info("Request::"+jsonData.toString());
+            UpdateCurrentLocationRequest updateCurrentLocationRequest = (UpdateCurrentLocationRequest) Parser.JSonToObject(jsonData.toString(), UpdateCurrentLocationRequest.class);
+            UserController controller = new UserController();
+            String result = controller.updateCurrentLocation(updateCurrentLocationRequest);
+            logger.info("Request::"+result);
+            out.print(result);
         } catch (Exception ex) {
             logger.error(ex.getStackTrace());
             out.print(Parser.ObjectToJSon(false, ex.getMessage()));
@@ -94,6 +98,6 @@ public class CreateRouteAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Create your route with locations you will go across (get from google API)";
+        return "Update user current location";
     }
 }

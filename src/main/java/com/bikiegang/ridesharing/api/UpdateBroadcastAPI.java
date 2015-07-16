@@ -4,11 +4,11 @@
  * and open the template in the editor.
  */
 
-package com.bikiegang.ridesharing.api.oldApi;
+package com.bikiegang.ridesharing.api;
 
-import com.bikiegang.ridesharing.controller.RequestMakeTripController;
+import com.bikiegang.ridesharing.controller.BroadcastController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.request.old.ReplyMakeTripRequest;
+import com.bikiegang.ridesharing.pojo.request.UpdateBroadcastRequest;
 import com.bikiegang.ridesharing.utilities.LoggerFactory;
 import org.apache.log4j.Logger;
 
@@ -21,9 +21,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class ReplyMakeTripAPI extends HttpServlet {
+public class UpdateBroadcastAPI extends HttpServlet {
     private Logger logger = LoggerFactory.createLogger(this.getClass());
-    public Class requestClass = ReplyMakeTripRequest.class;
+    public Class requestClass = UpdateBroadcastRequest.class;
     public Class responseClass = null;
     public boolean responseIsArray = false;
 
@@ -48,9 +48,13 @@ public class ReplyMakeTripAPI extends HttpServlet {
             while ((line = reader.readLine()) != null) {
                 jsonData.append(line);
             }
-            ReplyMakeTripRequest replyMakeTripRequest = (ReplyMakeTripRequest) Parser.JSonToObject(jsonData.toString(), ReplyMakeTripRequest.class);
-            RequestMakeTripController controller = new RequestMakeTripController();
-            out.print(controller.replyRequestMakeTrip(replyMakeTripRequest));
+            logger.info("Request::"+jsonData.toString());
+            UpdateBroadcastRequest updateBroadcastRequest
+                    = (UpdateBroadcastRequest) Parser.JSonToObject(jsonData.toString(), UpdateBroadcastRequest.class);
+            BroadcastController controller = new BroadcastController();
+            String result = controller.updateBroadcast(updateBroadcastRequest);
+            logger.info("Request::"+result);
+            out.print(result);
         } catch (Exception ex) {
             logger.error(ex.getStackTrace());
             out.print(Parser.ObjectToJSon(false, ex.getMessage()));
@@ -95,6 +99,6 @@ public class ReplyMakeTripAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Send a reply to your partner";
+        return "Update user current location";
     }
 }

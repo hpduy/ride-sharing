@@ -6,8 +6,8 @@ import com.bikiegang.ridesharing.database.IdGenerator;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.RequestMakeTrip;
 import com.bikiegang.ridesharing.pojo.User;
-import com.bikiegang.ridesharing.pojo.request.old.ReplyMakeTripRequest;
-import com.bikiegang.ridesharing.pojo.request.old.RequestMakeTripRequest;
+import com.bikiegang.ridesharing.pojo.request.ReplyMakeTripRequest;
+import com.bikiegang.ridesharing.pojo.request.RequestMakeTripRequest;
 import com.bikiegang.ridesharing.utilities.DateTimeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
