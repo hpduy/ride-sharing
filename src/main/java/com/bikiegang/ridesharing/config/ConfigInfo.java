@@ -23,9 +23,9 @@ public class ConfigInfo {
     public static String REQUESTMAKETRIP_DELETE_QUERY;
     public static String REQUESTMAKETRIP_UPDATE_QUERY;
     public static String REQUESTMAKETRIP_INSERT_QUERY;
-    public static String ROUTE_DELETE_QUERY;
-    public static String ROUTE_UPDATE_QUERY;
-    public static String ROUTE_INSERT_QUERY;
+    public static String PLANNEDTRIP_DELETE_QUERY;
+    public static String PLANNEDTRIP_UPDATE_QUERY;
+    public static String PLANNEDTRIP_INSERT_QUERY;
     public static String TRIP_DELETE_QUERY;
     public static String TRIP_UPDATE_QUERY;
     public static String TRIP_INSERT_QUERY;
@@ -104,7 +104,7 @@ public class ConfigInfo {
                 + "WHERE `id` = ?;";
         REQUESTMAKETRIP_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`RequestMakeTrip`\n"
                 + "WHERE `id` = ?;";
-        ROUTE_INSERT_QUERY = "INSERT INTO `ridesharing_db`.`Route`\n"
+        PLANNEDTRIP_INSERT_QUERY = "INSERT INTO `ridesharing_db`.`PlannedTrip`\n"
                 + "(`id`,\n"
                 + "`goTime`,\n"
                 + "`arriveTime`,\n"
@@ -117,10 +117,10 @@ public class ConfigInfo {
                 + "`role`,\n"
                 + "`type`,\n"
                 + "`routeTrailPolyLine`,\n"
-                + "`rawRoutingResult`)\n"
+                + "`rawRoutingResult`, `groupId`)\n"
                 + "VALUES\n"
-                + "(?,?,?,?,?,?,?,?,?,?,?,?,?);";
-        ROUTE_UPDATE_QUERY = "UPDATE `ridesharing_db`.`Route`\n"
+                + "(?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+        PLANNEDTRIP_UPDATE_QUERY = "UPDATE `ridesharing_db`.`PlannedTrip`\n"
                 + "SET\n"
                 + "`id` = ?,\n"
                 + "`goTime` = ?,\n"
@@ -134,9 +134,10 @@ public class ConfigInfo {
                 + "`role` = ?,\n"
                 + "`type` = ?,\n"
                 + "`routeTrailPolyLine` = ?,\n"
-                + "`rawRoutingResult` = ?\n"
+                + "`rawRoutingResult` = ?,\n"
+                + "`groupId` = ?\n"
                 + "WHERE `id` = ?;";
-        ROUTE_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`Route`\n"
+        PLANNEDTRIP_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`PlannedTrip`\n"
                 + "WHERE `id` = ?;";
         TRIP_INSERT_QUERY = "INSERT INTO `ridesharing_db`.`Trip`\n"
                 + "(`id`,\n"

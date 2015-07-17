@@ -58,7 +58,7 @@ public class PlannedTripDao {
                 if (!result) {
                     logger.error(String.format("Can't not insert DB with value=%s", obj));
                 } else {
-                    logger.info(String.format("Insert Route success with value "
+                    logger.info(String.format("Insert PlannedTrip success with value "
                             + "=%s", JSONUtil.Serialize(obj)));
                 }
             } else {
@@ -110,7 +110,7 @@ public class PlannedTripDao {
                 if (!result) {
                     logger.error(String.format("Can't not delete DB with value=%s", obj));
                 } else {
-                    logger.info(String.format("Remove Route success with value "
+                    logger.info(String.format("Remove PlannedTrip success with value "
                             + "=%s", JSONUtil.Serialize(obj)));
                 }
             } else {
@@ -144,7 +144,7 @@ public class PlannedTripDao {
                 if (!result) {
                     logger.error(String.format("Can't not update DB with value=%s", obj));
                 } else {
-                    logger.info(String.format("Update Route success with value "
+                    logger.info(String.format("Update PlannedTrip success with value "
                             + "=%s", JSONUtil.Serialize(obj)));
                 }
             } else {

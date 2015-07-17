@@ -61,7 +61,7 @@ public class TestUtils {
     public static PlannedTrip CreateRoute() {
         PlannedTrip result = new PlannedTrip(RandomUtils.nextLong(), RandomUtils.nextLong(), RandomUtils.nextLong(),
                 RandomUtils.nextDouble(), RandomUtils.nextInt(), RandomStringUtils.randomAlphabetic(20),
-                RandomUtils.nextInt(), RandomUtils.nextDouble(), RandomStringUtils.randomAlphabetic(20), new JSONObject());
+                RandomUtils.nextInt(), RandomUtils.nextDouble(), RandomStringUtils.randomAlphabetic(20), new JSONObject(), RandomUtils.nextLong());
 
         return result;
     }
@@ -90,7 +90,7 @@ public class TestUtils {
                 RandomStringUtils.randomAlphabetic(20), RandomStringUtils.randomAlphabetic(20), RandomStringUtils.randomAlphabetic(20),
                 RandomStringUtils.randomAlphabetic(20), RandomStringUtils.randomAlphabetic(20),
                 RandomStringUtils.randomAlphabetic(20),
-                RandomStringUtils.randomAlphabetic(20),RandomStringUtils.randomAlphabetic(20),
+                RandomStringUtils.randomAlphabetic(20), RandomStringUtils.randomAlphabetic(20),
                 RandomStringUtils.randomAlphabetic(10), RandomUtils.nextInt(),
                 RandomUtils.nextInt(), true);
         return result;
