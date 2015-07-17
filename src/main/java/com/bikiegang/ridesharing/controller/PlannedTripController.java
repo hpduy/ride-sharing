@@ -13,11 +13,9 @@ import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.AutoSearchParingRequest;
 import com.bikiegang.ridesharing.pojo.request.CreatePlannedTripRequest;
 import com.bikiegang.ridesharing.pojo.request.GetPlannedTripDetailRequest;
-import com.bikiegang.ridesharing.pojo.response.AutoSearchParingResponse;
-import com.bikiegang.ridesharing.pojo.response.PlannedTripDetailResponse;
-import com.bikiegang.ridesharing.pojo.response.PlannedTripSortDetailResponse;
-import com.bikiegang.ridesharing.pojo.response.UserDetailWithPlannedTripDetailResponse;
+import com.bikiegang.ridesharing.pojo.response.*;
 import com.bikiegang.ridesharing.utilities.DateTimeUtil;
+import com.bikiegang.ridesharing.utilities.FakeGroup.FakePlannedTrip;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -84,6 +82,7 @@ public class PlannedTripController {
     }
 
     public String autoSearchParing(AutoSearchParingRequest request) throws Exception {
+
         AutoSearchParingResponse response = new AutoSearchParingResponse();
         PlannedTripSortDetailResponse[] route = null;
         if (null == request.getCreatorId() || request.getCreatorId().equals("")) {
@@ -100,6 +99,11 @@ public class PlannedTripController {
         fakePlannedTrip.setCreatorId(request.getCreatorId());
         fakePlannedTrip.setType(PlannedTrip.INSTANT);
         List<LinkedLocation> fakeLocation = new FetchingDataFromGoogleRouting().fetch(fakePlannedTrip);
+        //TODO fake trip
+        if(Database.databaseStatus == Database.TESTING){
+            new FakePlannedTrip().fakePlannedTrip(fakePlannedTrip);
+        }
+        //TODO end fake
         if (fakeLocation != null) {
             HashMap<Integer, List<PlannedTrip>> plannedTrips = new Pairing().pair(fakePlannedTrip, fakeLocation);
             for (int key : plannedTrips.keySet()) {
@@ -124,6 +128,7 @@ public class PlannedTripController {
     }
 
     public String createPlannedTrip(CreatePlannedTripRequest request) throws Exception {
+        CreatePlannedTripResponse response = new CreatePlannedTripResponse();
         PlannedTripSortDetailResponse[] plannedTrips = null;
         if (null == request.getCreatorId() || request.getCreatorId().equals("")) {
             return Parser.ObjectToJSon(false, "'creatorId' is not found");
@@ -145,6 +150,11 @@ public class PlannedTripController {
         plannedTrip.setRawRoutingResult(new JSONObject(request.getGoogleRoutingResult()));
         //fetch data
         List<LinkedLocation> locations = new FetchingDataFromGoogleRouting().fetch(plannedTrip);
+        //TODO fake trip
+        if(Database.databaseStatus == Database.TESTING){
+            new FakePlannedTrip().fakePlannedTrip(plannedTrip);
+        }
+        //TODO end fake
         if (null != locations) {
             LinkedLocationController controller = new LinkedLocationController();
             for (LinkedLocation location : locations) {
@@ -158,15 +168,21 @@ public class PlannedTripController {
             plannedTrip.setOwnerPrice(request.getPrice() / plannedTrip.getSumDistance());
         }
         if (dao.insert(plannedTrip)) {
-            HashMap<Integer, List<PlannedTrip>> paringResults = new Pairing().pair(plannedTrip);
-            List<PlannedTrip> result;
-            if (plannedTrip.getRole() == User.PASSENGER) {
-                result = paringResults.get(User.DRIVER);
-            } else {
-                result = paringResults.get(User.PASSENGER);
+            PlannedTripSortDetailResponse yourPlannedTripDetail = getPlannedTripSortDetail(plannedTrip);
+            if (request.isParing()) {
+                HashMap<Integer, List<PlannedTrip>> paringResults = new Pairing().pair(plannedTrip);
+                List<PlannedTrip> result;
+                if (plannedTrip.getRole() == User.PASSENGER) {
+                    result = paringResults.get(User.DRIVER);
+                } else {
+                    result = paringResults.get(User.PASSENGER);
+                }
+                plannedTrips = getListPlannedTripSortDetailFromObject(result);
+
             }
-            plannedTrips = getListPlannedTripSortDetailFromObject(result);
-            return Parser.ObjectToJSon(true, "Create planned trip successfully", plannedTrips);
+            response.setYourPlannedTrip(yourPlannedTripDetail);
+            response.setPairedPlannedTripsResult(plannedTrips);
+            return Parser.ObjectToJSon(true, "Create planned trip successfully", response);
         }
         return Parser.ObjectToJSon(true, "Cannot create planned trip");
     }

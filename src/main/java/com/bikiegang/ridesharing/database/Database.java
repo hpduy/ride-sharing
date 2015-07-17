@@ -24,7 +24,7 @@ public class Database {
     }
 
     // STATIC DATABASE STATUS
-    public static int databaseStatus = Database.DEVELOPMENT;
+    public static int databaseStatus = Database.TESTING;
     //FINAL STATE
     public static final int DEVELOPMENT = 0;
     public static final int PRODUCTION = 1;

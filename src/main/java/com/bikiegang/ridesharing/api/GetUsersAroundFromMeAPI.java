@@ -7,9 +7,11 @@
 package com.bikiegang.ridesharing.api;
 
 import com.bikiegang.ridesharing.controller.UserController;
+import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.request.GetUsersAroundFromMeRequest;
 import com.bikiegang.ridesharing.pojo.response.UserSortDetailResponse;
+import com.bikiegang.ridesharing.utilities.FakeGroup.FakeUser;
 import com.bikiegang.ridesharing.utilities.LoggerFactory;
 import org.apache.log4j.Logger;
 
@@ -53,6 +55,11 @@ public class GetUsersAroundFromMeAPI extends HttpServlet {
             GetUsersAroundFromMeRequest getUsersAroundFromMeRequest = (GetUsersAroundFromMeRequest) Parser.JSonToObject(jsonData.toString(), GetUsersAroundFromMeRequest.class);
             UserController controller = new UserController();
             String result = controller.getUsersAroundFromMe(getUsersAroundFromMeRequest);
+            //TODO fake
+            if(Database.databaseStatus == Database.TESTING){
+                result = new FakeUser().getUsersAroundFromMeFake(getUsersAroundFromMeRequest);
+            }
+            //TODO end fake
             logger.info("Request::"+result);
             out.print(result);
         } catch (Exception ex) {

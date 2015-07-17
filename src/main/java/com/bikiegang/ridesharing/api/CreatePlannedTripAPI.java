@@ -9,7 +9,7 @@ package com.bikiegang.ridesharing.api;
 import com.bikiegang.ridesharing.controller.PlannedTripController;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.request.CreatePlannedTripRequest;
-import com.bikiegang.ridesharing.pojo.response.PlannedTripSortDetailResponse;
+import com.bikiegang.ridesharing.pojo.response.CreatePlannedTripResponse;
 import com.bikiegang.ridesharing.utilities.LoggerFactory;
 import org.apache.log4j.Logger;
 
@@ -25,8 +25,8 @@ import java.io.PrintWriter;
 public class CreatePlannedTripAPI extends HttpServlet {
     private Logger logger = LoggerFactory.createLogger(this.getClass());
     public Class requestClass = CreatePlannedTripRequest.class;
-    public Class responseClass = PlannedTripSortDetailResponse.class;
-    public boolean responseIsArray = true;
+    public Class responseClass = CreatePlannedTripResponse.class;
+    public boolean responseIsArray = false;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

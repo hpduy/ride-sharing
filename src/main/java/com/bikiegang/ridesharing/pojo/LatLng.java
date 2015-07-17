@@ -76,6 +76,10 @@ public class LatLng {
         return degree * (Math.PI / 180);
     }
 
+    public String toGoogleParameter(){
+        return String.format("%s,%s",this.getLat(),this.getLng());
+    }
+
     //GET-SET METHOD
 
 
@@ -102,4 +106,6 @@ public class LatLng {
     public void setTime(long time) {
         this.time = time;
     }
+
+
 }

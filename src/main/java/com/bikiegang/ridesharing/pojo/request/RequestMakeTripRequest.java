@@ -12,6 +12,7 @@ public class RequestMakeTripRequest {
     private long senderPlannedTripId;
     private long receiverPlannedTripId;
     private int senderRole;
+    private String googleRoutingResult;
 
     public String getSenderId() {
         return senderId;
@@ -51,5 +52,13 @@ public class RequestMakeTripRequest {
 
     public void setSenderRole(int senderRole) {
         this.senderRole = senderRole;
+    }
+
+    public String getGoogleRoutingResult() {
+        return googleRoutingResult;
+    }
+
+    public void setGoogleRoutingResult(String googleRoutingResult) {
+        this.googleRoutingResult = googleRoutingResult;
     }
 }
