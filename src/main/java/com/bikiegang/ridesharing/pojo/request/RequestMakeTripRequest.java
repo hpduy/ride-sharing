@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class RequestMakeTripRequest {
     private String senderId = "";
     private String receiverId = "";
-    private long senderRouteId;
-    private long receiverRouteId;
+    private long senderPlannedTripId;
+    private long receiverPlannedTripId;
     private int senderRole;
 
     public String getSenderId() {
@@ -29,20 +29,20 @@ public class RequestMakeTripRequest {
         this.receiverId = receiverId;
     }
 
-    public long getReceiverRouteId() {
-        return receiverRouteId;
+    public long getReceiverPlannedTripId() {
+        return receiverPlannedTripId;
     }
 
-    public void setReceiverRouteId(long receiverRouteId) {
-        this.receiverRouteId = receiverRouteId;
+    public void setReceiverPlannedTripId(long receiverPlannedTripId) {
+        this.receiverPlannedTripId = receiverPlannedTripId;
     }
 
-    public long getSenderRouteId() {
-        return senderRouteId;
+    public long getSenderPlannedTripId() {
+        return senderPlannedTripId;
     }
 
-    public void setSenderRouteId(long senderRouteId) {
-        this.senderRouteId = senderRouteId;
+    public void setSenderPlannedTripId(long senderPlannedTripId) {
+        this.senderPlannedTripId = senderPlannedTripId;
     }
 
     public int getSenderRole() {

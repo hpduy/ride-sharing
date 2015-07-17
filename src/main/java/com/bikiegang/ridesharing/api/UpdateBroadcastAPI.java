@@ -99,6 +99,6 @@ public class UpdateBroadcastAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Update user current location";
+        return "Update user broadcast id for notification";
     }
 }

@@ -99,6 +99,6 @@ public class LoginAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Update user current location";
+        return "Login by email, facebookId, googleId, linkedIn and twitterId";
     }
 }

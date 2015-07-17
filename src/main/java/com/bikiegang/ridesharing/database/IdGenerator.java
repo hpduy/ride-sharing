@@ -7,7 +7,7 @@ import java.util.Set;
  */
 public class IdGenerator {
     private static long linkedLocationId = 0;
-    private static long routeId = 0;
+    private static long plannedTripId = 0;
     private static long tripId = 0;
     private static long requestMakeTripId = 0;
     private static Database database = Database.getInstance();
@@ -22,13 +22,13 @@ public class IdGenerator {
         return linkedLocationId;
     }
 
-    public static synchronized long getRouteId() {
-        Set<Long> idSet = database.getRouteHashMap().keySet();
+    public static synchronized long getPlannedTripId() {
+        Set<Long> idSet = database.getPlannedTripHashMap().keySet();
         do {
-            routeId++;
+            plannedTripId++;
         }
-        while (idSet.contains(routeId));
-        return routeId;
+        while (idSet.contains(plannedTripId));
+        return plannedTripId;
     }
 
     public static synchronized long getTripId() {

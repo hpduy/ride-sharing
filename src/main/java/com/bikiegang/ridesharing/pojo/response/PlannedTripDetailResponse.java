@@ -3,13 +3,13 @@ package com.bikiegang.ridesharing.pojo.response;
 /**
  * Created by hpduy17 on 7/8/15.
  */
-public class RouteDetailResponse extends RouteSortDetailResponse {
+public class PlannedTripDetailResponse extends PlannedTripSortDetailResponse {
     private String googleRoutingResult;
 
-    public RouteDetailResponse() {
+    public PlannedTripDetailResponse() {
     }
 
-    public RouteDetailResponse(RouteSortDetailResponse that, String googleRoutingResult) {
+    public PlannedTripDetailResponse(PlannedTripSortDetailResponse that, String googleRoutingResult) {
         super(that);
         this.googleRoutingResult = googleRoutingResult;
     }

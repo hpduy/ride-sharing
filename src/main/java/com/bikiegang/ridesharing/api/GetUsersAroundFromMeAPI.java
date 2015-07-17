@@ -25,8 +25,8 @@ import java.io.PrintWriter;
 public class GetUsersAroundFromMeAPI extends HttpServlet {
     private Logger logger = LoggerFactory.createLogger(this.getClass());
     public Class requestClass = GetUsersAroundFromMeRequest.class;
-    public Class responseClass = UserSortDetailResponse[].class;
-    public boolean responseIsArray = false;
+    public Class responseClass = UserSortDetailResponse.class;
+    public boolean responseIsArray = true;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -99,6 +99,6 @@ public class GetUsersAroundFromMeAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Update user current location";
+        return "Get all user have current location around you";
     }
 }

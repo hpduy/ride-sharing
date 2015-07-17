@@ -13,9 +13,11 @@ public class RegisterRequest {
     private String facebookId;
     private String googleId;
     private String twitterId;
+    private String linkedInId;
+    private String selfIntro;
     private String firstName;
     private String lastName;
-    private String profilePicture;
+    private String profilePictureLink;
     private String phone;
     private String birthDay;
     private int gender;
@@ -29,6 +31,8 @@ public class RegisterRequest {
     public static final int GOOGLE = 3;
     @JsonIgnore
     public static final int TWITTER = 4;
+    @JsonIgnore
+    public static final int LINKEDIN = 5;
 
     public String getEmail() {
         return email;
@@ -86,12 +90,12 @@ public class RegisterRequest {
         this.lastName = lastName;
     }
 
-    public String getProfilePicture() {
-        return profilePicture;
+    public String getProfilePictureLink() {
+        return profilePictureLink;
     }
 
-    public void setProfilePicture(String profilePicture) {
-        this.profilePicture = profilePicture;
+    public void setProfilePictureLink(String profilePictureLink) {
+        this.profilePictureLink = profilePictureLink;
     }
 
     public String getBirthDay() {
@@ -126,4 +130,19 @@ public class RegisterRequest {
         this.type = type;
     }
 
+    public String getLinkedInId() {
+        return linkedInId;
+    }
+
+    public void setLinkedInId(String linkedInId) {
+        this.linkedInId = linkedInId;
+    }
+
+    public String getSelfIntro() {
+        return selfIntro;
+    }
+
+    public void setSelfIntro(String selfIntro) {
+        this.selfIntro = selfIntro;
+    }
 }

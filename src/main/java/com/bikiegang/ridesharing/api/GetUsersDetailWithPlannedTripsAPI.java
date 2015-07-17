@@ -6,10 +6,10 @@
 
 package com.bikiegang.ridesharing.api;
 
-import com.bikiegang.ridesharing.controller.RouteController;
+import com.bikiegang.ridesharing.controller.UserController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.request.CreateRouteRequest;
-import com.bikiegang.ridesharing.pojo.response.RouteSortDetailResponse;
+import com.bikiegang.ridesharing.pojo.request.GetUserDetailRequest;
+import com.bikiegang.ridesharing.pojo.response.UserDetailWithPlannedTripResponse;
 import com.bikiegang.ridesharing.utilities.LoggerFactory;
 import org.apache.log4j.Logger;
 
@@ -22,10 +22,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class CreateRouteAPI extends HttpServlet {
+public class GetUsersDetailWithPlannedTripsAPI extends HttpServlet {
     private Logger logger = LoggerFactory.createLogger(this.getClass());
-    public Class requestClass = CreateRouteRequest.class;
-    public Class responseClass = RouteSortDetailResponse[].class;
+    public Class requestClass = GetUserDetailRequest.class;
+    public Class responseClass = UserDetailWithPlannedTripResponse.class;
     public boolean responseIsArray = false;
 
     /**
@@ -50,9 +50,9 @@ public class CreateRouteAPI extends HttpServlet {
                 jsonData.append(line);
             }
             logger.info("Request::"+jsonData.toString());
-            CreateRouteRequest createRouteRequest = (CreateRouteRequest) Parser.JSonToObject(jsonData.toString(), CreateRouteRequest.class);
-            RouteController controller = new RouteController();
-            String result = controller.createRoute(createRouteRequest);
+            GetUserDetailRequest getUserDetailRequest = (GetUserDetailRequest) Parser.JSonToObject(jsonData.toString(), GetUserDetailRequest.class);
+            UserController controller = new UserController();
+            String result = controller.getUserDetailWithRoutes(getUserDetailRequest);
             logger.info("Request::"+result);
             out.print(result);
         } catch (Exception ex) {
@@ -99,6 +99,6 @@ public class CreateRouteAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Update user current location";
+        return "Get user detail and his planned trips";
     }
 }

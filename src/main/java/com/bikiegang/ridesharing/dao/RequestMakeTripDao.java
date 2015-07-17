@@ -43,16 +43,16 @@ public class RequestMakeTripDao {
 //            }
 //
 //            if (obj.getSenderRole() == User.DRIVER) {
-//                mapRfSend.put(obj.getPassengerRouteId(), obj.getId());
+//                mapRfSend.put(obj.getPassengerPlannedTripId(), obj.getId());
 //            } else {
-//                mapRfSend.put(obj.getDriverRouteId(), obj.getId());
+//                mapRfSend.put(obj.getDriverPlannedTripId(), obj.getId());
 //            }
 //
 //            mapRfRecv.get(obj.get)
 //            if (obj.getSenderRole() == User.DRIVER) {
-//                mapRfSend.put(obj.getPassengerRouteId(), obj.getId());
+//                mapRfSend.put(obj.getPassengerPlannedTripId(), obj.getId());
 //            } else {
-//                mapRfSend.put(obj.getDriverRouteId(), obj.getId());
+//                mapRfSend.put(obj.getDriverPlannedTripId(), obj.getId());
 //            }
 //
 //            //Step 2: put redis

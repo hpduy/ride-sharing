@@ -9,7 +9,7 @@ import com.bikiegang.ridesharing.annn.framework.dbconn.ClientManager;
 import com.bikiegang.ridesharing.annn.framework.dbconn.ManagerIF;
 import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.pojo.PojoBase;
-import com.bikiegang.ridesharing.pojo.Route;
+import com.bikiegang.ridesharing.pojo.PlannedTrip;
 import com.bikiegang.ridesharing.utilities.Const;
 import org.apache.log4j.Logger;
 
@@ -32,13 +32,13 @@ public class RouteDA implements IDA {
 
         switch (actionType) {
             case Const.RideSharing.ActionType.INSERT:
-                result = Insert((Route) value);
+                result = Insert((PlannedTrip) value);
                 break;
             case Const.RideSharing.ActionType.UPDATE:
-                result = Update((Route) value);
+                result = Update((PlannedTrip) value);
                 break;
             case Const.RideSharing.ActionType.DELETE:
-                result = Delete((Route) value);
+                result = Delete((PlannedTrip) value);
                 break;
         }
 
@@ -47,7 +47,7 @@ public class RouteDA implements IDA {
 
     Logger logger = Logger.getLogger(this.getClass());
 
-    boolean Insert(Route value) {
+    boolean Insert(PlannedTrip value) {
 
         boolean result = false;
         ManagerIF cm = ClientManager.getInstance(ConfigInfo.RIDESHARING_DB);
@@ -83,7 +83,7 @@ public class RouteDA implements IDA {
         return result;
     }
 
-    boolean Update(Route value) {
+    boolean Update(PlannedTrip value) {
 
         boolean result = false;
         ManagerIF cm = ClientManager.getInstance(ConfigInfo.RIDESHARING_DB);
@@ -120,7 +120,7 @@ public class RouteDA implements IDA {
         return result;
     }
 
-    boolean Delete(Route value) {
+    boolean Delete(PlannedTrip value) {
 
         boolean result = false;
         ManagerIF cm = ClientManager.getInstance(ConfigInfo.RIDESHARING_DB);

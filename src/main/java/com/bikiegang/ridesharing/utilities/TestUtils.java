@@ -8,7 +8,7 @@ package com.bikiegang.ridesharing.utilities;
 import com.bikiegang.ridesharing.pojo.Broadcast;
 import com.bikiegang.ridesharing.pojo.LinkedLocation;
 import com.bikiegang.ridesharing.pojo.RequestMakeTrip;
-import com.bikiegang.ridesharing.pojo.Route;
+import com.bikiegang.ridesharing.pojo.PlannedTrip;
 import com.bikiegang.ridesharing.pojo.Trip;
 import com.bikiegang.ridesharing.pojo.User;
 import org.apache.commons.lang.RandomStringUtils;
@@ -58,8 +58,8 @@ public class TestUtils {
         return result;
     }
 
-    public static Route CreateRoute() {
-        Route result = new Route(RandomUtils.nextLong(), RandomUtils.nextLong(), RandomUtils.nextLong(),
+    public static PlannedTrip CreateRoute() {
+        PlannedTrip result = new PlannedTrip(RandomUtils.nextLong(), RandomUtils.nextLong(), RandomUtils.nextLong(),
                 RandomUtils.nextDouble(), RandomUtils.nextInt(), RandomStringUtils.randomAlphabetic(20),
                 RandomUtils.nextInt(), RandomUtils.nextDouble(), RandomStringUtils.randomAlphabetic(20), new JSONObject());
 

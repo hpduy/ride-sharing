@@ -3,7 +3,7 @@ package com.bikiegang.ridesharing.pojo.response;
 /**
  * Created by hpduy17 on 7/8/15.
  */
-public class RouteSortDetailResponse {
+public class PlannedTripSortDetailResponse {
     private long id;
     private int numberOfRequest;
     private String startAddress;
@@ -11,10 +11,10 @@ public class RouteSortDetailResponse {
     private double unitPrice;
     private int role;
 
-    public RouteSortDetailResponse() {
+    public PlannedTripSortDetailResponse() {
     }
 
-    public RouteSortDetailResponse(RouteSortDetailResponse that) {
+    public PlannedTripSortDetailResponse(PlannedTripSortDetailResponse that) {
         this.id = that.id;
         this.numberOfRequest = that.numberOfRequest;
         this.startAddress = that.startAddress;

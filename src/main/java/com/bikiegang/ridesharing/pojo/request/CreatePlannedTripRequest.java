@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * Created by hpduy17 on 7/15/15.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CreateRouteRequest {
+public class CreatePlannedTripRequest {
     private String creatorId;
     private int role;
     private long goTime;

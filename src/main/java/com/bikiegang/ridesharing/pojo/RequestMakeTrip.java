@@ -12,8 +12,8 @@ public class RequestMakeTrip implements PojoBase {
     private String receiverId = "";
     private int senderRole;
     private long createdTime;
-    private long driverRouteId;
-    private long passengerRouteId;
+    private long driverPlannedTripId;
+    private long passengerPlannedTripId;
     private int status;
 
     @JsonIgnore
@@ -26,13 +26,13 @@ public class RequestMakeTrip implements PojoBase {
     public RequestMakeTrip() {
     }
 
-    public RequestMakeTrip(long id, String senderId, String receiverId, long createdTime, long receiverRouteId, long driverRouteId, long passengerRouteId, int senderRole,int status) {
+    public RequestMakeTrip(long id, String senderId, String receiverId, long createdTime, long receiverRouteId, long driverPlannedTripId, long passengerPlannedTripId, int senderRole,int status) {
         this.id = id;
         this.senderId = senderId == null ? "" : senderId;
         this.receiverId = receiverId == null ? "" : receiverId;
         this.createdTime = createdTime;
-        this.driverRouteId = driverRouteId;
-        this.passengerRouteId = passengerRouteId;
+        this.driverPlannedTripId = driverPlannedTripId;
+        this.passengerPlannedTripId = passengerPlannedTripId;
         this.senderRole = senderRole;
         this.status = status;
     }
@@ -42,8 +42,8 @@ public class RequestMakeTrip implements PojoBase {
         this.senderId = that.senderId == null ? "" : that.senderId;
         this.receiverId = that.receiverId == null ? "" : that.receiverId;
         this.createdTime = that.createdTime;
-        this.driverRouteId = that.driverRouteId;
-        this.passengerRouteId = that.passengerRouteId;
+        this.driverPlannedTripId = that.driverPlannedTripId;
+        this.passengerPlannedTripId = that.passengerPlannedTripId;
         this.senderRole = that.senderRole;
         this.status = that.status;
     }
@@ -80,20 +80,20 @@ public class RequestMakeTrip implements PojoBase {
         this.createdTime = createdTime;
     }
 
-    public long getDriverRouteId() {
-        return driverRouteId;
+    public long getDriverPlannedTripId() {
+        return driverPlannedTripId;
     }
 
-    public void setDriverRouteId(long driverRouteId) {
-        this.driverRouteId = driverRouteId;
+    public void setDriverPlannedTripId(long driverPlannedTripId) {
+        this.driverPlannedTripId = driverPlannedTripId;
     }
 
-    public long getPassengerRouteId() {
-        return passengerRouteId;
+    public long getPassengerPlannedTripId() {
+        return passengerPlannedTripId;
     }
 
-    public void setPassengerRouteId(long passengerRouteId) {
-        this.passengerRouteId = passengerRouteId;
+    public void setPassengerPlannedTripId(long passengerPlannedTripId) {
+        this.passengerPlannedTripId = passengerPlannedTripId;
     }
 
     public int getSenderRole() {

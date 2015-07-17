@@ -6,10 +6,9 @@
 
 package com.bikiegang.ridesharing.api;
 
-import com.bikiegang.ridesharing.controller.RouteController;
+import com.bikiegang.ridesharing.controller.UserController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.request.GetRouteDetailRequest;
-import com.bikiegang.ridesharing.pojo.response.RouteDetailResponse;
+import com.bikiegang.ridesharing.pojo.request.UpdateCurrentLocationWithPlannedTripRequest;
 import com.bikiegang.ridesharing.utilities.LoggerFactory;
 import org.apache.log4j.Logger;
 
@@ -22,10 +21,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class GetRouteDetailAPI extends HttpServlet {
+public class UpdateCurrentLocationWithPlannedTripAPI extends HttpServlet {
     private Logger logger = LoggerFactory.createLogger(this.getClass());
-    public Class requestClass = GetRouteDetailRequest.class;
-    public Class responseClass = RouteDetailResponse.class;
+    public Class requestClass = UpdateCurrentLocationWithPlannedTripRequest.class;
+    public Class responseClass = null;
     public boolean responseIsArray = false;
 
     /**
@@ -50,9 +49,9 @@ public class GetRouteDetailAPI extends HttpServlet {
                 jsonData.append(line);
             }
             logger.info("Request::"+jsonData.toString());
-            GetRouteDetailRequest getRouteDetailRequest = (GetRouteDetailRequest) Parser.JSonToObject(jsonData.toString(), GetRouteDetailRequest.class);
-            RouteController controller = new RouteController();
-            String result = controller.getRouteDetail(getRouteDetailRequest);
+            UpdateCurrentLocationWithPlannedTripRequest updateCurrentLocationRequest = (UpdateCurrentLocationWithPlannedTripRequest) Parser.JSonToObject(jsonData.toString(), UpdateCurrentLocationWithPlannedTripRequest.class);
+            UserController controller = new UserController();
+            String result = controller.updateCurrentWithRouteLocation(updateCurrentLocationRequest);
             logger.info("Request::"+result);
             out.print(result);
         } catch (Exception ex) {
@@ -99,6 +98,6 @@ public class GetRouteDetailAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Update user current location";
+        return "Update user current location and save planned trip trail";
     }
 }

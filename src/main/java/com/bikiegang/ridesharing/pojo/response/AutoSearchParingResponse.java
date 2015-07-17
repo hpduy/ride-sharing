@@ -3,23 +3,23 @@ package com.bikiegang.ridesharing.pojo.response;
 /**
  * Created by hpduy17 on 7/8/15.
  */
-public class AutoSearchParingResponse extends RouteSortDetailResponse {
-    UserDetailWithRouteDetailResponse[] drivers;
-    UserDetailWithRouteDetailResponse[] passenger;
+public class AutoSearchParingResponse {
+    UserDetailWithPlannedTripDetailResponse[] drivers;
+    UserDetailWithPlannedTripDetailResponse[] passengers;
 
-    public UserDetailWithRouteDetailResponse[] getDrivers() {
+    public UserDetailWithPlannedTripDetailResponse[] getDrivers() {
         return drivers;
     }
 
-    public void setDrivers(UserDetailWithRouteDetailResponse[] drivers) {
+    public void setDrivers(UserDetailWithPlannedTripDetailResponse[] drivers) {
         this.drivers = drivers;
     }
 
-    public UserDetailWithRouteDetailResponse[] getPassenger() {
-        return passenger;
+    public UserDetailWithPlannedTripDetailResponse[] getPassengers() {
+        return passengers;
     }
 
-    public void setPassenger(UserDetailWithRouteDetailResponse[] passenger) {
-        this.passenger = passenger;
+    public void setPassengers(UserDetailWithPlannedTripDetailResponse[] passengers) {
+        this.passengers = passengers;
     }
 }

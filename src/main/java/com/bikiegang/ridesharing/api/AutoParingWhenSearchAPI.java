@@ -6,7 +6,7 @@
 
 package com.bikiegang.ridesharing.api;
 
-import com.bikiegang.ridesharing.controller.RouteController;
+import com.bikiegang.ridesharing.controller.PlannedTripController;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.request.AutoSearchParingRequest;
 import com.bikiegang.ridesharing.pojo.response.AutoSearchParingResponse;
@@ -51,7 +51,7 @@ public class AutoParingWhenSearchAPI extends HttpServlet {
             }
             logger.info("Request::"+jsonData.toString());
             AutoSearchParingRequest autoSearchParingRequest = (AutoSearchParingRequest) Parser.JSonToObject(jsonData.toString(), AutoSearchParingRequest.class);
-            RouteController controller = new RouteController();
+            PlannedTripController controller = new PlannedTripController();
             String result = controller.autoSearchParing(autoSearchParingRequest);
             logger.info("Request::"+result);
             out.print(result);
@@ -99,6 +99,6 @@ public class AutoParingWhenSearchAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Update user current location";
+        return "Auto paring with fake planned trip when you input 2 textbox on search bar";
     }
 }

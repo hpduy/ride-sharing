@@ -7,15 +7,24 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UpdateCurrentLocationRequest {
-    private String currentPolyLine;
+    private double lat;
+    private double lng;
     private String userId;
 
-    public String getCurrentPolyLine() {
-        return currentPolyLine;
+    public double getLat() {
+        return lat;
     }
 
-    public void setCurrentPolyLine(String currentPolyLine) {
-        this.currentPolyLine = currentPolyLine;
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLng() {
+        return lng;
+    }
+
+    public void setLng(double lng) {
+        this.lng = lng;
     }
 
     public String getUserId() {

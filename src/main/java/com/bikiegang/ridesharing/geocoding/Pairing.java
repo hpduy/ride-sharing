@@ -4,7 +4,7 @@ package com.bikiegang.ridesharing.geocoding;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.geocoding.GoogleRoutingObject.Bound;
 import com.bikiegang.ridesharing.pojo.LinkedLocation;
-import com.bikiegang.ridesharing.pojo.Route;
+import com.bikiegang.ridesharing.pojo.PlannedTrip;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.utilities.DateTimeUtil;
 
@@ -23,40 +23,40 @@ public class Pairing {
     * MAIN ------------------------------------------------------------
     * */
 
-    // with the route is exits
-    public HashMap<Integer, List<Route>> pair(Route route) throws Exception {
-        HashMap<Integer, List<Route>> paringResult = new HashMap<>();
-        switch (route.getRole()) {
+    // with the plannedTrip is exits
+    public HashMap<Integer, List<PlannedTrip>> pair(PlannedTrip plannedTrip) throws Exception {
+        HashMap<Integer, List<PlannedTrip>> paringResult = new HashMap<>();
+        switch (plannedTrip.getRole()) {
             case User.PASSENGER:
-                paringResult.put(User.DRIVER, getDriversCompatible(route));
+                paringResult.put(User.DRIVER, getDriversCompatible(plannedTrip));
                 break;
             case User.DRIVER:
-                paringResult.put(User.PASSENGER, getPassengersCompatible(route));
+                paringResult.put(User.PASSENGER, getPassengersCompatible(plannedTrip));
                 break;
             default:
-                paringResult.put(User.DRIVER, getDriversCompatible(route));
-                paringResult.put(User.PASSENGER, getPassengersCompatible(route));
+                paringResult.put(User.DRIVER, getDriversCompatible(plannedTrip));
+                paringResult.put(User.PASSENGER, getPassengersCompatible(plannedTrip));
                 break;
         }
         return paringResult;
     }
 
-    // with the fake route
-    public HashMap<Integer, List<Route>> pair(Route route, List<LinkedLocation> linkedLocations) throws Exception {
-        HashMap<Integer, List<Route>> paringResult = new HashMap<>();
+    // with the fake plannedTrip
+    public HashMap<Integer, List<PlannedTrip>> pair(PlannedTrip plannedTrip, List<LinkedLocation> linkedLocations) throws Exception {
+        HashMap<Integer, List<PlannedTrip>> paringResult = new HashMap<>();
         if (linkedLocations != null && linkedLocations.size() >= 2) {
             LinkedLocation src = linkedLocations.get(0);
             LinkedLocation des = linkedLocations.get(linkedLocations.size() - 1);
-            switch (route.getRole()) {
+            switch (plannedTrip.getRole()) {
                 case User.PASSENGER:
-                    paringResult.put(User.DRIVER, getDriversCompatible(route, src, des));
+                    paringResult.put(User.DRIVER, getDriversCompatible(plannedTrip, src, des));
                     break;
                 case User.DRIVER:
-                    paringResult.put(User.PASSENGER, getPassengersCompatible(route, linkedLocations));
+                    paringResult.put(User.PASSENGER, getPassengersCompatible(plannedTrip, linkedLocations));
                     break;
                 default:
-                    paringResult.put(User.DRIVER, getDriversCompatible(route, src, des));
-                    paringResult.put(User.PASSENGER, getPassengersCompatible(route, linkedLocations));
+                    paringResult.put(User.DRIVER, getDriversCompatible(plannedTrip, src, des));
+                    paringResult.put(User.PASSENGER, getPassengersCompatible(plannedTrip, linkedLocations));
                     break;
             }
         }
@@ -66,21 +66,21 @@ public class Pairing {
     /*
     * DRIVER ------------------------------------------------------------
     * */
-    private List<Route> getDriversCompatible(Route route) throws Exception {
-        List<Long> locationIds = database.getRouteIdRFLinkedLocations().get(route.getId());
+    private List<PlannedTrip> getDriversCompatible(PlannedTrip plannedTrip) throws Exception {
+        List<Long> locationIds = database.getPlannedTripIdRFLinkedLocations().get(plannedTrip.getId());
         if (null == locationIds || locationIds.size() < 2)
             throw new Exception("List location is null or less than 2 location");
         LinkedLocation src = database.getLinkedLocationHashMap().get(locationIds.get(0));
         LinkedLocation des = database.getLinkedLocationHashMap().get(locationIds.get(locationIds.size() - 1));
-        return getDriversCompatible(route, src, des);
+        return getDriversCompatible(plannedTrip, src, des);
     }
 
-    private List<Route> getDriversCompatible(Route route, LinkedLocation src, LinkedLocation des) throws Exception {
-        List<Route> listDriverRouteResult = new ArrayList<>();
+    private List<PlannedTrip> getDriversCompatible(PlannedTrip plannedTrip, LinkedLocation src, LinkedLocation des) throws Exception {
+        List<PlannedTrip> listDriverPlannedTripResult = new ArrayList<>();
         // you are passenger -> get start and end location of passenger
         GeoCell geoCell = database.getGeoCellDriver();
 
-        // get all route id in cell and neighbor cell
+        // get all plannedTrip id in cell and neighbor cell
         List<String> srcNeighborList = new ArrayList<>(geoCell.getIdsInCellAndNeighbor(src.getLat(), src.getLng()));
         List<String> desNeighborList = new ArrayList<>(geoCell.getIdsInCellAndNeighbor(des.getLat(), des.getLng()));
 
@@ -102,24 +102,24 @@ public class Pairing {
                 long desId = Long.parseLong(desStringId);
                 LinkedLocation nearDesLocation = database.getLinkedLocationHashMap().get(desId);
 
-                // check same route ? -> that means route via location near des and src or not
+                // check same plannedTrip ? -> that means plannedTrip via location near des and src or not
                 // check index -> that means check direction
                 if (nearSrcLocation.getRefId() == nearDesLocation.getRefId() && src.getIndex() < des.getIndex()) {
 
-                    // check condition to pare between passenger route and drivers route
-                    Route driverRoute = database.getRouteHashMap().get(src.getRefId());
+                    // check condition to pare between passenger plannedTrip and drivers plannedTrip
+                    PlannedTrip driverPlannedTrip = database.getPlannedTripHashMap().get(src.getRefId());
 
-                    // route is not null and not own by passenger
-                    if (null != driverRoute && !driverRoute.getCreatorId().equals(route.getCreatorId())) {
+                    // plannedTrip is not null and not own by passenger
+                    if (null != driverPlannedTrip && !driverPlannedTrip.getCreatorId().equals(plannedTrip.getCreatorId())) {
 
                         // get time driver reach a location near passenger
-                        long timeDriveReachNearSrcLocation = route.getGoTime() + nearSrcLocation.getEstimatedTime();
+                        long timeDriveReachNearSrcLocation = plannedTrip.getGoTime() + nearSrcLocation.getEstimatedTime();
 
                         // check this time in acceptable time?
-                        if (DateTimeUtil.timeDistance(timeDriveReachNearSrcLocation, route.getGoTime()) <= ACCEPTABLE_TIME) {
-                            //Get this route
-                            if (!listDriverRouteResult.contains(driverRoute)) {
-                                listDriverRouteResult.add(driverRoute);
+                        if (DateTimeUtil.timeDistance(timeDriveReachNearSrcLocation, plannedTrip.getGoTime()) <= ACCEPTABLE_TIME) {
+                            //Get this plannedTrip
+                            if (!listDriverPlannedTripResult.contains(driverPlannedTrip)) {
+                                listDriverPlannedTripResult.add(driverPlannedTrip);
                             }
                         } else {
                             //TODO: WARNING WHEN REMOVE HERE
@@ -134,7 +134,7 @@ public class Pairing {
             }
 
         }
-        return listDriverRouteResult;
+        return listDriverPlannedTripResult;
 
     }
 
@@ -144,87 +144,87 @@ public class Pairing {
 
     /**
      * Concept:
-     * 1/Get boundaries of driver route -> get list passenger route in this frame
-     * 2/Get src and des of each passenger route -> get neighbor cell code of its
-     * 3/Check cell code is contain in list cell code of driver route or not
+     * 1/Get boundaries of driver plannedTrip -> get list passenger plannedTrip in this frame
+     * 2/Get src and des of each passenger plannedTrip -> get neighbor cell code of its
+     * 3/Check cell code is contain in list cell code of driver plannedTrip or not
      * 4/If yes, check index of cell code near src and cell code near des in list cell code of driver to check direction
      */
 
-    private List<Route> getPassengersCompatible(Route route, List<LinkedLocation> linkedLocations) throws Exception {
-        List<Route> listPassengerRouteResult = new ArrayList<>();
+    private List<PlannedTrip> getPassengersCompatible(PlannedTrip plannedTrip, List<LinkedLocation> linkedLocations) throws Exception {
+        List<PlannedTrip> listPassengerPlannedTripResult = new ArrayList<>();
         GeoCell geoCellPassenger = database.getGeoCellPassenger();
-        // get list cell code of driver route
-        List<String> driverRouteCellCodes = geoCellPassenger.getCellCodesFromLinkLocation(linkedLocations);
+        // get list cell code of driver plannedTrip
+        List<String> driverPlannedTripCellCodes = geoCellPassenger.getCellCodesFromLinkLocation(linkedLocations);
 
-        //get bound of driver route
-        Bound bound = new FetchingDataFromGoogleRouting().getBoundFromRoutingResult(route);
+        //get bound of driver plannedTrip
+        Bound bound = new FetchingDataFromGoogleRouting().getBoundFromRoutingResult(plannedTrip);
 
-        // get list passenger route in frame
-        List<String> passengersRouteLinkedLocationIds = geoCellPassenger.getIdsInFrame(bound.getNortheast(), bound.getSouthwest());
+        // get list passenger plannedTrip in frame
+        List<String> passengersPlannedTripLinkedLocationIds = geoCellPassenger.getIdsInFrame(bound.getNortheast(), bound.getSouthwest());
 
-        //get distinct passenger routes
-        List<Long> passengerRouteIds = new ArrayList<>();
-        for (String locationStringId : passengersRouteLinkedLocationIds) {
+        //get distinct passenger plannedTrips
+        List<Long> passengerPlannedTripIds = new ArrayList<>();
+        for (String locationStringId : passengersPlannedTripLinkedLocationIds) {
             // parse to long
             long locationId = Long.parseLong(locationStringId);
             LinkedLocation location = database.getLinkedLocationHashMap().get(locationId);
             if (location != null)
-                passengerRouteIds.add(location.getRefId());
+                passengerPlannedTripIds.add(location.getRefId());
         }
 
         //TODO START TO PARE
-        for (long passengerRouteId : passengerRouteIds) {
-            Route passengerRoute = database.getRouteHashMap().get(passengerRouteId);
-            // route is not null and not own by driver
-            if (passengerRoute != null && !route.getCreatorId().equals(passengerRoute.getCreatorId())) {
-                List<Long> passengerRouteLinkedLocationIds = database.getRouteIdRFLinkedLocations().get(passengerRoute.getId());
-                if (passengerRouteLinkedLocationIds != null && passengerRouteLinkedLocationIds.size() >= 2) {
+        for (long passengerPlannedTripId : passengerPlannedTripIds) {
+            PlannedTrip passengerPlannedTrip = database.getPlannedTripHashMap().get(passengerPlannedTripId);
+            // plannedTrip is not null and not own by driver
+            if (passengerPlannedTrip != null && !plannedTrip.getCreatorId().equals(passengerPlannedTrip.getCreatorId())) {
+                List<Long> passengerPlannedTripLinkedLocationIds = database.getPlannedTripIdRFLinkedLocations().get(passengerPlannedTrip.getId());
+                if (passengerPlannedTripLinkedLocationIds != null && passengerPlannedTripLinkedLocationIds.size() >= 2) {
                     LinkedLocation srcPassengerLocation = null;
                     LinkedLocation desPassengerLocation = null;
                     //get src and des
                     int i = 0;
-                    while (srcPassengerLocation == null && i < passengerRouteLinkedLocationIds.size()) {
-                        long locationId = passengerRouteLinkedLocationIds.get(i);
+                    while (srcPassengerLocation == null && i < passengerPlannedTripLinkedLocationIds.size()) {
+                        long locationId = passengerPlannedTripLinkedLocationIds.get(i);
                         srcPassengerLocation = database.getLinkedLocationHashMap().get(locationId);
                         i++;
                     }
-                    int j = passengerRouteLinkedLocationIds.size() - 1;
+                    int j = passengerPlannedTripLinkedLocationIds.size() - 1;
                     while (desPassengerLocation == null && j > 0) {
-                        long locationId = passengerRouteLinkedLocationIds.get(j);
+                        long locationId = passengerPlannedTripLinkedLocationIds.get(j);
                         desPassengerLocation = database.getLinkedLocationHashMap().get(locationId);
                         j--;
                     }
-                    // begin paring 2 route
+                    // begin paring 2 plannedTrip
                     if (i < j && desPassengerLocation != null && srcPassengerLocation != null) {
 
                         //get passenger cell code and its neighbor
                         List<String> srcPassengerCellCodes = geoCellPassenger.getCellCodesNeighbor(srcPassengerLocation.getLat(), srcPassengerLocation.getLng());
                         List<String> desPassengerCellCodes = geoCellPassenger.getCellCodesNeighbor(desPassengerLocation.getLat(), desPassengerLocation.getLng());
 
-                        // check have exist pair of cell code src and des in cell codes of driver route ?
+                        // check have exist pair of cell code src and des in cell codes of driver plannedTrip ?
                         for (String srcPassengerCellCode : srcPassengerCellCodes) {
                             for (String desPassengerCellCode : desPassengerCellCodes) {
 
                                 // srcCellCode and desCellCode contained in driver cell code ,
                                 // that mean driver cell code through over 2 cell,
-                                if (driverRouteCellCodes.contains(srcPassengerCellCode) && driverRouteCellCodes.contains(desPassengerCellCode)) {
+                                if (driverPlannedTripCellCodes.contains(srcPassengerCellCode) && driverPlannedTripCellCodes.contains(desPassengerCellCode)) {
 
-                                    // check direction , if srcIndex < desIndex in driver Route -> same direction
+                                    // check direction , if srcIndex < desIndex in driver Planned Trip -> same direction
 
-                                    if (driverRouteCellCodes.indexOf(srcPassengerCellCode) < driverRouteCellCodes.indexOf(desPassengerCellCode)) {
+                                    if (driverPlannedTripCellCodes.indexOf(srcPassengerCellCode) < driverPlannedTripCellCodes.indexOf(desPassengerCellCode)) {
 
-                                        int indexOfCellNearPassengerSrc = driverRouteCellCodes.indexOf(srcPassengerCellCode);
+                                        int indexOfCellNearPassengerSrc = driverPlannedTripCellCodes.indexOf(srcPassengerCellCode);
                                         LinkedLocation nearPassengerSrcLocation = linkedLocations.get(indexOfCellNearPassengerSrc);
-                                        long timeDriveReachNearSrcLocation = route.getGoTime() + nearPassengerSrcLocation.getEstimatedTime();
+                                        long timeDriveReachNearSrcLocation = plannedTrip.getGoTime() + nearPassengerSrcLocation.getEstimatedTime();
                                         // if same direction => check time
-                                        if (DateTimeUtil.timeDistance(timeDriveReachNearSrcLocation, passengerRoute.getGoTime()) <= ACCEPTABLE_TIME) {
-                                            if (!listPassengerRouteResult.contains(passengerRoute)) {
-                                                listPassengerRouteResult.add(passengerRoute);
+                                        if (DateTimeUtil.timeDistance(timeDriveReachNearSrcLocation, passengerPlannedTrip.getGoTime()) <= ACCEPTABLE_TIME) {
+                                            if (!listPassengerPlannedTripResult.contains(passengerPlannedTrip)) {
+                                                listPassengerPlannedTripResult.add(passengerPlannedTrip);
                                             }
                                         } else {
                                             //TODO: WARNING WHEN REMOVE HERE
                                             // if it expired -> remove from GeoCell to reduce algorithm cost
-                                            if (passengerRoute.getGoTime() - DateTimeUtil.now() > REMOVEABLE_TIME) {
+                                            if (passengerPlannedTrip.getGoTime() - DateTimeUtil.now() > REMOVEABLE_TIME) {
                                                 //TODO REMOVE ALL LOCATION IN GEOCELL
                                             }
                                         }
@@ -241,19 +241,19 @@ public class Pairing {
         }
 
 
-        return listPassengerRouteResult;
+        return listPassengerPlannedTripResult;
     }
 
-    private List<Route> getPassengersCompatible(Route route) throws Exception {
+    private List<PlannedTrip> getPassengersCompatible(PlannedTrip plannedTrip) throws Exception {
         ;
-        List<Long> driverRouteLinkedLocationIds = database.getRouteIdRFLinkedLocations().get(route.getId());
+        List<Long> driverPlannedTripLinkedLocationIds = database.getPlannedTripIdRFLinkedLocations().get(plannedTrip.getId());
         List<LinkedLocation> linkedLocations = new ArrayList<>();
-        for (long llId : driverRouteLinkedLocationIds) {
+        for (long llId : driverPlannedTripLinkedLocationIds) {
             LinkedLocation location = database.getLinkedLocationHashMap().get(llId);
             if (location != null) {
                 linkedLocations.add(location);
             }
         }
-        return getPassengersCompatible(route, linkedLocations);
+        return getPassengersCompatible(plannedTrip, linkedLocations);
     }
 }

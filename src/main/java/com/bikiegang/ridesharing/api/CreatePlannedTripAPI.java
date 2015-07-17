@@ -6,9 +6,10 @@
 
 package com.bikiegang.ridesharing.api;
 
-import com.bikiegang.ridesharing.controller.RequestMakeTripController;
+import com.bikiegang.ridesharing.controller.PlannedTripController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.request.RequestMakeTripRequest;
+import com.bikiegang.ridesharing.pojo.request.CreatePlannedTripRequest;
+import com.bikiegang.ridesharing.pojo.response.PlannedTripSortDetailResponse;
 import com.bikiegang.ridesharing.utilities.LoggerFactory;
 import org.apache.log4j.Logger;
 
@@ -21,11 +22,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class RequestMakeTripAPI extends HttpServlet {
+public class CreatePlannedTripAPI extends HttpServlet {
     private Logger logger = LoggerFactory.createLogger(this.getClass());
-    public Class requestClass = RequestMakeTripRequest.class;
-    public Class responseClass = null;
-    public boolean responseIsArray = false;
+    public Class requestClass = CreatePlannedTripRequest.class;
+    public Class responseClass = PlannedTripSortDetailResponse.class;
+    public boolean responseIsArray = true;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -49,9 +50,9 @@ public class RequestMakeTripAPI extends HttpServlet {
                 jsonData.append(line);
             }
             logger.info("Request::"+jsonData.toString());
-            RequestMakeTripRequest requestMakeTripRequest = (RequestMakeTripRequest) Parser.JSonToObject(jsonData.toString(), RequestMakeTripRequest.class);
-            RequestMakeTripController controller = new RequestMakeTripController();
-            String result = controller.sendRequestMakeTrip(requestMakeTripRequest);
+            CreatePlannedTripRequest createPlannedTripRequest = (CreatePlannedTripRequest) Parser.JSonToObject(jsonData.toString(), CreatePlannedTripRequest.class);
+            PlannedTripController controller = new PlannedTripController();
+            String result = controller.createPlannedTrip(createPlannedTripRequest);
             logger.info("Request::"+result);
             out.print(result);
         } catch (Exception ex) {
@@ -98,6 +99,6 @@ public class RequestMakeTripAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Send a request to other user to go with him";
+        return "Create your new planned trip and pair its with compatible planned trip";
     }
 }

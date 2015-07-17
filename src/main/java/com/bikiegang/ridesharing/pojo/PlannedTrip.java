@@ -7,7 +7,7 @@ import org.json.JSONObject;
 /**
  * Created by hpduy17 on 6/24/15.
  */
-public class Route implements PojoBase {
+public class PlannedTrip implements PojoBase {
 
     private long id;
     private long goTime;
@@ -41,10 +41,10 @@ public class Route implements PojoBase {
     @JsonIgnore
     public static final double DEFAULT_PRICE_1KM = 3000; // 3000vnd / 1km
 
-    public Route() {
+    public PlannedTrip() {
     }
 
-    public Route(long id, long goTime, long arriveTime, double sumDistance, int type, String creatorId, int role, double ownerPrice, String routeTrailPolyLine, JSONObject rawRoutingResult) {
+    public PlannedTrip(long id, long goTime, long arriveTime, double sumDistance, int type, String creatorId, int role, double ownerPrice, String routeTrailPolyLine, JSONObject rawRoutingResult) {
         this.id = id;
         this.goTime = goTime;
         this.arriveTime = arriveTime;
@@ -57,7 +57,7 @@ public class Route implements PojoBase {
         this.rawRoutingResult = rawRoutingResult;
     }
 
-    public Route(Route that) {
+    public PlannedTrip(PlannedTrip that) {
         this.id = that.id;
         this.goTime = that.goTime;
         this.arriveTime = that.arriveTime;

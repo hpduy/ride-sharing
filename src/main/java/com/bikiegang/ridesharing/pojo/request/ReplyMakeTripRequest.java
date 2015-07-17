@@ -29,4 +29,8 @@ public class ReplyMakeTripRequest {
     public String getReplierId() {
         return replierId;
     }
+
+    public void setReplierId(String replierId) {
+        this.replierId = replierId;
+    }
 }

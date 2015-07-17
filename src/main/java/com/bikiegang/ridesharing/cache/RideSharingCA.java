@@ -14,7 +14,7 @@ import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.Broadcast;
 import com.bikiegang.ridesharing.pojo.LinkedLocation;
 import com.bikiegang.ridesharing.pojo.RequestMakeTrip;
-import com.bikiegang.ridesharing.pojo.Route;
+import com.bikiegang.ridesharing.pojo.PlannedTrip;
 import com.bikiegang.ridesharing.pojo.Trip;
 import com.bikiegang.ridesharing.pojo.User;
 import java.util.HashMap;
@@ -309,12 +309,12 @@ public class RideSharingCA {
     public boolean RestoreRoute() {
         boolean result = false;
         try {
-            database.getRouteHashMap().clear();
-            Map<String, String> hgetAll = hgetAll(Route.class.getName());
+            database.getPlannedTripHashMap().clear();
+            Map<String, String> hgetAll = hgetAll(PlannedTrip.class.getName());
             for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
                 String key = entrySet.getKey();
                 String value = entrySet.getValue();
-                database.getRouteHashMap().put(ConvertUtils.toLong(key), (Route) JSONUtil.DeSerialize(value, Route.class));
+                database.getPlannedTripHashMap().put(ConvertUtils.toLong(key), (PlannedTrip) JSONUtil.DeSerialize(value, PlannedTrip.class));
             }
             result = true;
         } catch (Exception ex) {

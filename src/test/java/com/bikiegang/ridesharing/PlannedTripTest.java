@@ -3,8 +3,8 @@ package com.bikiegang.ridesharing;
 import com.bikiegang.ridesharing.geocoding.FetchingDataFromGoogleRouting;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.LinkedLocation;
-import com.bikiegang.ridesharing.pojo.Route;
-import com.bikiegang.ridesharing.pojo.request.CreateRouteRequest;
+import com.bikiegang.ridesharing.pojo.PlannedTrip;
+import com.bikiegang.ridesharing.pojo.request.CreatePlannedTripRequest;
 import com.bikiegang.ridesharing.utilities.Path;
 import org.json.JSONObject;
 import org.junit.Test;
@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by hpduy17 on 7/15/15.
  */
-public class RouteTest {
+public class PlannedTripTest {
     String json = "{\n" +
             "  \"routes\": [\n" +
             "    {\n" +
@@ -364,7 +364,7 @@ public class RouteTest {
     @Test
     public void routeTest() throws IOException {
         Path.buildRoot();
-        Route route = new Route();
+        PlannedTrip route = new PlannedTrip();
         route.setRawRoutingResult(new JSONObject(json));
         FetchingDataFromGoogleRouting fetcher = new FetchingDataFromGoogleRouting();
         List<LinkedLocation> locationList = fetcher.fetch(route);
@@ -383,7 +383,7 @@ public class RouteTest {
         jsonObject.put("goTime",123);
         jsonObject.put("price",123);
         jsonObject.put("googleRoutingResult",new JSONObject(json).toString());
-        CreateRouteRequest request = (CreateRouteRequest) Parser.JSonToObject(jsonObject.toString(),CreateRouteRequest.class);
+        CreatePlannedTripRequest request = (CreatePlannedTripRequest) Parser.JSonToObject(jsonObject.toString(),CreatePlannedTripRequest.class);
         System.out.print(request);
     }
 }

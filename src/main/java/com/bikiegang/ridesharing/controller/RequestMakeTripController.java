@@ -27,10 +27,10 @@ public class RequestMakeTripController {
         if (null == request.getReceiverId() || request.getReceiverId().equals("")) {
             return Parser.ObjectToJSon(false, "'receiverId' is not found");
         }
-        if (request.getReceiverRouteId() <= 0) {
+        if (request.getReceiverPlannedTripId() <= 0) {
             return Parser.ObjectToJSon(false, "'receiverRouteId' is invalid");
         }
-        if (request.getSenderRouteId() <= 0) {
+        if (request.getSenderPlannedTripId() <= 0) {
             return Parser.ObjectToJSon(false, "'senderRouteId' is invalid");
         }
         if (request.getSenderRole() != User.DRIVER && request.getSenderRole() != User.PASSENGER) {
@@ -42,11 +42,11 @@ public class RequestMakeTripController {
         requestMakeTrip.setSenderId(request.getSenderId());
         requestMakeTrip.setStatus(RequestMakeTrip.WAITING);
         if(request.getSenderRole() == User.DRIVER){
-            requestMakeTrip.setDriverRouteId(request.getSenderRouteId());
-            requestMakeTrip.setPassengerRouteId(request.getReceiverRouteId());
+            requestMakeTrip.setDriverPlannedTripId(request.getSenderPlannedTripId());
+            requestMakeTrip.setPassengerPlannedTripId(request.getReceiverPlannedTripId());
         }else {
-            requestMakeTrip.setDriverRouteId(request.getReceiverRouteId());
-            requestMakeTrip.setPassengerRouteId(request.getSenderRouteId());
+            requestMakeTrip.setDriverPlannedTripId(request.getReceiverPlannedTripId());
+            requestMakeTrip.setPassengerPlannedTripId(request.getSenderPlannedTripId());
         }
         requestMakeTrip.setSenderRole(request.getSenderRole());
         requestMakeTrip.setCreatedTime(DateTimeUtil.now());
@@ -101,7 +101,7 @@ public class RequestMakeTripController {
                 sender.setIsBusy(true);
                 receiver.setIsBusy(true);
                 // Deny all request similar of other user in receiver box
-                long routeId = requestMakeTrip.getSenderRole() == User.DRIVER ? requestMakeTrip.getPassengerRouteId(): requestMakeTrip.getDriverRouteId();
+                long routeId = requestMakeTrip.getSenderRole() == User.DRIVER ? requestMakeTrip.getPassengerPlannedTripId(): requestMakeTrip.getDriverPlannedTripId();
                 denyRequest(receiver.getId(), routeId );
                 //TODO make a trip
             }

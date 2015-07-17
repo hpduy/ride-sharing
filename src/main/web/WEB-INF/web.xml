@@ -12,22 +12,30 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
     <!-- API -->
-    <!--**ROUTE**-->
+    <!--**PLANNED TRIP**-->
     <servlet>
-        <servlet-name>CreateRouteAPI</servlet-name>
-        <servlet-class>com.bikiegang.ridesharing.api.CreateRouteAPI</servlet-class>
+        <servlet-name>CreatePlannedTripAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.CreatePlannedTripAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>CreateRouteAPI</servlet-name>
-        <url-pattern>/CreateRouteAPI</url-pattern>
+        <servlet-name>CreatePlannedTripAPI</servlet-name>
+        <url-pattern>/CreatePlannedTripAPI</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>GetRouteDetailAPI</servlet-name>
-        <servlet-class>com.bikiegang.ridesharing.api.GetRouteDetailAPI</servlet-class>
+        <servlet-name>GetPlannedTripDetailAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.GetPlannedTripDetailAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>GetRouteDetailAPI</servlet-name>
-        <url-pattern>/GetRouteDetailAPI</url-pattern>
+        <servlet-name>GetPlannedTripDetailAPI</servlet-name>
+        <url-pattern>/GetPlannedTripDetailAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>UpdateCurrentLocationWithPlannedTripAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.UpdateCurrentLocationWithPlannedTripAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UpdateCurrentLocationWithPlannedTripAPI</servlet-name>
+        <url-pattern>/UpdateCurrentLocationWithPlannedTripAPI</url-pattern>
     </servlet-mapping>
     <!--**USER**-->
     <servlet>

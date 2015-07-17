@@ -6,30 +6,31 @@ import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
 import com.bikiegang.ridesharing.cache.RideSharingCA;
 import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.database.Database;
-import com.bikiegang.ridesharing.pojo.Route;
+import com.bikiegang.ridesharing.pojo.PlannedTrip;
 import com.bikiegang.ridesharing.utilities.Const;
-import java.util.HashSet;
 import org.apache.log4j.Logger;
+
+import java.util.HashSet;
 
 /**
  * Created by hpduy17 on 6/26/15.
  */
-public class RouteDao {
+public class PlannedTripDao {
 
     Logger logger = Logger.getLogger(this.getClass());
     RideSharingCA cache = RideSharingCA.getInstance(ConfigInfo.REDIS_SERVER);
     private Database database = Database.getInstance();
 
-    public boolean insert(Route obj) {
+    public boolean insert(PlannedTrip obj) {
         boolean result = false;
         try {
             if (obj == null) {
                 return false;
             }
             //Step 1: put in hashmap
-            database.getRouteHashMap().put(obj.getId(), obj);
-            HashSet<Long> setRfRole = database.getRoleRFRoutes().get(obj.getRole());
-            HashSet<Long> setRfUser = database.getUserIdRFRoutes().get(obj.getCreatorId());
+            database.getPlannedTripHashMap().put(obj.getId(), obj);
+            HashSet<Long> setRfRole = database.getRoleRFPlannedTrips().get(obj.getRole());
+            HashSet<Long> setRfUser = database.getUserIdRFPlanedTrips().get(obj.getCreatorId());
             if (setRfRole == null) {
                 setRfRole = new HashSet<>();
             }
@@ -73,16 +74,16 @@ public class RouteDao {
         return result;
     }
 
-    public boolean delete(Route obj) {
+    public boolean delete(PlannedTrip obj) {
         boolean result = false;
         try {
             if (obj == null) {
                 return false;
             }
             //Step 1: put in hashmap
-            database.getRouteHashMap().remove(obj.getId());
-            HashSet<Long> mapRfRole = database.getRoleRFRoutes().get(obj.getRole());
-            HashSet<Long> mapRfUser = database.getUserIdRFRoutes().get(obj.getCreatorId());
+            database.getPlannedTripHashMap().remove(obj.getId());
+            HashSet<Long> mapRfRole = database.getRoleRFPlannedTrips().get(obj.getRole());
+            HashSet<Long> mapRfUser = database.getUserIdRFPlanedTrips().get(obj.getCreatorId());
             if (mapRfRole == null) {
                 mapRfRole = new HashSet<>();
             }
@@ -124,14 +125,14 @@ public class RouteDao {
         return result;
     }
 
-    public boolean update(Route obj) {
+    public boolean update(PlannedTrip obj) {
         boolean result = false;
         try {
             if (obj == null) {
                 return false;
             }
             //Step 1: put in hashmap
-            database.getRouteHashMap().put(obj.getId(), obj);
+            database.getPlannedTripHashMap().put(obj.getId(), obj);
             //Step 2: put redis
             result = cache.hset(obj.getClass().getName(), String.valueOf(obj.getId()), JSONUtil.Serialize(obj));
             if (result) {

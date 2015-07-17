@@ -98,6 +98,6 @@ public class ReplyMakeTripAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Update user current location";
+        return "Reply a request which other user have sent to you";
     }
 }

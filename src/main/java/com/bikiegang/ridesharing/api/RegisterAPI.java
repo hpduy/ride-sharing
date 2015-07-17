@@ -99,6 +99,6 @@ public class RegisterAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Update user current location";
+        return "Register new account by email, facebookId, googleId, twitterId and linkedIn";
     }
 }

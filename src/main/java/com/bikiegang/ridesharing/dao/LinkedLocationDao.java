@@ -8,9 +8,10 @@ import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.LinkedLocation;
 import com.bikiegang.ridesharing.utilities.Const;
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.log4j.Logger;
 
 /**
  * Created by hpduy17 on 6/26/15.
@@ -29,7 +30,7 @@ public class LinkedLocationDao {
             }
             //Step 1: put in hashmap
             database.getLinkedLocationHashMap().put(obj.getId(), obj);
-            List<Long> get = database.getRouteIdRFLinkedLocations().get(obj.getRefId());
+            List<Long> get = database.getPlannedTripIdRFLinkedLocations().get(obj.getRefId());
             if (get == null) {
                 get = new ArrayList<>();
             }
@@ -76,7 +77,7 @@ public class LinkedLocationDao {
             }
             //Step 1: put in hashmap
             database.getLinkedLocationHashMap().remove(obj.getId());
-            List<Long> get = database.getRouteIdRFLinkedLocations().get(obj.getRefId());
+            List<Long> get = database.getPlannedTripIdRFLinkedLocations().get(obj.getRefId());
             if (get == null) {
                 get = new ArrayList<>();
             }

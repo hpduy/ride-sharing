@@ -1,13 +1,15 @@
 package com.bikiegang.ridesharing.controller;
 
+import com.bikiegang.ridesharing.dao.PlannedTripDao;
 import com.bikiegang.ridesharing.dao.UserDao;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.geocoding.PolyLineProcess;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.LatLng;
+import com.bikiegang.ridesharing.pojo.PlannedTrip;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.*;
-import com.bikiegang.ridesharing.pojo.response.UserDetailWithRoutesResponse;
+import com.bikiegang.ridesharing.pojo.response.UserDetailWithPlannedTripResponse;
 import com.bikiegang.ridesharing.pojo.response.UserSortDetailResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -37,6 +39,8 @@ public class UserController {
                 return registerGoogle(registerRequest);
             case RegisterRequest.TWITTER:
                 return registerTwitter(registerRequest);
+            case RegisterRequest.LINKEDIN:
+                return registerLinkedIn(registerRequest);
         }
         return Parser.ObjectToJSon(false, "type is invalid");
     }
@@ -51,8 +55,8 @@ public class UserController {
         User user = new User();
         user.setId("fb_" + registerRequest.getFacebookId());
         user.setFacebookId(registerRequest.getFacebookId());
-        if (null != registerRequest.getProfilePicture())
-            user.setProfilePictureLink(registerRequest.getProfilePicture());
+        if (null != registerRequest.getProfilePictureLink())
+            user.setProfilePictureLink(registerRequest.getProfilePictureLink());
         if (null != registerRequest.getEmail())
             user.setEmail(registerRequest.getEmail());
         if (null != registerRequest.getPhone())
@@ -61,6 +65,8 @@ public class UserController {
             user.setFirstName(registerRequest.getFirstName());
         if (null != registerRequest.getLastName())
             user.setLastName(registerRequest.getLastName());
+        if (null != registerRequest.getSelfIntro())
+            user.setSelfIntro(registerRequest.getSelfIntro());
         user.setGender(registerRequest.getGender());
         user.setBirthDay(registerRequest.getBirthDay());
         if (dao.insert(user)) {
@@ -99,8 +105,8 @@ public class UserController {
         User user = new User();
         user.setId("gg_" + registerRequest.getGoogleId());
         user.setGoogleId(registerRequest.getGoogleId());
-        if (null != registerRequest.getProfilePicture())
-            user.setProfilePictureLink(registerRequest.getProfilePicture());
+        if (null != registerRequest.getProfilePictureLink())
+            user.setProfilePictureLink(registerRequest.getProfilePictureLink());
         if (null != registerRequest.getEmail())
             user.setEmail(registerRequest.getEmail());
         if (null != registerRequest.getPhone())
@@ -109,6 +115,8 @@ public class UserController {
             user.setFirstName(registerRequest.getFirstName());
         if (null != registerRequest.getLastName())
             user.setLastName(registerRequest.getLastName());
+        if (null != registerRequest.getSelfIntro())
+            user.setSelfIntro(registerRequest.getSelfIntro());
         user.setGender(registerRequest.getGender());
         user.setBirthDay(registerRequest.getBirthDay());
         if (dao.insert(user)) {
@@ -118,7 +126,7 @@ public class UserController {
     }
 
     private String registerTwitter(RegisterRequest registerRequest) throws JsonProcessingException {
-        if (null == registerRequest.getGoogleId() || registerRequest.getGoogleId().equals("")) {
+        if (null == registerRequest.getTwitterId() || registerRequest.getTwitterId().equals("")) {
             return Parser.ObjectToJSon(false, "'twitterId' is not found");
         }
         if (database.getTwitterRFUserId().keySet().contains(registerRequest.getTwitterId())) {
@@ -127,8 +135,8 @@ public class UserController {
         User user = new User();
         user.setId("tw_" + registerRequest.getTwitterId());
         user.setTwitterId(registerRequest.getTwitterId());
-        if (null != registerRequest.getProfilePicture())
-            user.setProfilePictureLink(registerRequest.getProfilePicture());
+        if (null != registerRequest.getProfilePictureLink())
+            user.setProfilePictureLink(registerRequest.getProfilePictureLink());
         if (null != registerRequest.getEmail())
             user.setEmail(registerRequest.getEmail());
         if (null != registerRequest.getPhone())
@@ -137,6 +145,8 @@ public class UserController {
             user.setFirstName(registerRequest.getFirstName());
         if (null != registerRequest.getLastName())
             user.setLastName(registerRequest.getLastName());
+        if (null != registerRequest.getSelfIntro())
+            user.setSelfIntro(registerRequest.getSelfIntro());
         user.setGender(registerRequest.getGender());
         user.setBirthDay(registerRequest.getBirthDay());
         if (dao.insert(user)) {
@@ -144,7 +154,35 @@ public class UserController {
         }
         return Parser.ObjectToJSon(false, "Cannot register now. Try again later!");
     }
-
+    private String registerLinkedIn(RegisterRequest registerRequest) throws JsonProcessingException {
+        if (null == registerRequest.getLinkedInId() || registerRequest.getLinkedInId().equals("")) {
+            return Parser.ObjectToJSon(false, "'linkedInId' is not found");
+        }
+        if (database.getTwitterRFUserId().keySet().contains(registerRequest.getTwitterId())) {
+            return Parser.ObjectToJSon(false, "'linkedInId' has been used");
+        }
+        User user = new User();
+        user.setId("lk_" + registerRequest.getLinkedInId());
+        user.setLinkedInId(registerRequest.getLinkedInId());
+        if (null != registerRequest.getProfilePictureLink())
+            user.setProfilePictureLink(registerRequest.getProfilePictureLink());
+        if (null != registerRequest.getEmail())
+            user.setEmail(registerRequest.getEmail());
+        if (null != registerRequest.getPhone())
+            user.setPhone(registerRequest.getPhone());
+        if (null != registerRequest.getFirstName())
+            user.setFirstName(registerRequest.getFirstName());
+        if (null != registerRequest.getLastName())
+            user.setLastName(registerRequest.getLastName());
+        if (null != registerRequest.getSelfIntro())
+            user.setSelfIntro(registerRequest.getSelfIntro());
+        user.setGender(registerRequest.getGender());
+        user.setBirthDay(registerRequest.getBirthDay());
+        if (dao.insert(user)) {
+            return Parser.ObjectToJSon(true, "Register successfully", user);
+        }
+        return Parser.ObjectToJSon(false, "Cannot register now. Try again later!");
+    }
     /**
      * LOGIN
      */
@@ -160,6 +198,8 @@ public class UserController {
                 return loginGoogle(loginRequest);
             case LoginRequest.TWITTER:
                 return loginTwitter(loginRequest);
+            case LoginRequest.LINKEDIN:
+                return loginLinkedIn(loginRequest);
         }
         return Parser.ObjectToJSon(false, "type is invalid");
     }
@@ -229,6 +269,20 @@ public class UserController {
         }
         return Parser.ObjectToJSon(true, "Login successfully", user);
     }
+    private String loginLinkedIn(LoginRequest loginRequest) throws JsonProcessingException {
+        if (null == loginRequest.getUserId() || loginRequest.getUserId().equals("")) {
+            return Parser.ObjectToJSon(false, "'userId' is not found");
+        }
+        String userId = database.getLinkedInRFUserId().get(loginRequest.getUserId());
+        if (null == userId || userId.equals("")) {
+            return Parser.ObjectToJSon(false, "User is not exits");
+        }
+        User user = database.getUserHashMap().get(userId);
+        if (user == null) {
+            return Parser.ObjectToJSon(false, "User is not found by userId");
+        }
+        return Parser.ObjectToJSon(true, "Login successfully", user);
+    }
 
     /**
      * GET USER INFO
@@ -242,8 +296,8 @@ public class UserController {
             return Parser.ObjectToJSon(false, "User is not found by userId");
         }
         //get list route of user
-        List<Long> routeIds = new ArrayList<>(database.getUserIdRFRoutes().get(user.getId()));
-        UserDetailWithRoutesResponse response = new UserDetailWithRoutesResponse(user, new RouteController().getListRouteSortDetail(routeIds));
+        List<Long> routeIds = new ArrayList<>(database.getUserIdRFPlanedTrips().get(user.getId()));
+        UserDetailWithPlannedTripResponse response = new UserDetailWithPlannedTripResponse(user, new PlannedTripController().getListPlannedTripSortDetail(routeIds));
         return Parser.ObjectToJSon(true, "Get detail successfully", response);
     }
 
@@ -283,9 +337,36 @@ public class UserController {
     /**
      * UPDATE USER
      */
-    public String updateCurrentLocation(UpdateCurrentLocationRequest request) throws JsonProcessingException {
+    public String updateCurrentWithRouteLocation(UpdateCurrentLocationWithPlannedTripRequest request) throws JsonProcessingException {
         if (null == request.getCurrentPolyLine() || request.getCurrentPolyLine().equals("")) {
             return Parser.ObjectToJSon(false, "'currentPolyLine' is not found");
+        }
+        if (null == request.getUserId() || request.getUserId().equals("")) {
+            return Parser.ObjectToJSon(false, "'userId' is not found");
+        }
+        if (request.getPlannedTripId() <= 0) {
+            return Parser.ObjectToJSon(false, "'plannedTripId' is invalid");
+        }
+        User user = database.getUserHashMap().get(request.getUserId());
+        if (user == null) {
+            return Parser.ObjectToJSon(false, "User is not found by userId");
+        }
+        PlannedTrip route = database.getPlannedTripHashMap().get(request.getPlannedTripId());
+        if(null == route){
+            return Parser.ObjectToJSon(false, "Planned Trip is not found by plannedTripId");
+        }
+        List<LatLng> currentList = PolyLineProcess.decodePoly(request.getCurrentPolyLine());
+        if (null != currentList && currentList.size() > 0) {
+            user.setCurrentLocation(currentList.get(currentList.size() - 1));
+        }
+        route.setRouteTrailPolyLine(request.getCurrentPolyLine());
+        new PlannedTripDao().update(route);
+        return Parser.ObjectToJSon(true, "Update current location successfully");
+    }
+
+    public String updateCurrentLocation(UpdateCurrentLocationRequest request) throws JsonProcessingException {
+        if (request.getLat() <= 0 && request.getLng() <= 0) {
+            return Parser.ObjectToJSon(false, "'latitude' and 'longitude' is invalid");
         }
         if (null == request.getUserId() || request.getUserId().equals("")) {
             return Parser.ObjectToJSon(false, "'userId' is not found");
@@ -294,10 +375,7 @@ public class UserController {
         if (user == null) {
             return Parser.ObjectToJSon(false, "User is not found by userId");
         }
-        List<LatLng> currentList = PolyLineProcess.decodePoly(request.getCurrentPolyLine());
-        if (null != currentList && currentList.size() > 0) {
-            user.setCurrentLocation(currentList.get(currentList.size() - 1));
-        }
+        user.setCurrentLocation(new LatLng(request.getLat(), request.getLng()));
         return Parser.ObjectToJSon(true, "Update current location successfully");
     }
 }

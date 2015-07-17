@@ -34,7 +34,7 @@ public class Database {
     //CORE
     private HashMap<String, Broadcast> broadcastHashMap = new HashMap<>();
     private HashMap<Long, LinkedLocation> linkedLocationHashMap = new HashMap<>();
-    private HashMap<Long, Route> routeHashMap = new HashMap<>();
+    private HashMap<Long, PlannedTrip> plannedTripHashMap = new HashMap<>();
     private HashMap<Long, Trip> tripHashMap = new HashMap<>();
     private HashMap<String, User> userHashMap = new HashMap<>();
     private HashMap<Long, RequestMakeTrip> requestMakeTripHashMap = new HashMap<>();
@@ -53,10 +53,10 @@ public class Database {
     private HashMap<String, HashSet<String>> userIdRFBroadcasts = new HashMap<>(); //<userId,<broadcastId>>
 
     /**
-     * ROUTE
+     * PLANNED TRIP
      */
-    private HashMap<String, HashSet<Long>> userIdRFRoutes = new HashMap<>(); // <userId,<routeId>>
-    private HashMap<Integer, HashSet<Long>> roleRFRoutes = new HashMap<>(); // <role,<routeId>>
+    private HashMap<String, HashSet<Long>> userIdRFPlanedTrips = new HashMap<>(); // <userId,<plannedTripId>>
+    private HashMap<Integer, HashSet<Long>> roleRFPlannedTrips = new HashMap<>(); // <role,<plannedTripId>>
     /**
      * TRIP
      */
@@ -65,18 +65,18 @@ public class Database {
     /**
      * REQUEST MAKE TRIP
      */
-    private HashMap<String, HashMap<Long, Long>> senderRequestsBox = new HashMap<>(); //<senderId,<receiverRouteId,requestIds>>
-    private HashMap<String, HashMap<Long, List<Long>>> receiverRequestsBox = new HashMap<>(); //<receiverId,<receiverRouteId,<requestIds>>>
+    private HashMap<String, HashMap<Long, Long>> senderRequestsBox = new HashMap<>(); //<senderId,<receiverPlannedTripId,requestIds>>
+    private HashMap<String, HashMap<Long, List<Long>>> receiverRequestsBox = new HashMap<>(); //<receiverId,<receiverPlannedTripId,<requestIds>>>
     /**
      * LINKED LOCATION
      */
-    private HashMap<Long, List<Long>> routeIdRFLinkedLocations = new HashMap<>(); //<routeId,<LinkedLocationId>>
+    private HashMap<Long, List<Long>> plannedTripIdRFLinkedLocations = new HashMap<>(); //<plannedTripId,<LinkedLocationId>>
 
     /**
      * GEOCELL
      */
-    private GeoCell geoCellDriver = new GeoCell(); // for route
-    private GeoCell geoCellPassenger = new GeoCell();// for route
+    private GeoCell geoCellDriver = new GeoCell(); // for plannedTrip
+    private GeoCell geoCellPassenger = new GeoCell();// for plannedTrip
     private GeoCell geoCellCurrentLocation = new GeoCell();
 
 //    /*PERSONAL FUNCTION*/
@@ -99,8 +99,8 @@ public class Database {
         return linkedLocationHashMap;
     }
 
-    public HashMap<Long, Route> getRouteHashMap() {
-        return routeHashMap;
+    public HashMap<Long, PlannedTrip> getPlannedTripHashMap() {
+        return plannedTripHashMap;
     }
 
     public HashMap<Long, Trip> getTripHashMap() {
@@ -136,8 +136,8 @@ public class Database {
         return userIdRFBroadcasts;
     }
 
-    public HashMap<String, HashSet<Long>> getUserIdRFRoutes() {
-        return userIdRFRoutes;
+    public HashMap<String, HashSet<Long>> getUserIdRFPlanedTrips() {
+        return userIdRFPlanedTrips;
     }
 
     public HashMap<String, HashSet<Long>> getDriverIdRFTrips() {
@@ -148,12 +148,12 @@ public class Database {
         return passengerIdRFTrips;
     }
 
-    public HashMap<Long, List<Long>> getRouteIdRFLinkedLocations() {
-        return routeIdRFLinkedLocations;
+    public HashMap<Long, List<Long>> getPlannedTripIdRFLinkedLocations() {
+        return plannedTripIdRFLinkedLocations;
     }
 
-    public HashMap<Integer, HashSet<Long>> getRoleRFRoutes() {
-        return roleRFRoutes;
+    public HashMap<Integer, HashSet<Long>> getRoleRFPlannedTrips() {
+        return roleRFPlannedTrips;
     }
 
     public HashMap<String, HashMap<Long, Long>> getSenderRequestsBox() {

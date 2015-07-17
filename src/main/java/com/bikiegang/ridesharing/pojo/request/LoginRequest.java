@@ -20,6 +20,9 @@ public class LoginRequest {
     public static final int GOOGLE = 3;
     @JsonIgnore
     public static final int TWITTER = 4;
+    @JsonIgnore
+    public static final int LINKEDIN = 5;
+
     public String getUserId() {
         return userId;
     }
