@@ -67,7 +67,7 @@ public class RouteDA implements IDA {
                 stmt.setString(9, value.getCreatorId());
                 stmt.setInt(10, value.getRole());
                 stmt.setInt(11, value.getType());
-                stmt.setString(12, value.getRouteTrailPolyLine());
+                stmt.setString(12, value.getPlannedTripTrailPolyLine());
                 stmt.setString(13, value.getRawRoutingResult().toString());
 
                 int row = stmt.executeUpdate();
@@ -103,7 +103,7 @@ public class RouteDA implements IDA {
                 stmt.setString(9, value.getCreatorId());
                 stmt.setInt(10, value.getRole());
                 stmt.setInt(11, value.getType());
-                stmt.setString(12, value.getRouteTrailPolyLine());
+                stmt.setString(12, value.getPlannedTripTrailPolyLine());
                 stmt.setString(13, value.getRawRoutingResult().toString());
                 stmt.setLong(14, value.getId());
 

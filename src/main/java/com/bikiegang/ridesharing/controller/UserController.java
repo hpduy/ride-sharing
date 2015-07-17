@@ -359,7 +359,7 @@ public class UserController {
         if (null != currentList && currentList.size() > 0) {
             user.setCurrentLocation(currentList.get(currentList.size() - 1));
         }
-        route.setRouteTrailPolyLine(request.getCurrentPolyLine());
+        route.setPlannedTripTrailPolyLine(request.getCurrentPolyLine());
         new PlannedTripDao().update(route);
         return Parser.ObjectToJSon(true, "Update current location successfully");
     }

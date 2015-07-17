@@ -10,6 +10,7 @@ public class IdGenerator {
     private static long plannedTripId = 0;
     private static long tripId = 0;
     private static long requestMakeTripId = 0;
+    private static long groupPlannedTripId = 0;
     private static Database database = Database.getInstance();
 
 
@@ -47,5 +48,14 @@ public class IdGenerator {
         }
         while (idSet.contains(requestMakeTripId));
         return requestMakeTripId;
+    }
+
+    public static long getGroupPlannedTripId() {
+        Set<Long> idSet = database.getGroupIdRFPlannedTrips().keySet();
+        do {
+            groupPlannedTripId++;
+        }
+        while (idSet.contains(groupPlannedTripId));
+        return groupPlannedTripId;
     }
 }

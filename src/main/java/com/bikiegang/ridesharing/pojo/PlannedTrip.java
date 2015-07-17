@@ -20,8 +20,9 @@ public class PlannedTrip implements PojoBase {
     private String creatorId = "";
     private int role; // user role
     private int type;
-    private String routeTrailPolyLine = "";
+    private String plannedTripTrailPolyLine = "";
     private JSONObject rawRoutingResult = new JSONObject();
+    private long groupId;
     /**
      * ROUTE TYPE
      */
@@ -44,7 +45,7 @@ public class PlannedTrip implements PojoBase {
     public PlannedTrip() {
     }
 
-    public PlannedTrip(long id, long goTime, long arriveTime, double sumDistance, int type, String creatorId, int role, double ownerPrice, String routeTrailPolyLine, JSONObject rawRoutingResult) {
+    public PlannedTrip(long id, long goTime, long arriveTime, double sumDistance, int type, String creatorId, int role, double ownerPrice, String plannedTripTrailPolyLine, JSONObject rawRoutingResult, long groupId) {
         this.id = id;
         this.goTime = goTime;
         this.arriveTime = arriveTime;
@@ -53,8 +54,9 @@ public class PlannedTrip implements PojoBase {
         this.role = role;
         this.creatorId = creatorId == null ? "" : creatorId;
         this.ownerPrice = ownerPrice;
-        this.routeTrailPolyLine = routeTrailPolyLine;
+        this.plannedTripTrailPolyLine = plannedTripTrailPolyLine;
         this.rawRoutingResult = rawRoutingResult;
+        this.groupId = groupId;
     }
 
     public PlannedTrip(PlannedTrip that) {
@@ -69,8 +71,9 @@ public class PlannedTrip implements PojoBase {
         this.role = that.role;
         this.type = that.type;
         this.ownerPrice = that.ownerPrice;
-        this.routeTrailPolyLine = that.routeTrailPolyLine;
+        this.plannedTripTrailPolyLine = that.plannedTripTrailPolyLine;
         this.rawRoutingResult = that.rawRoutingResult;
+        this.groupId = that.groupId;
     }
 
 
@@ -162,12 +165,12 @@ public class PlannedTrip implements PojoBase {
         this.ownerPrice = ownerPrice;
     }
 
-    public String getRouteTrailPolyLine() {
-        return routeTrailPolyLine;
+    public String getPlannedTripTrailPolyLine() {
+        return plannedTripTrailPolyLine;
     }
 
-    public void setRouteTrailPolyLine(String routeTrailPolyLine) {
-        this.routeTrailPolyLine = routeTrailPolyLine;
+    public void setPlannedTripTrailPolyLine(String plannedTripTrailPolyLine) {
+        this.plannedTripTrailPolyLine = plannedTripTrailPolyLine;
     }
 
     public JSONObject getRawRoutingResult() {
@@ -176,5 +179,13 @@ public class PlannedTrip implements PojoBase {
 
     public void setRawRoutingResult(JSONObject rawRoutingResult) {
         this.rawRoutingResult = rawRoutingResult;
+    }
+
+    public long getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(long groupId) {
+        this.groupId = groupId;
     }
 }

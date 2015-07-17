@@ -57,6 +57,7 @@ public class Database {
      */
     private HashMap<String, HashSet<Long>> userIdRFPlanedTrips = new HashMap<>(); // <userId,<plannedTripId>>
     private HashMap<Integer, HashSet<Long>> roleRFPlannedTrips = new HashMap<>(); // <role,<plannedTripId>>
+    private HashMap<Long, HashSet<Long>> groupIdRFPlannedTrips = new HashMap<>(); // <groupId,<plannedTripId>>
     /**
      * TRIP
      */
@@ -166,6 +167,10 @@ public class Database {
 
     public HashMap<String, String> getLinkedInRFUserId() {
         return linkedInRFUserId;
+    }
+
+    public HashMap<Long, HashSet<Long>> getGroupIdRFPlannedTrips() {
+        return groupIdRFPlannedTrips;
     }
 
     /*GEOCELL GET-SET*/
