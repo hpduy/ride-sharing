@@ -20,7 +20,7 @@ import java.sql.PreparedStatement;
  *
  * @author root
  */
-public class RouteDA implements IDA {
+public class PlannedTripDA implements IDA {
 
     @Override
     public boolean DoAction(PojoBase value, int actionType) {
@@ -54,7 +54,7 @@ public class RouteDA implements IDA {
 
         Connection cnn = cm.borrowClient();
         try {
-            String query = ConfigInfo.ROUTE_INSERT_QUERY;
+            String query = ConfigInfo.PLANNEDTRIP_INSERT_QUERY;
             try (PreparedStatement stmt = cnn.prepareStatement(query)) {
                 stmt.setLong(1, value.getId());
                 stmt.setLong(2, value.getGoTime());
@@ -69,6 +69,7 @@ public class RouteDA implements IDA {
                 stmt.setInt(11, value.getType());
                 stmt.setString(12, value.getPlannedTripTrailPolyLine());
                 stmt.setString(13, value.getRawRoutingResult().toString());
+                stmt.setLong(14, value.getGroupId());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {
@@ -90,7 +91,7 @@ public class RouteDA implements IDA {
 
         Connection cnn = cm.borrowClient();
         try {
-            String query = ConfigInfo.ROUTE_UPDATE_QUERY;
+            String query = ConfigInfo.PLANNEDTRIP_UPDATE_QUERY;
             try (PreparedStatement stmt = cnn.prepareStatement(query)) {
                 stmt.setLong(1, value.getId());
                 stmt.setLong(2, value.getGoTime());
@@ -105,7 +106,8 @@ public class RouteDA implements IDA {
                 stmt.setInt(11, value.getType());
                 stmt.setString(12, value.getPlannedTripTrailPolyLine());
                 stmt.setString(13, value.getRawRoutingResult().toString());
-                stmt.setLong(14, value.getId());
+                stmt.setLong(14, value.getGroupId());
+                stmt.setLong(15, value.getId());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {
@@ -127,7 +129,7 @@ public class RouteDA implements IDA {
 
         Connection cnn = cm.borrowClient();
         try {
-            String query = ConfigInfo.ROUTE_DELETE_QUERY;
+            String query = ConfigInfo.PLANNEDTRIP_DELETE_QUERY;
             try (PreparedStatement stmt = cnn.prepareStatement(query)) {
                 stmt.setLong(1, value.getId());
 

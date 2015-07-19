@@ -14,6 +14,14 @@
     <!-- API -->
     <!--**PLANNED TRIP**-->
     <servlet>
+        <servlet-name>AutoParingWhenSearchAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.AutoParingWhenSearchAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AutoParingWhenSearchAPI</servlet-name>
+        <url-pattern>/AutoParingWhenSearchAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
         <servlet-name>CreatePlannedTripAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.CreatePlannedTripAPI</servlet-class>
     </servlet>
@@ -70,6 +78,23 @@
         <servlet-name>RegisterAPI</servlet-name>
         <url-pattern>/RegisterAPI</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>GetUsersAroundFromMeAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.GetUsersAroundFromMeAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetUsersAroundFromMeAPI</servlet-name>
+        <url-pattern>/GetUsersAroundFromMeAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>GetUsersDetailWithPlannedTripsAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.GetUsersDetailWithPlannedTripsAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetUsersDetailWithPlannedTripsAPI</servlet-name>
+        <url-pattern>/GetUsersDetailWithPlannedTripsAPI</url-pattern>
+    </servlet-mapping>
+
     <!--**TRIP**-->
     <servlet>
         <servlet-name>RequestMakeTripAPI</servlet-name>

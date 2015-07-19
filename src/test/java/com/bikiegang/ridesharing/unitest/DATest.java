@@ -9,7 +9,7 @@ import com.bikiegang.ridesharing.da.BroadcastDA;
 import com.bikiegang.ridesharing.da.IDA;
 import com.bikiegang.ridesharing.da.LinkedLocationDA;
 import com.bikiegang.ridesharing.da.RequestMakeTripDA;
-import com.bikiegang.ridesharing.da.RouteDA;
+import com.bikiegang.ridesharing.da.PlannedTripDA;
 import com.bikiegang.ridesharing.da.TripDA;
 import com.bikiegang.ridesharing.da.UserDA;
 import com.bikiegang.ridesharing.pojo.PojoBase;
@@ -53,7 +53,7 @@ public class DATest {
         assertTrue(result);
 
         value = utils.CreateRoute();
-        instance = new RouteDA();
+        instance = new PlannedTripDA();
         result = instance.DoAction(value, actionType);
         assertTrue(result);
 
@@ -100,7 +100,7 @@ public class DATest {
         assertTrue(result);
 
         value = utils.CreateRoute();
-        instance = new RouteDA();
+        instance = new PlannedTripDA();
         result = instance.DoAction(value, actionType);
         assertTrue(result);
         result = instance.DoAction(value, actionTypeUpdate);
@@ -153,7 +153,7 @@ public class DATest {
         assertTrue(result);
 
         value = utils.CreateRoute();
-        instance = new RouteDA();
+        instance = new PlannedTripDA();
         result = instance.DoAction(value, actionType);
         assertTrue(result);
         result = instance.DoAction(value, actionTypeDelete);
