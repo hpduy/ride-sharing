@@ -94,6 +94,14 @@
         <servlet-name>GetUsersDetailWithPlannedTripsAPI</servlet-name>
         <url-pattern>/GetUsersDetailWithPlannedTripsAPI</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>GetAngelsAroundFromMeAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.GetAngelsAroundFromMeAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetAngelsAroundFromMeAPI</servlet-name>
+        <url-pattern>/GetAngelsAroundFromMeAPI</url-pattern>
+    </servlet-mapping>
 
     <!--**TRIP**-->
     <servlet>

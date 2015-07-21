@@ -1,5 +1,6 @@
 package com.bikiegang.ridesharing;
 
+import com.bikiegang.ridesharing.controller.PlannedTripController;
 import com.bikiegang.ridesharing.geocoding.FetchingDataFromGoogleRouting;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.LinkedLocation;
@@ -7,6 +8,7 @@ import com.bikiegang.ridesharing.pojo.PlannedTrip;
 import com.bikiegang.ridesharing.pojo.request.CreatePlannedTripRequest;
 import com.bikiegang.ridesharing.utilities.Path;
 import org.json.JSONObject;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -16,6 +18,7 @@ import java.util.List;
  * Created by hpduy17 on 7/15/15.
  */
 public class PlannedTripTest {
+
     String json = "{\n" +
             "  \"routes\": [\n" +
             "    {\n" +
@@ -361,6 +364,7 @@ public class PlannedTripTest {
             "  ],\n" +
             "  \"status\": \"OK\"\n" +
             "}";
+
     @Test
     public void routeTest() throws IOException {
         Path.buildRoot();
@@ -368,22 +372,28 @@ public class PlannedTripTest {
         route.setRawRoutingResult(new JSONObject(json));
         FetchingDataFromGoogleRouting fetcher = new FetchingDataFromGoogleRouting();
         List<LinkedLocation> locationList = fetcher.fetch(route);
-        if(locationList != null){
-            for(LinkedLocation location : locationList){
-                System.out.println("("+location.getLat()+","+location.getLng()+") :: index:"+location.getIndex() +" -- time:"+location.getEstimatedTime());
+        if (locationList != null) {
+            for (LinkedLocation location : locationList) {
+                System.out.println("(" + location.getLat() + "," + location.getLng() + ") :: index:" + location.getIndex() + " -- time:" + location.getEstimatedTime());
             }
         }
     }
 
+    @Before
+    public void setup() throws IOException {
+        Path.buildRoot();
+    }
+
     @Test
-    public void createRoute() throws IOException {
+    public void createRoute() throws Exception {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("creatorId","Duy");
-        jsonObject.put("role",1);
-        jsonObject.put("goTime",123);
-        jsonObject.put("price",123);
-        jsonObject.put("googleRoutingResult",new JSONObject(json).toString());
-        CreatePlannedTripRequest request = (CreatePlannedTripRequest) Parser.JSonToObject(jsonObject.toString(),CreatePlannedTripRequest.class);
+        jsonObject.put("creatorId", "tester");
+        jsonObject.put("role", 1);
+        jsonObject.put("goTime", 123);
+        jsonObject.put("price", 123);
+        jsonObject.put("googleRoutingResult", new JSONObject(json).toString());
+        CreatePlannedTripRequest request = (CreatePlannedTripRequest) Parser.JSonToObject(jsonObject.toString(), CreatePlannedTripRequest.class);
+        new PlannedTripController().createPlannedTrip(request);
         System.out.print(request);
     }
 }

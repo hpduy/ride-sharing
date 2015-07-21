@@ -1,6 +1,7 @@
 package com.bikiegang.ridesharing.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.commons.lang.RandomStringUtils;
 
 /**
  * Created by hpduy17 on 6/24/15.
@@ -9,7 +10,7 @@ public class User implements PojoBase {
 
     private String id = "";
     private String email = "";
-    private String password = "";
+    private String password = RandomStringUtils.randomAlphabetic(10);
     private String facebookId = "";
     private String googleId = "";
     private String linkedInId = "";
@@ -25,7 +26,8 @@ public class User implements PojoBase {
     private int status;
     private boolean isBusy;
     private int currentRole;
-
+    //Temp field
+    private String verifiedCode = RandomStringUtils.randomAlphabetic(10);
     // final field & dont print to JSON;
     /**
      * GENDER
@@ -43,6 +45,10 @@ public class User implements PojoBase {
     public static final int UNVERIFIED = 0;
     @JsonIgnore
     public static final int VERIFIED = 1;
+    @JsonIgnore
+    public static final int HALF_VERIFIED = 2;
+    @JsonIgnore
+    public static final int ANGEL = 3;
     /**
      * USER ROLE
      */
@@ -238,5 +244,13 @@ public class User implements PojoBase {
 
     public void setIsBusy(boolean isBusy) {
         this.isBusy = isBusy;
+    }
+
+    public String getVerifiedCode() {
+        return verifiedCode;
+    }
+
+    public void setVerifiedCode(String verifiedCode) {
+        this.verifiedCode = verifiedCode;
     }
 }

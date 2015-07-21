@@ -56,6 +56,7 @@ public class GetPlannedTripDetailAPI extends HttpServlet {
             logger.info("Request::"+result);
             out.print(result);
         } catch (Exception ex) {
+            ex.printStackTrace();
             logger.error(ex.getStackTrace());
             out.print(Parser.ObjectToJSon(false, ex.getMessage()));
         }

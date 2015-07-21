@@ -154,6 +154,7 @@ public class UserController {
         }
         return Parser.ObjectToJSon(false, "Cannot register now. Try again later!");
     }
+
     private String registerLinkedIn(RegisterRequest registerRequest) throws JsonProcessingException {
         if (null == registerRequest.getLinkedInId() || registerRequest.getLinkedInId().equals("")) {
             return Parser.ObjectToJSon(false, "'linkedInId' is not found");
@@ -183,6 +184,7 @@ public class UserController {
         }
         return Parser.ObjectToJSon(false, "Cannot register now. Try again later!");
     }
+
     /**
      * LOGIN
      */
@@ -269,6 +271,7 @@ public class UserController {
         }
         return Parser.ObjectToJSon(true, "Login successfully", user);
     }
+
     private String loginLinkedIn(LoginRequest loginRequest) throws JsonProcessingException {
         if (null == loginRequest.getUserId() || loginRequest.getUserId().equals("")) {
             return Parser.ObjectToJSon(false, "'userId' is not found");
@@ -301,7 +304,7 @@ public class UserController {
         return Parser.ObjectToJSon(true, "Get detail successfully", response);
     }
 
-    public String getUsersAroundFromMe(GetUsersAroundFromMeRequest request) throws JsonProcessingException {
+    public String getUsersAroundFromMe(GetUsersAroundFromMeRequest request, boolean filterByAngel) throws JsonProcessingException {
 
         if (request.getCenterLat() == 0 && request.getCenterLng() == 0) {
             return Parser.ObjectToJSon(false, "Latitude and Longitude is invalid (0,0)");
@@ -314,8 +317,10 @@ public class UserController {
         List<User> users = getUsersFromUserIds(userIds);
         List<UserSortDetailResponse> userDetails = new ArrayList<>();
         for (User user : users) {
-            UserSortDetailResponse detail = new UserSortDetailResponse(user);
-            userDetails.add(detail);
+            if (!filterByAngel || user.getStatus() == User.ANGEL) {
+                UserSortDetailResponse detail = new UserSortDetailResponse(user);
+                userDetails.add(detail);
+            }
         }
         return Parser.ObjectToJSon(true, "Get list users success", userDetails);
     }
@@ -352,7 +357,7 @@ public class UserController {
             return Parser.ObjectToJSon(false, "User is not found by userId");
         }
         PlannedTrip route = database.getPlannedTripHashMap().get(request.getPlannedTripId());
-        if(null == route){
+        if (null == route) {
             return Parser.ObjectToJSon(false, "Planned Trip is not found by plannedTripId");
         }
         List<LatLng> currentList = PolyLineProcess.decodePoly(request.getCurrentPolyLine());

@@ -7,9 +7,11 @@
 package com.bikiegang.ridesharing.api;
 
 import com.bikiegang.ridesharing.controller.UserController;
+import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.request.GetUserDetailRequest;
-import com.bikiegang.ridesharing.pojo.response.UserDetailWithPlannedTripResponse;
+import com.bikiegang.ridesharing.pojo.request.GetUsersAroundFromMeRequest;
+import com.bikiegang.ridesharing.pojo.response.UserSortDetailResponse;
+import com.bikiegang.ridesharing.utilities.FakeGroup.FakeUser;
 import com.bikiegang.ridesharing.utilities.LoggerFactory;
 import org.apache.log4j.Logger;
 
@@ -22,11 +24,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class GetUsersDetailWithPlannedTripsAPI extends HttpServlet {
+public class GetAngelsAroundFromMeAPI extends HttpServlet {
     private Logger logger = LoggerFactory.createLogger(this.getClass());
-    public Class requestClass = GetUserDetailRequest.class;
-    public Class responseClass = UserDetailWithPlannedTripResponse.class;
-    public boolean responseIsArray = false;
+    public Class requestClass = GetUsersAroundFromMeRequest.class;
+    public Class responseClass = UserSortDetailResponse.class;
+    public boolean responseIsArray = true;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -50,9 +52,14 @@ public class GetUsersDetailWithPlannedTripsAPI extends HttpServlet {
                 jsonData.append(line);
             }
             logger.info("Request::"+jsonData.toString());
-            GetUserDetailRequest getUserDetailRequest = (GetUserDetailRequest) Parser.JSonToObject(jsonData.toString(), GetUserDetailRequest.class);
+            GetUsersAroundFromMeRequest getUsersAroundFromMeRequest = (GetUsersAroundFromMeRequest) Parser.JSonToObject(jsonData.toString(), GetUsersAroundFromMeRequest.class);
             UserController controller = new UserController();
-            String result = controller.getUserDetailWithRoutes(getUserDetailRequest);
+            String result = controller.getUsersAroundFromMe(getUsersAroundFromMeRequest,true);
+            //TODO fake
+            if(Database.databaseStatus == Database.TESTING){
+                result = new FakeUser().getUsersAroundFromMeFake(getUsersAroundFromMeRequest);
+            }
+            //TODO end fake
             logger.info("Request::"+result);
             out.print(result);
         } catch (Exception ex) {
@@ -100,6 +107,6 @@ public class GetUsersDetailWithPlannedTripsAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Get user detail and his planned trips";
+        return "Get all user have current location around you";
     }
 }

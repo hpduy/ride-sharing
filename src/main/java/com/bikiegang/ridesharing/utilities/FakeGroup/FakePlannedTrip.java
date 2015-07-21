@@ -95,11 +95,12 @@ public class FakePlannedTrip {
     }
 
     public void fakePlannedTrip(PlannedTrip rawSrc) throws Exception {
-        for (int i = 0; i < 10; i++) {
+        int length = 4;
+        for (int i = 0; i < length; i++) {
             User user = new FakeUser().fakeUser((i % 2) + 1, 1, false);
             Database.getInstance().getUserHashMap().put(user.getId(), user);
             long plannedTripId;
-            if (i < 5) {
+            if (i < length/2) {
                 plannedTripId = fakeDriverPlannedTrip(rawSrc, user.getId());
             } else {
                 plannedTripId = fakePassengerPlannedTrip(rawSrc, user.getId());

@@ -1,6 +1,8 @@
 package com.bikiegang.ridesharing;
 
 import com.bikiegang.ridesharing.database.Database;
+import com.bikiegang.ridesharing.pojo.User;
+import com.bikiegang.ridesharing.utilities.FakeGroup.FakeUser;
 import com.bikiegang.ridesharing.utilities.Path;
 
 import javax.servlet.ServletContextEvent;
@@ -31,6 +33,9 @@ public class StartupListener implements ServletContextListener, HttpSessionListe
          You can initialize servlet context related data here.
          */
         try {
+            User user = new FakeUser().fakeUser(1,1,false);
+            user.setId("tester");
+            Database.getInstance().getUserHashMap().put(user.getId(),user);
             Path.setServerAddress(InetAddress.getLocalHost().getHostAddress());
             Path.buildRoot();
             Database.getInstance().restore();

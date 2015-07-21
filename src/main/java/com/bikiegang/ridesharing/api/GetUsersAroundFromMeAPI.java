@@ -54,7 +54,7 @@ public class GetUsersAroundFromMeAPI extends HttpServlet {
             logger.info("Request::"+jsonData.toString());
             GetUsersAroundFromMeRequest getUsersAroundFromMeRequest = (GetUsersAroundFromMeRequest) Parser.JSonToObject(jsonData.toString(), GetUsersAroundFromMeRequest.class);
             UserController controller = new UserController();
-            String result = controller.getUsersAroundFromMe(getUsersAroundFromMeRequest);
+            String result = controller.getUsersAroundFromMe(getUsersAroundFromMeRequest,false);
             //TODO fake
             if(Database.databaseStatus == Database.TESTING){
                 result = new FakeUser().getUsersAroundFromMeFake(getUsersAroundFromMeRequest);
@@ -63,6 +63,7 @@ public class GetUsersAroundFromMeAPI extends HttpServlet {
             logger.info("Request::"+result);
             out.print(result);
         } catch (Exception ex) {
+            ex.printStackTrace();
             logger.error(ex.getStackTrace());
             out.print(Parser.ObjectToJSon(false, ex.getMessage()));
         }

@@ -160,6 +160,7 @@ public class PlannedTripController {
         if (null != locations) {
             LinkedLocationController controller = new LinkedLocationController();
             for (LinkedLocation location : locations) {
+                location.setId(IdGenerator.getLinkedLocationId());
                 controller.insertLinkLocation(location, plannedTrip.getRole());
             }
         }
@@ -180,7 +181,6 @@ public class PlannedTripController {
                     result = paringResults.get(User.PASSENGER);
                 }
                 plannedTrips = getListPlannedTripSortDetailFromObject(result);
-
             }
             response.setYourPlannedTrip(yourPlannedTripDetail);
             response.setPairedPlannedTripsResult(plannedTrips);
