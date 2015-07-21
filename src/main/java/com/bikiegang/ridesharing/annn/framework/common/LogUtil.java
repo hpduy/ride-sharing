@@ -20,8 +20,8 @@
      if (initialized) {
        return;
      }
-     String apppath = System.getProperty("apppath");
-     String APP_ENV = System.getProperty("appenv");     
+     String apppath = ".";
+     String APP_ENV = "development";     
  
      if (APP_ENV == null) {
        APP_ENV = "";

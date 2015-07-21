@@ -45,9 +45,11 @@ public class RequestMakeTripDao {
 
             if (mapSender == null) {
                 mapSender = new HashMap<>();
+                database.getSenderRequestsBox().put(obj.getSenderId(), mapSender);
             }
             if (mapReceiver == null) {
                 mapReceiver = new HashMap<>();
+                database.getReceiverRequestsBox().put(obj.getReceiverId(), mapReceiver);
             }
 
             if (obj.getSenderRole() == User.DRIVER) {
@@ -121,9 +123,11 @@ public class RequestMakeTripDao {
 
             if (mapSender == null) {
                 mapSender = new HashMap<>();
+                database.getSenderRequestsBox().put(obj.getSenderId(), mapSender);
             }
             if (mapReceiver == null) {
                 mapReceiver = new HashMap<>();
+                database.getReceiverRequestsBox().put(obj.getReceiverId(), mapReceiver);
             }
 
             if (obj.getSenderRole() == User.DRIVER) {
@@ -145,7 +149,10 @@ public class RequestMakeTripDao {
             }
             //Step 2: put redis
             result = cache.hdel(obj.getClass().getName(), String.valueOf(obj.getId()));
-
+            result &= cache.hset(obj.getClass().getName() + ":sender", String.valueOf(obj.getSenderId()),
+                    JSONUtil.Serialize(senderRequestsBox));
+            result &= cache.hset(obj.getClass().getName() + ":receiver", String.valueOf(obj.getReceiverId()),
+                    JSONUtil.Serialize(senderRequestsBox));
             if (result) {
                 //Step 3: put job gearman
                 short actionType = Const.RideSharing.ActionType.DELETE;
