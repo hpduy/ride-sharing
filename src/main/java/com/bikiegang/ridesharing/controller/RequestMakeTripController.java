@@ -69,7 +69,7 @@ public class RequestMakeTripController {
             createRequest.setIsParing(false);// no paring
             createRequest.setPrice(-1);// default price
             String response = new PlannedTripController().createPlannedTrip(createRequest);
-            Parser parser = (Parser)Parser.JSonToObject(response,Parser.class);
+            Parser parser = Parser.JSonToParser(response, CreatePlannedTripResponse.class);
             if(parser.isSuccess()){
                 CreatePlannedTripResponse createPlannedTripResponse = (CreatePlannedTripResponse) parser.getResult();
                 driverPlannedTripId = createPlannedTripResponse.getYourPlannedTrip().getId();
@@ -89,7 +89,7 @@ public class RequestMakeTripController {
             createRequest.setIsParing(false);// no paring
             createRequest.setPrice(-1);// default price
             String response = new PlannedTripController().createPlannedTrip(createRequest);
-            Parser parser = (Parser)Parser.JSonToObject(response,Parser.class);
+            Parser parser = Parser.JSonToParser(response, CreatePlannedTripResponse.class);
             if(parser.isSuccess()){
                 CreatePlannedTripResponse createPlannedTripResponse = (CreatePlannedTripResponse) parser.getResult();
                 passengerPlannedTripId = createPlannedTripResponse.getYourPlannedTrip().getId();

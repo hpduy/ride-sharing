@@ -8,10 +8,10 @@ import com.bikiegang.ridesharing.pojo.request.GetUsersAroundFromMeRequest;
 import com.bikiegang.ridesharing.pojo.response.UserSortDetailResponse;
 import com.bikiegang.ridesharing.utilities.DateTimeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.apache.commons.lang.math.RandomUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by hpduy17 on 7/17/15.
@@ -82,9 +82,9 @@ public class FakeUser {
 
 
     public String randomBirthDay() {
-        String yyyy = "198" + new Random(System.currentTimeMillis()).nextInt() % 10;
-        String MM = String.valueOf(new Random(System.currentTimeMillis()).nextInt() % 12 + 1);
-        String dd = String.valueOf(new Random(System.currentTimeMillis()).nextInt() % 29 + 1);
+        String yyyy = "198" + RandomUtils.nextInt() % 10;
+        String MM = String.valueOf(RandomUtils.nextInt() % 12 + 1);
+        String dd = String.valueOf(RandomUtils.nextInt() % 29 + 1);
         return yyyy + MM + dd;
     }
 
@@ -93,7 +93,7 @@ public class FakeUser {
         if (gender == User.MALE) {
             fname = fnameMan;
         }
-        int idx = new Random(System.currentTimeMillis()).nextInt() % fname.length;
+        int idx = RandomUtils.nextInt() % fname.length;
         return fname[idx];
     }
 
@@ -102,7 +102,7 @@ public class FakeUser {
         if (gender == User.MALE) {
             lname = lnameMan;
         }
-        int idx = new Random(System.currentTimeMillis()).nextInt() % lname.length;
+        int idx =  RandomUtils.nextInt() % lname.length;
         return lname[idx];
     }
 
@@ -111,20 +111,20 @@ public class FakeUser {
         if (gender == User.MALE) {
             img = imgMan;
         }
-        int idx = new Random(System.currentTimeMillis()).nextInt() % img.length;
+        int idx =  RandomUtils.nextInt() % img.length;
         return img[idx];
     }
 
     public LatLng fakeCurrentLocation(LatLng latLng) {
         long seed = 10;
-        double latDis = ((new Random(System.currentTimeMillis()).nextDouble() % seed) - seed / 2) / 1000;
-        double lngDis = ((new Random(System.currentTimeMillis()).nextDouble() % seed) - seed / 2) / 1000;
+        double latDis = ((RandomUtils.nextDouble() % seed) - seed / 2) / 1000;
+        double lngDis = ((RandomUtils.nextDouble() % seed) - seed / 2) / 1000;
         return fakeCurrentLocation(latLng, latDis, lngDis);
     }
 
     public LatLng fakeCurrentLocation(LatLng latLng, int seed, int divided) {
-        double latDis = ((new Random(System.currentTimeMillis()).nextDouble() % seed) - seed / 2) / divided;
-        double lngDis = ((new Random(System.currentTimeMillis()).nextDouble() % seed) - seed / 2) / divided;
+        double latDis = ((RandomUtils.nextDouble() % seed) - seed / 2) / divided;
+        double lngDis = ((RandomUtils.nextDouble() % seed) - seed / 2) / divided;
         return fakeCurrentLocation(latLng, latDis, lngDis);
     }
 

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -59,6 +60,16 @@ public class Parser {
     public static Object JSonToObject(String src, Class type) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         Object result = mapper.readValue(src, type);
+        return result;
+    }
+    public static Parser JSonToParser(String src, Class resultType) throws IOException {
+        JSONObject jsonObject = new JSONObject(src);
+        Parser result = new Parser();
+        result.success = jsonObject.getBoolean("success");
+        result.message = jsonObject.getString("message");
+        if(jsonObject.keySet().contains("result")) {
+            result.result = JSonToObject(jsonObject.getJSONObject("result").toString(), resultType);
+        }
         return result;
     }
 

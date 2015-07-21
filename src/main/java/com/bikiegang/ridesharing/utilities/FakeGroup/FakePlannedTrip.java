@@ -13,11 +13,11 @@ import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.CreatePlannedTripRequest;
 import com.bikiegang.ridesharing.pojo.response.CreatePlannedTripResponse;
 import com.bikiegang.ridesharing.utilities.DateTimeUtil;
+import org.apache.commons.lang.math.RandomUtils;
 import org.json.JSONObject;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by hpduy17 on 7/17/15.
@@ -31,11 +31,11 @@ public class FakePlannedTrip {
         latlngs[1] = route.getLegs()[0].getStart_location();
         latlngs[2] = route.getLegs()[0].getEnd_location();
         long seed = 10;
-        double latDis = ((new Random(System.currentTimeMillis()).nextDouble() % seed) - seed / 2) / 100;
-        double lngDis = ((new Random(System.currentTimeMillis()).nextDouble() % seed) - seed / 2) / 100;
+        double latDis = (((Math.abs(RandomUtils.nextDouble() % seed)) % seed) - seed / 2) / 100;
+        double lngDis = ((Math.abs(RandomUtils.nextDouble() % seed)) - seed / 2) / 100;
         latlngs[0] = new FakeUser().fakeCurrentLocation(latlngs[1], latDis, lngDis);
-        latDis = ((new Random(System.currentTimeMillis()).nextDouble() % seed) - seed / 2) / 100;
-        lngDis = ((new Random(System.currentTimeMillis()).nextDouble() % seed) - seed / 2) / 100;
+        latDis = ((Math.abs(RandomUtils.nextDouble() % seed)) - seed / 2) / 100;
+        lngDis = ((Math.abs(RandomUtils.nextDouble() % seed)) - seed / 2) / 100;
         latlngs[3] = new FakeUser().fakeCurrentLocation(latlngs[2], latDis, lngDis);
         // get new google routing result for fake trip
         JSONObject googleRoutingResult = new GoogleDirectionAPIProcess().direction(latlngs);
@@ -46,13 +46,16 @@ public class FakePlannedTrip {
         createRequest.setGoogleRoutingResult(googleRoutingResult.toString());
         createRequest.setIsParing(false);// no paring
         createRequest.setPrice(-1);// default price
-        new PlannedTripController().createPlannedTrip(createRequest);
         String response = new PlannedTripController().createPlannedTrip(createRequest);
-        Parser parser = (Parser) Parser.JSonToObject(response, Parser.class);
-        if(parser.isSuccess()){
-            CreatePlannedTripResponse createPlannedTripResponse = (CreatePlannedTripResponse) parser.getResult();
-            return createPlannedTripResponse.getYourPlannedTrip().getId();
-        }else{
+        Parser parser =  Parser.JSonToParser(response, CreatePlannedTripResponse.class);
+        if (parser.isSuccess()) {
+            if (parser.getResult() != null) {
+                CreatePlannedTripResponse createPlannedTripResponse = (CreatePlannedTripResponse) parser.getResult();
+                return createPlannedTripResponse.getYourPlannedTrip().getId();
+            } else {
+                return -1;
+            }
+        } else {
             return -1;
         }
     }
@@ -62,7 +65,7 @@ public class FakePlannedTrip {
         List<LatLng> trails = PolyLineProcess.decodePoly(route.getOverview_polyline().getPoints());
         LatLng[] latlngs = new LatLng[2];
         // random 2 point in trails
-        int startIdx = new Random(System.currentTimeMillis()).nextInt() % (trails.size() / 2);
+        int startIdx = (Math.abs(RandomUtils.nextInt()) % (trails.size() / 2));
         int endIdx = startIdx + trails.size() / 2 - 1;
         if (endIdx > trails.size() - 1)
             endIdx = trails.size() - 1;
@@ -78,33 +81,35 @@ public class FakePlannedTrip {
         createRequest.setGoogleRoutingResult(googleRoutingResult.toString());
         createRequest.setIsParing(false);// no paring
         createRequest.setPrice(-1);// default price
-        new PlannedTripController().createPlannedTrip(createRequest);
         String response = new PlannedTripController().createPlannedTrip(createRequest);
-        Parser parser = (Parser) Parser.JSonToObject(response, Parser.class);
-        if(parser.isSuccess()){
-            CreatePlannedTripResponse createPlannedTripResponse = (CreatePlannedTripResponse) parser.getResult();
-            return createPlannedTripResponse.getYourPlannedTrip().getId();
-        }else{
-            return -1;
+        Parser parser = Parser.JSonToParser(response, CreatePlannedTripResponse.class);
+        if (parser.isSuccess()) {
+            if (parser.getResult() != null) {
+                CreatePlannedTripResponse createPlannedTripResponse = (CreatePlannedTripResponse) parser.getResult();
+                return createPlannedTripResponse.getYourPlannedTrip().getId();
+            }
+
+
         }
+        return -1;
     }
 
     public void fakePlannedTrip(PlannedTrip rawSrc) throws Exception {
-        for(int i = 0 ; i < 10 ; i++) {
+        for (int i = 0; i < 10; i++) {
             User user = new FakeUser().fakeUser((i % 2) + 1, 1, false);
-            Database.getInstance().getUserHashMap().put(user.getId(),user);
+            Database.getInstance().getUserHashMap().put(user.getId(), user);
             long plannedTripId;
-            if(i < 5){
-                plannedTripId = fakeDriverPlannedTrip(rawSrc,user.getId());
-            }else {
-                plannedTripId = fakePassengerPlannedTrip(rawSrc,user.getId());
+            if (i < 5) {
+                plannedTripId = fakeDriverPlannedTrip(rawSrc, user.getId());
+            } else {
+                plannedTripId = fakePassengerPlannedTrip(rawSrc, user.getId());
             }
-            if(plannedTripId > 0){
+            if (plannedTripId > 0) {
                 HashSet<Long> ids = Database.getInstance().getUserIdRFPlanedTrips().get(user.getId());
-                if(ids == null)
+                if (ids == null)
                     ids = new HashSet<>();
                 ids.add(plannedTripId);
-                Database.getInstance().getUserIdRFPlanedTrips().put(user.getId(),ids);
+                Database.getInstance().getUserIdRFPlanedTrips().put(user.getId(), ids);
             }
         }
     }
