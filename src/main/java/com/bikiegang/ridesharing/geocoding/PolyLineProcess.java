@@ -18,7 +18,7 @@ public class PolyLineProcess {
         while (index < len) {
             int b, shift = 0, result = 0;
             do {
-                b = encoded.charAt(index++) - 63;
+                 b = encoded.charAt(index++) - 63;
                 result |= (b & 0x1f) << shift;
                 shift += 5;
             } while (b >= 0x20);

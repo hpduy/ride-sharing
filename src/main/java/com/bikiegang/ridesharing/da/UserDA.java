@@ -67,7 +67,7 @@ public class UserDA implements IDA {
                 stmt.setString(8, value.getLastName());
                 stmt.setString(9, value.getProfilePictureLink());
                 stmt.setString(10, value.getPhone());
-                stmt.setString(11, JSONUtil.Serialize(query));
+                stmt.setString(11, JSONUtil.Serialize(value.getCurrentLocation()));
                 stmt.setString(12, value.getBirthDay());
                 stmt.setInt(13, value.getGender());
                 stmt.setInt(14, value.getStatus());
