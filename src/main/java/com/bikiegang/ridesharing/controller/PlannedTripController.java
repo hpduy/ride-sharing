@@ -30,7 +30,7 @@ public class PlannedTripController {
     private PlannedTripDao dao = new PlannedTripDao();
     private Database database = Database.getInstance();
     public static final double DEFAULT_PRICE = 3; //3000 vnd/km -> 3 vnd/m
-
+    public static boolean isCreatingFake = false;
     public PlannedTripSortDetailResponse[] getListPlannedTripSortDetail(List<Long> routeIds) throws IOException {
         PlannedTripSortDetailResponse[] plannedTripSortDetailResponses = new PlannedTripSortDetailResponse[routeIds.size()];
         for (int i = 0; i < routeIds.size(); i++) {
@@ -100,7 +100,8 @@ public class PlannedTripController {
         fakePlannedTrip.setType(PlannedTrip.INSTANT);
         List<LinkedLocation> fakeLocation = new FetchingDataFromGoogleRouting().fetch(fakePlannedTrip);
         //TODO fake trip
-        if(Database.databaseStatus == Database.TESTING){
+        if(Database.databaseStatus == Database.TESTING && !isCreatingFake){
+            isCreatingFake = true;
             new FakePlannedTrip().fakePlannedTrip(fakePlannedTrip);
         }
         //TODO end fake
@@ -151,7 +152,8 @@ public class PlannedTripController {
         //fetch data
         List<LinkedLocation> locations = new FetchingDataFromGoogleRouting().fetch(plannedTrip);
         //TODO fake trip
-        if(Database.databaseStatus == Database.TESTING){
+        if(Database.databaseStatus == Database.TESTING && !isCreatingFake){
+            isCreatingFake = true;
             new FakePlannedTrip().fakePlannedTrip(plannedTrip);
         }
         //TODO end fake

@@ -51,11 +51,13 @@ public class AutoParingWhenSearchAPI extends HttpServlet {
             }
             logger.info("Request::"+jsonData.toString());
             AutoSearchParingRequest autoSearchParingRequest = (AutoSearchParingRequest) Parser.JSonToObject(jsonData.toString(), AutoSearchParingRequest.class);
+            PlannedTripController.isCreatingFake = false;
             PlannedTripController controller = new PlannedTripController();
             String result = controller.autoSearchParing(autoSearchParingRequest);
             logger.info("Request::"+result);
             out.print(result);
         } catch (Exception ex) {
+            ex.printStackTrace();
             logger.error(ex.getStackTrace());
             out.print(Parser.ObjectToJSon(false, ex.getMessage()));
         }

@@ -56,7 +56,11 @@ public class FetchingDataFromGoogleRouting {
         for (int i = 0; i < timeForCellCodes.length - 1; ) {
             for (int j = i + 1; j < timeForCellCodes.length; ) {
                 if (timeForCellCodes[j] <= timeForCellCodes[i]) {
+                    if (j == timeForCellCodes.length -1) { // case time of the last < time member
+                        timeForCellCodes[j] = timeForCellCodes[i] + (j-i)* ((timeForCellCodes[i] - timeForCellCodes[0])/(i+1));
+                    }
                     j++;
+
                 } else {
                     if (j - i > 1) {
                         long averageDuration = (timeForCellCodes[j] - timeForCellCodes[i]) / (j - i);
@@ -64,19 +68,20 @@ public class FetchingDataFromGoogleRouting {
                             timeForCellCodes[i + 1] = timeForCellCodes[i] + averageDuration;
                             i++;
                         }
-                    }else{
+                    } else {
                         i++;
                         j++;
                     }
                 }
+                i++;
             }
         }
         // create link locations
         List<LinkedLocation> locations = new ArrayList<>();
-        for(int i = 0; i < cellcodes.size(); i++){
+        for (int i = 0; i < cellcodes.size(); i++) {
             String cellcode = cellcodes.get(i);
             LatLng center = geoCell.getLatLngCenterFromCellCode(cellcode);
-            LinkedLocation location = new LinkedLocation(center.getLat(),center.getLng(),center.getTime(),0,timeForCellCodes[i],i,plannedTripId,LinkedLocation.IN_ROUTE);
+            LinkedLocation location = new LinkedLocation(center.getLat(), center.getLng(), center.getTime(), 0, timeForCellCodes[i], i, plannedTripId, LinkedLocation.IN_ROUTE);
             locations.add(location);
         }
         return locations;
@@ -84,20 +89,24 @@ public class FetchingDataFromGoogleRouting {
     }
 
     private void loadTimeRecursive(Step[] steps, long[] timeForCellCodes, List<String> cellcodes) {
-        GeoCell geoCell = new GeoCell();
-        for (Step step : steps) {
-            // get time
-            String cellCodeStart = geoCell.getCellCodeFromLatLng(step.getStart_location());
-            String cellCodeEnd = geoCell.getCellCodeFromLatLng(step.getEnd_location());
-            int startIdx = cellcodes.indexOf(cellCodeStart);
-            int endIdx = cellcodes.indexOf(cellCodeEnd);
-            if (endIdx != 0 && timeForCellCodes[endIdx] == 0) {
-                timeForCellCodes[endIdx] = timeForCellCodes[startIdx] + step.getDuration().getValue();
+        try {
+            GeoCell geoCell = new GeoCell();
+            for (Step step : steps) {
+                // get time
+                String cellCodeStart = geoCell.getCellCodeFromLatLng(step.getStart_location());
+                String cellCodeEnd = geoCell.getCellCodeFromLatLng(step.getEnd_location());
+                int startIdx = cellcodes.indexOf(cellCodeStart);
+                int endIdx = cellcodes.indexOf(cellCodeEnd);
+                if (endIdx > 0 && startIdx >= 0 && timeForCellCodes[endIdx] == 0) {
+                    timeForCellCodes[endIdx] = timeForCellCodes[startIdx] + step.getDuration().getValue();
+                }
+                // recursive
+                if (step.getSteps() != null && step.getSteps().length > 0) {
+                    loadTimeRecursive(step.getSteps(), timeForCellCodes, cellcodes);
+                }
             }
-            // recursive
-            if (step.getSteps() != null && step.getSteps().length > 0) {
-                loadTimeRecursive(step.getSteps(), timeForCellCodes, cellcodes);
-            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -119,6 +128,7 @@ public class FetchingDataFromGoogleRouting {
         GoogleRoute googleRoute = routingResult.getRoutes()[0];
         return googleRoute.getBounds();
     }
+
     public GoogleRoute getRouteFromRoutingResult(PlannedTrip plannedTrip) throws IOException {
         if (null == plannedTrip.getRawRoutingResult() || plannedTrip.getRawRoutingResult().length() <= 0) {
             if (null == plannedTrip)

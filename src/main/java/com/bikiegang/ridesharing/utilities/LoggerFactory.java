@@ -11,7 +11,7 @@ public class LoggerFactory {
     public static final String REQUEST = "[ CLIENT REQUEST ] - ";
     public static final String RESPONSE = "[ SERVER RESPONSE ] - ";
     public static Logger createLogger(Class c) {
-        Logger logger = Logger.getLogger(c);
+        Logger logger = Logger.getLogger(c.getCanonicalName());
         try {
             Layout layout = new PatternLayout("%d{yyyy/MM/dd hh:mm:ss} %5p %c{1}:%L - %m%n");
             String logFilePath = Path.getLogPath()+ File.separator+"cloudbike.log";

@@ -16,7 +16,7 @@ import java.util.List;
  * Created by hpduy17 on 6/23/15.
  */
 public class Pairing {
-    private final double ACCEPTABLE_TIME = 30 * DateTimeUtil.MINUTES;
+    private final double ACCEPTABLE_TIME = 24 * DateTimeUtil.HOURS;
     private final double REMOVEABLE_TIME = DateTimeUtil.DAYS;
     private Database database = Database.getInstance();
     /*
@@ -107,7 +107,7 @@ public class Pairing {
                 if (nearSrcLocation.getRefId() == nearDesLocation.getRefId() && src.getIndex() < des.getIndex()) {
 
                     // check condition to pare between passenger plannedTrip and drivers plannedTrip
-                    PlannedTrip driverPlannedTrip = database.getPlannedTripHashMap().get(src.getRefId());
+                    PlannedTrip driverPlannedTrip = database.getPlannedTripHashMap().get(nearSrcLocation.getRefId());
 
                     // plannedTrip is not null and not own by passenger
                     if (null != driverPlannedTrip && !driverPlannedTrip.getCreatorId().equals(plannedTrip.getCreatorId())) {

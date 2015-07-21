@@ -1,13 +1,14 @@
  package com.bikiegang.ridesharing.annn.framework.common;
  
- import java.io.File;
- import java.util.HashMap;
- import java.util.Iterator;
- import java.util.Map;
  import org.apache.commons.configuration.CompositeConfiguration;
- import org.apache.commons.configuration.ConfigurationException;
- import org.apache.commons.configuration.HierarchicalINIConfiguration;
- import org.apache.log4j.Logger;
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.HierarchicalINIConfiguration;
+import org.apache.log4j.Logger;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
  
  public class Config
  {
@@ -34,9 +35,9 @@
  
    static
    {
-     String HOME_PATH = "."; System.getProperty("apppath");
+     String HOME_PATH = "."; //System.getProperty("apppath");
      String APP_ENV = "development";//System.getProperty("appenv");
- 
+       System.out.println(System.getProperty("user.dir"));
      if (APP_ENV == null) APP_ENV = "";
      if (!"".equals(APP_ENV)) APP_ENV = APP_ENV + ".";
  
