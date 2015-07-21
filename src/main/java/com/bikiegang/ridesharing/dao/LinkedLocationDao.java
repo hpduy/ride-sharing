@@ -33,6 +33,7 @@ public class LinkedLocationDao {
             List<Long> get = database.getPlannedTripIdRFLinkedLocations().get(obj.getRefId());
             if (get == null) {
                 get = new ArrayList<>();
+                database.getPlannedTripIdRFLinkedLocations().put(obj.getRefId(), get);
             }
             get.add(obj.getId());
 
@@ -80,8 +81,10 @@ public class LinkedLocationDao {
             List<Long> get = database.getPlannedTripIdRFLinkedLocations().get(obj.getRefId());
             if (get == null) {
                 get = new ArrayList<>();
+                database.getPlannedTripIdRFLinkedLocations().put(obj.getRefId(), get);
             }
             get.remove((Long) obj.getId());
+
             //Step 2: put redis
             result = cache.hdel(obj.getClass().getName(),
                     String.valueOf(obj.getId()));

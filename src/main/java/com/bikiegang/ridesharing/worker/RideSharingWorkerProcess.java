@@ -36,7 +36,7 @@ import org.gearman.worker.AbstractGearmanFunction;
  */
 public class RideSharingWorkerProcess extends AbstractGearmanFunction {
 
-    private static Logger logger = LogUtil.getLogger(RideSharingWorkerProcess.class);
+    private static final Logger logger = LogUtil.getLogger(RideSharingWorkerProcess.class);
     private static final AtomicLong successCount = new AtomicLong(0L);
     private static final AtomicLong failCount = new AtomicLong(0L);
     private static IDA _rideSharingDA = null;
@@ -84,7 +84,7 @@ public class RideSharingWorkerProcess extends AbstractGearmanFunction {
                     chk = _rideSharingDA.DoAction(_value, job.ActionType);
                     break;
             }
-
+            logger.info(data);
             if (chk == false) {
                 logger.error(message + " Total job fail : " + failCount.incrementAndGet() + ",entity error: " + JSONUtil.Serialize(job));
                 return new GearmanJobResultImpl(this.jobHandle, false, new byte[0], new byte[0], ByteUtils.toUTF8Bytes(message), 0, 0);

@@ -33,9 +33,11 @@ public class PlannedTripDao {
             HashSet<Long> setRfUser = database.getUserIdRFPlanedTrips().get(obj.getCreatorId());
             if (setRfRole == null) {
                 setRfRole = new HashSet<>();
+                database.getRoleRFPlannedTrips().put(obj.getRole(), setRfRole);
             }
             if (setRfUser == null) {
                 setRfUser = new HashSet<>();
+                database.getUserIdRFPlanedTrips().put(obj.getCreatorId(), setRfUser);
             }
 
             setRfRole.add(obj.getId());
@@ -86,13 +88,15 @@ public class PlannedTripDao {
             HashSet<Long> mapRfUser = database.getUserIdRFPlanedTrips().get(obj.getCreatorId());
             if (mapRfRole == null) {
                 mapRfRole = new HashSet<>();
+                database.getRoleRFPlannedTrips().put(obj.getRole(), mapRfRole);
             }
             if (mapRfUser == null) {
                 mapRfUser = new HashSet<>();
+                database.getUserIdRFPlanedTrips().put(obj.getCreatorId(), mapRfUser);
             }
 
-            mapRfRole.remove(obj.getId());
-            mapRfUser.remove(obj.getId());
+            mapRfRole.remove((Long) obj.getId());
+            mapRfUser.remove((Long) obj.getId());
 
             //Step 2: put redis
             result = cache.hdel(obj.getClass().getName(),

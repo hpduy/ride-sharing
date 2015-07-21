@@ -33,9 +33,11 @@ public class TripDao {
                     .get(obj.getPassengerId());
             if (setRfDrive == null) {
                 setRfDrive = new HashSet<>();
+                database.getDriverIdRFTrips().put(obj.getDriverId(), setRfDrive);
             }
             if (setRfPassenger == null) {
                 setRfPassenger = new HashSet<>();
+                database.getPassengerIdRFTrips().put(obj.getPassengerId(), setRfPassenger);
             }
             setRfDrive.add(obj.getId());
             setRfPassenger.add(obj.getId());
@@ -84,9 +86,11 @@ public class TripDao {
                     .get(obj.getPassengerId());
             if (setRfDrive == null) {
                 setRfDrive = new HashSet<>();
+                database.getDriverIdRFTrips().put(obj.getDriverId(), setRfDrive);
             }
             if (setRfPassenger == null) {
                 setRfPassenger = new HashSet<>();
+                database.getPassengerIdRFTrips().put(obj.getPassengerId(), setRfPassenger);
             }
             setRfDrive.remove((Long) obj.getId());
             setRfPassenger.remove((Long) obj.getId());
@@ -126,7 +130,7 @@ public class TripDao {
         try {
             if (obj == null) {
                 return false;
-            }   
+            }
             //Step 1: put in hashmap
             database.getTripHashMap().put(obj.getId(), obj);
             //Step 2: put redis

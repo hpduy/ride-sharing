@@ -31,9 +31,9 @@ public class BroadcastDao {
             HashSet<String> get = database.getUserIdRFBroadcasts().get(obj.getUserId());
             if (get == null) {
                 get = new HashSet<>();
+                database.getUserIdRFBroadcasts().put(obj.getUserId(), get);
             }
             get.add(obj.getId());
-            database.getUserIdRFBroadcasts().put(obj.getUserId(), get);
 
             //Step 2: put redis
             result = cache.hset(obj.getClass().getName(), String.valueOf(obj.getId()), JSONUtil.Serialize(obj));
@@ -72,6 +72,7 @@ public class BroadcastDao {
             HashSet<String> get = database.getUserIdRFBroadcasts().get(obj.getUserId());
             if (get == null) {
                 get = new HashSet<>();
+                database.getUserIdRFBroadcasts().put(obj.getUserId(), get);
             }
             get.remove(obj.getId());
 

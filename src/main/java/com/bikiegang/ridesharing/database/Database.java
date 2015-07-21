@@ -31,7 +31,7 @@ public class Database {
     public static final int TESTING = 2;
 
     /*DATABASE-TABLE*/
-    //CORE
+    //CORE  
     private HashMap<String, Broadcast> broadcastHashMap = new HashMap<>();
     private HashMap<Long, LinkedLocation> linkedLocationHashMap = new HashMap<>();
     private HashMap<Long, PlannedTrip> plannedTripHashMap = new HashMap<>();
