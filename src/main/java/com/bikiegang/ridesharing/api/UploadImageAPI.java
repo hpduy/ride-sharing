@@ -6,28 +6,26 @@
 
 package com.bikiegang.ridesharing.api;
 
-import com.bikiegang.ridesharing.controller.PlannedTripController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.request.CreatePlannedTripRequest;
-import com.bikiegang.ridesharing.pojo.response.CreatePlannedTripResponse;
+import com.bikiegang.ridesharing.pojo.response.UploadImageResponse;
+import com.bikiegang.ridesharing.utilities.DateTimeUtil;
 import com.bikiegang.ridesharing.utilities.LoggerFactory;
+import com.bikiegang.ridesharing.utilities.Path;
+import com.bikiegang.ridesharing.utilities.UploadImageUtil;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
+import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-
-public class CreatePlannedTripAPI extends HttpServlet {
+@MultipartConfig
+public class UploadImageAPI extends HttpServlet {
     private Logger logger = LoggerFactory.createLogger(this.getClass());
-    public Class requestClass = CreatePlannedTripRequest.class;
-    public Class responseClass = CreatePlannedTripResponse.class;
-    public boolean responseIsArray = false;
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -35,35 +33,40 @@ public class CreatePlannedTripAPI extends HttpServlet {
      * @param request  raw request
      * @param response raw response
      * @throws ServletException if a raw-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException            if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
+        // Create path components to save the file
+        final Part filePart = request.getPart("image");
+        final String fileName = getFileName(filePart);
         try {
-            StringBuffer jsonData = new StringBuffer();
-            String line;
-            BufferedReader reader = request.getReader();
-            while ((line = reader.readLine()) != null) {
-                jsonData.append(line);
-            }
-            logger.info(LoggerFactory.REQUEST+jsonData.toString());
-            CreatePlannedTripRequest createPlannedTripRequest = (CreatePlannedTripRequest) Parser.JSonToObject(jsonData.toString(), CreatePlannedTripRequest.class);
-            PlannedTripController controller = new PlannedTripController();
-            String result = controller.createPlannedTrip(createPlannedTripRequest);
-            logger.info(LoggerFactory.RESPONSE+result);
+            UploadImageResponse uploadImageResponse = new UploadImageResponse(new UploadImageUtil().upload(fileName + "_" + new DateTimeUtil().now(), Path.getImagePath(), filePart));
+            String result = Parser.ObjectToJSon(true,"Upload image successfully",uploadImageResponse);
+            logger.info(LoggerFactory.RESPONSE + result);
             out.print(result);
 
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            logger.error(ex.getStackTrace());
-            out.print(Parser.ObjectToJSon(false, ex.getMessage()));
+        } catch (Exception fne) {
+            logger.error(fne.getStackTrace());
+            out.print(Parser.ObjectToJSon(false,"Upload image false - caused by :"+fne.getLocalizedMessage()));
         }
     }
+    private String getFileName(final Part part) {
+        final String partHeader = part.getHeader("content-disposition");
+        System.out.println("Part Header = " + partHeader);
+        for (String content : part.getHeader("content-disposition").split(";")) {
+            if (content.trim().startsWith("filename")) {
+                return content.substring(
+                        content.indexOf('=') + 1).trim().replace("\"", "");
+            }
+        }
+        return null;
+    }
 
-    // <editor-fold default state="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -71,7 +74,7 @@ public class CreatePlannedTripAPI extends HttpServlet {
      * @param request  raw request
      * @param response raw response
      * @throws ServletException if a raw-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException            if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -86,7 +89,7 @@ public class CreatePlannedTripAPI extends HttpServlet {
      * @param request  raw request
      * @param response raw response
      * @throws ServletException if a raw-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException            if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -101,6 +104,6 @@ public class CreatePlannedTripAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Create your new planned trip and pair its with compatible planned trip";
+        return "Short description";
     }
 }

@@ -19,14 +19,20 @@ public class BroadcastCenterUtil implements Runnable {
     private List<String> contents = new ArrayList<>();
     private List<String> userIds = new ArrayList<>();
     private String collapseKey = "Cloud Bike Server App";
+    private String senderId = CLOUD_BIKE_SENDER_ID;
     private final String urlStringPath = Path.getServerAddress() + "/cloudbike/GCMBroadcast";
+
+    //final variable
+    public static String CLOUD_BIKE_SENDER_ID = "AIzaSyBbF-lPqCpcUsiJdahgt21WB00vpKRxXik";
+    public static String ANGEL_SPECIAL_APP_SENDER_ID = "AIzaSyBbF-lPqCpcUsiJdahgt21WB00vpKRxXik";
 
     public BroadcastCenterUtil() {
     }
 
-    public BroadcastCenterUtil(List<String> contents, List<String> userIds) {
+    public BroadcastCenterUtil(List<String> contents, List<String> userIds, String senderId) {
         this.contents = contents;
         this.userIds = userIds;
+        this.senderId = senderId;
     }
 
     @Override
@@ -41,6 +47,7 @@ public class BroadcastCenterUtil implements Runnable {
             gcmMessage.setCollapseKey(collapseKey);
             gcmMessage.setContents(contents);
             gcmMessage.setUserIds(userIds);
+            gcmMessage.setSenderId(senderId);
             po.println(Parser.ObjectToJSon(gcmMessage));
             po.close();
             //read data
@@ -57,25 +64,26 @@ public class BroadcastCenterUtil implements Runnable {
         }
     }
 
-    public void pushNotification(String content, List<String> userIds) {
+    public void pushNotification(String content, List<String> userIds, String senderId) {
         List<String> contents = new ArrayList<>();
         for (int i = 0; i < userIds.size(); i++) {
             contents.add(content);
         }
-        Thread pusher = new Thread(new BroadcastCenterUtil(contents, userIds));
+        Thread pusher = new Thread(new BroadcastCenterUtil(contents, userIds, senderId));
         pusher.start();
     }
-    public void pushNotification(String content, String userId) {
+
+    public void pushNotification(String content, String userId, String senderId) {
         List<String> contents = new ArrayList<>();
         List<String> userIds = new ArrayList<>();
         contents.add(content);
         userIds.add(userId);
-        Thread pusher = new Thread(new BroadcastCenterUtil(contents, userIds));
+        Thread pusher = new Thread(new BroadcastCenterUtil(contents, userIds, senderId));
         pusher.start();
     }
 
-    public void pushNotification(List<String> contents, List<String> userIds) {
-        Thread pusher = new Thread(new BroadcastCenterUtil(contents, userIds));
+    public void pushNotification(List<String> contents, List<String> userIds, String senderId) {
+        Thread pusher = new Thread(new BroadcastCenterUtil(contents, userIds, senderId));
         pusher.start();
     }
 

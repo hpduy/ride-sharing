@@ -72,7 +72,7 @@ public class RequestMakeTripController {
             Parser parser = Parser.JSonToParser(response, CreatePlannedTripResponse.class);
             if(parser.isSuccess()){
                 CreatePlannedTripResponse createPlannedTripResponse = (CreatePlannedTripResponse) parser.getResult();
-                driverPlannedTripId = createPlannedTripResponse.getYourPlannedTrip().getId();
+                driverPlannedTripId = createPlannedTripResponse.getYourPlannedTrip().getPlannedTrip().getId();
             }else{
                 return Parser.ObjectToJSon(false, parser.getMessage());
             }
@@ -92,7 +92,7 @@ public class RequestMakeTripController {
             Parser parser = Parser.JSonToParser(response, CreatePlannedTripResponse.class);
             if(parser.isSuccess()){
                 CreatePlannedTripResponse createPlannedTripResponse = (CreatePlannedTripResponse) parser.getResult();
-                passengerPlannedTripId = createPlannedTripResponse.getYourPlannedTrip().getId();
+                passengerPlannedTripId = createPlannedTripResponse.getYourPlannedTrip().getPlannedTrip().getId();
             }else{
                 return Parser.ObjectToJSon(false, parser.getMessage());
             }

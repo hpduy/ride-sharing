@@ -49,12 +49,12 @@ public class AutoParingWhenSearchAPI extends HttpServlet {
             while ((line = reader.readLine()) != null) {
                 jsonData.append(line);
             }
-            logger.info("Request::"+jsonData.toString());
+            logger.info(LoggerFactory.REQUEST+jsonData.toString());
             AutoSearchParingRequest autoSearchParingRequest = (AutoSearchParingRequest) Parser.JSonToObject(jsonData.toString(), AutoSearchParingRequest.class);
             PlannedTripController.isCreatingFake = false;
             PlannedTripController controller = new PlannedTripController();
             String result = controller.autoSearchParing(autoSearchParingRequest);
-            logger.info("Request::"+result);
+            logger.info(LoggerFactory.RESPONSE+result);
             out.print(result);
         } catch (Exception ex) {
             ex.printStackTrace();

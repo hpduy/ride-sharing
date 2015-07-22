@@ -7,7 +7,7 @@ import com.bikiegang.ridesharing.utilities.Path;
 /**
  * Created by hpduy17 on 7/8/15.
  */
-public class UserSortDetailResponse {
+public class UserShortDetailResponse {
     private String id = "";
     private String firstName = "";
     private String lastName = "";
@@ -16,10 +16,10 @@ public class UserSortDetailResponse {
     private String birthDay;
     private int status;
 
-    public UserSortDetailResponse() {
+    public UserShortDetailResponse() {
     }
 
-    public UserSortDetailResponse(User user) {
+    public UserShortDetailResponse(User user) {
         if(null != user) {
             this.id = user.getId();
             this.firstName = user.getFirstName();

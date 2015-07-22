@@ -49,11 +49,11 @@ public class LoginAPI extends HttpServlet {
             while ((line = reader.readLine()) != null) {
                 jsonData.append(line);
             }
-            logger.info("Request::"+jsonData.toString());
+            logger.info(LoggerFactory.REQUEST+jsonData.toString());
             LoginRequest loginRequest = (LoginRequest) Parser.JSonToObject(jsonData.toString(), LoginRequest.class);
             UserController controller = new UserController();
             String result = controller.login(loginRequest);
-            logger.info("Request::"+result);
+            logger.info(LoggerFactory.RESPONSE+result);
             out.print(result);
         } catch (Exception ex) {
             ex.printStackTrace();

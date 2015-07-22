@@ -48,7 +48,7 @@ public class FakePlannedTrip {
         if (parser.isSuccess()) {
             if (parser.getResult() != null) {
                 CreatePlannedTripResponse createPlannedTripResponse = (CreatePlannedTripResponse) parser.getResult();
-                return createPlannedTripResponse.getYourPlannedTrip().getId();
+                return createPlannedTripResponse.getYourPlannedTrip().getPlannedTrip().getId();
             } else {
                 return -1;
             }
@@ -83,7 +83,7 @@ public class FakePlannedTrip {
         if (parser.isSuccess()) {
             if (parser.getResult() != null) {
                 CreatePlannedTripResponse createPlannedTripResponse = (CreatePlannedTripResponse) parser.getResult();
-                return createPlannedTripResponse.getYourPlannedTrip().getId();
+                return createPlannedTripResponse.getYourPlannedTrip().getPlannedTrip().getId();
             }
 
 

@@ -49,11 +49,11 @@ public class RegisterAPI extends HttpServlet {
             while ((line = reader.readLine()) != null) {
                 jsonData.append(line);
             }
-            logger.info("Request::"+jsonData.toString());
+            logger.info(LoggerFactory.REQUEST+jsonData.toString());
             RegisterRequest registerRequest = (RegisterRequest) Parser.JSonToObject(jsonData.toString(), RegisterRequest.class);
             UserController controller = new UserController();
             String result = controller.register(registerRequest);
-            logger.info("Request::"+result);
+            logger.info(LoggerFactory.RESPONSE+result);
             out.print(result);
         } catch (Exception ex) {
             ex.printStackTrace();

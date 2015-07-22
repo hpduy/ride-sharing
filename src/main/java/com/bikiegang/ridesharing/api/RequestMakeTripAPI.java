@@ -48,11 +48,11 @@ public class RequestMakeTripAPI extends HttpServlet {
             while ((line = reader.readLine()) != null) {
                 jsonData.append(line);
             }
-            logger.info("Request::"+jsonData.toString());
+            logger.info(LoggerFactory.REQUEST+jsonData.toString());
             RequestMakeTripRequest requestMakeTripRequest = (RequestMakeTripRequest) Parser.JSonToObject(jsonData.toString(), RequestMakeTripRequest.class);
             RequestMakeTripController controller = new RequestMakeTripController();
             String result = controller.sendRequestMakeTrip(requestMakeTripRequest);
-            logger.info("Request::"+result);
+            logger.info(LoggerFactory.RESPONSE+result);
             out.print(result);
         } catch (Exception ex) {
             ex.printStackTrace();

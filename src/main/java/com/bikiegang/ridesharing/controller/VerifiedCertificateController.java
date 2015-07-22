@@ -8,6 +8,8 @@ import com.bikiegang.ridesharing.pojo.RequestVerify;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.ReplyVerifyRequest;
 import com.bikiegang.ridesharing.pojo.request.RequestVerifyRequest;
+import com.bikiegang.ridesharing.pojo.response.Notification.ObjectNoti;
+import com.bikiegang.ridesharing.pojo.response.Notification.ReplyVerifyNoti;
 import com.bikiegang.ridesharing.pojo.response.Notification.RequestVerifyNoti;
 import com.bikiegang.ridesharing.utilities.BroadcastCenterUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -49,8 +51,8 @@ public class VerifiedCertificateController {
 
         if(dao.insert(requestVerify)){
             //TODO push notification
-            RequestVerifyNoti noti = new RequestVerifyNoti(requestVerify,user);
-            new BroadcastCenterUtil().pushNotification(noti.toString(),angel.getId());
+            RequestVerifyNoti noti = new RequestVerifyNoti(requestVerify,user, ObjectNoti.REQUEST_VERIFY);
+            new BroadcastCenterUtil().pushNotification(noti.toString(),angel.getId(), BroadcastCenterUtil.ANGEL_SPECIAL_APP_SENDER_ID);
             return Parser.ObjectToJSon(true, "Request sent successfully");
         }
         return Parser.ObjectToJSon(false, "Cannot send request");
@@ -67,15 +69,22 @@ public class VerifiedCertificateController {
         if (null == requestVerify) {
             return Parser.ObjectToJSon(false, "Request is not exist");
         }
-        request.setStatus(request.getStatus());
+        requestVerify.setStatus(request.getStatus());
         if(dao.update(requestVerify)){
-            if(request.getStatus() == RequestVerify.ACCEPT) {
-
-                new BroadcastCenterUtil().pushNotification(noti.toString(), user.getId());
+            if(requestVerify.getStatus() == RequestVerify.ACCEPT) {
+                User angel = database.getUserHashMap().get(requestVerify.getAngelId());
+                if(null != angel) {
+                    ReplyVerifyNoti noti = new ReplyVerifyNoti(requestVerify, angel,ObjectNoti.REPLY_VERIFY);
+                    new BroadcastCenterUtil().pushNotification(Parser.ObjectToJSon(noti), requestVerify.getUserId(),BroadcastCenterUtil.CLOUD_BIKE_SENDER_ID);
+                }
             }
             return Parser.ObjectToJSon(true, "Request sent successfully");
         }
         return Parser.ObjectToJSon(false, "Cannot send request");
     }
+
+
+
+
 
 }

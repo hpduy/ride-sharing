@@ -10,7 +10,7 @@ import com.bikiegang.ridesharing.pojo.PlannedTrip;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.*;
 import com.bikiegang.ridesharing.pojo.response.UserDetailWithPlannedTripResponse;
-import com.bikiegang.ridesharing.pojo.response.UserSortDetailResponse;
+import com.bikiegang.ridesharing.pojo.response.UserShortDetailResponse;
 import com.bikiegang.ridesharing.utilities.StringProcessUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -316,10 +316,10 @@ public class UserController {
         LatLng center = new LatLng(request.getCenterLat(), request.getCenterLng());
         List<String> userIds = database.getGeoCellCurrentLocation().getIdsInFrame(center, request.getRadius());
         List<User> users = getUsersFromUserIds(userIds);
-        List<UserSortDetailResponse> userDetails = new ArrayList<>();
+        List<UserShortDetailResponse> userDetails = new ArrayList<>();
         for (User user : users) {
             if (!filterByAngel || user.getStatus() == User.ANGEL) {
-                UserSortDetailResponse detail = new UserSortDetailResponse(user);
+                UserShortDetailResponse detail = new UserShortDetailResponse(user);
                 userDetails.add(detail);
             }
         }

@@ -7,16 +7,15 @@ import com.bikiegang.ridesharing.pojo.response.UserDetailResponse;
 /**
  * Created by hpduy17 on 7/22/15.
  */
-public class RequestVerifyNoti {
+public class RequestVerifyNoti extends ObjectNoti{
     private long requestId;
-    private String userId = "";
     private int numberOfCertificate;
     private String signature = "";
     private UserDetailResponse userDetail;
 
-    public RequestVerifyNoti(RequestVerify verify, User user) {
+    public RequestVerifyNoti(RequestVerify verify, User user, int action) {
+        super(action);
         this.requestId = verify.getId();
-        this.userId = verify.getUserId();
         this.numberOfCertificate = verify.getNumberOfCertificate();
         this.signature = verify.getSignature();
         this.userDetail = new UserDetailResponse(user);
@@ -30,13 +29,6 @@ public class RequestVerifyNoti {
         this.requestId = requestId;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 
     public int getNumberOfCertificate() {
         return numberOfCertificate;
