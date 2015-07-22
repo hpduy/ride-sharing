@@ -26,8 +26,7 @@ public class User implements PojoBase {
     private int status;
     private boolean isBusy;
     private int currentRole;
-    //Temp field
-    private String verifiedCode = RandomStringUtils.randomAlphabetic(10);
+    private int privacy;
     // final field & dont print to JSON;
     /**
      * GENDER
@@ -56,6 +55,18 @@ public class User implements PojoBase {
     public static final int DRIVER = 1;
     @JsonIgnore
     public static final int PASSENGER = 2;
+
+    /**
+     * PRIVACY
+     */
+    @JsonIgnore
+    public static final int PUBLIC = 0;
+    @JsonIgnore
+    public static final int FRIEND = 1;
+    @JsonIgnore
+    public static final int PRIVATE = 2;
+
+
 
     public User() {
 
@@ -99,6 +110,7 @@ public class User implements PojoBase {
         this.currentLocation = that.currentLocation;
         this.status = that.status;
         this.isBusy = that.isBusy;
+        this.privacy = that.privacy;
     }
 
 
@@ -246,11 +258,11 @@ public class User implements PojoBase {
         this.isBusy = isBusy;
     }
 
-    public String getVerifiedCode() {
-        return verifiedCode;
+    public int getPrivacy() {
+        return privacy;
     }
 
-    public void setVerifiedCode(String verifiedCode) {
-        this.verifiedCode = verifiedCode;
+    public void setPrivacy(int privacy) {
+        this.privacy = privacy;
     }
 }

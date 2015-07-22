@@ -27,16 +27,13 @@ public class FakePlannedTrip {
     public long fakeDriverPlannedTrip(PlannedTrip rawSrc, String creatorId) throws Exception {
         GoogleRoute route = new FetchingDataFromGoogleRouting().getRouteFromRoutingResult(rawSrc);
         //ramdom 2 point and connect it go via 2 start and end rawSrc
-        LatLng[] latlngs = new LatLng[4];
+        LatLng[] latlngs = new LatLng[3];
         latlngs[1] = route.getLegs()[0].getStart_location();
         latlngs[2] = route.getLegs()[0].getEnd_location();
         long seed = 10;
-        double latDis = (((Math.abs(RandomUtils.nextDouble() % seed)) % seed) - seed / 2) / 100;
-        double lngDis = ((Math.abs(RandomUtils.nextDouble() % seed)) - seed / 2) / 100;
+        double latDis = (((Math.abs(RandomUtils.nextDouble() % seed)) % seed) - seed / 2) / 1000;
+        double lngDis = ((Math.abs(RandomUtils.nextDouble() % seed)) - seed / 2) / 1000;
         latlngs[0] = new FakeUser().fakeCurrentLocation(latlngs[1], latDis, lngDis);
-        latDis = ((Math.abs(RandomUtils.nextDouble() % seed)) - seed / 2) / 100;
-        lngDis = ((Math.abs(RandomUtils.nextDouble() % seed)) - seed / 2) / 100;
-        latlngs[3] = new FakeUser().fakeCurrentLocation(latlngs[2], latDis, lngDis);
         // get new google routing result for fake trip
         JSONObject googleRoutingResult = new GoogleDirectionAPIProcess().direction(latlngs);
         CreatePlannedTripRequest createRequest = new CreatePlannedTripRequest();
@@ -77,7 +74,7 @@ public class FakePlannedTrip {
         CreatePlannedTripRequest createRequest = new CreatePlannedTripRequest();
         createRequest.setCreatorId(creatorId);
         createRequest.setGoTime(DateTimeUtil.now());
-        createRequest.setRole(User.DRIVER);
+        createRequest.setRole(User.PASSENGER);
         createRequest.setGoogleRoutingResult(googleRoutingResult.toString());
         createRequest.setIsParing(false);// no paring
         createRequest.setPrice(-1);// default price

@@ -29,7 +29,7 @@ public class GCMBroadcast extends HttpServlet {
 
     // The SENDER_ID here is the "Browser Key" that was generated when I
     // created the API keys for my Google APIs project.
-    private static final String SENDER_ID = "AIzaSyBbF-lPqCpcUsiJdahgt21WB00vpKRxXik";
+    private String SENDER_ID = "AIzaSyBbF-lPqCpcUsiJdahgt21WB00vpKRxXik";
 
     // This is a *cheat*  It is a hard-coded registration ID from an Android device
     // that registered itself with GCM using the same project id shown above.
@@ -82,6 +82,7 @@ public class GCMBroadcast extends HttpServlet {
             contents = gcmTransferMessage.getContents();
             collapseKey =  gcmTransferMessage.getCollapseKey();
             userIds = gcmTransferMessage.getUserIds();
+            SENDER_ID = gcmTransferMessage.getSenderId();
             // add all device each user into each android target list
             for (int i = 0; i < userIds.size(); i++) {
                 // get list RegId

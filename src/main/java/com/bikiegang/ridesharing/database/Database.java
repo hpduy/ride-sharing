@@ -38,6 +38,8 @@ public class Database {
     private HashMap<Long, Trip> tripHashMap = new HashMap<>();
     private HashMap<String, User> userHashMap = new HashMap<>();
     private HashMap<Long, RequestMakeTrip> requestMakeTripHashMap = new HashMap<>();
+    private HashMap<Long, RequestVerify> requestVerifyHashMap = new HashMap<>();
+
     //REFERENCE
     /**
      * USER
@@ -69,6 +71,11 @@ public class Database {
     private HashMap<String, HashMap<Long, Long>> senderRequestsBox = new HashMap<>(); //<senderId,<receiverPlannedTripId,requestIds>>
     private HashMap<String, HashMap<Long, List<Long>>> receiverRequestsBox = new HashMap<>(); //<receiverId,<receiverPlannedTripId,<requestIds>>>
     /**
+     * REQUEST VERIFY
+     */
+    private HashMap<String, Long> userRequestBox = new HashMap<>(); //<senderId,<receiverPlannedTripId,requestIds>>
+    private HashMap<String, List<Long>> angelRequestsBox = new HashMap<>(); //<receiverId,<receiverPlannedTripId,<requestIds>>>
+    /**
      * LINKED LOCATION
      */
     private HashMap<Long, List<Long>> plannedTripIdRFLinkedLocations = new HashMap<>(); //<plannedTripId,<LinkedLocationId>>
@@ -80,7 +87,7 @@ public class Database {
     private GeoCell geoCellPassenger = new GeoCell();// for plannedTrip
     private GeoCell geoCellCurrentLocation = new GeoCell();
 
-//    /*PERSONAL FUNCTION*/
+    //    /*PERSONAL FUNCTION*/
     public void restore() {
         RideSharingCA rideSharingCA = RideSharingCA.getInstance(ConfigInfo.REDIS_SERVER);
         //restore
@@ -114,6 +121,10 @@ public class Database {
 
     public HashMap<Long, RequestMakeTrip> getRequestMakeTripHashMap() {
         return requestMakeTripHashMap;
+    }
+
+    public HashMap<Long, RequestVerify> getRequestVerifyHashMap() {
+        return requestVerifyHashMap;
     }
 
     /*REFERENCE GET-SET*/
@@ -171,6 +182,14 @@ public class Database {
 
     public HashMap<Long, HashSet<Long>> getGroupIdRFPlannedTrips() {
         return groupIdRFPlannedTrips;
+    }
+
+    public HashMap<String, Long> getUserRequestBox() {
+        return userRequestBox;
+    }
+
+    public HashMap<String, List<Long>> getAngelRequestsBox() {
+        return angelRequestsBox;
     }
 
     /*GEOCELL GET-SET*/

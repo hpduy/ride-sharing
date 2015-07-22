@@ -9,6 +9,7 @@ import java.util.List;
 public class GCMTransferMessage {
     private List<String> contents = new ArrayList<>();
     private List<String> userIds = new ArrayList<>();
+    private String senderId = "";
     private String collapseKey = "";
 
     public List<String> getContents() {
@@ -33,5 +34,13 @@ public class GCMTransferMessage {
 
     public void setCollapseKey(String collapseKey) {
         this.collapseKey = collapseKey;
+    }
+
+    public String getSenderId() {
+        return senderId;
+    }
+
+    public void setSenderId(String senderId) {
+        this.senderId = senderId;
     }
 }

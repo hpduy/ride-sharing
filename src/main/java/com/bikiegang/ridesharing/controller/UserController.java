@@ -11,6 +11,7 @@ import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.*;
 import com.bikiegang.ridesharing.pojo.response.UserDetailWithPlannedTripResponse;
 import com.bikiegang.ridesharing.pojo.response.UserSortDetailResponse;
+import com.bikiegang.ridesharing.utilities.StringProcessUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.io.IOException;
@@ -87,7 +88,7 @@ public class UserController {
         }
         User user = new User();
         user.setId("e_" + registerRequest.getEmail());
-        user.setEmail(registerRequest.getEmail());
+        user.setEmail(new StringProcessUtil().EncryptText(registerRequest.getEmail()));
         user.setPassword(registerRequest.getPassword());
         if (dao.insert(user)) {
             return Parser.ObjectToJSon(true, "Register successfully", user);
@@ -236,7 +237,7 @@ public class UserController {
         if (user == null) {
             return Parser.ObjectToJSon(false, "User is not found by userId");
         }
-        if (!user.getPassword().equals(loginRequest.getPassword())) {
+        if (!user.getPassword().equals(new StringProcessUtil().EncryptText(loginRequest.getPassword()))) {
             return Parser.ObjectToJSon(false, "Password is wrong");
         }
         return Parser.ObjectToJSon(true, "Login successfully", user);

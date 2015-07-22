@@ -55,6 +55,7 @@ public class CreatePlannedTripAPI extends HttpServlet {
             String result = controller.createPlannedTrip(createPlannedTripRequest);
             logger.info("Request::"+result);
             out.print(result);
+            
         } catch (Exception ex) {
             ex.printStackTrace();
             logger.error(ex.getStackTrace());
