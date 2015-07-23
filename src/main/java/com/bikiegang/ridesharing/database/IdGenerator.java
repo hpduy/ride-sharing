@@ -12,7 +12,8 @@ public class IdGenerator {
     private static long plannedTripId = 0;
     private static long tripId = 0;
     private static long requestMakeTripId = 0;
-    private static long requestReplyId = 0;
+    private static long requestVerifyId = 0;
+    private static long verifiedCertificatedId = 0;
     private static long groupPlannedTripId = 0;
     private static Database database = Database.getInstance();
 
@@ -62,12 +63,21 @@ public class IdGenerator {
         return groupPlannedTripId;
     }
 
-    public static long getRequestReplyId() {
+    public static long getRequestVerifyId() {
         Set<Long > idSet = database.getRequestVerifyHashMap().keySet();
         do {
-            requestReplyId = RandomUtils.nextLong();
+            requestVerifyId = RandomUtils.nextLong();
         }
-        while (idSet.contains(requestReplyId));
-        return requestReplyId;
+        while (idSet.contains(requestVerifyId));
+        return requestVerifyId;
+    }
+
+    public static long getVerifiedCertificatedId() {
+        Set<Long > idSet = database.getVerifiedCertificateHashMap().keySet();
+        do {
+            verifiedCertificatedId = RandomUtils.nextLong();
+        }
+        while (idSet.contains(verifiedCertificatedId));
+        return verifiedCertificatedId;
     }
 }

@@ -1,9 +1,11 @@
 package com.bikiegang.ridesharing;
 
+import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.utilities.FakeGroup.FakeUser;
 import com.bikiegang.ridesharing.utilities.Path;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -15,7 +17,7 @@ import java.net.InetAddress;
 import java.nio.charset.Charset;
 
 public class StartupListener implements ServletContextListener, HttpSessionListener, HttpSessionAttributeListener {
-
+    Logger logger = LogUtil.getLogger(this.getClass());
     // Public constructor is required by servlet spec
     public StartupListener() {
         Charset charset = Charset.defaultCharset();
@@ -33,6 +35,7 @@ public class StartupListener implements ServletContextListener, HttpSessionListe
          You can initialize servlet context related data here.
          */
         try {
+            logger.info("CLOUD BIKE WAKEUP");
             User user = new FakeUser().fakeUser(1,1,false);
             user.setId("tester");
             Database.getInstance().getUserHashMap().put(user.getId(),user);

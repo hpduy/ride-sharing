@@ -28,10 +28,10 @@ public class ApiDocumentGeneratorTest {
         }
     }
     public List<User> users;
+    public User[] userArray;
     @Test
     public void testA() throws NoSuchFieldException {
-
-
         System.out.print(ApiDocumentGeneratorTest.class.getDeclaredField("users").getType());
+        System.out.print(ApiDocumentGeneratorTest.class.getDeclaredField("userArray").getType());
     }
 }

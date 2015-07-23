@@ -131,8 +131,31 @@
         <url-pattern>/UploadImageAPI</url-pattern>
     </servlet-mapping>
 
-
-
+    <!--**VERIFIED CERTIFICATE**-->
+    <servlet>
+        <servlet-name>RequestVerifyAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.RequestVerifyAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RequestVerifyAPI</servlet-name>
+        <url-pattern>/RequestVerifyAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>ReplyVerifyAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.ReplyVerifyAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ReplyVerifyAPI</servlet-name>
+        <url-pattern>/ReplyVerifyAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>CreateCertificateAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.CreateCertificateAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CreateCertificateAPI</servlet-name>
+        <url-pattern>/CreateCertificateAPI</url-pattern>
+    </servlet-mapping>
 
     <listener>
         <listener-class>com.bikiegang.ridesharing.StartupListener</listener-class>
