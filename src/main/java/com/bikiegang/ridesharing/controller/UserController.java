@@ -10,7 +10,8 @@ import com.bikiegang.ridesharing.pojo.PlannedTrip;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.*;
 import com.bikiegang.ridesharing.pojo.response.UserDetailWithPlannedTripResponse;
-import com.bikiegang.ridesharing.pojo.response.UserSortDetailResponse;
+import com.bikiegang.ridesharing.pojo.response.UserShortDetailResponse;
+import com.bikiegang.ridesharing.utilities.StringProcessUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.io.IOException;
@@ -87,7 +88,7 @@ public class UserController {
         }
         User user = new User();
         user.setId("e_" + registerRequest.getEmail());
-        user.setEmail(registerRequest.getEmail());
+        user.setEmail(new StringProcessUtil().EncryptText(registerRequest.getEmail()));
         user.setPassword(registerRequest.getPassword());
         if (dao.insert(user)) {
             return Parser.ObjectToJSon(true, "Register successfully", user);
@@ -154,6 +155,7 @@ public class UserController {
         }
         return Parser.ObjectToJSon(false, "Cannot register now. Try again later!");
     }
+
     private String registerLinkedIn(RegisterRequest registerRequest) throws JsonProcessingException {
         if (null == registerRequest.getLinkedInId() || registerRequest.getLinkedInId().equals("")) {
             return Parser.ObjectToJSon(false, "'linkedInId' is not found");
@@ -183,6 +185,7 @@ public class UserController {
         }
         return Parser.ObjectToJSon(false, "Cannot register now. Try again later!");
     }
+
     /**
      * LOGIN
      */
@@ -234,7 +237,7 @@ public class UserController {
         if (user == null) {
             return Parser.ObjectToJSon(false, "User is not found by userId");
         }
-        if (!user.getPassword().equals(loginRequest.getPassword())) {
+        if (!user.getPassword().equals(new StringProcessUtil().EncryptText(loginRequest.getPassword()))) {
             return Parser.ObjectToJSon(false, "Password is wrong");
         }
         return Parser.ObjectToJSon(true, "Login successfully", user);
@@ -269,6 +272,7 @@ public class UserController {
         }
         return Parser.ObjectToJSon(true, "Login successfully", user);
     }
+
     private String loginLinkedIn(LoginRequest loginRequest) throws JsonProcessingException {
         if (null == loginRequest.getUserId() || loginRequest.getUserId().equals("")) {
             return Parser.ObjectToJSon(false, "'userId' is not found");
@@ -301,7 +305,7 @@ public class UserController {
         return Parser.ObjectToJSon(true, "Get detail successfully", response);
     }
 
-    public String getUsersAroundFromMe(GetUsersAroundFromMeRequest request) throws JsonProcessingException {
+    public String getUsersAroundFromMe(GetUsersAroundFromMeRequest request, boolean filterByAngel) throws JsonProcessingException {
 
         if (request.getCenterLat() == 0 && request.getCenterLng() == 0) {
             return Parser.ObjectToJSon(false, "Latitude and Longitude is invalid (0,0)");
@@ -312,10 +316,12 @@ public class UserController {
         LatLng center = new LatLng(request.getCenterLat(), request.getCenterLng());
         List<String> userIds = database.getGeoCellCurrentLocation().getIdsInFrame(center, request.getRadius());
         List<User> users = getUsersFromUserIds(userIds);
-        List<UserSortDetailResponse> userDetails = new ArrayList<>();
+        List<UserShortDetailResponse> userDetails = new ArrayList<>();
         for (User user : users) {
-            UserSortDetailResponse detail = new UserSortDetailResponse(user);
-            userDetails.add(detail);
+            if (!filterByAngel || user.getStatus() == User.ANGEL) {
+                UserShortDetailResponse detail = new UserShortDetailResponse(user);
+                userDetails.add(detail);
+            }
         }
         return Parser.ObjectToJSon(true, "Get list users success", userDetails);
     }
@@ -352,7 +358,7 @@ public class UserController {
             return Parser.ObjectToJSon(false, "User is not found by userId");
         }
         PlannedTrip route = database.getPlannedTripHashMap().get(request.getPlannedTripId());
-        if(null == route){
+        if (null == route) {
             return Parser.ObjectToJSon(false, "Planned Trip is not found by plannedTripId");
         }
         List<LatLng> currentList = PolyLineProcess.decodePoly(request.getCurrentPolyLine());

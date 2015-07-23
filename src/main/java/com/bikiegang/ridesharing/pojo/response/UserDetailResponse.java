@@ -5,7 +5,7 @@ import com.bikiegang.ridesharing.pojo.User;
 /**
  * Created by hpduy17 on 7/8/15.
  */
-public class UserDetailResponse extends UserSortDetailResponse {
+public class UserDetailResponse extends UserShortDetailResponse {
     private int gender;
     private String phone;
     private String selfIntro;

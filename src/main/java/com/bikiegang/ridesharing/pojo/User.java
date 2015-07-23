@@ -1,6 +1,7 @@
 package com.bikiegang.ridesharing.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.commons.lang.RandomStringUtils;
 
 /**
  * Created by hpduy17 on 6/24/15.
@@ -9,7 +10,7 @@ public class User implements PojoBase {
 
     private String id = "";
     private String email = "";
-    private String password = "";
+    private String password = RandomStringUtils.randomAlphabetic(10);
     private String facebookId = "";
     private String googleId = "";
     private String linkedInId = "";
@@ -25,7 +26,7 @@ public class User implements PojoBase {
     private int status;
     private boolean isBusy;
     private int currentRole;
-
+    private int privacy;
     // final field & dont print to JSON;
     /**
      * GENDER
@@ -43,6 +44,10 @@ public class User implements PojoBase {
     public static final int UNVERIFIED = 0;
     @JsonIgnore
     public static final int VERIFIED = 1;
+    @JsonIgnore
+    public static final int HALF_VERIFIED = 2;
+    @JsonIgnore
+    public static final int ANGEL = 3;
     /**
      * USER ROLE
      */
@@ -50,6 +55,18 @@ public class User implements PojoBase {
     public static final int DRIVER = 1;
     @JsonIgnore
     public static final int PASSENGER = 2;
+
+    /**
+     * PRIVACY
+     */
+    @JsonIgnore
+    public static final int PUBLIC = 0;
+    @JsonIgnore
+    public static final int FRIEND = 1;
+    @JsonIgnore
+    public static final int PRIVATE = 2;
+
+
 
     public User() {
 
@@ -93,6 +110,7 @@ public class User implements PojoBase {
         this.currentLocation = that.currentLocation;
         this.status = that.status;
         this.isBusy = that.isBusy;
+        this.privacy = that.privacy;
     }
 
 
@@ -238,5 +256,13 @@ public class User implements PojoBase {
 
     public void setIsBusy(boolean isBusy) {
         this.isBusy = isBusy;
+    }
+
+    public int getPrivacy() {
+        return privacy;
+    }
+
+    public void setPrivacy(int privacy) {
+        this.privacy = privacy;
     }
 }

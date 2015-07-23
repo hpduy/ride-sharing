@@ -5,7 +5,7 @@ import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.GetUsersAroundFromMeRequest;
-import com.bikiegang.ridesharing.pojo.response.UserSortDetailResponse;
+import com.bikiegang.ridesharing.pojo.response.UserShortDetailResponse;
 import com.bikiegang.ridesharing.utilities.DateTimeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.lang.math.RandomUtils;
@@ -145,9 +145,9 @@ public class FakeUser {
         for (int i = 0; i < 10; i++) {
             users.add(fakeUser((i % 2) + 1, 1, false,center));
         }
-        List<UserSortDetailResponse> userDetails = new ArrayList<>();
+        List<UserShortDetailResponse> userDetails = new ArrayList<>();
         for (User user : users) {
-            UserSortDetailResponse detail = new UserSortDetailResponse(user);
+            UserShortDetailResponse detail = new UserShortDetailResponse(user);
             userDetails.add(detail);
         }
         return Parser.ObjectToJSon(true, "Get list users success", userDetails);

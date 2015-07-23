@@ -6,7 +6,7 @@
 
 package com.bikiegang.ridesharing.servlet;
 
-import com.bikiegang.ridesharing.utilities.LoggerFactory;
+import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -17,7 +17,7 @@ import java.io.IOException;
 
 
 public class GenerateApiDoccumentServlet extends HttpServlet {
-    private Logger logger = LoggerFactory.createLogger(this.getClass());
+    private Logger logger = LogUtil.getLogger(this.getClass());
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.

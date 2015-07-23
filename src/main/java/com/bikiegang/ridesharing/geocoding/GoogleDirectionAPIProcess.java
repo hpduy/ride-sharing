@@ -14,7 +14,7 @@ import java.net.URL;
 public class GoogleDirectionAPIProcess {
     private String url = "https://maps.googleapis.com/maps/api/directions/json?origin=%s&destination=%s%s";
     private String wayPointInUrl = "&waypoints=%s";
-    private String viaInWayPoint = "%s";
+    private String viaInWayPoint = "via:%s";
 
     public JSONObject direction(LatLng[] latLngs) throws IOException {
         LatLng src = latLngs[0];

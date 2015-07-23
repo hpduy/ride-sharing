@@ -6,11 +6,11 @@
 
 package com.bikiegang.ridesharing.api;
 
+import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.controller.UserController;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.LoginRequest;
-import com.bikiegang.ridesharing.utilities.LoggerFactory;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -23,7 +23,7 @@ import java.io.PrintWriter;
 
 
 public class LoginAPI extends HttpServlet {
-    private Logger logger = LoggerFactory.createLogger(this.getClass());
+    private Logger logger = LogUtil.getLogger(this.getClass());
     public Class requestClass = LoginRequest.class;
     public Class responseClass = User.class;
     public boolean responseIsArray = false;
@@ -49,13 +49,14 @@ public class LoginAPI extends HttpServlet {
             while ((line = reader.readLine()) != null) {
                 jsonData.append(line);
             }
-            logger.info("Request::"+jsonData.toString());
+            logger.info(jsonData.toString());
             LoginRequest loginRequest = (LoginRequest) Parser.JSonToObject(jsonData.toString(), LoginRequest.class);
             UserController controller = new UserController();
             String result = controller.login(loginRequest);
-            logger.info("Request::"+result);
+            logger.info(result);
             out.print(result);
         } catch (Exception ex) {
+            ex.printStackTrace();
             logger.error(ex.getStackTrace());
             out.print(Parser.ObjectToJSon(false, ex.getMessage()));
         }

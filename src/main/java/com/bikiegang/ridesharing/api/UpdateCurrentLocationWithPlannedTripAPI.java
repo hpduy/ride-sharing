@@ -6,10 +6,10 @@
 
 package com.bikiegang.ridesharing.api;
 
+import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.controller.UserController;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.request.UpdateCurrentLocationWithPlannedTripRequest;
-import com.bikiegang.ridesharing.utilities.LoggerFactory;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -22,7 +22,7 @@ import java.io.PrintWriter;
 
 
 public class UpdateCurrentLocationWithPlannedTripAPI extends HttpServlet {
-    private Logger logger = LoggerFactory.createLogger(this.getClass());
+    private Logger logger = LogUtil.getLogger(this.getClass());
     public Class requestClass = UpdateCurrentLocationWithPlannedTripRequest.class;
     public Class responseClass = null;
     public boolean responseIsArray = false;
@@ -48,13 +48,14 @@ public class UpdateCurrentLocationWithPlannedTripAPI extends HttpServlet {
             while ((line = reader.readLine()) != null) {
                 jsonData.append(line);
             }
-            logger.info("Request::"+jsonData.toString());
+            logger.info(jsonData.toString());
             UpdateCurrentLocationWithPlannedTripRequest updateCurrentLocationRequest = (UpdateCurrentLocationWithPlannedTripRequest) Parser.JSonToObject(jsonData.toString(), UpdateCurrentLocationWithPlannedTripRequest.class);
             UserController controller = new UserController();
             String result = controller.updateCurrentWithRouteLocation(updateCurrentLocationRequest);
-            logger.info("Request::"+result);
+            logger.info(result);
             out.print(result);
         } catch (Exception ex) {
+            ex.printStackTrace();
             logger.error(ex.getStackTrace());
             out.print(Parser.ObjectToJSon(false, ex.getMessage()));
         }

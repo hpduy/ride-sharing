@@ -1,5 +1,7 @@
 package com.bikiegang.ridesharing.database;
 
+import org.apache.commons.lang.math.RandomUtils;
+
 import java.util.Set;
 
 /**
@@ -10,6 +12,7 @@ public class IdGenerator {
     private static long plannedTripId = 0;
     private static long tripId = 0;
     private static long requestMakeTripId = 0;
+    private static long requestReplyId = 0;
     private static long groupPlannedTripId = 0;
     private static Database database = Database.getInstance();
 
@@ -17,7 +20,7 @@ public class IdGenerator {
     public static synchronized long getLinkedLocationId() {
         Set<Long> idSet = database.getLinkedLocationHashMap().keySet();
         do {
-            linkedLocationId++;
+            linkedLocationId = RandomUtils.nextLong();
         }
         while (idSet.contains(linkedLocationId));
         return linkedLocationId;
@@ -26,7 +29,7 @@ public class IdGenerator {
     public static synchronized long getPlannedTripId() {
         Set<Long> idSet = database.getPlannedTripHashMap().keySet();
         do {
-            plannedTripId++;
+            plannedTripId = RandomUtils.nextLong();
         }
         while (idSet.contains(plannedTripId));
         return plannedTripId;
@@ -35,7 +38,7 @@ public class IdGenerator {
     public static synchronized long getTripId() {
         Set<Long> idSet = database.getTripHashMap().keySet();
         do {
-            tripId++;
+            tripId = RandomUtils.nextLong();
         }
         while (idSet.contains(tripId));
         return tripId;
@@ -44,7 +47,7 @@ public class IdGenerator {
     public static synchronized long getRequestMakeTripId() {
         Set<Long> idSet = database.getRequestMakeTripHashMap().keySet();
         do {
-            requestMakeTripId++;
+            requestMakeTripId = RandomUtils.nextLong();
         }
         while (idSet.contains(requestMakeTripId));
         return requestMakeTripId;
@@ -53,9 +56,18 @@ public class IdGenerator {
     public static long getGroupPlannedTripId() {
         Set<Long> idSet = database.getGroupIdRFPlannedTrips().keySet();
         do {
-            groupPlannedTripId++;
+            groupPlannedTripId = RandomUtils.nextLong();
         }
         while (idSet.contains(groupPlannedTripId));
         return groupPlannedTripId;
+    }
+
+    public static long getRequestReplyId() {
+        Set<Long > idSet = database.getRequestVerifyHashMap().keySet();
+        do {
+            requestReplyId = RandomUtils.nextLong();
+        }
+        while (idSet.contains(requestReplyId));
+        return requestReplyId;
     }
 }

@@ -37,6 +37,7 @@ public class LinkedLocationDao {
                 database.getPlannedTripIdRFLinkedLocations().put(obj.getRefId(), get);
             }
             get.add(obj.getId());
+            database.getPlannedTripIdRFLinkedLocations().put(obj.getRefId(),get);
 
             //Step 2: put redis
             result = cache.hset(obj.getClass().getName(),

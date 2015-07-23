@@ -1,10 +1,10 @@
 package com.bikiegang.ridesharing.servlet.broadcast;
 
+import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.Broadcast;
 import com.bikiegang.ridesharing.pojo.static_object.GCMTransferMessage;
-import com.bikiegang.ridesharing.utilities.LoggerFactory;
 import com.google.android.gcm.server.Message;
 import com.google.android.gcm.server.MulticastResult;
 import com.google.android.gcm.server.Sender;
@@ -23,13 +23,13 @@ import java.util.HashSet;
 import java.util.List;
 
 public class GCMBroadcast extends HttpServlet {
-    private Logger logger = LoggerFactory.createLogger(this.getClass());
+    private Logger logger = LogUtil.getLogger(this.getClass());
     private static final long serialVersionUID = 1L;
     private Database database = Database.getInstance();
 
     // The SENDER_ID here is the "Browser Key" that was generated when I
     // created the API keys for my Google APIs project.
-    private static final String SENDER_ID = "AIzaSyBbF-lPqCpcUsiJdahgt21WB00vpKRxXik";
+    private String SENDER_ID = "AIzaSyBbF-lPqCpcUsiJdahgt21WB00vpKRxXik";
 
     // This is a *cheat*  It is a hard-coded registration ID from an Android device
     // that registered itself with GCM using the same project id shown above.
@@ -82,6 +82,7 @@ public class GCMBroadcast extends HttpServlet {
             contents = gcmTransferMessage.getContents();
             collapseKey =  gcmTransferMessage.getCollapseKey();
             userIds = gcmTransferMessage.getUserIds();
+            SENDER_ID = gcmTransferMessage.getSenderId();
             // add all device each user into each android target list
             for (int i = 0; i < userIds.size(); i++) {
                 // get list RegId
