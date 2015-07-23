@@ -1,15 +1,16 @@
  package com.bikiegang.ridesharing.annn.framework.common;
  
- import java.io.File;
- import java.io.PrintWriter;
- import java.io.StringWriter;
- import java.text.DateFormat;
- import java.text.SimpleDateFormat;
- import java.util.Date;
  import org.apache.log4j.Level;
- import org.apache.log4j.LogManager;
- import org.apache.log4j.Logger;
- import org.apache.log4j.PropertyConfigurator;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
+import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
  
  public class LogUtil
  {
@@ -33,6 +34,7 @@
      if (apppath == null)
        apppath = "";
      else {
+
        apppath = new StringBuilder().append(apppath).append(File.separator).toString();
      }
  
