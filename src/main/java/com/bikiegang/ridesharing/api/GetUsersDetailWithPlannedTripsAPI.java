@@ -6,11 +6,11 @@
 
 package com.bikiegang.ridesharing.api;
 
+import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.controller.UserController;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.request.GetUserDetailRequest;
 import com.bikiegang.ridesharing.pojo.response.UserDetailWithPlannedTripResponse;
-import com.bikiegang.ridesharing.utilities.LoggerFactory;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -23,7 +23,7 @@ import java.io.PrintWriter;
 
 
 public class GetUsersDetailWithPlannedTripsAPI extends HttpServlet {
-    private Logger logger = LoggerFactory.createLogger(this.getClass());
+    private Logger logger = LogUtil.getLogger(this.getClass());
     public Class requestClass = GetUserDetailRequest.class;
     public Class responseClass = UserDetailWithPlannedTripResponse.class;
     public boolean responseIsArray = false;
@@ -49,11 +49,11 @@ public class GetUsersDetailWithPlannedTripsAPI extends HttpServlet {
             while ((line = reader.readLine()) != null) {
                 jsonData.append(line);
             }
-            logger.info(LoggerFactory.REQUEST+jsonData.toString());
+            logger.info(jsonData.toString());
             GetUserDetailRequest getUserDetailRequest = (GetUserDetailRequest) Parser.JSonToObject(jsonData.toString(), GetUserDetailRequest.class);
             UserController controller = new UserController();
             String result = controller.getUserDetailWithRoutes(getUserDetailRequest);
-            logger.info(LoggerFactory.RESPONSE+result);
+            logger.info(result);
             out.print(result);
         } catch (Exception ex) {
             ex.printStackTrace();

@@ -6,11 +6,11 @@
 
 package com.bikiegang.ridesharing.api;
 
+import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.controller.UserController;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.RegisterRequest;
-import com.bikiegang.ridesharing.utilities.LoggerFactory;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -23,7 +23,7 @@ import java.io.PrintWriter;
 
 
 public class RegisterAPI extends HttpServlet {
-    private Logger logger = LoggerFactory.createLogger(this.getClass());
+    private Logger logger = LogUtil.getLogger(this.getClass());
     public Class requestClass = RegisterRequest.class;
     public Class responseClass = User.class;
     public boolean responseIsArray = false;
@@ -49,11 +49,11 @@ public class RegisterAPI extends HttpServlet {
             while ((line = reader.readLine()) != null) {
                 jsonData.append(line);
             }
-            logger.info(LoggerFactory.REQUEST+jsonData.toString());
+            logger.info(jsonData.toString());
             RegisterRequest registerRequest = (RegisterRequest) Parser.JSonToObject(jsonData.toString(), RegisterRequest.class);
             UserController controller = new UserController();
             String result = controller.register(registerRequest);
-            logger.info(LoggerFactory.RESPONSE+result);
+            logger.info(result);
             out.print(result);
         } catch (Exception ex) {
             ex.printStackTrace();

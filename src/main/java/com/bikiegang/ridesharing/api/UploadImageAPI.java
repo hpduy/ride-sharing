@@ -6,10 +6,10 @@
 
 package com.bikiegang.ridesharing.api;
 
+import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.response.UploadImageResponse;
 import com.bikiegang.ridesharing.utilities.DateTimeUtil;
-import com.bikiegang.ridesharing.utilities.LoggerFactory;
 import com.bikiegang.ridesharing.utilities.Path;
 import com.bikiegang.ridesharing.utilities.UploadImageUtil;
 import org.apache.log4j.Logger;
@@ -25,7 +25,7 @@ import java.io.PrintWriter;
 
 @MultipartConfig
 public class UploadImageAPI extends HttpServlet {
-    private Logger logger = LoggerFactory.createLogger(this.getClass());
+    private Logger logger = LogUtil.getLogger(this.getClass());
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -46,7 +46,7 @@ public class UploadImageAPI extends HttpServlet {
         try {
             UploadImageResponse uploadImageResponse = new UploadImageResponse(new UploadImageUtil().upload(fileName + "_" + new DateTimeUtil().now(), Path.getImagePath(), filePart));
             String result = Parser.ObjectToJSon(true,"Upload image successfully",uploadImageResponse);
-            logger.info(LoggerFactory.RESPONSE + result);
+            logger.info(result);
             out.print(result);
 
         } catch (Exception fne) {

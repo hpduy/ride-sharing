@@ -6,11 +6,11 @@
 
 package com.bikiegang.ridesharing.api;
 
+import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.controller.PlannedTripController;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.request.AutoSearchParingRequest;
 import com.bikiegang.ridesharing.pojo.response.AutoSearchParingResponse;
-import com.bikiegang.ridesharing.utilities.LoggerFactory;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -23,7 +23,7 @@ import java.io.PrintWriter;
 
 
 public class AutoParingWhenSearchAPI extends HttpServlet {
-    private Logger logger = LoggerFactory.createLogger(this.getClass());
+    private Logger logger = LogUtil.getLogger(this.getClass());
     public Class requestClass = AutoSearchParingRequest.class;
     public Class responseClass = AutoSearchParingResponse.class;
     public boolean responseIsArray = false;
@@ -49,12 +49,12 @@ public class AutoParingWhenSearchAPI extends HttpServlet {
             while ((line = reader.readLine()) != null) {
                 jsonData.append(line);
             }
-            logger.info(LoggerFactory.REQUEST+jsonData.toString());
+            logger.info(jsonData.toString());
             AutoSearchParingRequest autoSearchParingRequest = (AutoSearchParingRequest) Parser.JSonToObject(jsonData.toString(), AutoSearchParingRequest.class);
             PlannedTripController.isCreatingFake = false;
             PlannedTripController controller = new PlannedTripController();
             String result = controller.autoSearchParing(autoSearchParingRequest);
-            logger.info(LoggerFactory.RESPONSE+result);
+            logger.info(result);
             out.print(result);
         } catch (Exception ex) {
             ex.printStackTrace();

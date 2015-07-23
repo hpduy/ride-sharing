@@ -1,10 +1,10 @@
 package com.bikiegang.ridesharing.servlet.broadcast;
 
+import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.Broadcast;
 import com.bikiegang.ridesharing.pojo.static_object.GCMTransferMessage;
-import com.bikiegang.ridesharing.utilities.LoggerFactory;
 import com.google.android.gcm.server.Message;
 import com.google.android.gcm.server.MulticastResult;
 import com.google.android.gcm.server.Sender;
@@ -23,7 +23,7 @@ import java.util.HashSet;
 import java.util.List;
 
 public class GCMBroadcast extends HttpServlet {
-    private Logger logger = LoggerFactory.createLogger(this.getClass());
+    private Logger logger = LogUtil.getLogger(this.getClass());
     private static final long serialVersionUID = 1L;
     private Database database = Database.getInstance();
 

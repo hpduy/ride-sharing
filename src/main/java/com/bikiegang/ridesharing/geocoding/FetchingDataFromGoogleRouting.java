@@ -1,13 +1,16 @@
 package com.bikiegang.ridesharing.geocoding;
 
+import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.database.IdGenerator;
-import com.bikiegang.ridesharing.geocoding.GoogleRoutingObject.*;
+import com.bikiegang.ridesharing.geocoding.GoogleRoutingObject.Bound;
+import com.bikiegang.ridesharing.geocoding.GoogleRoutingObject.GoogleRoute;
+import com.bikiegang.ridesharing.geocoding.GoogleRoutingObject.RoutingResult;
+import com.bikiegang.ridesharing.geocoding.GoogleRoutingObject.Step;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.LinkedLocation;
 import com.bikiegang.ridesharing.pojo.PlannedTrip;
-import com.bikiegang.ridesharing.utilities.LoggerFactory;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -18,7 +21,7 @@ import java.util.List;
  * Created by hpduy17 on 7/14/15.
  */
 public class FetchingDataFromGoogleRouting {
-    Logger logger = LoggerFactory.createLogger(this.getClass());
+    Logger logger = LogUtil.getLogger(this.getClass());
     Database database = Database.getInstance();
 
     public List<LinkedLocation> fetch(PlannedTrip plannedTrip) throws IOException {

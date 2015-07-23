@@ -6,13 +6,13 @@
 
 package com.bikiegang.ridesharing.api;
 
+import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.controller.UserController;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.request.GetUsersAroundFromMeRequest;
 import com.bikiegang.ridesharing.pojo.response.UserShortDetailResponse;
 import com.bikiegang.ridesharing.utilities.FakeGroup.FakeUser;
-import com.bikiegang.ridesharing.utilities.LoggerFactory;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -25,7 +25,7 @@ import java.io.PrintWriter;
 
 
 public class GetAngelsAroundFromMeAPI extends HttpServlet {
-    private Logger logger = LoggerFactory.createLogger(this.getClass());
+    private Logger logger = LogUtil.getLogger(this.getClass());
     public Class requestClass = GetUsersAroundFromMeRequest.class;
     public Class responseClass = UserShortDetailResponse.class;
     public boolean responseIsArray = true;
@@ -51,7 +51,7 @@ public class GetAngelsAroundFromMeAPI extends HttpServlet {
             while ((line = reader.readLine()) != null) {
                 jsonData.append(line);
             }
-            logger.info(LoggerFactory.REQUEST+jsonData.toString());
+            logger.info(jsonData.toString());
             GetUsersAroundFromMeRequest getUsersAroundFromMeRequest = (GetUsersAroundFromMeRequest) Parser.JSonToObject(jsonData.toString(), GetUsersAroundFromMeRequest.class);
             UserController controller = new UserController();
             String result = controller.getUsersAroundFromMe(getUsersAroundFromMeRequest,true);
@@ -60,7 +60,7 @@ public class GetAngelsAroundFromMeAPI extends HttpServlet {
                 result = new FakeUser().getUsersAroundFromMeFake(getUsersAroundFromMeRequest);
             }
             //TODO end fake
-            logger.info(LoggerFactory.RESPONSE+result);
+            logger.info(result);
             out.print(result);
         } catch (Exception ex) {
             ex.printStackTrace();
