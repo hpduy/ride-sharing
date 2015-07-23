@@ -6,6 +6,7 @@
 package com.bikiegang.ridesharing.cache;
 
 import com.bikiegang.ridesharing.annn.framework.common.Config;
+import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.annn.framework.memcache.RedisClient;
 import com.bikiegang.ridesharing.annn.framework.util.ConvertUtils;
 import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
@@ -19,8 +20,7 @@ import com.bikiegang.ridesharing.pojo.Trip;
 import com.bikiegang.ridesharing.pojo.User;
 import java.util.HashMap;
 import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -46,7 +46,7 @@ public class RideSharingCA {
     }
     private static String _prefix;
     private static String _configSection;
-    private static final Logger _logger = LoggerFactory.getLogger(RideSharingCA.class);
+    private static final Logger _logger = LogUtil.getLogger(RideSharingCA.class);
     private static RedisClient redisClient;
 //</editor-fold>
 

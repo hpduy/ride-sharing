@@ -5,6 +5,7 @@
  */
 package com.bikiegang.ridesharing.da;
 
+import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.pojo.PojoBase;
 import com.bikiegang.ridesharing.pojo.Trip;
@@ -44,7 +45,7 @@ public class TripDA implements IDA {
         return result;
     }
 
-    Logger logger = Logger.getLogger(this.getClass());
+    Logger logger = LogUtil.getLogger(this.getClass());
 
     boolean Insert(Trip value) {
 

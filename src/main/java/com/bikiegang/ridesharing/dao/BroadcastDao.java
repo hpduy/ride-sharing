@@ -1,5 +1,6 @@
 package com.bikiegang.ridesharing.dao;
 
+import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.annn.framework.gearman.GClientManager;
 import com.bikiegang.ridesharing.annn.framework.gearman.JobEnt;
 import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
@@ -16,7 +17,7 @@ import org.apache.log4j.Logger;
  */
 public class BroadcastDao {
 
-    Logger logger = Logger.getLogger(this.getClass());
+    Logger logger = LogUtil.getLogger(this.getClass());
     private Database database = Database.getInstance();
     RideSharingCA cache = RideSharingCA.getInstance(ConfigInfo.REDIS_SERVER);
 

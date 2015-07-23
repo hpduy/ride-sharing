@@ -5,6 +5,7 @@
  */
 package com.bikiegang.ridesharing.da;
 
+import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.annn.framework.dbconn.ClientManager;
 import com.bikiegang.ridesharing.annn.framework.dbconn.ManagerIF;
 import com.bikiegang.ridesharing.config.ConfigInfo;
@@ -45,7 +46,7 @@ public class PlannedTripDA implements IDA {
         return result;
     }
 
-    Logger logger = Logger.getLogger(this.getClass());
+    Logger logger = LogUtil.getLogger(this.getClass());
 
     boolean Insert(PlannedTrip value) {
 
