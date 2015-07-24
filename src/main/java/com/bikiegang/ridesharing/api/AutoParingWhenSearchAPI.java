@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.bikiegang.ridesharing.api;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
@@ -21,8 +20,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-
 public class AutoParingWhenSearchAPI extends HttpServlet {
+
     private Logger logger = LogUtil.getLogger(this.getClass());
     public Class requestClass = AutoSearchParingRequest.class;
     public Class responseClass = AutoSearchParingResponse.class;
@@ -32,10 +31,10 @@ public class AutoParingWhenSearchAPI extends HttpServlet {
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
-     * @param request  raw request
+     * @param request raw request
      * @param response raw response
      * @throws ServletException if a raw-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -64,14 +63,13 @@ public class AutoParingWhenSearchAPI extends HttpServlet {
     }
 
     // <editor-fold default state="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request  raw request
+     * @param request raw request
      * @param response raw response
      * @throws ServletException if a raw-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -83,10 +81,10 @@ public class AutoParingWhenSearchAPI extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request  raw request
+     * @param request raw request
      * @param response raw response
      * @throws ServletException if a raw-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
