@@ -1,25 +1,25 @@
 package com.bikiegang.ridesharing.dao;
 
-import com.bikiegang.ridesharing.pojo.VerifiedCertificate;
+import com.bikiegang.ridesharing.pojo.RequestVerify;
 
 /**
  * Created by hpduy17 on 6/26/15.
  */
-public class VerifiedCertificateDao {
+public class RequestVerifyDao {
 
 
-    public boolean insert(VerifiedCertificate obj) {
+    public boolean insert(RequestVerify obj) {
         boolean result = false;
         return result;
     }
 
-    public boolean delete(VerifiedCertificate obj) {
+    public boolean delete(RequestVerify obj) {
         boolean result = false;
 
         return result;
     }
 
-    public boolean update(VerifiedCertificate obj) {
+    public boolean update(RequestVerify obj) {
         boolean result = false;
 
         return result;

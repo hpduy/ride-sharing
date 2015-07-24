@@ -39,6 +39,7 @@ public class Database {
     private HashMap<String, User> userHashMap = new HashMap<>();
     private HashMap<Long, RequestMakeTrip> requestMakeTripHashMap = new HashMap<>();
     private HashMap<Long, RequestVerify> requestVerifyHashMap = new HashMap<>();
+    private HashMap<Long, VerifiedCertificate> verifiedCertificateHashMap = new HashMap<>();
 
     //REFERENCE
     /**
@@ -75,6 +76,11 @@ public class Database {
      */
     private HashMap<String, Long> userRequestBox = new HashMap<>(); //<senderId,<receiverPlannedTripId,requestIds>>
     private HashMap<String, List<Long>> angelRequestsBox = new HashMap<>(); //<receiverId,<receiverPlannedTripId,<requestIds>>>
+    /**
+     * VERIFY CERTIFICATE
+     */
+    private HashMap<String, HashSet<Long>> userIdRFCertificates = new HashMap<>(); //<userId,<verifiedCertificateId>>
+
     /**
      * LINKED LOCATION
      */
@@ -125,6 +131,10 @@ public class Database {
 
     public HashMap<Long, RequestVerify> getRequestVerifyHashMap() {
         return requestVerifyHashMap;
+    }
+
+    public HashMap<Long, VerifiedCertificate> getVerifiedCertificateHashMap() {
+        return verifiedCertificateHashMap;
     }
 
     /*REFERENCE GET-SET*/

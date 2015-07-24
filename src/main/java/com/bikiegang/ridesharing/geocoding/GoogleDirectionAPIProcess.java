@@ -1,6 +1,8 @@
 package com.bikiegang.ridesharing.geocoding;
 
+import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.pojo.LatLng;
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -12,6 +14,8 @@ import java.net.URL;
  * Created by hpduy17 on 7/17/15.
  */
 public class GoogleDirectionAPIProcess {
+
+    Logger logger = LogUtil.getLogger(this.getClass());
     private String url = "https://maps.googleapis.com/maps/api/directions/json?origin=%s&destination=%s%s";
     private String wayPointInUrl = "&waypoints=%s";
     private String viaInWayPoint = "via:%s";
@@ -36,6 +40,15 @@ public class GoogleDirectionAPIProcess {
 
     public JSONObject queryGoogle(String urlString) throws IOException {
         URL url = new URL(urlString);
-        return new JSONObject(new JSONTokener(new InputStreamReader(url.openStream(), "UTF-8")));
+        InputStreamReader input = new InputStreamReader(url.openStream(), "UTF-8");
+        try {
+            return new JSONObject(new JSONTokener(input));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            logger.error(ex.getMessage());
+        } finally {
+            input.close();
+        }
+        return null;
     }
 }

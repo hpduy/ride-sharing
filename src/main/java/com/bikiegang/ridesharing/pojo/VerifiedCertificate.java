@@ -24,25 +24,30 @@ public class VerifiedCertificate extends CertificateDetail implements PojoBase {
     @JsonIgnore
     public static final int OUT_OF_DATE = 2;
     public VerifiedCertificate() {
+        super();
     }
 
-    public VerifiedCertificate(long id, String image, String note, long createdTime, int type, String ownerId, String endorserId, int status) {
+
+    public VerifiedCertificate(CertificateDetail that, long id, String note, long createdTime, String ownerId, String endorserId, int status) {
+        super(that);
         this.id = id;
-        this.note = note == null ? "" : note;
+        this.note = note;
         this.createdTime = createdTime;
-        this.ownerId = ownerId == null ? "" : ownerId;
-        this.endorserId = endorserId == null ? "" : endorserId;
+        this.ownerId = ownerId;
+        this.endorserId = endorserId;
         this.status = status;
     }
-
-    public VerifiedCertificate(VerifiedCertificate that) {
+     public VerifiedCertificate(VerifiedCertificate that) {
+        super(that);
         this.id = that.id;
-        this.note = that.note == null ? "" : that.note;
+        this.note = that.note;
         this.createdTime = that.createdTime;
-        this.ownerId = that.ownerId == null ? "" : that.ownerId;
-        this.endorserId = that.endorserId == null ? "" : that.endorserId;
+        this.ownerId = that.ownerId;
+        this.endorserId = that.endorserId;
         this.status = that.status;
     }
+
+
 
     public long getId() {
         return id;

@@ -37,7 +37,6 @@ import java.util.Map;
    {
      String HOME_PATH = "."; //System.getProperty("apppath");
      String APP_ENV = "development";//System.getProperty("appenv");
-       System.out.println(System.getProperty("user.dir"));
      if (APP_ENV == null) APP_ENV = "";
      if (!"".equals(APP_ENV)) APP_ENV = APP_ENV + ".";
  
