@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * Created by hpduy17 on 7/15/15.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class GetUserDetailRequest {
+public class GetInformationUsingUserIdRequest {
     private String userId;
 
     public String getUserId() {

@@ -291,7 +291,7 @@ public class UserController {
     /**
      * GET USER INFO
      */
-    public String getUserDetailWithRoutes(GetUserDetailRequest request) throws IOException {
+    public String getUserDetailWithRoutes(GetInformationUsingUserIdRequest request) throws IOException {
         if (null == request.getUserId() || request.getUserId().equals("")) {
             return Parser.ObjectToJSon(false, "'userId' is not found");
         }
@@ -300,7 +300,14 @@ public class UserController {
             return Parser.ObjectToJSon(false, "User is not found by userId");
         }
         //get list route of user
-        List<Long> routeIds = new ArrayList<>(database.getUserIdRFPlanedTrips().get(user.getId()));
+        List<Long> routeIds;
+           if(database.getUserIdRFPlanedTrips().get(user.getId()) != null) {
+               routeIds = new ArrayList<>(database.getUserIdRFPlanedTrips().get(user.getId()));
+
+           }else {
+               routeIds = new ArrayList<>(database.getPlannedTripHashMap().keySet());
+           }
+
         UserDetailWithPlannedTripResponse response = new UserDetailWithPlannedTripResponse(user, new PlannedTripController().getListPlannedTripSortDetail(routeIds));
         return Parser.ObjectToJSon(true, "Get detail successfully", response);
     }

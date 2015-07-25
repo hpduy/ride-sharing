@@ -36,7 +36,7 @@ public class StartupListener implements ServletContextListener, HttpSessionListe
          */
         try {
             logger.info("CLOUD BIKE WAKEUP");
-            User user = new FakeUser().fakeUser(1,1,false);
+            User user = new FakeUser().fakeUser(2,1,false);
             user.setId("tester");
             Database.getInstance().getUserHashMap().put(user.getId(),user);
             Path.setServerAddress(InetAddress.getLocalHost().getHostAddress());

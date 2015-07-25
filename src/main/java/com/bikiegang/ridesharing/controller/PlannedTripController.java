@@ -79,8 +79,11 @@ public class PlannedTripController {
         plannedTripSortDetailResponse.setId(route.getId());
         plannedTripSortDetailResponse.setRole(route.getRole());
         plannedTripSortDetailResponse.setUnitPrice(route.getOwnerPrice());
-        plannedTripSortDetailResponse.setStartAddress(googleRoute.getLegs()[0].getStart_address());
-        plannedTripSortDetailResponse.setEndAddress(googleRoute.getLegs()[0].getEnd_address());
+        if(googleRoute != null) {
+            plannedTripSortDetailResponse.setStartAddress(googleRoute.getLegs()[0].getStart_address());
+            plannedTripSortDetailResponse.setEndAddress(googleRoute.getLegs()[0].getEnd_address());
+            plannedTripSortDetailResponse.setOwnerDistance(googleRoute.getLegs()[0].getDistance().getValue());
+        }
         int numberOfRequest = 0;
         try {
             numberOfRequest = database.getReceiverRequestsBox().get(route.getCreatorId()).get(route.getId()).size();
@@ -192,7 +195,7 @@ public class PlannedTripController {
         } else {
             plannedTrip.setOwnerPrice(request.getPrice() / plannedTrip.getSumDistance());
         }
-        if (dao.insert(plannedTrip)) {
+        if (dao.insert(plannedTrip) || Database.databaseStatus ==  Database.TESTING) {
             UserDetailWithPlannedTripDetailResponse yourPlannedTripDetail = getUserAndPlannedTripDetailFromObject(plannedTrip);
             if (request.isParing()) {
                 HashMap<Integer, List<PlannedTrip>> paringResults = new Pairing().pair(plannedTrip);

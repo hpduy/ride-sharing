@@ -180,4 +180,11 @@ public class RequestMakeTripController {
         }
 
     }
+
+//    public String getSenderBox(GetInformationUsingUserIdRequest request) throws JsonProcessingException {
+//        if(null == request.getUserId()){
+//            Parser.ObjectToJSon(false, "'userId' is not found");
+//        }
+//
+//    }
 }

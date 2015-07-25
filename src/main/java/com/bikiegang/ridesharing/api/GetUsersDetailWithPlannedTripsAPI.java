@@ -9,7 +9,7 @@ package com.bikiegang.ridesharing.api;
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.controller.UserController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.request.GetUserDetailRequest;
+import com.bikiegang.ridesharing.pojo.request.GetInformationUsingUserIdRequest;
 import com.bikiegang.ridesharing.pojo.response.UserDetailWithPlannedTripResponse;
 import org.apache.log4j.Logger;
 
@@ -24,7 +24,7 @@ import java.io.PrintWriter;
 
 public class GetUsersDetailWithPlannedTripsAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
-    public Class requestClass = GetUserDetailRequest.class;
+    public Class requestClass = GetInformationUsingUserIdRequest.class;
     public Class responseClass = UserDetailWithPlannedTripResponse.class;
     public boolean responseIsArray = false;
 
@@ -50,7 +50,7 @@ public class GetUsersDetailWithPlannedTripsAPI extends HttpServlet {
                 jsonData.append(line);
             }
             logger.info(jsonData.toString());
-            GetUserDetailRequest getUserDetailRequest = (GetUserDetailRequest) Parser.JSonToObject(jsonData.toString(), GetUserDetailRequest.class);
+            GetInformationUsingUserIdRequest getUserDetailRequest = (GetInformationUsingUserIdRequest) Parser.JSonToObject(jsonData.toString(), GetInformationUsingUserIdRequest.class);
             UserController controller = new UserController();
             String result = controller.getUserDetailWithRoutes(getUserDetailRequest);
             logger.info(result);
