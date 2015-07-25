@@ -27,6 +27,7 @@ import java.util.List;
  * Created by hpduy17 on 6/29/15.
  */
 public class PlannedTripController {
+
     private PlannedTripDao dao = new PlannedTripDao();
     private Database database = Database.getInstance();
     public static final double DEFAULT_PRICE = 3; //3000 vnd/km -> 3 vnd/m
@@ -193,7 +194,8 @@ public class PlannedTripController {
         if (request.getPrice() < 0) {
             plannedTrip.setOwnerPrice(DEFAULT_PRICE);
         } else {
-            plannedTrip.setOwnerPrice(request.getPrice() / plannedTrip.getSumDistance());
+            plannedTrip.setOwnerPrice(request.getPrice() / plannedTrip.getSumDistance() != 0
+                    ? request.getPrice() / plannedTrip.getSumDistance() : 0);
         }
         if (dao.insert(plannedTrip) || Database.databaseStatus ==  Database.TESTING) {
             UserDetailWithPlannedTripDetailResponse yourPlannedTripDetail = getUserAndPlannedTripDetailFromObject(plannedTrip);
@@ -208,7 +210,7 @@ public class PlannedTripController {
                 plannedTrips = getListUserAndPlannedTripDetailFromObject(result);
             }
             response.setYourPlannedTrip(yourPlannedTripDetail);
-            if(plannedTrips == null){
+            if (plannedTrips == null) {
                 plannedTrips = new UserDetailWithPlannedTripDetailResponse[0];
             }
             response.setPairedPlannedTripsResult(plannedTrips);
@@ -218,4 +220,3 @@ public class PlannedTripController {
     }
 
 }
-

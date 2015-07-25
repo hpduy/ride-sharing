@@ -71,7 +71,7 @@ public class PlannedTripDao {
                         JSONUtil.Serialize(obj)));
             }
         } catch (Exception ex) {
-            logger.error(ex.getStackTrace());
+            logger.error(ex.getMessage());
             ex.printStackTrace();
         }
         return result;
