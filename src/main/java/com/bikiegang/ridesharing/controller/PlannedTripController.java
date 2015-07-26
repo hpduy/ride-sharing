@@ -191,7 +191,7 @@ public class PlannedTripController {
         if (request.getPrice() < 0) {
             plannedTrip.setOwnerPrice(DEFAULT_PRICE);
         } else {
-            plannedTrip.setOwnerPrice(request.getPrice() / plannedTrip.getSumDistance() != 0
+            plannedTrip.setOwnerPrice(request.getPrice() / plannedTrip.getSumDistance() != Double.POSITIVE_INFINITY
                     ? request.getPrice() / plannedTrip.getSumDistance() : 0);
         }
         if (dao.insert(plannedTrip)) {
