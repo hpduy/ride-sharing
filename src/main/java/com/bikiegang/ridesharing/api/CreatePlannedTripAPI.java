@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.bikiegang.ridesharing.api;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
@@ -20,9 +19,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CodingErrorAction;
 
 public class CreatePlannedTripAPI extends HttpServlet {
+
     private Logger logger = LogUtil.getLogger(this.getClass());
     public Class requestClass = CreatePlannedTripRequest.class;
     public Class responseClass = CreatePlannedTripResponse.class;
@@ -32,10 +34,10 @@ public class CreatePlannedTripAPI extends HttpServlet {
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
-     * @param request  raw request
+     * @param request raw request
      * @param response raw response
      * @throws ServletException if a raw-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -43,7 +45,7 @@ public class CreatePlannedTripAPI extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            StringBuffer jsonData = new StringBuffer();
+            StringBuilder jsonData = new StringBuilder();
             String line;
             BufferedReader reader = request.getReader();
             while ((line = reader.readLine()) != null) {
@@ -64,14 +66,13 @@ public class CreatePlannedTripAPI extends HttpServlet {
     }
 
     // <editor-fold default state="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request  raw request
+     * @param request raw request
      * @param response raw response
      * @throws ServletException if a raw-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -83,10 +84,10 @@ public class CreatePlannedTripAPI extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request  raw request
+     * @param request raw request
      * @param response raw response
      * @throws ServletException if a raw-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
