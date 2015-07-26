@@ -39,4 +39,6 @@ public class CreateCertificateRequest {
     public String getNote() {
         return note;
     }
+
+
 }

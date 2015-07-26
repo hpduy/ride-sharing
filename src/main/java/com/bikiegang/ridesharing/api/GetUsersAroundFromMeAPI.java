@@ -64,7 +64,7 @@ public class GetUsersAroundFromMeAPI extends HttpServlet {
             out.print(result);
         } catch (Exception ex) {
             ex.printStackTrace();
-            logger.error(ex.getStackTrace());
+            logger.error(ex.getMessage());
             out.print(Parser.ObjectToJSon(false, ex.getMessage()));
         }
     }

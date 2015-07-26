@@ -24,7 +24,7 @@ public class BroadcastCenterUtil implements Runnable {
 
     //final variable
     public static String CLOUD_BIKE_SENDER_ID = "AIzaSyBbF-lPqCpcUsiJdahgt21WB00vpKRxXik";
-    public static String ANGEL_SPECIAL_APP_SENDER_ID = "AIzaSyBbF-lPqCpcUsiJdahgt21WB00vpKRxXik";
+    public static String ANGEL_SPECIAL_APP_SENDER_ID = "AIzaSyCLMZnnCx00PKpYkrjFCfKExCFGRhVdoqA";
 
     public BroadcastCenterUtil() {
     }

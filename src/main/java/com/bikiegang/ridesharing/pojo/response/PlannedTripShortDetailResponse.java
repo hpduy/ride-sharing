@@ -9,6 +9,7 @@ public class PlannedTripShortDetailResponse {
     private String startAddress;
     private String endAddress;
     private double unitPrice;
+    private long ownerDistance;
     private int role;
 
     public PlannedTripShortDetailResponse() {
@@ -61,6 +62,14 @@ public class PlannedTripShortDetailResponse {
 
     public void setUnitPrice(double unitPrice) {
         this.unitPrice = unitPrice;
+    }
+
+    public long getOwnerDistance() {
+        return ownerDistance;
+    }
+
+    public void setOwnerDistance(long ownerDistance) {
+        this.ownerDistance = ownerDistance;
     }
 
     public int getRole() {

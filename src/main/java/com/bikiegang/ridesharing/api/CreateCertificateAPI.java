@@ -99,6 +99,6 @@ public class CreateCertificateAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Send a request to other user to go with him";
+        return "Create your certificates";
     }
 }
