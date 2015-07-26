@@ -216,7 +216,7 @@ public class PlannedTripController {
             response.setPairedPlannedTripsResult(plannedTrips);
             return Parser.ObjectToJSon(true, "Create planned trip successfully", response);
         }
-        return Parser.ObjectToJSon(true, "Cannot create planned trip");
+        return Parser.ObjectToJSon(false, "Cannot create planned trip");
     }
 
 }

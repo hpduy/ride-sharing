@@ -26,6 +26,9 @@ import java.io.PrintWriter;
 @MultipartConfig
 public class UploadImageAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
+    public Class requestClass = null;
+    public Class responseClass = null;
+    public boolean responseIsArray = false;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -104,6 +107,6 @@ public class UploadImageAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "Upload image using multipart";
     }
 }

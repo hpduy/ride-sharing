@@ -107,6 +107,6 @@ public class GetAngelsAroundFromMeAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Get all user have current location around you";
+        return "Get all Angel have current location around you";
     }
 }
