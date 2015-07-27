@@ -32,6 +32,12 @@ public class ConfigInfo {
     public static String USER_INSERT_QUERY;
     public static String USER_UPDATE_QUERY;
     public static String USER_DELETE_QUERY;
+    public static String REQUESTVERIFY_DELETE_QUERY;
+    public static String REQUESTVERIFY_UPDATE_QUERY;
+    public static String REQUESTVERIFY_INSERT_QUERY;
+    public static String VERIFIEDCERTIFICATE_INSERT_QUERY;
+    public static String VERIFIEDCERTIFICATE_UPDATE_QUERY;
+    public static String VERIFIEDCERTIFICATE_DELETE_QUERY;
 
     static {
         RIDESHARING_DB = "ridesharing_db";
@@ -193,9 +199,10 @@ public class ConfigInfo {
                 + "`isBusy`,\n"
                 + "`currentRole`,\n"
                 + "`linkedInId`,\n"
-                + "`selfIntro`)\n"
+                + "`selfIntro`, \n"
+                + "`privacy`)\n"
                 + "VALUES\n"
-                + "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                + "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
         USER_UPDATE_QUERY = "UPDATE `ridesharing_db`.`User`\n"
                 + "SET\n"
                 + "`id` = ?,\n"
@@ -215,10 +222,71 @@ public class ConfigInfo {
                 + "`isBusy` = ?,\n"
                 + "`currentRole` = ?,\n"
                 + "`linkedInId` = ?,\n"
-                + "`selfIntro` = ?\n"
+                + "`selfIntro` = ?,\n"
+                + "`privacy` = ?\n"
                 + "WHERE `id` = ?;";
         USER_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`User`\n"
                 + "WHERE `id` = ?;";
+
+        REQUESTVERIFY_INSERT_QUERY = "INSERT INTO `ridesharing_db`.`RequestVerify`\n"
+                + "(`id`,\n"
+                + "`userId`,\n"
+                + "`angelId`,\n"
+                + "`numberOfCertificate`,\n"
+                + "`signature`,\n"
+                + "`status`)\n"
+                + "VALUES\n"
+                + "(?,?,?,?,?,?);";
+        REQUESTVERIFY_UPDATE_QUERY = "UPDATE `ridesharing_db`.`RequestVerify`\n"
+                + "SET\n"
+                + "`id` = ?,\n"
+                + "`userId` = ?,\n"
+                + "`angelId` = ?,\n"
+                + "`numberOfCertificate` = ?,\n"
+                + "`signature` = ?,\n"
+                + "`status` = ?\n"
+                + "WHERE `id` = ?;";
+        REQUESTVERIFY_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`RequestVerify`\n"
+                + "WHERE `id` = ?;";
+
+        VERIFIEDCERTIFICATE_INSERT_QUERY = "INSERT INTO `ridesharing_db`.`VerifiedCertificate`\n"
+                + "(`id`,\n"
+                + "`note`,\n"
+                + "`createdTime`,\n"
+                + "`ownerId`,\n"
+                + "`endorserId`,\n"
+                + "`status`,\n"
+                + "`fullname`,\n"
+                + "`idNumber`,\n"
+                + "`dayOfBirth`,\n"
+                + "`address`,\n"
+                + "`registerDay`,\n"
+                + "`expiredDay`,\n"
+                + "`image`,\n"
+                + "`type`)\n"
+                + "VALUES\n"
+                + "(?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+        VERIFIEDCERTIFICATE_UPDATE_QUERY = "UPDATE `ridesharing_db`.`VerifiedCertificate`\n"
+                + "SET\n"
+                + "`id` = ?,\n"
+                + "`note` = ?,\n"
+                + "`createdTime` = ?,\n"
+                + "`ownerId` = ?,\n"
+                + "`endorserId` = ?,\n"
+                + "`status` = ?,\n"
+                + "`fullname` = ?,\n"
+                + "`idNumber` = ?,\n"
+                + "`dayOfBirth` = ?,\n"
+                + "`address` = ?,\n"
+                + "`registerDay` = ?,\n"
+                + "`expiredDay` = ?,\n"
+                + "`image` = ?,\n"
+                + "`type` = ?\n"
+                + "WHERE `id` = ?;";
+
+        VERIFIEDCERTIFICATE_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`VerifiedCertificate`\n"
+                + "WHERE `id` = ?;";
+
     }
 
 }
