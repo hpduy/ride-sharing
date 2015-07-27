@@ -83,7 +83,7 @@ public class PlannedTripController {
         if(googleRoute != null) {
             plannedTripSortDetailResponse.setStartAddress(googleRoute.getLegs()[0].getStart_address());
             plannedTripSortDetailResponse.setEndAddress(googleRoute.getLegs()[0].getEnd_address());
-            plannedTripSortDetailResponse.setOwnerDistance(googleRoute.getLegs()[0].getDistance().getValue());
+            plannedTripSortDetailResponse.setOwnerDistance(route.getSumDistance());
         }
         int numberOfRequest = 0;
         try {
@@ -195,7 +195,7 @@ public class PlannedTripController {
             plannedTrip.setOwnerPrice(DEFAULT_PRICE);
         } else {
             plannedTrip.setOwnerPrice(request.getPrice() / plannedTrip.getSumDistance() != Double.POSITIVE_INFINITY
-                    ? request.getPrice() / plannedTrip.getSumDistance() : 0);
+                    ? request.getPrice() / plannedTrip.getSumDistance() : PlannedTrip.DEFAULT_PRICE_1KM/1000);
         }
         if (dao.insert(plannedTrip) || Database.databaseStatus ==  Database.TESTING) {
             UserDetailWithPlannedTripDetailResponse yourPlannedTripDetail = getUserAndPlannedTripDetailFromObject(plannedTrip);

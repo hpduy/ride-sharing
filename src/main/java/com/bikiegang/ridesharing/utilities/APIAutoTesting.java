@@ -1,5 +1,7 @@
 package com.bikiegang.ridesharing.utilities;
 
+import com.bikiegang.ridesharing.parsing.Parser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 
@@ -11,7 +13,7 @@ import java.lang.reflect.Field;
  */
 public class APIAutoTesting {
 
-    public Object createTestObject(Class objectClass) throws NoSuchMethodException, IllegalAccessException, InstantiationException, ClassNotFoundException {
+    public String createTestObject(Class objectClass) throws NoSuchMethodException, IllegalAccessException, InstantiationException, ClassNotFoundException, JsonProcessingException {
         Object tester = objectClass.newInstance();
         Field[] fields = objectClass.getDeclaredFields();
         for(Field f : fields){
@@ -55,6 +57,6 @@ public class APIAutoTesting {
             }
 
         }
-        return tester;
+        return Parser.ObjectToJSon(tester);
     }
 }

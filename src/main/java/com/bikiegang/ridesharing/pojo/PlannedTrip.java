@@ -41,6 +41,8 @@ public class PlannedTrip implements PojoBase {
     public static final long DEFAULT_VELOCITY = 30 * 1000 / DateTimeUtil.HOURS; // m/s ( default velocity in HCMC 30km/h)
     @JsonIgnore
     public static final double DEFAULT_PRICE_1KM = 3000; // 3000vnd / 1km
+    @JsonIgnore
+    public static final double DEFAULT_PRICE_1M = DEFAULT_PRICE_1KM/1000;
 
     public PlannedTrip() {
     }
