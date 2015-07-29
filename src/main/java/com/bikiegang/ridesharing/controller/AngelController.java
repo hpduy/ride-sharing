@@ -24,7 +24,7 @@ import java.util.HashMap;
 public class AngelController {
     private UserDao dao = new UserDao();
     private Database database = Database.getInstance();
-    private HashMap<String, Long> angelCodeHashMap = new HashMap<>();
+    private static HashMap<String, Long> angelCodeHashMap = new HashMap<>();
     private final int codeLength = 4;
     private final long expiredTime = 30 * DateTimeUtil.MINUTES;
 
