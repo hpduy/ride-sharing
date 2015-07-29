@@ -106,6 +106,14 @@ public class Database {
     /*GET-SET Function*/
     /*CORE GET-SET*/
 
+    public HashMap<String, HashSet<Long>> getUserIdRFCertificates() {
+        return userIdRFCertificates;
+    }
+
+    public void setUserIdRFCertificates(HashMap<String, HashSet<Long>> userIdRFCertificates) {
+        this.userIdRFCertificates = userIdRFCertificates;
+    }
+
     public HashMap<String, Broadcast> getBroadcastHashMap() {
         return broadcastHashMap;
     }

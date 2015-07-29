@@ -10,6 +10,7 @@ import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.RequestVerify;
 import com.bikiegang.ridesharing.pojo.VerifiedCertificate;
 import com.bikiegang.ridesharing.utilities.Const;
+import java.util.HashSet;
 import org.apache.log4j.Logger;
 
 /**
@@ -29,9 +30,20 @@ public class VerifiedCertificateDao {
             }
             //Step 1: put in hashmap
             database.getVerifiedCertificateHashMap().put(obj.getId(), obj);
+            HashSet<Long> userRF = database.getUserIdRFCertificates().get(obj.getOwnerId());
+
+            if (userRF == null) {
+                userRF = new HashSet<>();
+                database.getUserIdRFCertificates().put(obj.getOwnerId(), userRF);
+            }
+
+            userRF.add(obj.getId());
+
             //Step 2: put redis
             result = cache.hset(obj.getClass().getName(), String.valueOf(obj.getId()),
                     JSONUtil.Serialize(obj));
+            result &= cache.hset(obj.getClass().getName() + ":user", obj.getOwnerId(),
+                    JSONUtil.Serialize(userRF));
 
             if (result) {
                 //Step 3: put job gearman
@@ -65,9 +77,18 @@ public class VerifiedCertificateDao {
             }
             //Step 1: put in hashmap
             database.getVerifiedCertificateHashMap().remove(obj.getId());
+            HashSet<Long> userRF = database.getUserIdRFCertificates().get(obj.getOwnerId());
 
+            if (userRF == null) {
+                userRF = new HashSet<>();
+                database.getUserIdRFCertificates().put(obj.getOwnerId(), userRF);
+            }
+
+            userRF.remove((Long) obj.getId());
             //Step 2: put redis
             result = cache.hdel(obj.getClass().getName(), String.valueOf(obj.getId()));
+            result &= cache.hset(obj.getClass().getName() + ":user", obj.getOwnerId(),
+                    JSONUtil.Serialize(userRF));
             if (result) {
                 //Step 3: put job gearman
                 short actionType = Const.RideSharing.ActionType.DELETE;

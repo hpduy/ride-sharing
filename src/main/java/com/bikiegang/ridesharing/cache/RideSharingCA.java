@@ -16,6 +16,7 @@ import com.bikiegang.ridesharing.pojo.Broadcast;
 import com.bikiegang.ridesharing.pojo.LinkedLocation;
 import com.bikiegang.ridesharing.pojo.RequestMakeTrip;
 import com.bikiegang.ridesharing.pojo.PlannedTrip;
+import com.bikiegang.ridesharing.pojo.RequestVerify;
 import com.bikiegang.ridesharing.pojo.Trip;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.VerifiedCertificate;
@@ -236,9 +237,6 @@ public class RideSharingCA {
         boolean result = false;
         try {
 
-//              private HashMap<String, HashSet<Long>> userIdRFPlanedTrips = new HashMap<>(); // <userId,<plannedTripId>>
-//    private HashMap<Integer, HashSet<Long>> roleRFPlannedTrips = new HashMap<>(); // <role,<plannedTripId>>
-//    private HashMap<Long, HashSet<Long>> groupIdRFPlannedTrips = new HashMap<>(); // <groupId,<plannedTripId>>
             database.getPlannedTripHashMap().clear();
             database.getUserIdRFPlanedTrips().clear();
             database.getRoleRFPlannedTrips().clear();;
@@ -290,11 +288,33 @@ public class RideSharingCA {
         boolean result = false;
         try {
             database.getTripHashMap().clear();
+            database.getDriverIdRFTrips().clear();
+            database.getPassengerIdRFTrips().clear();
+
             Map<String, String> hgetAll = hgetAll(Trip.class.getName());
             for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
                 String key = entrySet.getKey();
                 String value = entrySet.getValue();
                 database.getTripHashMap().put(ConvertUtils.toLong(key), (Trip) JSONUtil.DeSerialize(value, Trip.class));
+            }
+
+            //Driver
+            Map<String, String> driverRF = hgetAll(Trip.class.getName() + ":driver");
+            for (Map.Entry<String, String> entrySet : driverRF.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+
+                database.getDriverIdRFTrips().put(key, (HashSet<Long>) JSONUtil.DeSerialize(value, new TypeToken<HashSet<Long>>() {
+                }.getType()));
+            }
+            //Passenger
+            Map<String, String> passengerRF = hgetAll(Trip.class.getName() + ":passenger");
+            for (Map.Entry<String, String> entrySet : passengerRF.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+
+                database.getDriverIdRFTrips().put(key, (HashSet<Long>) JSONUtil.DeSerialize(value, new TypeToken<HashSet<Long>>() {
+                }.getType()));
             }
             result = true;
         } catch (Exception ex) {
@@ -349,11 +369,63 @@ public class RideSharingCA {
         boolean result = false;
         try {
             database.getVerifiedCertificateHashMap().clear();
+            database.getUserIdRFCertificates().clear();
+
             Map<String, String> hgetAll = hgetAll(VerifiedCertificate.class.getName());
             for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
                 String key = entrySet.getKey();
                 String value = entrySet.getValue();
-                database.getVerifiedCertificateHashMap().put(ConvertUtils.toLong(key), (VerifiedCertificate) JSONUtil.DeSerialize(value, VerifiedCertificate.class));
+                database.getVerifiedCertificateHashMap().put(ConvertUtils.toLong(key), (VerifiedCertificate) JSONUtil.DeSerialize(value,
+                        VerifiedCertificate.class));
+            }
+
+            //User=>Certificates
+            Map<String, String> userRF = hgetAll(VerifiedCertificate.class.getName() + ":user");
+            for (Map.Entry<String, String> entrySet : userRF.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+
+                database.getUserIdRFCertificates().put(key, (HashSet<Long>) JSONUtil.DeSerialize(value, new TypeToken<HashSet<Long>>() {
+                }.getType()));
+            }
+            result = true;
+        } catch (Exception ex) {
+            _logger.error(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
+    public boolean RestoreRequestVerify() {
+        boolean result = false;
+        try {
+            database.getRequestVerifyHashMap().clear();
+            database.getUserRequestBox().clear();
+            database.getAngelRequestsBox().clear();
+
+            Map<String, String> hgetAll = hgetAll(RequestVerify.class.getName());
+            for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+                database.getRequestVerifyHashMap().put(ConvertUtils.toLong(key), (RequestVerify) JSONUtil.DeSerialize(value, RequestVerify.class));
+            }
+
+            //User=>RequestVerify
+            Map<String, String> userRF = hgetAll(RequestVerify.class.getName() + ":user");
+            for (Map.Entry<String, String> entrySet : userRF.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+
+                database.getUserRequestBox().put(key, ConvertUtils.toLong(value));
+            }
+            //Angel=>RequestVerify
+            Map<String, String> angelRF = hgetAll(RequestVerify.class.getName() + ":angel");
+            for (Map.Entry<String, String> entrySet : angelRF.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+
+                database.getAngelRequestsBox().put(key, (List<Long>) JSONUtil.DeSerialize(value, new TypeToken<List<Long>>() {
+                }.getType()));
             }
             result = true;
         } catch (Exception ex) {
@@ -372,6 +444,7 @@ public class RideSharingCA {
         result &= RestoreTrip();
         result &= RestoreUser();
         result &= RestoreVerifiedCertificate();
+        result &= RestoreRequestVerify();
         return result;
     }
 

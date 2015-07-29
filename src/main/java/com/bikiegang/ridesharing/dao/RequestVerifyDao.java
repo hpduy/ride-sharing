@@ -9,6 +9,8 @@ import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.RequestVerify;
 import com.bikiegang.ridesharing.utilities.Const;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.log4j.Logger;
 
 /**
@@ -28,9 +30,22 @@ public class RequestVerifyDao {
             }
             //Step 1: put in hashmap
             database.getRequestVerifyHashMap().put(obj.getId(), obj);
+            database.getUserRequestBox().put(obj.getUserId(), obj.getId());
+            List<Long> angelRequests = database.getAngelRequestsBox().get(obj.getAngelId());
+
+            if (angelRequests == null) {
+                angelRequests = new ArrayList<>();
+                database.getAngelRequestsBox().put(obj.getAngelId(), angelRequests);
+            }
+            angelRequests.add(obj.getId());
+
             //Step 2: put redis
             result = cache.hset(obj.getClass().getName(), String.valueOf(obj.getId()),
                     JSONUtil.Serialize(obj));
+            result &= cache.hset(obj.getClass().getName() + ":user", String.valueOf(obj.getUserId()),
+                    String.valueOf(obj.getId()));
+            result &= cache.hset(obj.getClass().getName() + ":angel", String.valueOf(obj.getAngelId()),
+                    JSONUtil.Serialize(angelRequests));
 
             if (result) {
                 //Step 3: put job gearman
@@ -64,10 +79,21 @@ public class RequestVerifyDao {
             }
             //Step 1: put in hashmap
             database.getRequestVerifyHashMap().remove(obj.getId());
+            database.getUserRequestBox().remove(obj.getUserId());
+            List<Long> angelRequests = database.getAngelRequestsBox().get(obj.getAngelId());
 
+            if (angelRequests == null) {
+                angelRequests = new ArrayList<>();
+                database.getAngelRequestsBox().put(obj.getAngelId(), angelRequests);
+            }
+            angelRequests.remove((Long) obj.getId());
             //Step 2: put redis
             result = cache.hdel(obj.getClass().getName(), String.valueOf(obj.getId()));
+            result &= cache.hdel(obj.getClass().getName() + ":user", String.valueOf(obj.getUserId()));
+            result &= cache.hset(obj.getClass().getName() + ":angel", String.valueOf(obj.getAngelId()),
+                    JSONUtil.Serialize(angelRequests));
             if (result) {
+
                 //Step 3: put job gearman
                 short actionType = Const.RideSharing.ActionType.DELETE;
                 JobEnt job = new JobEnt(0l, 0l, obj.getClass().getName(), actionType,
