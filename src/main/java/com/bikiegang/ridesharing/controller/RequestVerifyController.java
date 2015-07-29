@@ -67,7 +67,7 @@ public class RequestVerifyController {
         }
         RequestVerify requestVerify = database.getRequestVerifyHashMap().get(request.getRequestId());
         if (null == requestVerify) {
-            return Parser.ObjectToJSon(false, "Request is not exist");
+            return Parser.ObjectToJSon(false, "User does not exist");
         }
         requestVerify.setStatus(request.getStatus());
         if (dao.update(requestVerify)) {

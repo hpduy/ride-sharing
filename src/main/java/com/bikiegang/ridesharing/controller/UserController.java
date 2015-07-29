@@ -229,7 +229,7 @@ public class UserController {
         }
         String userId = database.getFacebookRFUserId().get(loginRequest.getUserId());
         if (null == userId || userId.equals("")) {
-            return Parser.ObjectToJSon(false, "User is not exits");
+            return Parser.ObjectToJSon(false, "User does not exist");
         }
         User user = database.getUserHashMap().get(userId);
         if (user == null) {
@@ -247,7 +247,7 @@ public class UserController {
         }
         String userId = database.getEmailRFUserId().get(loginRequest.getUserId());
         if (null == userId || userId.equals("")) {
-            return Parser.ObjectToJSon(false, "User is not exits");
+            return Parser.ObjectToJSon(false, "User does not exist");
         }
         User user = database.getUserHashMap().get(userId);
         if (user == null) {
@@ -265,7 +265,7 @@ public class UserController {
         }
         String userId = database.getGoogleRFUserId().get(loginRequest.getUserId());
         if (null == userId || userId.equals("")) {
-            return Parser.ObjectToJSon(false, "User is not exits");
+            return Parser.ObjectToJSon(false, "User does not exist");
         }
         User user = database.getUserHashMap().get(userId);
         if (user == null) {
@@ -280,7 +280,7 @@ public class UserController {
         }
         String userId = database.getTwitterRFUserId().get(loginRequest.getUserId());
         if (null == userId || userId.equals("")) {
-            return Parser.ObjectToJSon(false, "User is not exits");
+            return Parser.ObjectToJSon(false, "User does not exist");
         }
         User user = database.getUserHashMap().get(userId);
         if (user == null) {
@@ -295,7 +295,7 @@ public class UserController {
         }
         String userId = database.getLinkedInRFUserId().get(loginRequest.getUserId());
         if (null == userId || userId.equals("")) {
-            return Parser.ObjectToJSon(false, "User is not exits");
+            return Parser.ObjectToJSon(false, "User does not exist");
         }
         User user = database.getUserHashMap().get(userId);
         if (user == null) {

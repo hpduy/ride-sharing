@@ -126,6 +126,22 @@
         <servlet-class>com.bikiegang.ridesharing.api.AngelLoginAPI</servlet-class>
     </servlet>
     <servlet-mapping>
+        <servlet-name>GetAngelActiveCodesForWebAPI</servlet-name>
+        <url-pattern>/GetAngelActiveCodesForWebAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>AngelForgetPasswordAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.AngelForgetPasswordAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AngelForgetPasswordAPI</servlet-name>
+        <url-pattern>/AngelForgetPasswordAPI</url-pattern>
+    </servlet-mapping>
+ <servlet>
+        <servlet-name>GetAngelActiveCodesForWebAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.GetAngelActiveCodesForWebAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
         <servlet-name>AngelLoginAPI</servlet-name>
         <url-pattern>/AngelLoginAPI</url-pattern>
     </servlet-mapping>

@@ -32,8 +32,13 @@ public class AngelController {
         if (request.getNumberOfCode() <= 0) {
             return Parser.ObjectToJSon(false, "'numberOfCode' is invalid");
         }
-        String[] codes = new String[request.getNumberOfCode()];
-        for (int i = 0; i < request.getNumberOfCode(); ) {
+        String[] codes = getAngelActiveCode(request.getNumberOfCode());
+        return Parser.ObjectToJSon(true, "Get code successfully", new GetAngelActiveCodesResponse(codes));
+    }
+
+    public String [] getAngelActiveCode(int numberOfCode){
+        String[] codes = new String[numberOfCode];
+        for (int i = 0; i < numberOfCode; ) {
             String code = RandomStringUtils.randomAlphabetic(2).toUpperCase();
             code += RandomStringUtils.randomNumeric(codeLength);
             if (!angelCodeHashMap.keySet().contains(code)) {
@@ -42,7 +47,7 @@ public class AngelController {
                 i++;
             }
         }
-        return Parser.ObjectToJSon(true, "Get code successfully", new GetAngelActiveCodesResponse(codes));
+        return codes;
     }
 
     public synchronized String register(AngelRegisterRequest registerRequest) throws JsonProcessingException {
@@ -59,7 +64,7 @@ public class AngelController {
             return Parser.ObjectToJSon(false, "'email' has been used");
         }
         if (!angelCodeHashMap.keySet().contains(registerRequest.getActiveCode())) {
-            return Parser.ObjectToJSon(false, "'activeCode' is wrong");
+            return Parser.ObjectToJSon(false, "'activeCode' is wrong or used");
         }
         if ((DateTimeUtil.now() - angelCodeHashMap.get(registerRequest.getActiveCode())) > expiredTime) {
             angelCodeHashMap.remove(registerRequest.getActiveCode());
@@ -86,7 +91,7 @@ public class AngelController {
         }
         String userId = database.getEmailRFUserId().get(loginRequest.getEmail());
         if (null == userId || userId.equals("")) {
-            return Parser.ObjectToJSon(false, "User is not exits");
+            return Parser.ObjectToJSon(false, "User does not exist");
         }
         User user = database.getUserHashMap().get(userId);
         if (user == null){
@@ -104,13 +109,13 @@ public class AngelController {
         }
         String userId = database.getEmailRFUserId().get(request.getEmail());
         if (null == userId || userId.equals("")) {
-            return Parser.ObjectToJSon(false, "User is not exits");
+            return Parser.ObjectToJSon(false, "User does not exist");
         }
         User user = database.getUserHashMap().get(userId);
         if (user == null) {
             return Parser.ObjectToJSon(false, "User is not found by email");
         }
-        new SendMailUtil(user.getEmail(), "Your Angel-Password", "<p>Have someone require to reset your password, if this is you, please view your password below.</p><p>Password:<b>" + new StringProcessUtil().DecryptText(user.getPassword()) + "</b></p>");
+        new SendMailUtil(user.getEmail(), "Your Angel-Password", "<p>Have someone require to get your password, if this is you, please view your password below.</p><p>Password:<b>" + new StringProcessUtil().DecryptText(user.getPassword()) + "</b></p>");
         return Parser.ObjectToJSon(true, "Your password have been sent to your mail");
     }
 }

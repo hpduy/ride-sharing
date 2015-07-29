@@ -32,17 +32,28 @@
         <section class="content">
             <div class='row'>
                 <div class='col-md-12'>
-                    <div class='box box-info'>
+                    <div class='box box-success'>
                         <div class='box-header'>
                             <h3 class='box-title'>Angel Active Code Generator</h3>
-                        </div><!-- /.box-header -->
-                        <div class='box-body pad'>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class='box-body pad' align="center">
+                            <div class="form-group has-success">
+                                <label class="control-label" for="numberOfCode"><i class="fa fa-check"></i>Number of
+                                    code:</label>
+                                <input type="text" class="form-control" id="numberOfCode" placeholder="Enter a number"/>
+                            </div>
+                            <button type="submit" class="btn btn-success" onclick='generate()'>Generate</button>
+                        </div>
+                        <div align="center" id="resultDiv">
 
                         </div>
                     </div>
 
-                </div><!-- /.col-->
-            </div><!-- ./row -->
+                </div>
+                <!-- /.col-->
+            </div>
+            <!-- ./row -->
         </section>
         <!-- /.content -->
     </aside>
@@ -50,5 +61,23 @@
 </div>
 <!-- ./wrapper -->
 <jsp:include page="footer.jsp"></jsp:include>
+<script type="text/javascript">
+    function generate() {
+        var jsonData = '{"numberOfCode":' + document.getElementById('numberOfCode').value + '}';
+        var apiName = "GetAngelActiveCodesForWebAPI";
+        $.ajax({
+            url: apiName,
+            data: jsonData,
+            type: 'POST',
+            error: function () {
+                alert("error occured!!!");
+            },
+            success: function (response) {
+                console.log(response);
+                $('#resultDiv').html(response)
+            }
+        });
+    }
+</script>
 </body>
 </html>
