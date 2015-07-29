@@ -8,6 +8,7 @@ package com.bikiegang.ridesharing.da;
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.annn.framework.dbconn.ClientManager;
 import com.bikiegang.ridesharing.annn.framework.dbconn.ManagerIF;
+import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
 import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.pojo.PojoBase;
 import com.bikiegang.ridesharing.pojo.PlannedTrip;
@@ -71,6 +72,10 @@ public class PlannedTripDA implements IDA {
                 stmt.setString(12, value.getPlannedTripTrailPolyLine());
                 stmt.setString(13, value.getRawRoutingResult().toString());
                 stmt.setLong(14, value.getGroupId());
+                stmt.setString(15, JSONUtil.Serialize(value.getStartLocation()));
+                stmt.setString(16, JSONUtil.Serialize(value.getEndLocation()));
+                stmt.setString(17, value.getPolyLine());
+                stmt.setBoolean(18, value.isHasHelmet());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {
@@ -108,7 +113,11 @@ public class PlannedTripDA implements IDA {
                 stmt.setString(12, value.getPlannedTripTrailPolyLine());
                 stmt.setString(13, value.getRawRoutingResult().toString());
                 stmt.setLong(14, value.getGroupId());
-                stmt.setLong(15, value.getId());
+                stmt.setString(15, JSONUtil.Serialize(value.getStartLocation()));
+                stmt.setString(16, JSONUtil.Serialize(value.getEndLocation()));
+                stmt.setString(17, value.getPolyLine());
+                stmt.setBoolean(18, value.isHasHelmet());
+                stmt.setLong(19, value.getId());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {

@@ -123,9 +123,9 @@ public class ConfigInfo {
                 + "`role`,\n"
                 + "`type`,\n"
                 + "`routeTrailPolyLine`,\n"
-                + "`rawRoutingResult`, `groupId`)\n"
+                + "`rawRoutingResult`, `groupId`, `startLocation`, `endLocation`, `polyLine`, `hasHelmet`)\n"
                 + "VALUES\n"
-                + "(?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                + "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
         PLANNEDTRIP_UPDATE_QUERY = "UPDATE `ridesharing_db`.`PlannedTrip`\n"
                 + "SET\n"
                 + "`id` = ?,\n"
@@ -141,7 +141,11 @@ public class ConfigInfo {
                 + "`type` = ?,\n"
                 + "`routeTrailPolyLine` = ?,\n"
                 + "`rawRoutingResult` = ?,\n"
-                + "`groupId` = ?\n"
+                + "`groupId` = ?,\n"
+                + "`startLocation` = ?,\n"
+                + "`endLocation` = ?,\n"
+                + "`polyLine` = ?,\n"
+                + "`hasHelmet` = ?\n"
                 + "WHERE `id` = ?;";
         PLANNEDTRIP_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`PlannedTrip`\n"
                 + "WHERE `id` = ?;";
