@@ -432,7 +432,7 @@ public class RideSharingCA {
 
     public boolean RestoreDatabase() {
         boolean result = false;
-        result &= RestoreBroadcast();
+        result = RestoreBroadcast();
         result &= RestoreLinkedLocation();
         result &= RestoreRequestMakeTrip();
         result &= RestorePlannedTrip();
