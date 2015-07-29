@@ -23,6 +23,10 @@ public class PlannedTrip implements PojoBase {
     private String plannedTripTrailPolyLine = "";
     private JSONObject rawRoutingResult = new JSONObject();
     private long groupId;
+    private LatLng startLocation = new LatLng();
+    private LatLng endLocation = new LatLng();
+    private String polyLine = "";
+    private boolean hasHelmet;
     /**
      * ROUTE TYPE
      */
@@ -189,5 +193,37 @@ public class PlannedTrip implements PojoBase {
 
     public void setGroupId(long groupId) {
         this.groupId = groupId;
+    }
+
+    public LatLng getStartLocation() {
+        return startLocation;
+    }
+
+    public void setStartLocation(LatLng startLocation) {
+        this.startLocation = startLocation;
+    }
+
+    public LatLng getEndLocation() {
+        return endLocation;
+    }
+
+    public void setEndLocation(LatLng endLocation) {
+        this.endLocation = endLocation;
+    }
+
+    public String getPolyLine() {
+        return polyLine;
+    }
+
+    public void setPolyLine(String polyLine) {
+        this.polyLine = polyLine;
+    }
+
+    public boolean isHasHelmet() {
+        return hasHelmet;
+    }
+
+    public void setHasHelmet(boolean hasHelmet) {
+        this.hasHelmet = hasHelmet;
     }
 }

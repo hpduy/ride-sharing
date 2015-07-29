@@ -92,6 +92,7 @@ public class Database {
     private GeoCell geoCellDriver = new GeoCell(); // for plannedTrip
     private GeoCell geoCellPassenger = new GeoCell();// for plannedTrip
     private GeoCell geoCellCurrentLocation = new GeoCell();
+    private GeoCell geoCellStartLocation = new GeoCell();
 
     //    /*PERSONAL FUNCTION*/
     public void restore() {
@@ -222,5 +223,13 @@ public class Database {
 
     public GeoCell getGeoCellCurrentLocation() {
         return geoCellCurrentLocation;
+    }
+
+    public GeoCell getGeoCellStartLocation() {
+        return geoCellStartLocation;
+    }
+
+    public void setGeoCellStartLocation(GeoCell geoCellStartLocation) {
+        this.geoCellStartLocation = geoCellStartLocation;
     }
 }

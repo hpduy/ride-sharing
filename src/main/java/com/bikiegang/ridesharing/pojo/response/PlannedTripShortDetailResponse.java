@@ -11,6 +11,7 @@ public class PlannedTripShortDetailResponse {
     private double unitPrice;
     private double ownerDistance;
     private int role;
+    private boolean hasHelmet;
 
     public PlannedTripShortDetailResponse() {
     }
@@ -22,6 +23,7 @@ public class PlannedTripShortDetailResponse {
         this.endAddress = that.endAddress;
         this.unitPrice = that.unitPrice;
         this.role = that.role;
+        this.hasHelmet = that.hasHelmet;
     }
 
     public long getId() {
@@ -78,5 +80,13 @@ public class PlannedTripShortDetailResponse {
 
     public void setRole(int role) {
         this.role = role;
+    }
+
+    public boolean isHasHelmet() {
+        return hasHelmet;
+    }
+
+    public void setHasHelmet(boolean hasHelmet) {
+        this.hasHelmet = hasHelmet;
     }
 }

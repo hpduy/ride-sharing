@@ -7,12 +7,14 @@ import com.bikiegang.ridesharing.utilities.APIAutoTesting;
 import com.bikiegang.ridesharing.utilities.ApiDocumentGenerator;
 import com.bikiegang.ridesharing.utilities.Path;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.junit.Before;
 import org.junit.Test;
 import org.reflections.Reflections;
 
 import javax.servlet.http.HttpServlet;
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.InetAddress;
 import java.net.URL;
 import java.util.List;
 import java.util.Set;
@@ -21,6 +23,11 @@ import java.util.Set;
  * Created by hpduy17 on 7/6/15.
  */
 public class ApiDocumentGeneratorTest {
+    @Before
+    public void setup() throws IOException {
+        Path.setServerAddress(InetAddress.getLocalHost().getHostAddress());
+        Path.buildRoot();
+    }
     @Test
     public void generateTest() throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException, IOException {
         Path.buildRoot();
@@ -56,14 +63,17 @@ public class ApiDocumentGeneratorTest {
             String[] names = cls.getName().split("[.]");
             String apiName = names[names.length - 1];
             Class requestClass = (Class<?>) cls.getField("requestClass").get(api);
-            callAPI(apiName, new APIAutoTesting().createTestObject(requestClass));
+            if(requestClass != null && !requestClass.toString().equals("null")) {
+                callAPI(apiName, new APIAutoTesting().createTestObject(requestClass));
+            }
         }
     }
 
-    private String callAPI(String urlStringPath, String request){
+    private String callAPI(String apiName, String request){
         try {
+            String urlStringPath = Path.getServerAddress() + "/RideSharing/";
             //connect different server;
-            URL url = new URL(urlStringPath);
+            URL url = new URL(urlStringPath+apiName);
             HttpURLConnection myConn = (HttpURLConnection) url.openConnection();
             myConn.setDoOutput(true); // do output or post
             PrintWriter po = new PrintWriter(new OutputStreamWriter(myConn.getOutputStream(), "UTF-8"));

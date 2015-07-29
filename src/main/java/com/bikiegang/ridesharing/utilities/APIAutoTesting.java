@@ -7,6 +7,10 @@ import org.apache.commons.lang.math.RandomUtils;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by hpduy17 on 7/24/15.
@@ -15,9 +19,10 @@ public class APIAutoTesting {
 
     public String createTestObject(Class objectClass) throws NoSuchMethodException, IllegalAccessException, InstantiationException, ClassNotFoundException, JsonProcessingException {
         Object tester = objectClass.newInstance();
-        Field[] fields = objectClass.getDeclaredFields();
+        Field[] fields = getFieldExceptFinalAndStatic(objectClass);
         for(Field f : fields){
             Class type = f.getType();
+            f.setAccessible(true);
             if(type.toString().equals("boolean")||type.equals(Boolean.class)){
                 f.set(tester, RandomUtils.nextBoolean());
             }
@@ -37,7 +42,7 @@ public class APIAutoTesting {
                 f.set(tester, RandomUtils.nextDouble());
             }
             else if (type.equals(String.class)){
-                f.set(tester, RandomStringUtils.random(10));
+                f.set(tester, RandomStringUtils.randomAlphabetic(10));
             }
             else if (type.toString().equals("char")||type.equals(Character.class)){
                 f.set(tester, 'D');
@@ -57,6 +62,21 @@ public class APIAutoTesting {
             }
 
         }
-        return Parser.ObjectToJSon(tester);
+        return Parser.ObjectToJSon(tester).replaceAll("\\n","").replaceAll(" ","");
+    }
+    private Field[] getFieldExceptFinalAndStatic(Class cls) {
+        List<Field> results = new ArrayList<>();
+        Class<?> i = cls;
+        while (i != null && i != Object.class) {
+            results.addAll(Arrays.asList(i.getDeclaredFields()));
+            i = i.getSuperclass();
+        }
+        for (Field f : new ArrayList<>(results)) {
+            if (Modifier.isFinal(f.getModifiers()) || Modifier.isStatic(f.getModifiers())) {
+                results.remove(f);
+            }
+        }
+
+        return results.toArray(new Field[results.size()]);
     }
 }

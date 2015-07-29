@@ -4,22 +4,13 @@ package com.bikiegang.ridesharing.pojo.response;
  * Created by hpduy17 on 7/8/15.
  */
 public class AutoSearchParingResponse {
-    UserDetailWithPlannedTripDetailResponse[] drivers;
-    UserDetailWithPlannedTripDetailResponse[] passengers;
+    UserDetailWithPlannedTripDetailResponse[] users;
 
-    public UserDetailWithPlannedTripDetailResponse[] getDrivers() {
-        return drivers;
+    public UserDetailWithPlannedTripDetailResponse[] getUsers() {
+        return users;
     }
 
-    public void setDrivers(UserDetailWithPlannedTripDetailResponse[] drivers) {
-        this.drivers = drivers;
-    }
-
-    public UserDetailWithPlannedTripDetailResponse[] getPassengers() {
-        return passengers;
-    }
-
-    public void setPassengers(UserDetailWithPlannedTripDetailResponse[] passengers) {
-        this.passengers = passengers;
+    public void setUsers(UserDetailWithPlannedTripDetailResponse[] users) {
+        this.users = users;
     }
 }

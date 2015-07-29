@@ -12,6 +12,7 @@ public class CreatePlannedTripRequest {
     private long goTime;
     private double price = -1;
     private String googleRoutingResult;
+    private boolean hasHelmet;
     private boolean isParing = true;
 
     public String getCreatorId() {
@@ -60,5 +61,13 @@ public class CreatePlannedTripRequest {
 
     public void setIsParing(boolean isParing) {
         this.isParing = isParing;
+    }
+
+    public boolean isHasHelmet() {
+        return hasHelmet;
+    }
+
+    public void setHasHelmet(boolean hasHelmet) {
+        this.hasHelmet = hasHelmet;
     }
 }

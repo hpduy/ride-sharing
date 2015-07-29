@@ -5,7 +5,7 @@ import com.bikiegang.ridesharing.pojo.User;
 /**
  * Created by hpduy17 on 7/8/15.
  */
-public class UserDetailWithPlannedTripDetailResponse extends UserShortDetailResponse {
+public class UserDetailWithPlannedTripDetailResponse extends UserDetailResponse {
     private PlannedTripDetailResponse plannedTrip;
 
     public UserDetailWithPlannedTripDetailResponse() {

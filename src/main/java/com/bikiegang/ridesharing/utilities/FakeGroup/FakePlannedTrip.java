@@ -24,15 +24,15 @@ import java.util.List;
  */
 public class FakePlannedTrip {
 
-    public long fakeDriverPlannedTrip(PlannedTrip rawSrc, String creatorId) throws Exception {
+    public long fakeDriverPlannedTrip(PlannedTrip rawSrc, String creatorId, boolean hasHelmet) throws Exception {
         GoogleRoute route = new FetchingDataFromGoogleRouting().getRouteFromRoutingResult(rawSrc);
         //ramdom 2 point and connect it go via 2 start and end rawSrc
         LatLng[] latlngs = new LatLng[3];
         latlngs[1] = route.getLegs()[0].getStart_location();
         latlngs[2] = route.getLegs()[0].getEnd_location();
         long seed = 10;
-        double latDis = (((Math.abs(RandomUtils.nextDouble() % seed)) % seed) - seed / 2) / 1000;
-        double lngDis = ((Math.abs(RandomUtils.nextDouble() % seed)) - seed / 2) / 1000;
+        double latDis = (((Math.abs(RandomUtils.nextDouble() % seed)) % seed) - seed / 2) / 10000;
+        double lngDis = ((Math.abs(RandomUtils.nextDouble() % seed)) - seed / 2) / 10000;
         latlngs[0] = new FakeUser().fakeCurrentLocation(latlngs[1], latDis, lngDis);
         // get new google routing result for fake trip
         JSONObject googleRoutingResult = new GoogleDirectionAPIProcess().direction(latlngs);
@@ -43,8 +43,9 @@ public class FakePlannedTrip {
         createRequest.setGoogleRoutingResult(googleRoutingResult.toString());
         createRequest.setIsParing(false);// no paring
         createRequest.setPrice(-1);// default price
+        createRequest.setHasHelmet(hasHelmet);
         String response = new PlannedTripController().createPlannedTrip(createRequest);
-        Parser parser =  Parser.JSonToParser(response, CreatePlannedTripResponse.class);
+        Parser parser = Parser.JSonToParser(response, CreatePlannedTripResponse.class);
         if (parser.isSuccess()) {
             if (parser.getResult() != null) {
                 CreatePlannedTripResponse createPlannedTripResponse = (CreatePlannedTripResponse) parser.getResult();
@@ -57,7 +58,7 @@ public class FakePlannedTrip {
         }
     }
 
-    public long fakePassengerPlannedTrip(PlannedTrip rawSrc, String creatorId) throws Exception {
+    public long fakePassengerPlannedTrip(PlannedTrip rawSrc, String creatorId, boolean hasHelmet) throws Exception {
         GoogleRoute route = new FetchingDataFromGoogleRouting().getRouteFromRoutingResult(rawSrc);
         List<LatLng> trails = PolyLineProcess.decodePoly(route.getOverview_polyline().getPoints());
         LatLng[] latlngs = new LatLng[2];
@@ -78,6 +79,7 @@ public class FakePlannedTrip {
         createRequest.setGoogleRoutingResult(googleRoutingResult.toString());
         createRequest.setIsParing(false);// no paring
         createRequest.setPrice(-1);// default price
+        createRequest.setHasHelmet(hasHelmet);
         String response = new PlannedTripController().createPlannedTrip(createRequest);
         Parser parser = Parser.JSonToParser(response, CreatePlannedTripResponse.class);
         if (parser.isSuccess()) {
@@ -97,10 +99,10 @@ public class FakePlannedTrip {
             User user = new FakeUser().fakeUser((i % 2) + 1, 1, false);
             Database.getInstance().getUserHashMap().put(user.getId(), user);
             long plannedTripId;
-            if (i < length/2) {
-                plannedTripId = fakeDriverPlannedTrip(rawSrc, user.getId());
+            if (i < length / 2) {
+                plannedTripId = fakeDriverPlannedTrip(rawSrc, user.getId(), i % 2 == 0);
             } else {
-                plannedTripId = fakePassengerPlannedTrip(rawSrc, user.getId());
+                plannedTripId = fakePassengerPlannedTrip(rawSrc, user.getId(), i % 2 == 0);
             }
             if (plannedTripId > 0) {
                 HashSet<Long> ids = Database.getInstance().getUserIdRFPlanedTrips().get(user.getId());

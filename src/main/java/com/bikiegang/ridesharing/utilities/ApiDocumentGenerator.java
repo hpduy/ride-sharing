@@ -14,7 +14,6 @@ import java.util.Set;
 public class ApiDocumentGenerator {
     public static List<ApiDocument> apiDocs = new ArrayList<>();
     private static String packagePath = "com.bikiegang.ridesharing.api";
-
     public static void generate() throws NoSuchFieldException, ClassNotFoundException, IllegalAccessException, InstantiationException {
         // get all api
         Reflections reflections = new Reflections(packagePath);

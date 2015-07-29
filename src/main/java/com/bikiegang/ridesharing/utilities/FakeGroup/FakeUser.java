@@ -83,8 +83,10 @@ public class FakeUser {
 
     public String randomBirthDay() {
         String yyyy = "198" + RandomUtils.nextInt() % 10;
-        String MM = String.valueOf(RandomUtils.nextInt() % 12 + 1);
-        String dd = String.valueOf(RandomUtils.nextInt() % 29 + 1);
+        int month = RandomUtils.nextInt() % 12 + 1;
+        int day = RandomUtils.nextInt() % 29 + 1;
+        String MM = month > 9 ? "0" + month : String.valueOf(month);
+        String dd =  day > 9 ? "0" + day : String.valueOf(day);
         return yyyy + MM + dd;
     }
 
@@ -102,7 +104,7 @@ public class FakeUser {
         if (gender == User.MALE) {
             lname = lnameMan;
         }
-        int idx =  RandomUtils.nextInt() % lname.length;
+        int idx = RandomUtils.nextInt() % lname.length;
         return lname[idx];
     }
 
@@ -111,7 +113,7 @@ public class FakeUser {
         if (gender == User.MALE) {
             img = imgMan;
         }
-        int idx =  RandomUtils.nextInt() % img.length;
+        int idx = RandomUtils.nextInt() % img.length;
         return img[idx];
     }
 
@@ -143,7 +145,7 @@ public class FakeUser {
         LatLng center = new LatLng(request.getCenterLat(), request.getCenterLng());
         List<User> users = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            users.add(fakeUser((i % 2) + 1, 1, false,center));
+            users.add(fakeUser((i % 2) + 1, 1, false, center));
         }
         List<UserShortDetailResponse> userDetails = new ArrayList<>();
         for (User user : users) {

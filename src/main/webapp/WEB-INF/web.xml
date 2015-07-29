@@ -79,12 +79,12 @@
         <url-pattern>/RegisterAPI</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>GetUsersAroundFromMeAPI</servlet-name>
-        <servlet-class>com.bikiegang.ridesharing.api.GetUsersAroundFromMeAPI</servlet-class>
+        <servlet-name>GetPlannedTripsAroundFromMeAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.GetPlannedTripsAroundFromMeAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>GetUsersAroundFromMeAPI</servlet-name>
-        <url-pattern>/GetUsersAroundFromMeAPI</url-pattern>
+        <servlet-name>GetPlannedTripsAroundFromMeAPI</servlet-name>
+        <url-pattern>/GetPlannedTripsAroundFromMeAPI</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>GetUsersDetailWithPlannedTripsAPI</servlet-name>
@@ -94,6 +94,9 @@
         <servlet-name>GetUsersDetailWithPlannedTripsAPI</servlet-name>
         <url-pattern>/GetUsersDetailWithPlannedTripsAPI</url-pattern>
     </servlet-mapping>
+
+
+    <!--**ANGEL**-->
     <servlet>
         <servlet-name>GetAngelsAroundFromMeAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.GetAngelsAroundFromMeAPI</servlet-class>
@@ -101,6 +104,30 @@
     <servlet-mapping>
         <servlet-name>GetAngelsAroundFromMeAPI</servlet-name>
         <url-pattern>/GetAngelsAroundFromMeAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>GetAngelActiveCodesAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.GetAngelActiveCodesAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetAngelActiveCodesAPI</servlet-name>
+        <url-pattern>/GetAngelActiveCodesAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>AngelRegisterAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.AngelRegisterAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AngelRegisterAPI</servlet-name>
+        <url-pattern>/AngelRegisterAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>AngelLoginAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.AngelLoginAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AngelLoginAPI</servlet-name>
+        <url-pattern>/AngelLoginAPI</url-pattern>
     </servlet-mapping>
 
     <!--**TRIP**-->

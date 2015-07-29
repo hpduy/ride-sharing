@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class GeoCell {
     public Hashtable<String, List<String>> geoCellGrid = new Hashtable<>(); // <cellCode,List<ObjectId>>
-    public final double CELL_LEN_IN_DEGREE = 0.001; // ~100m (0.01 ~= 1 km in real life)
+    public final double CELL_LEN_IN_DEGREE = 0.005; // ~100m (0.01 ~= 1 km in real life)
     public final int CELLS_PER_DEGREE = (int) (1 / CELL_LEN_IN_DEGREE);
 
     /**
