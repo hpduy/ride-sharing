@@ -40,7 +40,7 @@ public class AngelController {
         String[] codes = new String[numberOfCode];
         for (int i = 0; i < numberOfCode; ) {
             String code = RandomStringUtils.randomAlphabetic(2).toUpperCase();
-            code += RandomStringUtils.randomNumeric(codeLength);
+            code += RandomStringUtils.random(codeLength,49,58,false,true); // random numeric string 1->9
             if (!angelCodeHashMap.keySet().contains(code)) {
                 angelCodeHashMap.put(code, DateTimeUtil.now());
                 codes[i] = code;
@@ -115,7 +115,7 @@ public class AngelController {
         if (user == null) {
             return Parser.ObjectToJSon(false, "User is not found by email");
         }
-        new SendMailUtil(user.getEmail(), "Your Angel-Password", "<p>Have someone require to get your password, if this is you, please view your password below.</p><p>Password:<b>" + new StringProcessUtil().DecryptText(user.getPassword()) + "</b></p>");
+        new SendMailUtil(user.getEmail(), "Your Angel-Password", "<p>Someone just requested your CloudBike's Angel password, if it was you, please use the following one:</p><p>Password:<b>" + new StringProcessUtil().DecryptText(user.getPassword()) + "</b></p>");
         return Parser.ObjectToJSon(true, "Your password have been sent to your mail");
     }
 }

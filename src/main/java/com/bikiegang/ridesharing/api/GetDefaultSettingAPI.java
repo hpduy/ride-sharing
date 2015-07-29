@@ -7,26 +7,23 @@
 package com.bikiegang.ridesharing.api;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
-import com.bikiegang.ridesharing.controller.PlannedTripController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.request.GetUsersAroundFromMeRequest;
-import com.bikiegang.ridesharing.pojo.response.AutoSearchParingResponse;
+import com.bikiegang.ridesharing.pojo.static_object.DefaultSetting;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class GetPlannedTripsAroundFromMeAPI extends HttpServlet {
+public class GetDefaultSettingAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
-    public Class requestClass = GetUsersAroundFromMeRequest.class;
-    public Class responseClass = AutoSearchParingResponse.class;
-    public boolean responseIsArray = true;
+    public Class requestClass = null;
+    public Class responseClass = null;
+    public boolean responseIsArray = false;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,21 +40,13 @@ public class GetPlannedTripsAroundFromMeAPI extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            StringBuffer jsonData = new StringBuffer();
-            String line;
-            BufferedReader reader = request.getReader();
-            while ((line = reader.readLine()) != null) {
-                jsonData.append(line);
-            }
-            logger.info(jsonData.toString());
-            GetUsersAroundFromMeRequest getUsersAroundFromMeRequest = (GetUsersAroundFromMeRequest) Parser.JSonToObject(jsonData.toString(), GetUsersAroundFromMeRequest.class);
-            PlannedTripController controller = new PlannedTripController();
-            String result = controller.getPlannedTripsAroundFromMe(getUsersAroundFromMeRequest);
+            logger.info("{non-parameter}");
+            String result = Parser.ObjectToJSon(true,"Get default setting successfully", new DefaultSetting());
             logger.info(result);
             out.print(result);
         } catch (Exception ex) {
             ex.printStackTrace();
-            logger.error(ex.getMessage());
+            logger.error(ex.getStackTrace());
             out.print(Parser.ObjectToJSon(false, ex.getMessage()));
         }
     }
@@ -100,6 +89,6 @@ public class GetPlannedTripsAroundFromMeAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Get all user have current location around you";
+        return "Login by email, facebookId, googleId, linkedIn and twitterId";
     }
 }

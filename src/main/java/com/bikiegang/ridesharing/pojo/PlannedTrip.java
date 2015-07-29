@@ -27,6 +27,7 @@ public class PlannedTrip implements PojoBase {
     private LatLng endLocation = new LatLng();
     private String polyLine = "";
     private boolean hasHelmet;
+    private long createdTime;
     /**
      * ROUTE TYPE
      */
@@ -80,6 +81,11 @@ public class PlannedTrip implements PojoBase {
         this.plannedTripTrailPolyLine = that.plannedTripTrailPolyLine;
         this.rawRoutingResult = that.rawRoutingResult;
         this.groupId = that.groupId;
+        this.startLocation = that.startLocation;
+        this.endLocation = that.endLocation;
+        this.polyLine = that.polyLine;
+        this.hasHelmet = that.hasHelmet;
+        this.createdTime = that.createdTime;
     }
 
 
@@ -226,4 +232,18 @@ public class PlannedTrip implements PojoBase {
     public void setHasHelmet(boolean hasHelmet) {
         this.hasHelmet = hasHelmet;
     }
+
+    public long getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(long createdTime) {
+        this.createdTime = createdTime;
+    }
 }
+/**
+ * CHANGE LOG
+ *
+ *29/7/2015
+ * them field createdTime
+ */

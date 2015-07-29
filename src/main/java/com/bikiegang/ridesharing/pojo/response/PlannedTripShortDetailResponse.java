@@ -12,6 +12,7 @@ public class PlannedTripShortDetailResponse {
     private double ownerDistance;
     private int role;
     private boolean hasHelmet;
+    private long createdTime;
 
     public PlannedTripShortDetailResponse() {
     }
@@ -24,6 +25,7 @@ public class PlannedTripShortDetailResponse {
         this.unitPrice = that.unitPrice;
         this.role = that.role;
         this.hasHelmet = that.hasHelmet;
+        this.createdTime = that.createdTime;
     }
 
     public long getId() {
@@ -88,5 +90,13 @@ public class PlannedTripShortDetailResponse {
 
     public void setHasHelmet(boolean hasHelmet) {
         this.hasHelmet = hasHelmet;
+    }
+
+    public long getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(long createdTime) {
+        this.createdTime = createdTime;
     }
 }

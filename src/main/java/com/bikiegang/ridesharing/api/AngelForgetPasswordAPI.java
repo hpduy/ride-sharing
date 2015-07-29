@@ -11,7 +11,6 @@ import com.bikiegang.ridesharing.controller.AngelController;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.AngelForgetPasswordRequest;
-import com.bikiegang.ridesharing.pojo.request.AngelLoginRequest;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -25,7 +24,7 @@ import java.io.PrintWriter;
 
 public class AngelForgetPasswordAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
-    public Class requestClass = AngelLoginRequest.class;
+    public Class requestClass = AngelForgetPasswordRequest.class;
     public Class responseClass = User.class;
     public boolean responseIsArray = false;
 

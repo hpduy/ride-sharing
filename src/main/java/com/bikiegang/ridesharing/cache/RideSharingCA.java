@@ -12,24 +12,16 @@ import com.bikiegang.ridesharing.annn.framework.util.ConvertUtils;
 import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
 import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.database.Database;
-import com.bikiegang.ridesharing.pojo.Broadcast;
-import com.bikiegang.ridesharing.pojo.LinkedLocation;
-import com.bikiegang.ridesharing.pojo.RequestMakeTrip;
-import com.bikiegang.ridesharing.pojo.PlannedTrip;
-import com.bikiegang.ridesharing.pojo.RequestVerify;
-import com.bikiegang.ridesharing.pojo.Trip;
-import com.bikiegang.ridesharing.pojo.User;
-import com.bikiegang.ridesharing.pojo.VerifiedCertificate;
+import com.bikiegang.ridesharing.pojo.*;
 import com.google.gson.reflect.TypeToken;
-import java.lang.reflect.Type;
+import org.apache.log4j.Logger;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import org.apache.log4j.Logger;
 
 /**
- *
  * @author root
  */
 public class RideSharingCA {
@@ -50,6 +42,7 @@ public class RideSharingCA {
 
         private static final RideSharingCA INSTANCE = new RideSharingCA();
     }
+
     private static String _prefix;
     private static String _configSection;
     private static final Logger _logger = LogUtil.getLogger(RideSharingCA.class);
@@ -62,6 +55,7 @@ public class RideSharingCA {
         String keyBuild = String.format("%s%s", _prefix, orgKey);
         return keyBuild;
     }
+
     RedisClient client = RedisClient.getInstance(ConfigInfo.REDIS_SERVER);
 
     public boolean hset(String key, String field, String value) throws Exception {
@@ -128,7 +122,7 @@ public class RideSharingCA {
         return result;
     }
 
-//</editor-fold>
+    //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Restore function">
     Database database = Database.getInstance();
 
@@ -175,7 +169,7 @@ public class RideSharingCA {
                 database.getLinkedLocationHashMap().put(ConvertUtils.toLong(key), (LinkedLocation) JSONUtil.DeSerialize(value, LinkedLocation.class));
             }
 
-            //plannedTrip => linkloacation
+            //plannedTrip => linklocation
             Map<String, String> plannedTripRF = hgetAll(LinkedLocation.class.getName() + ":plannedtrip");
             for (Map.Entry<String, String> entrySet : plannedTripRF.entrySet()) {
                 String key = entrySet.getKey();
@@ -239,7 +233,8 @@ public class RideSharingCA {
 
             database.getPlannedTripHashMap().clear();
             database.getUserIdRFPlanedTrips().clear();
-            database.getRoleRFPlannedTrips().clear();;
+            database.getRoleRFPlannedTrips().clear();
+            ;
             database.getGroupIdRFPlannedTrips().clear();
 
             Map<String, String> hgetAll = hgetAll(PlannedTrip.class.getName());

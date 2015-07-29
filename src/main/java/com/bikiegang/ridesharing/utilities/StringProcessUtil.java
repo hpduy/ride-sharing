@@ -1,5 +1,5 @@
 package com.bikiegang.ridesharing.utilities;
-import org.apache.commons.codec.binary.Base64;
+import com.bikiegang.ridesharing.pojo.static_object.DefaultSetting;
 import org.jetbrains.annotations.NotNull;
 
 import javax.crypto.BadPaddingException;
@@ -8,7 +8,6 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import javax.swing.*;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -167,7 +166,7 @@ public class StringProcessUtil {
         String EncText = "";
         byte[] keyArray = new byte[24];
         byte[] temporaryKey;
-        String key = "bikiegang";
+        String key = DefaultSetting.md5Key;
         byte[] toEncryptArray = null;
 
         try
@@ -189,12 +188,11 @@ public class StringProcessUtil {
             Cipher c = Cipher.getInstance("DESede/CBC/PKCS5Padding");
             c.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(keyArray, "DESede"), new IvParameterSpec(sharedvector));
             byte[] encrypted = c.doFinal(toEncryptArray);
-            EncText = Base64.encodeBase64String(encrypted);
+            EncText = Base64.encodeToString(encrypted,Base64.DEFAULT);
 
         }
         catch(NoSuchAlgorithmException | UnsupportedEncodingException | NoSuchPaddingException | InvalidKeyException | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException NoEx)
         {
-            JOptionPane.showMessageDialog(null, NoEx);
         }
 
         return EncText;
@@ -206,7 +204,7 @@ public class StringProcessUtil {
         String RawText = "";
         byte[] keyArray = new byte[24];
         byte[] temporaryKey;
-        String key = "bikiegang";
+        String key = DefaultSetting.md5Key;
         byte[] toEncryptArray = null;
 
         try
@@ -225,13 +223,13 @@ public class StringProcessUtil {
 
             Cipher c = Cipher.getInstance("DESede/CBC/PKCS5Padding");
             c.init(Cipher.DECRYPT_MODE, new SecretKeySpec(keyArray, "DESede"), new IvParameterSpec(sharedvector));
-            byte[] decrypted = c.doFinal(Base64.decodeBase64(EncText));
+            byte[] decrypted = c.doFinal(Base64.decode(EncText,Base64.DEFAULT));
+
 
             RawText = new String(decrypted, "UTF-8");
         }
         catch(NoSuchAlgorithmException | UnsupportedEncodingException | NoSuchPaddingException | InvalidKeyException | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException NoEx)
         {
-            JOptionPane.showMessageDialog(null, NoEx);
         }
 
         return RawText;

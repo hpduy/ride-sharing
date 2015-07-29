@@ -65,6 +65,7 @@ public class PlannedTripController {
         fakePlannedTrip.setRawRoutingResult(new JSONObject(request.getGoogleRoutingResult()));
         fakePlannedTrip.setRole(0);
         fakePlannedTrip.setCreatorId(request.getCreatorId());
+        fakePlannedTrip.setCreatedTime(DateTimeUtil.now());
         if (request.getGoTime() > DateTimeUtil.now()) {
             fakePlannedTrip.setGoTime(request.getGoTime());
             fakePlannedTrip.setType(PlannedTrip.SINGLE_FUTURE);
@@ -123,6 +124,7 @@ public class PlannedTripController {
         plannedTrip.setCreatorId(request.getCreatorId());
         plannedTrip.setRawRoutingResult(new JSONObject(request.getGoogleRoutingResult()));
         plannedTrip.setHasHelmet(request.isHasHelmet());
+        plannedTrip.setCreatedTime(DateTimeUtil.now());
         //fetch data
         List<LinkedLocation> locations = new FetchingDataFromGoogleRouting().fetch(plannedTrip);
         //TODO fake trip
@@ -256,6 +258,7 @@ public class PlannedTripController {
         plannedTripSortDetailResponse.setRole(plannedTrip.getRole());
         plannedTripSortDetailResponse.setUnitPrice(plannedTrip.getOwnerPrice());
         plannedTripSortDetailResponse.setHasHelmet(plannedTrip.isHasHelmet());
+        plannedTripSortDetailResponse.setCreatedTime(plannedTrip.getCreatedTime());
         if (googleRoute != null) {
             plannedTripSortDetailResponse.setStartAddress(googleRoute.getLegs()[0].getStart_address());
             plannedTripSortDetailResponse.setEndAddress(googleRoute.getLegs()[0].getEnd_address());
