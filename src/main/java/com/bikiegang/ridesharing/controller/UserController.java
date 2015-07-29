@@ -51,7 +51,11 @@ public class UserController {
             return Parser.ObjectToJSon(false, "'facebookId' is not found");
         }
         if (database.getFacebookRFUserId().keySet().contains(registerRequest.getFacebookId())) {
-            return Parser.ObjectToJSon(false, "'facebookId' has been used");
+            String id = database.getFacebookRFUserId().get(registerRequest.getFacebookId());
+            User existUser = database.getUserHashMap().get(id);
+            if(existUser != null) {
+                return Parser.ObjectToJSon(true, "'facebookId' has been registered", existUser);
+            }
         }
         User user = new User();
         user.setId("fb_" + registerRequest.getFacebookId());
@@ -101,7 +105,11 @@ public class UserController {
             return Parser.ObjectToJSon(false, "'googleId' is not found");
         }
         if (database.getGoogleRFUserId().keySet().contains(registerRequest.getGoogleId())) {
-            return Parser.ObjectToJSon(false, "'googleId' has been used");
+            String id = database.getGoogleRFUserId().get(registerRequest.getGoogleId());
+            User existUser = database.getUserHashMap().get(id);
+            if(existUser != null) {
+                return Parser.ObjectToJSon(true, "'googleId' has been registered", existUser);
+            }
         }
         User user = new User();
         user.setId("gg_" + registerRequest.getGoogleId());
@@ -131,7 +139,11 @@ public class UserController {
             return Parser.ObjectToJSon(false, "'twitterId' is not found");
         }
         if (database.getTwitterRFUserId().keySet().contains(registerRequest.getTwitterId())) {
-            return Parser.ObjectToJSon(false, "'twitterId' has been used");
+            String id = database.getTwitterRFUserId().get(registerRequest.getTwitterId());
+            User existUser = database.getUserHashMap().get(id);
+            if(existUser != null) {
+                return Parser.ObjectToJSon(true, "'twitterId' has been registered", existUser);
+            }
         }
         User user = new User();
         user.setId("tw_" + registerRequest.getTwitterId());
@@ -160,8 +172,12 @@ public class UserController {
         if (null == registerRequest.getLinkedInId() || registerRequest.getLinkedInId().equals("")) {
             return Parser.ObjectToJSon(false, "'linkedInId' is not found");
         }
-        if (database.getTwitterRFUserId().keySet().contains(registerRequest.getTwitterId())) {
-            return Parser.ObjectToJSon(false, "'linkedInId' has been used");
+        if (database.getLinkedInRFUserId().keySet().contains(registerRequest.getLinkedInId())) {
+            String id = database.getLinkedInRFUserId().get(registerRequest.getLinkedInId());
+            User existUser = database.getUserHashMap().get(id);
+            if(existUser != null) {
+                return Parser.ObjectToJSon(true, "'linkedInId' has been registered", existUser);
+            }
         }
         User user = new User();
         user.setId("lk_" + registerRequest.getLinkedInId());
@@ -308,7 +324,7 @@ public class UserController {
                routeIds = new ArrayList<>(database.getPlannedTripHashMap().keySet());
            }
 
-        UserDetailWithPlannedTripResponse response = new UserDetailWithPlannedTripResponse(user, new PlannedTripController().getListPlannedTripSortDetail(routeIds));
+        UserDetailWithPlannedTripResponse response = new UserDetailWithPlannedTripResponse(user, new PlannedTripController().getListPlannedTripDetailResponse(routeIds));
         return Parser.ObjectToJSon(true, "Get detail successfully", response);
     }
 

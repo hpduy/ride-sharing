@@ -119,7 +119,9 @@ public class Pairing {
                         if (DateTimeUtil.timeDistance(timeDriveReachNearSrcLocation, plannedTrip.getGoTime()) <= ACCEPTABLE_TIME) {
                             //Get this plannedTrip
                             if (!listDriverPlannedTripResult.contains(driverPlannedTrip)) {
-                                listDriverPlannedTripResult.add(driverPlannedTrip);
+                                // check helmet
+                                if (plannedTrip.isHasHelmet() || driverPlannedTrip.isHasHelmet())
+                                    listDriverPlannedTripResult.add(driverPlannedTrip);
                             }
                         } else {
                             //TODO: WARNING WHEN REMOVE HERE
@@ -219,7 +221,8 @@ public class Pairing {
                                         // if same direction => check time
                                         if (DateTimeUtil.timeDistance(timeDriveReachNearSrcLocation, passengerPlannedTrip.getGoTime()) <= ACCEPTABLE_TIME) {
                                             if (!listPassengerPlannedTripResult.contains(passengerPlannedTrip)) {
-                                                listPassengerPlannedTripResult.add(passengerPlannedTrip);
+                                                if (plannedTrip.isHasHelmet() || passengerPlannedTrip.isHasHelmet())
+                                                    listPassengerPlannedTripResult.add(passengerPlannedTrip);
                                             }
                                         } else {
                                             //TODO: WARNING WHEN REMOVE HERE

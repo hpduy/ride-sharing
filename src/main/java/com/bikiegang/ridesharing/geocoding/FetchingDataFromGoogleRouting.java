@@ -43,6 +43,9 @@ public class FetchingDataFromGoogleRouting {
         // create linkLocation
         List<LinkedLocation> locations = getLocations(googleRoute, plannedTrip.getId());
         plannedTrip.setEstimatedTime(locations.get(locations.size() - 1).getEstimatedTime());
+        plannedTrip.setStartLocation(googleRoute.getLegs()[0].getStart_location());
+        plannedTrip.setEndLocation(googleRoute.getLegs()[0].getEnd_location());
+        plannedTrip.setPolyLine(googleRoute.getOverview_polyline().getPoints());
         return locations;
     }
 
@@ -54,6 +57,9 @@ public class FetchingDataFromGoogleRouting {
         List<String> cellcodes = geoCell.getCellCodesFromLatLngs(latLngs);
         long[] timeForCellCodes = new long[cellcodes.size()];
         Step[] steps = googleRoute.getLegs()[0].getSteps();
+        //set end time
+        timeForCellCodes[cellcodes.size()-1] = googleRoute.getLegs()[0].getDuration().getValue();
+        // set time for other point
         loadTimeRecursive(steps, timeForCellCodes, cellcodes);
         // recalculate time: for time = 0 or weird time
         for (int i = 0; i < timeForCellCodes.length - 1; ) {

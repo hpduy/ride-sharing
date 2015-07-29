@@ -20,7 +20,7 @@ public class BroadcastCenterUtil implements Runnable {
     private List<String> userIds = new ArrayList<>();
     private String collapseKey = "Cloud Bike Server App";
     private String senderId = CLOUD_BIKE_SENDER_ID;
-    private final String urlStringPath = Path.getServerAddress() + "/cloudbike/GCMBroadcast";
+    private final String urlStringPath = Path.getServerAddress() + "/RideSharing/GCMBroadcast";
 
     //final variable
     public static String CLOUD_BIKE_SENDER_ID = "AIzaSyBbF-lPqCpcUsiJdahgt21WB00vpKRxXik";

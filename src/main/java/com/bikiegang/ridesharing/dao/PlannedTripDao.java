@@ -52,6 +52,8 @@ public class PlannedTripDao {
             setRfUser.add(obj.getId());
             setRfGroup.add(obj.getGroupId());
 
+            // put start location into geocell
+            database.getGeoCellStartLocation().putToCell(obj.getStartLocation(),String.valueOf(obj.getId()));
             //Step 2: put redis
             result = cache.hset(obj.getClass().getName(), String.valueOf(obj.getId()),
                     JSONUtil.Serialize(obj));

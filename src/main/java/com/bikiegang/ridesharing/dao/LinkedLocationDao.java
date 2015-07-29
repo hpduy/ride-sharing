@@ -38,7 +38,7 @@ public class LinkedLocationDao {
             }
             get.add(obj.getId());
             database.getPlannedTripIdRFLinkedLocations().put(obj.getRefId(),get);
-
+            // more (put to geocell)
             //Step 2: put redis
             result = cache.hset(obj.getClass().getName(),
                     String.valueOf(obj.getId()), JSONUtil.Serialize(obj));
