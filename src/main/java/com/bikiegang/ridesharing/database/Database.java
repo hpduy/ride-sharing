@@ -154,6 +154,26 @@ public class Database {
         return emailRFUserId;
     }
 
+    public void setFacebookRFUserId(HashMap<String, String> facebookRFUserId) {
+        this.facebookRFUserId = facebookRFUserId;
+    }
+
+    public void setGoogleRFUserId(HashMap<String, String> googleRFUserId) {
+        this.googleRFUserId = googleRFUserId;
+    }
+
+    public void setTwitterRFUserId(HashMap<String, String> twitterRFUserId) {
+        this.twitterRFUserId = twitterRFUserId;
+    }
+
+    public void setEmailRFUserId(HashMap<String, String> emailRFUserId) {
+        this.emailRFUserId = emailRFUserId;
+    }
+
+    public void setLinkedInRFUserId(HashMap<String, String> linkedInRFUserId) {
+        this.linkedInRFUserId = linkedInRFUserId;
+    }
+
     public HashMap<String, HashSet<String>> getUserIdRFBroadcasts() {
         return userIdRFBroadcasts;
     }

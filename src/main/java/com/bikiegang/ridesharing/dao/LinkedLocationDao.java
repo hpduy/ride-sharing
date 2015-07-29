@@ -42,7 +42,7 @@ public class LinkedLocationDao {
             //Step 2: put redis
             result = cache.hset(obj.getClass().getName(),
                     String.valueOf(obj.getId()), JSONUtil.Serialize(obj));
-            result &= cache.hset(obj.getClass().getName() + ":route",
+            result &= cache.hset(obj.getClass().getName() + ":plannedtrip",
                     String.valueOf(obj.getRefId()), JSONUtil.Serialize(get));
             if (result) {
                 //Step 3: put job gearman
@@ -90,7 +90,7 @@ public class LinkedLocationDao {
             //Step 2: put redis
             result = cache.hdel(obj.getClass().getName(),
                     String.valueOf(obj.getId()));
-            result &= cache.hset(obj.getClass().getName() + ":route",
+            result &= cache.hset(obj.getClass().getName() + ":plannedtrip",
                     String.valueOf(obj.getRefId()), JSONUtil.Serialize(get));
             if (result) {
                 //Step 3: put job gearman

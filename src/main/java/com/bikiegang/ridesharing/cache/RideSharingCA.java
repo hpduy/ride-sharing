@@ -18,7 +18,12 @@ import com.bikiegang.ridesharing.pojo.RequestMakeTrip;
 import com.bikiegang.ridesharing.pojo.PlannedTrip;
 import com.bikiegang.ridesharing.pojo.Trip;
 import com.bikiegang.ridesharing.pojo.User;
+import com.bikiegang.ridesharing.pojo.VerifiedCertificate;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
 
@@ -49,8 +54,8 @@ public class RideSharingCA {
     private static final Logger _logger = LogUtil.getLogger(RideSharingCA.class);
     private static RedisClient redisClient;
 //</editor-fold>
-
     //<editor-fold defaultstate="collapsed" desc="Redis function">
+
     private String buildKeyWithPrefix(String orgKey) {
         //you should see tv.video.{orgKey}
         String keyBuild = String.format("%s%s", _prefix, orgKey);
@@ -123,114 +128,37 @@ public class RideSharingCA {
     }
 
 //</editor-fold>
-    //<editor-fold defaultstate="collapsed" desc="Redis function">
+    //<editor-fold defaultstate="collapsed" desc="Restore function">
     Database database = Database.getInstance();
-
-    public boolean RestoreActivity() {
-        boolean result = false;
-//        try {
-//            database.getActivityHashMap().clear();
-//            Map<String, String> hgetAll = hgetAll(Activity.class.getName());
-//            for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
-//                String key = entrySet.getKey();
-//                String value = entrySet.getValue();
-//                database.getActivityHashMap().put(ConvertUtils.toLong(key), (Activity) JSONUtil.DeSerialize(value, Activity.class));
-//            }
-//            result = true;
-//        } catch (Exception ex) {
-//            _logger.error(ex.getMessage());
-//            ex.printStackTrace();
-//        }
-        return result;
-    }
 
     public boolean RestoreBroadcast() {
         boolean result = false;
         try {
             database.getBroadcastHashMap().clear();
+            database.getUserIdRFBroadcasts().clear();
+
             Map<String, String> hgetAll = hgetAll(Broadcast.class.getName());
             for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
                 String key = entrySet.getKey();
                 String value = entrySet.getValue();
                 database.getBroadcastHashMap().put(key, (Broadcast) JSONUtil.DeSerialize(value, Broadcast.class));
             }
+
+            //User  ==> Broadcast
+            Map<String, String> userRF = hgetAll(Broadcast.class.getName() + ":user");
+            for (Map.Entry<String, String> entrySet : userRF.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+
+                database.getUserIdRFBroadcasts().put(key, (HashSet<String>) JSONUtil.DeSerialize(value,
+                        new TypeToken<HashSet<String>>() {
+                        }.getType()));
+            }
             result = true;
         } catch (Exception ex) {
             _logger.error(ex.getMessage());
             ex.printStackTrace();
         }
-        return result;
-    }
-
-    public boolean RestoreCircle() {
-        boolean result = false;
-//        try {
-//            database.getCircleHashMap().clear();
-//            Map<String, String> hgetAll = hgetAll(Circle.class.getName());
-//            for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
-//                String key = entrySet.getKey();
-//                String value = entrySet.getValue();
-//                database.getCircleHashMap().put(ConvertUtils.toLong(key), (Circle) JSONUtil.DeSerialize(value, Circle.class));
-//            }
-//            result = true;
-//        } catch (Exception ex) {
-//            _logger.error(ex.getMessage());
-//            ex.printStackTrace();
-//        }
-        return result;
-    }
-
-    public boolean RestoreCircleMember() {
-        boolean result = false;
-//        try {
-//            database.getCircleMemberHashMap().clear();
-//            Map<String, String> hgetAll = hgetAll(CircleMember.class.getName());
-//            for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
-//                String key = entrySet.getKey();
-//                String value = entrySet.getValue();
-//                database.getCircleMemberHashMap().put(ConvertUtils.toLong(key), (CircleMember) JSONUtil.DeSerialize(value, CircleMember.class));
-//            }
-//            result = true;
-//        } catch (Exception ex) {
-//            _logger.error(ex.getMessage());
-//            ex.printStackTrace();
-//        }
-        return result;
-    }
-
-    public boolean RestoreCurrentLocation() {
-        boolean result = false;
-//        try {
-//            database.getCurrentLocationHashMap().clear();
-//            Map<String, String> hgetAll = hgetAll(CurrentLocation.class.getName());
-//            for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
-//                String key = entrySet.getKey();
-//                String value = entrySet.getValue();
-//                database.getCurrentLocationHashMap().put(ConvertUtils.toLong(key), (CurrentLocation) JSONUtil.DeSerialize(value, CurrentLocation.class));
-//            }
-//            result = true;
-//        } catch (Exception ex) {
-//            _logger.error(ex.getMessage());
-//            ex.printStackTrace();
-//        }
-        return result;
-    }
-
-    public boolean RestoreEndorse() {
-        boolean result = false;
-//        try {
-//            database.getEndorseHashMap().clear();
-//            Map<String, String> hgetAll = hgetAll(Endorse.class.getName());
-//            for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
-//                String key = entrySet.getKey();
-//                String value = entrySet.getValue();
-//                database.getEndorseHashMap().put(ConvertUtils.toLong(key), (Endorse) JSONUtil.DeSerialize(value, Endorse.class));
-//            }
-//            result = true;
-//        } catch (Exception ex) {
-//            _logger.error(ex.getMessage());
-//            ex.printStackTrace();
-//        }
         return result;
     }
 
@@ -238,53 +166,28 @@ public class RideSharingCA {
         boolean result = false;
         try {
             database.getLinkedLocationHashMap().clear();
+            database.getPlannedTripIdRFLinkedLocations().clear();
             Map<String, String> hgetAll = hgetAll(LinkedLocation.class.getName());
             for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
                 String key = entrySet.getKey();
                 String value = entrySet.getValue();
                 database.getLinkedLocationHashMap().put(ConvertUtils.toLong(key), (LinkedLocation) JSONUtil.DeSerialize(value, LinkedLocation.class));
             }
+
+            //plannedTrip => linkloacation
+            Map<String, String> plannedTripRF = hgetAll(LinkedLocation.class.getName() + ":plannedtrip");
+            for (Map.Entry<String, String> entrySet : plannedTripRF.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+
+                database.getPlannedTripIdRFLinkedLocations().put(ConvertUtils.toLong(key), (List<Long>) JSONUtil.DeSerialize(value, new TypeToken<List<Long>>() {
+                }.getType()));
+            }
             result = true;
         } catch (Exception ex) {
             _logger.error(ex.getMessage());
             ex.printStackTrace();
         }
-        return result;
-    }
-
-    public boolean RestoreLocation() {
-        boolean result = false;
-//        try {
-//            database.getLocationHashMap().clear();
-//            Map<String, String> hgetAll = hgetAll(Location.class.getName());
-//            for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
-//                String key = entrySet.getKey();
-//                String value = entrySet.getValue();
-//                database.getLocationHashMap().put(ConvertUtils.toLong(key), (Location) JSONUtil.DeSerialize(value, Location.class));
-//            }
-//            result = true;
-//        } catch (Exception ex) {
-//            _logger.error(ex.getMessage());
-//            ex.printStackTrace();
-//        }
-        return result;
-    }
-
-    public boolean RestoreRating() {
-        boolean result = false;
-//        try {
-//            database.getRatingHashMap().clear();
-//            Map<String, String> hgetAll = hgetAll(Rating.class.getName());
-//            for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
-//                String key = entrySet.getKey();
-//                String value = entrySet.getValue();
-//                database.getRatingHashMap().put(ConvertUtils.toLong(key), (Rating) JSONUtil.DeSerialize(value, Rating.class));
-//            }
-//            result = true;
-//        } catch (Exception ex) {
-//            _logger.error(ex.getMessage());
-//            ex.printStackTrace();
-//        }
         return result;
     }
 
@@ -292,11 +195,34 @@ public class RideSharingCA {
         boolean result = false;
         try {
             database.getRequestMakeTripHashMap().clear();
+            database.getSenderRequestsBox().clear();
+            database.getReceiverRequestsBox().clear();
+
             Map<String, String> hgetAll = hgetAll(RequestMakeTrip.class.getName());
             for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
                 String key = entrySet.getKey();
                 String value = entrySet.getValue();
                 database.getRequestMakeTripHashMap().put(ConvertUtils.toLong(key), (RequestMakeTrip) JSONUtil.DeSerialize(value, RequestMakeTrip.class));
+            }
+
+            //SenderRequestsBox
+            Map<String, String> senderRF = hgetAll(RequestMakeTrip.class.getName() + ":sender");
+            for (Map.Entry<String, String> entrySet : senderRF.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+
+                database.getSenderRequestsBox().put(key, (HashMap<Long, Long>) JSONUtil.DeSerialize(value, new TypeToken<HashMap<Long, Long>>() {
+                }.getType()));
+            }
+
+            //ReceiverRequestsBox
+            Map<String, String> receiverRF = hgetAll(RequestMakeTrip.class.getName() + ":receiver");
+            for (Map.Entry<String, String> entrySet : receiverRF.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+
+                database.getReceiverRequestsBox().put(key, (HashMap<Long, List<Long>>) JSONUtil.DeSerialize(value, new TypeToken<HashMap<Long, List<Long>>>() {
+                }.getType()));
             }
             result = true;
         } catch (Exception ex) {
@@ -306,15 +232,51 @@ public class RideSharingCA {
         return result;
     }
 
-    public boolean RestoreRoute() {
+    public boolean RestorePlannedTrip() {
         boolean result = false;
         try {
+
+//              private HashMap<String, HashSet<Long>> userIdRFPlanedTrips = new HashMap<>(); // <userId,<plannedTripId>>
+//    private HashMap<Integer, HashSet<Long>> roleRFPlannedTrips = new HashMap<>(); // <role,<plannedTripId>>
+//    private HashMap<Long, HashSet<Long>> groupIdRFPlannedTrips = new HashMap<>(); // <groupId,<plannedTripId>>
             database.getPlannedTripHashMap().clear();
+            database.getUserIdRFPlanedTrips().clear();
+            database.getRoleRFPlannedTrips().clear();;
+            database.getGroupIdRFPlannedTrips().clear();
+
             Map<String, String> hgetAll = hgetAll(PlannedTrip.class.getName());
             for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
                 String key = entrySet.getKey();
                 String value = entrySet.getValue();
                 database.getPlannedTripHashMap().put(ConvertUtils.toLong(key), (PlannedTrip) JSONUtil.DeSerialize(value, PlannedTrip.class));
+            }
+
+            //User=>plannedtrip
+            Map<String, String> userRF = hgetAll(PlannedTrip.class.getName() + ":user");
+            for (Map.Entry<String, String> entrySet : userRF.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+
+                database.getUserIdRFPlanedTrips().put(key, (HashSet<Long>) JSONUtil.DeSerialize(value, new TypeToken<HashSet<Long>>() {
+                }.getType()));
+            }
+            //Role=>plannedTrip
+            Map<String, String> roleRF = hgetAll(PlannedTrip.class.getName() + ":role");
+            for (Map.Entry<String, String> entrySet : roleRF.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+
+                database.getRoleRFPlannedTrips().put(ConvertUtils.toInt(key), (HashSet<Long>) JSONUtil.DeSerialize(value, new TypeToken<HashSet<Long>>() {
+                }.getType()));
+            }
+            //Group=>plannedTrip
+            Map<String, String> groupRF = hgetAll(PlannedTrip.class.getName() + ":group");
+            for (Map.Entry<String, String> entrySet : groupRF.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+
+                database.getGroupIdRFPlannedTrips().put(ConvertUtils.toLong(key), (HashSet<Long>) JSONUtil.DeSerialize(value, new TypeToken<HashSet<Long>>() {
+                }.getType()));
             }
             result = true;
         } catch (Exception ex) {
@@ -342,33 +304,56 @@ public class RideSharingCA {
         return result;
     }
 
-    public boolean RestoreTripFeedback() {
-        boolean result = false;
-//        try {
-//            database.getTripFeedbackHashMap().clear();
-//            Map<String, String> hgetAll = hgetAll(TripFeedback.class.getName());
-//            for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
-//                String key = entrySet.getKey();
-//                String value = entrySet.getValue();
-//                database.getTripFeedbackHashMap().put(ConvertUtils.toLong(key), (TripFeedback) JSONUtil.DeSerialize(value, TripFeedback.class));
-//            }
-//            result = true;
-//        } catch (Exception ex) {
-//            _logger.error(ex.getMessage());
-//            ex.printStackTrace();
-//        }
-        return result;
-    }
-
     public boolean RestoreUser() {
         boolean result = false;
         try {
+            //Clear data
             database.getUserHashMap().clear();
+            database.getFacebookRFUserId().clear();
+            database.getGoogleRFUserId().clear();
+            database.getTwitterRFUserId().clear();
+            database.getEmailRFUserId().clear();
+            database.getLinkedInRFUserId().clear();
+
+            //Normal
             Map<String, String> hgetAll = hgetAll(User.class.getName());
             for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
                 String key = entrySet.getKey();
                 String value = entrySet.getValue();
                 database.getUserHashMap().put(key, (User) JSONUtil.DeSerialize(value, User.class));
+            }
+            //Facebook
+            Map<String, String> facebookFR = hgetAll(User.class.getName() + ":facebook");
+            database.setFacebookRFUserId((HashMap<String, String>) facebookFR);
+            //Google
+            Map<String, String> googleFR = hgetAll(User.class.getName() + ":google");
+            database.setGoogleRFUserId((HashMap<String, String>) googleFR);
+            //Mail
+            Map<String, String> mailFR = hgetAll(User.class.getName() + ":mail");
+            database.setEmailRFUserId((HashMap<String, String>) mailFR);
+            //Twitter
+            Map<String, String> twitterFR = hgetAll(User.class.getName() + ":twitter");
+            database.setTwitterRFUserId((HashMap<String, String>) twitterFR);
+            //Linked
+            Map<String, String> linkedFR = hgetAll(User.class.getName() + ":linked");
+            database.setLinkedInRFUserId((HashMap<String, String>) linkedFR);
+            result = true;
+        } catch (Exception ex) {
+            _logger.error(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
+    public boolean RestoreVerifiedCertificate() {
+        boolean result = false;
+        try {
+            database.getVerifiedCertificateHashMap().clear();
+            Map<String, String> hgetAll = hgetAll(VerifiedCertificate.class.getName());
+            for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+                database.getVerifiedCertificateHashMap().put(ConvertUtils.toLong(key), (VerifiedCertificate) JSONUtil.DeSerialize(value, VerifiedCertificate.class));
             }
             result = true;
         } catch (Exception ex) {
@@ -378,59 +363,14 @@ public class RideSharingCA {
         return result;
     }
 
-    public boolean RestoreUserProfile() {
-        boolean result = false;
-//        try {
-//            database.getUserProfileHashMap().clear();
-//            Map<String, String> hgetAll = hgetAll(UserProfile.class.getName());
-//            for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
-//                String key = entrySet.getKey();
-//                String value = entrySet.getValue();
-//                database.getUserProfileHashMap().put(ConvertUtils.toLong(key), (UserProfile) JSONUtil.DeSerialize(value, UserProfile.class));
-//            }
-//            result = true;
-//        } catch (Exception ex) {
-//            _logger.error(ex.getMessage());
-//            ex.printStackTrace();
-//        }
-        return result;
-    }
-
-    public boolean RestoreVerifiedCertificate() {
-        boolean result = false;
-//        try {
-//            database.getVerifiedCertificateHashMap().clear();
-//            Map<String, String> hgetAll = hgetAll(VerifiedCertificate.class.getName());
-//            for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
-//                String key = entrySet.getKey();
-//                String value = entrySet.getValue();
-//                database.getVerifiedCertificateHashMap().put(ConvertUtils.toLong(key), (VerifiedCertificate) JSONUtil.DeSerialize(value, VerifiedCertificate.class));
-//            }
-//            result = true;
-//        } catch (Exception ex) {
-//            _logger.error(ex.getMessage());
-//            ex.printStackTrace();
-//        }
-        return result;
-    }
-
     public boolean RestoreDatabase() {
         boolean result = false;
-        result = RestoreActivity();
         result &= RestoreBroadcast();
-        result &= RestoreCircle();
-        result &= RestoreCircleMember();
-        result &= RestoreCurrentLocation();
-        result &= RestoreEndorse();
         result &= RestoreLinkedLocation();
-        result &= RestoreLocation();
-        result &= RestoreRating();
         result &= RestoreRequestMakeTrip();
-        result &= RestoreRoute();
+        result &= RestorePlannedTrip();
         result &= RestoreTrip();
-        result &= RestoreTripFeedback();
         result &= RestoreUser();
-        result &= RestoreUserProfile();
         result &= RestoreVerifiedCertificate();
         return result;
     }

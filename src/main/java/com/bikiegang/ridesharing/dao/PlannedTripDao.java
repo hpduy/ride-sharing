@@ -32,6 +32,8 @@ public class PlannedTripDao {
             database.getPlannedTripHashMap().put(obj.getId(), obj);
             HashSet<Long> setRfRole = database.getRoleRFPlannedTrips().get(obj.getRole());
             HashSet<Long> setRfUser = database.getUserIdRFPlanedTrips().get(obj.getCreatorId());
+            HashSet<Long> setRfGroup = database.getGroupIdRFPlannedTrips().get(obj.getGroupId());
+
             if (setRfRole == null) {
                 setRfRole = new HashSet<>();
                 database.getRoleRFPlannedTrips().put(obj.getRole(), setRfRole);
@@ -41,8 +43,14 @@ public class PlannedTripDao {
                 database.getUserIdRFPlanedTrips().put(obj.getCreatorId(), setRfUser);
             }
 
+            if (setRfGroup != null) {
+                setRfGroup = new HashSet<>();
+                database.getGroupIdRFPlannedTrips().put(obj.getGroupId(), setRfGroup);
+            }
+
             setRfRole.add(obj.getId());
             setRfUser.add(obj.getId());
+            setRfGroup.add(obj.getGroupId());
 
             //Step 2: put redis
             result = cache.hset(obj.getClass().getName(), String.valueOf(obj.getId()),
@@ -51,6 +59,8 @@ public class PlannedTripDao {
                     JSONUtil.Serialize(setRfUser));
             result &= cache.hset(obj.getClass().getName() + ":role", String.valueOf(obj.getRole()),
                     JSONUtil.Serialize(setRfRole));
+            result &= cache.hset(obj.getClass().getName() + ":group", String.valueOf(obj.getGroupId()),
+                    JSONUtil.Serialize(setRfGroup));
 
             if (result) {
                 //Step 3: put job gearman
@@ -87,6 +97,8 @@ public class PlannedTripDao {
             database.getPlannedTripHashMap().remove(obj.getId());
             HashSet<Long> mapRfRole = database.getRoleRFPlannedTrips().get(obj.getRole());
             HashSet<Long> mapRfUser = database.getUserIdRFPlanedTrips().get(obj.getCreatorId());
+            HashSet<Long> mapRfGroup = database.getGroupIdRFPlannedTrips().get(obj.getGroupId());
+
             if (mapRfRole == null) {
                 mapRfRole = new HashSet<>();
                 database.getRoleRFPlannedTrips().put(obj.getRole(), mapRfRole);
@@ -95,9 +107,14 @@ public class PlannedTripDao {
                 mapRfUser = new HashSet<>();
                 database.getUserIdRFPlanedTrips().put(obj.getCreatorId(), mapRfUser);
             }
+            if (mapRfGroup != null) {
+                mapRfGroup = new HashSet<>();
+                database.getGroupIdRFPlannedTrips().put(obj.getGroupId(), mapRfGroup);
+            }
 
             mapRfRole.remove((Long) obj.getId());
             mapRfUser.remove((Long) obj.getId());
+            mapRfGroup.remove((Long) obj.getId());
 
             //Step 2: put redis
             result = cache.hdel(obj.getClass().getName(),
@@ -106,6 +123,9 @@ public class PlannedTripDao {
                     String.valueOf(obj.getCreatorId()), JSONUtil.Serialize(mapRfUser));
             result &= cache.hset(obj.getClass().getName() + ":role",
                     String.valueOf(obj.getCreatorId()), JSONUtil.Serialize(mapRfRole));
+            result &= cache.hset(obj.getClass().getName() + ":group", String.valueOf(obj.getGroupId()),
+                    JSONUtil.Serialize(mapRfGroup));
+
             if (result) {
                 //Step 3: put job gearman
                 short actionType = Const.RideSharing.ActionType.DELETE;
