@@ -53,7 +53,7 @@ public class UserController {
         if (database.getFacebookRFUserId().keySet().contains(registerRequest.getFacebookId())) {
             String id = database.getFacebookRFUserId().get(registerRequest.getFacebookId());
             User existUser = database.getUserHashMap().get(id);
-            if(existUser != null) {
+            if (existUser != null) {
                 return Parser.ObjectToJSon(true, "'facebookId' has been registered", existUser);
             }
         }
@@ -73,7 +73,8 @@ public class UserController {
         if (null != registerRequest.getSelfIntro())
             user.setSelfIntro(registerRequest.getSelfIntro());
         user.setGender(registerRequest.getGender());
-        user.setBirthDay(registerRequest.getBirthDay());
+        if (null != registerRequest.getBirthDay())
+            user.setBirthDay(registerRequest.getBirthDay());
         if (dao.insert(user)) {
             return Parser.ObjectToJSon(true, "Register successfully", user);
         }
@@ -107,7 +108,7 @@ public class UserController {
         if (database.getGoogleRFUserId().keySet().contains(registerRequest.getGoogleId())) {
             String id = database.getGoogleRFUserId().get(registerRequest.getGoogleId());
             User existUser = database.getUserHashMap().get(id);
-            if(existUser != null) {
+            if (existUser != null) {
                 return Parser.ObjectToJSon(true, "'googleId' has been registered", existUser);
             }
         }
@@ -141,7 +142,7 @@ public class UserController {
         if (database.getTwitterRFUserId().keySet().contains(registerRequest.getTwitterId())) {
             String id = database.getTwitterRFUserId().get(registerRequest.getTwitterId());
             User existUser = database.getUserHashMap().get(id);
-            if(existUser != null) {
+            if (existUser != null) {
                 return Parser.ObjectToJSon(true, "'twitterId' has been registered", existUser);
             }
         }
@@ -175,7 +176,7 @@ public class UserController {
         if (database.getLinkedInRFUserId().keySet().contains(registerRequest.getLinkedInId())) {
             String id = database.getLinkedInRFUserId().get(registerRequest.getLinkedInId());
             User existUser = database.getUserHashMap().get(id);
-            if(existUser != null) {
+            if (existUser != null) {
                 return Parser.ObjectToJSon(true, "'linkedInId' has been registered", existUser);
             }
         }
@@ -317,14 +318,14 @@ public class UserController {
         }
         //get list route of user
         List<Long> routeIds;
-           if(database.getUserIdRFPlanedTrips().get(user.getId()) != null) {
-               routeIds = new ArrayList<>(database.getUserIdRFPlanedTrips().get(user.getId()));
+        if (database.getUserIdRFPlanedTrips().get(user.getId()) != null) {
+            routeIds = new ArrayList<>(database.getUserIdRFPlanedTrips().get(user.getId()));
 
-           }else {
-               routeIds = new ArrayList<>(database.getPlannedTripHashMap().keySet());
-           }
+        } else {
+            routeIds = new ArrayList<>(database.getPlannedTripHashMap().keySet());
+        }
 
-        UserDetailWithPlannedTripResponse response = new UserDetailWithPlannedTripResponse(user, new PlannedTripController().getListPlannedTripDetailResponse(routeIds));
+        UserDetailWithPlannedTripResponse response = new UserDetailWithPlannedTripResponse(user, new PlannedTripController().getListPlannedTripDetailResponse(routeIds, "this is my trip"));
         return Parser.ObjectToJSon(true, "Get detail successfully", response);
     }
 
@@ -406,5 +407,139 @@ public class UserController {
         }
         user.setCurrentLocation(new LatLng(request.getLat(), request.getLng()));
         return Parser.ObjectToJSon(true, "Update current location successfully");
+    }
+
+    public String getPartnerLocation(GetPartnerLocationRequest request) throws JsonProcessingException {
+        if (request.getLat() <= 0 && request.getLng() <= 0) {
+            return Parser.ObjectToJSon(false, "'latitude' and 'longitude' is invalid");
+        }
+        if (null == request.getUserId() || request.getUserId().equals("")) {
+            return Parser.ObjectToJSon(false, "'userId' is not found");
+        }
+        User user = database.getUserHashMap().get(request.getUserId());
+        if (user == null) {
+            return Parser.ObjectToJSon(false, "User is not found by userId");
+        }
+        user.setCurrentLocation(new LatLng(request.getLat(), request.getLng()));
+        User partner = database.getUserHashMap().get(request.getPartnerId());
+        if (partner == null) {
+            return Parser.ObjectToJSon(false, "Partner is not found by partnerId");
+        }
+        return Parser.ObjectToJSon(true, "Get partner's location successfully", partner.getCurrentLocation());
+    }
+
+    /**
+     * UPDATE USER PROFILE
+     */
+    public String updateProfile(UpdateProfileRequest request) throws JsonProcessingException {
+        if (null == request.getId() || request.getId().equals("")) {
+            return Parser.ObjectToJSon(false, "'id' is not found");
+        }
+        User user = database.getUserHashMap().get(request.getId());
+        if (user == null) {
+            return Parser.ObjectToJSon(false, "User does not exist");
+        }
+        if (null != request.getProfilePictureLink())
+            user.setProfilePictureLink(request.getProfilePictureLink());
+        if (null != request.getPhone())
+            user.setPhone(request.getPhone());
+        if (null != request.getFirstName())
+            user.setFirstName(request.getFirstName());
+        if (null != request.getLastName())
+            user.setLastName(request.getLastName());
+        if (null != request.getSelfIntro())
+            user.setSelfIntro(request.getSelfIntro());
+        if (request.getGender() >= 0)
+            user.setGender(request.getGender());
+        if (null != request.getBirthDay())
+            user.setBirthDay(request.getBirthDay());
+        if (request.getPrivacy() >= 0)
+            user.setPrivacy(request.getPrivacy());
+        if (dao.update(user)) {
+            return Parser.ObjectToJSon(true, "Update profile successfully");
+        }
+        return Parser.ObjectToJSon(false, "Cannot update your profile now. Try again later!");
+    }
+
+    public String updateSocialNetworkAccount(UpdateSocialNetworkAccountRequest request) throws JsonProcessingException {
+        if (null == request.getUserId() || request.getUserId().equals("")) {
+            return Parser.ObjectToJSon(false, "'userId' is not found");
+        }
+        if (null == request.getSocialNetworkId() || request.getSocialNetworkId().equals("")) {
+            return Parser.ObjectToJSon(false, "'socialNetworkId' is not found");
+        }
+        if (request.getType() == 0)
+            return Parser.ObjectToJSon(false, "'type' is not found");
+        User user = database.getUserHashMap().get(request.getUserId());
+        if (user == null) {
+            return Parser.ObjectToJSon(false, "User does not exist");
+        }
+        switch (request.getType()) {
+            case UpdateSocialNetworkAccountRequest.FACEBOOK:
+                database.getFacebookRFUserId().remove(user.getFacebookId());
+                user.setFacebookId(request.getSocialNetworkId());
+                break;
+            case UpdateSocialNetworkAccountRequest.GOOGLE:
+                database.getGoogleRFUserId().remove(user.getGoogleId());
+                user.setGoogleId(request.getSocialNetworkId());
+                break;
+            case UpdateSocialNetworkAccountRequest.TWITTER:
+                database.getTwitterRFUserId().remove(user.getTwitterId());
+                user.setTwitterId(request.getSocialNetworkId());
+                break;
+            case UpdateSocialNetworkAccountRequest.LINKEDIN:
+                database.getLinkedInRFUserId().remove(user.getLinkedInId());
+                user.setLinkedInId(request.getSocialNetworkId());
+                break;
+        }
+        if (dao.update(user)) {
+            return Parser.ObjectToJSon(true, "Update your social account successfully");
+        }
+        return Parser.ObjectToJSon(false, "Cannot update  your social account");
+    }
+
+    public String removeSocialNetworkAccount(UpdateSocialNetworkAccountRequest request) throws JsonProcessingException {
+        if (null == request.getUserId() || request.getUserId().equals("")) {
+            return Parser.ObjectToJSon(false, "'userId' is not found");
+        }
+        if (null == request.getSocialNetworkId() || request.getSocialNetworkId().equals("")) {
+            return Parser.ObjectToJSon(false, "'socialNetworkId' is not found");
+        }
+        if (request.getType() == 0)
+            return Parser.ObjectToJSon(false, "'type' is not found");
+        User user = database.getUserHashMap().get(request.getUserId());
+        if (user == null) {
+            return Parser.ObjectToJSon(false, "User does not exist");
+        }
+        switch (request.getType()) {
+            case UpdateSocialNetworkAccountRequest.FACEBOOK:
+                if (user.getGoogleId().equals("") && user.getTwitterId().equals("") && user.getLinkedInId().equals(""))
+                    return Parser.ObjectToJSon(false, "Cannot remove this social account because you will cannot login after remove that");
+                database.getFacebookRFUserId().remove(user.getFacebookId());
+                user.setFacebookId("");
+                break;
+            case UpdateSocialNetworkAccountRequest.GOOGLE:
+                if (user.getFacebookId().equals("") && user.getTwitterId().equals("") && user.getLinkedInId().equals(""))
+                    return Parser.ObjectToJSon(false, "Cannot remove this social account because you will cannot login after remove that");
+                database.getGoogleRFUserId().remove(user.getGoogleId());
+                user.setGoogleId("");
+                break;
+            case UpdateSocialNetworkAccountRequest.TWITTER:
+                if (user.getGoogleId().equals("") && user.getFacebookId().equals("") && user.getLinkedInId().equals(""))
+                    return Parser.ObjectToJSon(false, "Cannot remove this social account because you will cannot login after remove that");
+                database.getTwitterRFUserId().remove(user.getTwitterId());
+                user.setTwitterId("");
+                break;
+            case UpdateSocialNetworkAccountRequest.LINKEDIN:
+                if (user.getGoogleId().equals("") && user.getTwitterId().equals("") && user.getFacebookId().equals(""))
+                    return Parser.ObjectToJSon(false, "Cannot remove this social account because you will cannot login after remove that");
+                database.getLinkedInRFUserId().remove(user.getLinkedInId());
+                user.setLinkedInId("");
+                break;
+        }
+        if (dao.update(user)) {
+            return Parser.ObjectToJSon(true, "Update your social account successfully");
+        }
+        return Parser.ObjectToJSon(false, "Cannot update  your social account");
     }
 }

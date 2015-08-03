@@ -4,30 +4,22 @@
  * and open the template in the editor.
  */
 
-package com.bikiegang.ridesharing.api;
+package com.bikiegang.ridesharing.servlet.slack;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
-import com.bikiegang.ridesharing.controller.RequestMakeTripController;
-import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.request.RequestMakeTripRequest;
-import com.bikiegang.ridesharing.pojo.response.angel.RequestMakeTripResponse;
+import com.bikiegang.ridesharing.database.Database;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class RequestMakeTripAPI extends HttpServlet {
+public class GetNumberOfUserRegistered extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
-    public Class requestClass = RequestMakeTripRequest.class;
-    public Class responseClass = RequestMakeTripResponse.class;
-    public boolean responseIsArray = false;
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -35,34 +27,17 @@ public class RequestMakeTripAPI extends HttpServlet {
      * @param request  raw request
      * @param response raw response
      * @throws ServletException if a raw-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException            if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
-        try {
-            StringBuffer jsonData = new StringBuffer();
-            String line;
-            BufferedReader reader = request.getReader();
-            while ((line = reader.readLine()) != null) {
-                jsonData.append(line);
-            }
-            logger.info(jsonData.toString());
-            RequestMakeTripRequest requestMakeTripRequest = (RequestMakeTripRequest) Parser.JSonToObject(jsonData.toString(), RequestMakeTripRequest.class);
-            RequestMakeTripController controller = new RequestMakeTripController();
-            String result = controller.sendRequestMakeTrip(requestMakeTripRequest);
-            logger.info(result);
-            out.print(result);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            logger.error(ex.getStackTrace());
-            out.print(Parser.ObjectToJSon(false, ex.getMessage()));
-        }
+        out.print("Number of cloudy is "+Database.getInstance().getUserHashMap().size());
     }
 
-    // <editor-fold default state="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -70,7 +45,7 @@ public class RequestMakeTripAPI extends HttpServlet {
      * @param request  raw request
      * @param response raw response
      * @throws ServletException if a raw-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException            if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -85,7 +60,7 @@ public class RequestMakeTripAPI extends HttpServlet {
      * @param request  raw request
      * @param response raw response
      * @throws ServletException if a raw-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException            if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -100,6 +75,6 @@ public class RequestMakeTripAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Send a request to other user to go with him";
+        return "Short description";
     }
 }

@@ -10,7 +10,7 @@ public class GetUsersAroundFromMeRequest {
     private double centerLat;
     private double centerLng;
     private double radius;
-
+    private String userId;
     public double getCenterLat() {
         return centerLat;
     }
@@ -33,5 +33,13 @@ public class GetUsersAroundFromMeRequest {
 
     public void setRadius(double radius) {
         this.radius = radius;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

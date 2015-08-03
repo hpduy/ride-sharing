@@ -16,7 +16,7 @@ public class LinkedLocation extends LatLng implements PojoBase {
     @JsonIgnore
     public static final int FREE = 0;
     @JsonIgnore
-    public static final int IN_ROUTE = 1;
+    public static final int IN_PLANNED_TRIP = 1;
     @JsonIgnore
     public static final int IN_TRIP = 2;
 

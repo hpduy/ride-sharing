@@ -4,13 +4,15 @@
  * and open the template in the editor.
  */
 
-package com.bikiegang.ridesharing.api;
+package com.bikiegang.ridesharing.api.angel;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
-import com.bikiegang.ridesharing.controller.RequestMakeTripController;
+import com.bikiegang.ridesharing.controller.UserController;
+import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.request.RequestMakeTripRequest;
-import com.bikiegang.ridesharing.pojo.response.angel.RequestMakeTripResponse;
+import com.bikiegang.ridesharing.pojo.request.GetUsersAroundFromMeRequest;
+import com.bikiegang.ridesharing.pojo.response.UserShortDetailResponse;
+import com.bikiegang.ridesharing.utilities.FakeGroup.FakeUser;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -22,11 +24,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class RequestMakeTripAPI extends HttpServlet {
+public class GetAngelsAroundFromMeAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
-    public Class requestClass = RequestMakeTripRequest.class;
-    public Class responseClass = RequestMakeTripResponse.class;
-    public boolean responseIsArray = false;
+    public Class requestClass = GetUsersAroundFromMeRequest.class;
+    public Class responseClass = UserShortDetailResponse.class;
+    public boolean responseIsArray = true;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -50,9 +52,14 @@ public class RequestMakeTripAPI extends HttpServlet {
                 jsonData.append(line);
             }
             logger.info(jsonData.toString());
-            RequestMakeTripRequest requestMakeTripRequest = (RequestMakeTripRequest) Parser.JSonToObject(jsonData.toString(), RequestMakeTripRequest.class);
-            RequestMakeTripController controller = new RequestMakeTripController();
-            String result = controller.sendRequestMakeTrip(requestMakeTripRequest);
+            GetUsersAroundFromMeRequest getUsersAroundFromMeRequest = (GetUsersAroundFromMeRequest) Parser.JSonToObject(jsonData.toString(), GetUsersAroundFromMeRequest.class);
+            UserController controller = new UserController();
+            String result = controller.getUsersAroundFromMe(getUsersAroundFromMeRequest,true);
+            //TODO fake
+            if(Database.databaseStatus == Database.TESTING){
+                result = new FakeUser().getUsersAroundFromMeFake(getUsersAroundFromMeRequest);
+            }
+            //TODO end fake
             logger.info(result);
             out.print(result);
         } catch (Exception ex) {
@@ -100,6 +107,6 @@ public class RequestMakeTripAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Send a request to other user to go with him";
+        return "Get all Angel have current location around you";
     }
 }

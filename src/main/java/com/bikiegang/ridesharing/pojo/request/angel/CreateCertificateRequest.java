@@ -1,4 +1,4 @@
-package com.bikiegang.ridesharing.pojo.request;
+package com.bikiegang.ridesharing.pojo.request.angel;
 
 import com.bikiegang.ridesharing.pojo.CertificateDetail;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -40,5 +40,7 @@ public class CreateCertificateRequest {
         return note;
     }
 
-
+    public void setNote(String note) {
+        this.note = note;
+    }
 }

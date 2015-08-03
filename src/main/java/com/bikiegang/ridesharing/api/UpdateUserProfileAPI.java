@@ -7,9 +7,9 @@
 package com.bikiegang.ridesharing.api;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
-import com.bikiegang.ridesharing.controller.RequestVerifyController;
+import com.bikiegang.ridesharing.controller.UserController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.request.RequestVerifyRequest;
+import com.bikiegang.ridesharing.pojo.request.UpdateProfileRequest;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -21,9 +21,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class RequestVerifyAPI extends HttpServlet {
+public class UpdateUserProfileAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
-    public Class requestClass = RequestVerifyRequest.class;
+    public Class requestClass = UpdateUserProfileAPI.class;
     public Class responseClass = null;
     public boolean responseIsArray = false;
 
@@ -49,9 +49,9 @@ public class RequestVerifyAPI extends HttpServlet {
                 jsonData.append(line);
             }
             logger.info(jsonData.toString());
-            RequestVerifyRequest requestVerifyRequest = (RequestVerifyRequest) Parser.JSonToObject(jsonData.toString(), RequestVerifyRequest.class);
-            RequestVerifyController controller = new RequestVerifyController();
-            String result = controller.sendVerificationRequest(requestVerifyRequest);
+            UpdateProfileRequest updateProfileRequest = (UpdateProfileRequest) Parser.JSonToObject(jsonData.toString(), UpdateProfileRequest.class);
+            UserController controller = new UserController();
+            String result = controller.updateProfile(updateProfileRequest);
             logger.info(result);
             out.print(result);
         } catch (Exception ex) {
@@ -99,6 +99,6 @@ public class RequestVerifyAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Send a request to other user to go with him";
+        return "Login by email, facebookId, googleId, linkedIn and twitterId";
     }
 }

@@ -4,12 +4,13 @@
  * and open the template in the editor.
  */
 
-package com.bikiegang.ridesharing.api;
+package com.bikiegang.ridesharing.api.angel;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
-import com.bikiegang.ridesharing.controller.RequestVerifyController;
+import com.bikiegang.ridesharing.controller.AngelController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.request.ReplyVerifyRequest;
+import com.bikiegang.ridesharing.pojo.User;
+import com.bikiegang.ridesharing.pojo.request.GetAngelActiveCodesRequest;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -21,10 +22,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class ReplyVerifyAPI extends HttpServlet {
+public class GetAngelActiveCodesForWebAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
-    public Class requestClass = ReplyVerifyRequest.class;
-    public Class responseClass = null;
+    public Class requestClass = GetAngelActiveCodesRequest.class;
+    public Class responseClass = User.class;
     public boolean responseIsArray = false;
 
     /**
@@ -49,11 +50,15 @@ public class ReplyVerifyAPI extends HttpServlet {
                 jsonData.append(line);
             }
             logger.info(jsonData.toString());
-            ReplyVerifyRequest replyVerifyRequest = (ReplyVerifyRequest) Parser.JSonToObject(jsonData.toString(), ReplyVerifyRequest.class);
-            RequestVerifyController controller = new RequestVerifyController();
-            String result = controller.sendVerificationReply(replyVerifyRequest);
-            logger.info(result);
-            out.print(result);
+            GetAngelActiveCodesRequest getAngelActiveCodesRequest = (GetAngelActiveCodesRequest) Parser.JSonToObject(jsonData.toString(), GetAngelActiveCodesRequest.class);
+            AngelController controller = new AngelController();
+            String[] result = controller.getAngelActiveCode(getAngelActiveCodesRequest.getNumberOfCode());
+            String html = "";
+            for(String code : result){
+                html += String.format("<label><b>%s</b></label></br>",code);
+            }
+            logger.info(html);
+            out.print(html);
         } catch (Exception ex) {
             ex.printStackTrace();
             logger.error(ex.getStackTrace());
@@ -99,6 +104,6 @@ public class ReplyVerifyAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Reply a request which other user have sent to you";
+        return "Login by email, facebookId, googleId, linkedIn and twitterId";
     }
 }

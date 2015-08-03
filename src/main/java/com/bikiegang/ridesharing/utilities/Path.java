@@ -16,6 +16,8 @@ public class Path {
     @NotNull
     private static final String dbPathRootUNIX = "/cloudbike/";
     private static final String serverPort = "8080";
+    private static final String appName = "RideSharing";
+
     private static String dataPath,imagePath,logPath;
     private static String serverAddress = "";
     private static String defaultAvatar = "";
@@ -81,6 +83,6 @@ public class Path {
 
     public static void setServerAddress(String serverAddress) {
 
-        Path.serverAddress = "http://"+serverAddress+":"+serverPort;
+        Path.serverAddress = "http://"+serverAddress+":"+serverPort+"/"+appName;
     }
 }

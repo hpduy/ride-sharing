@@ -2,6 +2,7 @@ package com.bikiegang.ridesharing;
 
 import com.bikiegang.ridesharing.controller.PlannedTripController;
 import com.bikiegang.ridesharing.geocoding.FetchingDataFromGoogleRouting;
+import com.bikiegang.ridesharing.geocoding.PolyLineProcess;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.LinkedLocation;
 import com.bikiegang.ridesharing.pojo.PlannedTrip;
@@ -396,4 +397,9 @@ public class PlannedTripTest {
         new PlannedTripController().createPlannedTrip(request);
         System.out.print(request);
     }
+        @Test
+        public void polyTest(){
+                String poly = "env`Asn`jSnGoCHCRf@bAxBa@xA_ExAv@tB";
+                System.out.print(PolyLineProcess.decodePoly("env`Asn`jSnGoCHCRf@bAxBa@xA_ExAv@tB"));
+        }
 }

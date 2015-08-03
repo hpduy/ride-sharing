@@ -4,13 +4,13 @@
  * and open the template in the editor.
  */
 
-package com.bikiegang.ridesharing.api;
+package com.bikiegang.ridesharing.api.angel;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.controller.AngelController;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.User;
-import com.bikiegang.ridesharing.pojo.request.AngelRegisterRequest;
+import com.bikiegang.ridesharing.pojo.request.angel.AngelRegisterRequest;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;

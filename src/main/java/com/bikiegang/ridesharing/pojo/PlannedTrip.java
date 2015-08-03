@@ -28,6 +28,7 @@ public class PlannedTrip implements PojoBase {
     private String polyLine = "";
     private boolean hasHelmet;
     private long createdTime;
+    private boolean isBusy;
     /**
      * ROUTE TYPE
      */
@@ -240,10 +241,19 @@ public class PlannedTrip implements PojoBase {
     public void setCreatedTime(long createdTime) {
         this.createdTime = createdTime;
     }
+
+    public boolean isBusy() {
+        return isBusy;
+    }
+
+    public void setIsBusy(boolean isBusy) {
+        this.isBusy = isBusy;
+    }
 }
 /**
  * CHANGE LOG
  *
  *29/7/2015
  * them field createdTime
+ * them field isBusy
  */

@@ -42,6 +42,7 @@ public class StartupListener implements ServletContextListener, HttpSessionListe
             Path.setServerAddress(InetAddress.getLocalHost().getHostAddress());
             Path.buildRoot();
             Database.getInstance().restore();
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }

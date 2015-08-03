@@ -7,9 +7,9 @@
 package com.bikiegang.ridesharing.api;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
-import com.bikiegang.ridesharing.controller.VerifiedCertificateController;
+import com.bikiegang.ridesharing.controller.UserController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.request.CreateCertificateRequest;
+import com.bikiegang.ridesharing.pojo.request.UpdateSocialNetworkAccountRequest;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -21,9 +21,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class CreateCertificateAPI extends HttpServlet {
+public class UpdateUserSocialNetWorkAccountAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
-    public Class requestClass = CreateCertificateRequest.class;
+    public Class requestClass = UpdateSocialNetworkAccountRequest.class;
     public Class responseClass = null;
     public boolean responseIsArray = false;
 
@@ -49,9 +49,9 @@ public class CreateCertificateAPI extends HttpServlet {
                 jsonData.append(line);
             }
             logger.info(jsonData.toString());
-            CreateCertificateRequest createCertificateRequest = (CreateCertificateRequest) Parser.JSonToObject(jsonData.toString(), CreateCertificateRequest.class);
-            VerifiedCertificateController controller = new VerifiedCertificateController();
-            String result = controller.createCertificate(createCertificateRequest);
+            UpdateSocialNetworkAccountRequest updateSocialNetworkAccountRequest = (UpdateSocialNetworkAccountRequest) Parser.JSonToObject(jsonData.toString(), UpdateSocialNetworkAccountRequest.class);
+            UserController controller = new UserController();
+            String result = controller.updateSocialNetworkAccount(updateSocialNetworkAccountRequest);
             logger.info(result);
             out.print(result);
         } catch (Exception ex) {
@@ -99,6 +99,6 @@ public class CreateCertificateAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Create your certificates";
+        return "Login by email, facebookId, googleId, linkedIn and twitterId";
     }
 }

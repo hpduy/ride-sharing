@@ -7,10 +7,10 @@
 package com.bikiegang.ridesharing.api;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
-import com.bikiegang.ridesharing.controller.AngelController;
+import com.bikiegang.ridesharing.controller.RequestMakeTripController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.User;
-import com.bikiegang.ridesharing.pojo.request.GetAngelActiveCodesRequest;
+import com.bikiegang.ridesharing.pojo.request.GetListRequestMakeTripRequest;
+import com.bikiegang.ridesharing.pojo.response.GetListRequestMakeTripDetailResponse;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -22,10 +22,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class GetAngelActiveCodesAPI extends HttpServlet {
+public class GetListRequestMakeTripAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
-    public Class requestClass = GetAngelActiveCodesRequest.class;
-    public Class responseClass = User.class;
+    public Class requestClass = GetListRequestMakeTripRequest.class;
+    public Class responseClass = GetListRequestMakeTripDetailResponse.class;
     public boolean responseIsArray = false;
 
     /**
@@ -50,9 +50,9 @@ public class GetAngelActiveCodesAPI extends HttpServlet {
                 jsonData.append(line);
             }
             logger.info(jsonData.toString());
-            GetAngelActiveCodesRequest getAngelActiveCodesRequest = (GetAngelActiveCodesRequest) Parser.JSonToObject(jsonData.toString(), GetAngelActiveCodesRequest.class);
-            AngelController controller = new AngelController();
-            String result = controller.getAngelActiveCode(getAngelActiveCodesRequest);
+            GetListRequestMakeTripRequest getListRequestMakeTripRequest = (GetListRequestMakeTripRequest) Parser.JSonToObject(jsonData.toString(), GetListRequestMakeTripRequest.class);
+            RequestMakeTripController controller = new RequestMakeTripController();
+            String result = controller.getListRequestMakeTrip(getListRequestMakeTripRequest);
             logger.info(result);
             out.print(result);
         } catch (Exception ex) {
@@ -100,6 +100,6 @@ public class GetAngelActiveCodesAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Login by email, facebookId, googleId, linkedIn and twitterId";
+        return "Send a request to other user to go with him";
     }
 }

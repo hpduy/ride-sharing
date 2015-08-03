@@ -4,13 +4,12 @@
  * and open the template in the editor.
  */
 
-package com.bikiegang.ridesharing.api;
+package com.bikiegang.ridesharing.api.angel;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
-import com.bikiegang.ridesharing.controller.AngelController;
+import com.bikiegang.ridesharing.controller.RequestVerifyController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.User;
-import com.bikiegang.ridesharing.pojo.request.AngelForgetPasswordRequest;
+import com.bikiegang.ridesharing.pojo.request.angel.RequestVerifyRequest;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -22,10 +21,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class AngelForgetPasswordAPI extends HttpServlet {
+public class RequestVerifyAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
-    public Class requestClass = AngelForgetPasswordRequest.class;
-    public Class responseClass = User.class;
+    public Class requestClass = RequestVerifyRequest.class;
+    public Class responseClass = null;
     public boolean responseIsArray = false;
 
     /**
@@ -50,9 +49,9 @@ public class AngelForgetPasswordAPI extends HttpServlet {
                 jsonData.append(line);
             }
             logger.info(jsonData.toString());
-            AngelForgetPasswordRequest forgetPasswordRequest = (AngelForgetPasswordRequest) Parser.JSonToObject(jsonData.toString(), AngelForgetPasswordRequest.class);
-            AngelController controller = new AngelController();
-            String result = controller.forgetPassword(forgetPasswordRequest);
+            RequestVerifyRequest requestVerifyRequest = (RequestVerifyRequest) Parser.JSonToObject(jsonData.toString(), RequestVerifyRequest.class);
+            RequestVerifyController controller = new RequestVerifyController();
+            String result = controller.sendVerificationRequest(requestVerifyRequest);
             logger.info(result);
             out.print(result);
         } catch (Exception ex) {
@@ -100,6 +99,6 @@ public class AngelForgetPasswordAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Login by email, facebookId, googleId, linkedIn and twitterId";
+        return "Send a request to other user to go with him";
     }
 }

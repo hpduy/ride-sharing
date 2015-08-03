@@ -45,7 +45,7 @@ public class PlannedTripController {
         if (plannedTrip == null) {
             return Parser.ObjectToJSon(false, "Planned Trip is not found");
         }
-        PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(getPlannedTripSortDetail(plannedTrip), plannedTrip.getRawRoutingResult().toString());
+        PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(getPlannedTripSortDetail(plannedTrip,request.getUserId()), plannedTrip.getRawRoutingResult().toString());
         return Parser.ObjectToJSon(true, "Get Planned Trip detail successfully", plannedTripDetailResponse);
     }
 
@@ -92,7 +92,7 @@ public class PlannedTripController {
             for (PlannedTrip r : plannedTripList) {
                 User creator = database.getUserHashMap().get(r.getCreatorId());
                 if (null != creator) {
-                    PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(getPlannedTripSortDetail(r), r.getRawRoutingResult().toString());
+                    PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(getPlannedTripSortDetail(r,request.getCreatorId()), r.getRawRoutingResult().toString());
                     UserDetailWithPlannedTripDetailResponse userPlannedTripDetail = new UserDetailWithPlannedTripDetailResponse(creator, plannedTripDetailResponse);
                     details.add(userPlannedTripDetail);
                 }
@@ -133,13 +133,7 @@ public class PlannedTripController {
             new FakePlannedTrip().fakePlannedTrip(plannedTrip);
         }
         //TODO end fake
-        if (null != locations) {
-            LinkedLocationController controller = new LinkedLocationController();
-            for (LinkedLocation location : locations) {
-                location.setId(IdGenerator.getLinkedLocationId());
-                controller.insertLinkLocation(location, plannedTrip.getRole());
-            }
-        }
+
         // check price
         if (request.getPrice() < 0) {
             plannedTrip.setOwnerPrice(DEFAULT_PRICE);
@@ -148,6 +142,13 @@ public class PlannedTripController {
                     ? request.getPrice() / plannedTrip.getSumDistance() : PlannedTrip.DEFAULT_PRICE_1KM / 1000);
         }
         if (dao.insert(plannedTrip) || Database.databaseStatus == Database.TESTING) {
+            if (null != locations) {
+                LinkedLocationController controller = new LinkedLocationController();
+                for (LinkedLocation location : locations) {
+                    location.setId(IdGenerator.getLinkedLocationId());
+                    controller.insertLinkLocation(location, plannedTrip.getRole());
+                }
+            }
             UserDetailWithPlannedTripDetailResponse yourPlannedTripDetail = getUserAndPlannedTripDetailFromObject(plannedTrip);
             if (request.isParing()) {
                 HashMap<Integer, List<PlannedTrip>> paringResults = new Pairing().pair(plannedTrip);
@@ -157,7 +158,7 @@ public class PlannedTripController {
                 } else {
                     result = paringResults.get(User.PASSENGER);
                 }
-                plannedTrips = getListUserAndPlannedTripDetailFromObject(result);
+                plannedTrips = getListUserAndPlannedTripDetailFromObject(result,request.getCreatorId());
             }
             response.setYourPlannedTrip(yourPlannedTripDetail);
             if (plannedTrips == null) {
@@ -185,7 +186,7 @@ public class PlannedTripController {
         for (PlannedTrip r : plannedTrips) {
             User creator = database.getUserHashMap().get(r.getCreatorId());
             if (null != creator) {
-                PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(getPlannedTripSortDetail(r), r.getRawRoutingResult().toString());
+                PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(getPlannedTripSortDetail(r,request.getUserId()), r.getRawRoutingResult().toString());
                 UserDetailWithPlannedTripDetailResponse userPlannedTripDetail = new UserDetailWithPlannedTripDetailResponse(creator, plannedTripDetailResponse);
                 details.add(userPlannedTripDetail);
             }
@@ -198,45 +199,45 @@ public class PlannedTripController {
     /**
      * SUPPORT FUNCTION
      */
-    public PlannedTripShortDetailResponse[] getListPlannedTripSortDetailResponse(List<Long> plannedTripIds) throws IOException {
+    public PlannedTripShortDetailResponse[] getListPlannedTripSortDetailResponse(List<Long> plannedTripIds, String senderId) throws IOException {
         PlannedTripShortDetailResponse[] plannedTripSortDetailResponses = new PlannedTripShortDetailResponse[plannedTripIds.size()];
         for (int i = 0; i < plannedTripIds.size(); i++) {
             long id = plannedTripIds.get(i);
             PlannedTrip r = database.getPlannedTripHashMap().get(id);
             if (null != r) {
-                plannedTripSortDetailResponses[i] = getPlannedTripSortDetail(r);
+                plannedTripSortDetailResponses[i] = getPlannedTripSortDetail(r, senderId);
             }
         }
         return plannedTripSortDetailResponses;
     }
 
-    public PlannedTripDetailResponse[] getListPlannedTripDetailResponse(List<Long> plannedTripIds) throws IOException {
+    public PlannedTripDetailResponse[] getListPlannedTripDetailResponse(List<Long> plannedTripIds, String senderId) throws IOException {
         PlannedTripDetailResponse[] plannedTripDetailResponses = new PlannedTripDetailResponse[plannedTripIds.size()];
         for (int i = 0; i < plannedTripIds.size(); i++) {
             long id = plannedTripIds.get(i);
             PlannedTrip r = database.getPlannedTripHashMap().get(id);
             if (null != r) {
-                plannedTripDetailResponses[i] = getPlannedTripDetailResponse(r);
+                plannedTripDetailResponses[i] = getPlannedTripDetailResponse(r, senderId);
             }
         }
         return plannedTripDetailResponses;
     }
 
-    public PlannedTripShortDetailResponse[] getListPlannedTripSortDetailFromObject(List<PlannedTrip> plannedTrips) throws IOException {
+    public PlannedTripShortDetailResponse[] getListPlannedTripSortDetailFromObject(List<PlannedTrip> plannedTrips, String senderId) throws IOException {
         PlannedTripShortDetailResponse[] plannedTripSortDetailResponses = new PlannedTripShortDetailResponse[plannedTrips.size()];
         for (int i = 0; i < plannedTrips.size(); i++) {
-            plannedTripSortDetailResponses[i] = getPlannedTripSortDetail(plannedTrips.get(i));
+            plannedTripSortDetailResponses[i] = getPlannedTripSortDetail(plannedTrips.get(i), senderId);
         }
         return plannedTripSortDetailResponses;
     }
 
-    public UserDetailWithPlannedTripDetailResponse[] getListUserAndPlannedTripDetailFromObject(List<PlannedTrip> plannedTrips) throws IOException {
+    public UserDetailWithPlannedTripDetailResponse[] getListUserAndPlannedTripDetailFromObject(List<PlannedTrip> plannedTrips, String senderId) throws IOException {
         UserDetailWithPlannedTripDetailResponse[] userDetailWithPlannedTripDetailResponses = new UserDetailWithPlannedTripDetailResponse[plannedTrips.size()];
         for (int i = 0; i < plannedTrips.size(); i++) {
             PlannedTrip r = plannedTrips.get(i);
             User creator = database.getUserHashMap().get(r.getCreatorId());
             if (null != creator) {
-                PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(getPlannedTripSortDetail(r), r.getRawRoutingResult().toString());
+                PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(getPlannedTripSortDetail(r,senderId), r.getRawRoutingResult().toString());
                 UserDetailWithPlannedTripDetailResponse userPlannedTripDetail = new UserDetailWithPlannedTripDetailResponse(creator, plannedTripDetailResponse);
                 userDetailWithPlannedTripDetailResponses[i] = userPlannedTripDetail;
             }
@@ -246,12 +247,12 @@ public class PlannedTripController {
 
     public UserDetailWithPlannedTripDetailResponse getUserAndPlannedTripDetailFromObject(PlannedTrip plannedTrip) throws IOException {
         User creator = database.getUserHashMap().get(plannedTrip.getCreatorId());
-        PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(getPlannedTripSortDetail(plannedTrip), plannedTrip.getRawRoutingResult().toString());
+        PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(getPlannedTripSortDetail(plannedTrip,"this is my trip"), plannedTrip.getRawRoutingResult().toString());
         UserDetailWithPlannedTripDetailResponse userPlannedTripDetail = new UserDetailWithPlannedTripDetailResponse(creator, plannedTripDetailResponse);
         return userPlannedTripDetail;
     }
 
-    public PlannedTripShortDetailResponse getPlannedTripSortDetail(PlannedTrip plannedTrip) throws IOException {
+    public PlannedTripShortDetailResponse getPlannedTripSortDetail(PlannedTrip plannedTrip, String senderId) throws IOException {
         GoogleRoute googleRoute = new FetchingDataFromGoogleRouting().getRouteFromRoutingResult(plannedTrip);
         PlannedTripShortDetailResponse plannedTripSortDetailResponse = new PlannedTripShortDetailResponse();
         plannedTripSortDetailResponse.setId(plannedTrip.getId());
@@ -259,6 +260,11 @@ public class PlannedTripController {
         plannedTripSortDetailResponse.setUnitPrice(plannedTrip.getOwnerPrice());
         plannedTripSortDetailResponse.setHasHelmet(plannedTrip.isHasHelmet());
         plannedTripSortDetailResponse.setCreatedTime(plannedTrip.getCreatedTime());
+        try{
+            plannedTripSortDetailResponse.setIsRequested(database.getSenderRequestsBox().get(senderId).containsKey(plannedTrip.getId()));
+        }catch (Exception ignored){
+            plannedTripSortDetailResponse.setIsRequested(false);
+        }
         if (googleRoute != null) {
             plannedTripSortDetailResponse.setStartAddress(googleRoute.getLegs()[0].getStart_address());
             plannedTripSortDetailResponse.setEndAddress(googleRoute.getLegs()[0].getEnd_address());
@@ -274,9 +280,9 @@ public class PlannedTripController {
         return plannedTripSortDetailResponse;
     }
 
-    public PlannedTripDetailResponse getPlannedTripDetailResponse(PlannedTrip plannedTrip) throws IOException {
+    public PlannedTripDetailResponse getPlannedTripDetailResponse(PlannedTrip plannedTrip, String senderId) throws IOException {
 
-        PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(getPlannedTripSortDetail(plannedTrip), plannedTrip.getRawRoutingResult().toString());
+        PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(getPlannedTripSortDetail(plannedTrip, senderId), plannedTrip.getRawRoutingResult().toString());
         return plannedTripDetailResponse;
     }
 

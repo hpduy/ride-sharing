@@ -45,6 +45,7 @@
         <servlet-name>UpdateCurrentLocationWithPlannedTripAPI</servlet-name>
         <url-pattern>/UpdateCurrentLocationWithPlannedTripAPI</url-pattern>
     </servlet-mapping>
+
     <!--**USER**-->
     <servlet>
         <servlet-name>LoginAPI</servlet-name>
@@ -94,12 +95,36 @@
         <servlet-name>GetUsersDetailWithPlannedTripsAPI</servlet-name>
         <url-pattern>/GetUsersDetailWithPlannedTripsAPI</url-pattern>
     </servlet-mapping>
+  <servlet>
+        <servlet-name>UpdateUserProfileAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.UpdateUserProfileAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UpdateUserProfileAPI</servlet-name>
+        <url-pattern>/UpdateUserProfileAPI</url-pattern>
+    </servlet-mapping>
+  <servlet>
+        <servlet-name>UpdateUserSocialNetWorkAccountAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.UpdateUserSocialNetWorkAccountAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UpdateUserSocialNetWorkAccountAPI</servlet-name>
+        <url-pattern>/UpdateUserSocialNetWorkAccountAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>GetPartnerLocationAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.GetPartnerLocationAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetPartnerLocationAPI</servlet-name>
+        <url-pattern>/GetPartnerLocationAPI</url-pattern>
+    </servlet-mapping>
 
 
     <!--**ANGEL**-->
     <servlet>
         <servlet-name>GetAngelsAroundFromMeAPI</servlet-name>
-        <servlet-class>com.bikiegang.ridesharing.api.GetAngelsAroundFromMeAPI</servlet-class>
+        <servlet-class>com.bikiegang.ridesharing.api.angel.GetAngelsAroundFromMeAPI</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>GetAngelsAroundFromMeAPI</servlet-name>
@@ -107,7 +132,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>GetAngelActiveCodesAPI</servlet-name>
-        <servlet-class>com.bikiegang.ridesharing.api.GetAngelActiveCodesAPI</servlet-class>
+        <servlet-class>com.bikiegang.ridesharing.api.angel.GetAngelActiveCodesAPI</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>GetAngelActiveCodesAPI</servlet-name>
@@ -115,7 +140,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>AngelRegisterAPI</servlet-name>
-        <servlet-class>com.bikiegang.ridesharing.api.AngelRegisterAPI</servlet-class>
+        <servlet-class>com.bikiegang.ridesharing.api.angel.AngelRegisterAPI</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>AngelRegisterAPI</servlet-name>
@@ -123,7 +148,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>AngelLoginAPI</servlet-name>
-        <servlet-class>com.bikiegang.ridesharing.api.AngelLoginAPI</servlet-class>
+        <servlet-class>com.bikiegang.ridesharing.api.angel.AngelLoginAPI</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>GetAngelActiveCodesForWebAPI</servlet-name>
@@ -131,7 +156,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>AngelForgetPasswordAPI</servlet-name>
-        <servlet-class>com.bikiegang.ridesharing.api.AngelForgetPasswordAPI</servlet-class>
+        <servlet-class>com.bikiegang.ridesharing.api.angel.AngelForgetPasswordAPI</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>AngelForgetPasswordAPI</servlet-name>
@@ -139,7 +164,7 @@
     </servlet-mapping>
  <servlet>
         <servlet-name>GetAngelActiveCodesForWebAPI</servlet-name>
-        <servlet-class>com.bikiegang.ridesharing.api.GetAngelActiveCodesForWebAPI</servlet-class>
+        <servlet-class>com.bikiegang.ridesharing.api.angel.GetAngelActiveCodesForWebAPI</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>AngelLoginAPI</servlet-name>
@@ -163,7 +188,23 @@
         <servlet-name>ReplyMakeTripAPI</servlet-name>
         <url-pattern>/ReplyMakeTripAPI</url-pattern>
     </servlet-mapping>
-    
+     <servlet>
+        <servlet-name>GetListRequestMakeTripAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.GetListRequestMakeTripAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetListRequestMakeTripAPI</servlet-name>
+        <url-pattern>/GetListRequestMakeTripAPI</url-pattern>
+    </servlet-mapping>
+ <servlet>
+        <servlet-name>RemoveRequestMakeTripAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.RemoveRequestMakeTripAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RemoveRequestMakeTripAPI</servlet-name>
+        <url-pattern>/RemoveRequestMakeTripAPI</url-pattern>
+    </servlet-mapping>
+
     <!--**IMAGE**-->
     <servlet>
         <servlet-name>UploadImageAPI</servlet-name>
@@ -177,7 +218,7 @@
     <!--**VERIFIED CERTIFICATE**-->
     <servlet>
         <servlet-name>RequestVerifyAPI</servlet-name>
-        <servlet-class>com.bikiegang.ridesharing.api.RequestVerifyAPI</servlet-class>
+        <servlet-class>com.bikiegang.ridesharing.api.angel.RequestVerifyAPI</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>RequestVerifyAPI</servlet-name>
@@ -185,7 +226,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>ReplyVerifyAPI</servlet-name>
-        <servlet-class>com.bikiegang.ridesharing.api.ReplyVerifyAPI</servlet-class>
+        <servlet-class>com.bikiegang.ridesharing.api.angel.ReplyVerifyAPI</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ReplyVerifyAPI</servlet-name>
@@ -193,11 +234,19 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>CreateCertificateAPI</servlet-name>
-        <servlet-class>com.bikiegang.ridesharing.api.CreateCertificateAPI</servlet-class>
+        <servlet-class>com.bikiegang.ridesharing.api.angel.CreateCertificateAPI</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>CreateCertificateAPI</servlet-name>
         <url-pattern>/CreateCertificateAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>GCMBroadcast</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.servlet.broadcast.GCMBroadcast</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GCMBroadcast</servlet-name>
+        <url-pattern>/GCMBroadcast</url-pattern>
     </servlet-mapping>
 
     <listener>

@@ -11,7 +11,7 @@ public class RequestMakeTripRequest {
     private String receiverId = "";
     private long senderPlannedTripId;
     private long receiverPlannedTripId;
-    private int senderRole;
+    private double price;
     private String googleRoutingResult;
 
     public String getSenderId() {
@@ -46,13 +46,6 @@ public class RequestMakeTripRequest {
         this.senderPlannedTripId = senderPlannedTripId;
     }
 
-    public int getSenderRole() {
-        return senderRole;
-    }
-
-    public void setSenderRole(int senderRole) {
-        this.senderRole = senderRole;
-    }
 
     public String getGoogleRoutingResult() {
         return googleRoutingResult;
@@ -61,4 +54,13 @@ public class RequestMakeTripRequest {
     public void setGoogleRoutingResult(String googleRoutingResult) {
         this.googleRoutingResult = googleRoutingResult;
     }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
 }
+

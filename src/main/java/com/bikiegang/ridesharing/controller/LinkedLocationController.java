@@ -3,9 +3,7 @@ package com.bikiegang.ridesharing.controller;
 import com.bikiegang.ridesharing.dao.LinkedLocationDao;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.database.IdGenerator;
-import com.bikiegang.ridesharing.geocoding.GeoCell;
 import com.bikiegang.ridesharing.pojo.LinkedLocation;
-import com.bikiegang.ridesharing.pojo.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
@@ -24,14 +22,7 @@ public class LinkedLocationController {
         linkedLocation.setId(IdGenerator.getLinkedLocationId());
         if(dao.insert(linkedLocation) || database.databaseStatus == Database.TESTING){
             //Geo Cell
-            GeoCell geoCell = null;
-            if(role == User.DRIVER)
-                geoCell = database.getGeoCellDriver();
-            if(role == User.PASSENGER)
-                geoCell = database.getGeoCellPassenger();
-            if(null == geoCell)
-                return;
-            geoCell.putToCell(linkedLocation);
+
         }
     }
 

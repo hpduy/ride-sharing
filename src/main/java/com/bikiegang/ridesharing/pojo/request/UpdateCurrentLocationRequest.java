@@ -7,9 +7,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UpdateCurrentLocationRequest {
-    private double lat;
-    private double lng;
-    private String userId;
+    protected double lat;
+    protected double lng;
+    protected String userId;
 
     public double getLat() {
         return lat;

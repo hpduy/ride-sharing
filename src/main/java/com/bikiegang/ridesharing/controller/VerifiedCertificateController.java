@@ -7,7 +7,7 @@ import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.CertificateDetail;
 import com.bikiegang.ridesharing.pojo.RequestVerify;
 import com.bikiegang.ridesharing.pojo.VerifiedCertificate;
-import com.bikiegang.ridesharing.pojo.request.CreateCertificateRequest;
+import com.bikiegang.ridesharing.pojo.request.angel.CreateCertificateRequest;
 import com.bikiegang.ridesharing.utilities.DateTimeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -35,22 +35,26 @@ public class VerifiedCertificateController {
         if (request.getCertificates().length == 0) {
             return Parser.ObjectToJSon(false, "Certificates is empty");
         }
-        if(!request.getSignature().equals(requestVerify.getSignature())){
-            return Parser.ObjectToJSon(false, "Certificates is empty");
+        if (!request.getSignature().equals(requestVerify.getSignature())) {
+            return Parser.ObjectToJSon(false, "Signature is wrong");
         }
-        List<CertificateDetail> failCertificates = new ArrayList<>();
-        for(CertificateDetail certificateDetail : request.getCertificates()){
-            VerifiedCertificate certificate = new VerifiedCertificate(certificateDetail,IdGenerator.getVerifiedCertificatedId(),
-                    request.getNote(), DateTimeUtil.now(),requestVerify.getUserId(),requestVerify.getAngelId(),VerifiedCertificate.AVAILABLE);
-            if(!dao.insert(certificate)){
-                failCertificates.add(certificateDetail);
-            }
-        }
-        if(!failCertificates.isEmpty()){
+        List<CertificateDetail> failCertificates = createCertificate(request.getCertificates(), requestVerify.getUserId(), requestVerify.getAngelId(), VerifiedCertificate.AVAILABLE);
+        if (!failCertificates.isEmpty()) {
             return Parser.ObjectToJSon(false, "Some Certificates cannot insert", failCertificates);
         }
         return Parser.ObjectToJSon(true, "Certificates is created successfully");
+    }
 
+    public List<CertificateDetail> createCertificate(CertificateDetail[] certificateDetails, String userId, String angelId, int status) throws JsonProcessingException {
+        List<CertificateDetail> failCertificates = new ArrayList<>();
+        for (CertificateDetail certificateDetail : certificateDetails) {
+            VerifiedCertificate certificate = new VerifiedCertificate(certificateDetail, IdGenerator.getVerifiedCertificatedId(),
+                    "", DateTimeUtil.now(), userId, angelId, status);
+            if (!dao.insert(certificate)) {
+                failCertificates.add(certificateDetail);
+            }
+        }
+        return failCertificates;
     }
 
 

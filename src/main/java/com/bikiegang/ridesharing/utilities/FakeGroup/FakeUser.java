@@ -85,8 +85,8 @@ public class FakeUser {
         String yyyy = "198" + RandomUtils.nextInt() % 10;
         int month = RandomUtils.nextInt() % 12 + 1;
         int day = RandomUtils.nextInt() % 29 + 1;
-        String MM = month > 9 ? "0" + month : String.valueOf(month);
-        String dd =  day > 9 ? "0" + day : String.valueOf(day);
+        String MM = month < 9 ? "0" + month : String.valueOf(month);
+        String dd =  day < 9 ? "0" + day : String.valueOf(day);
         return yyyy + MM + dd;
     }
 

@@ -4,13 +4,12 @@
  * and open the template in the editor.
  */
 
-package com.bikiegang.ridesharing.api;
+package com.bikiegang.ridesharing.api.angel;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
-import com.bikiegang.ridesharing.controller.RequestMakeTripController;
+import com.bikiegang.ridesharing.controller.RequestVerifyController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.request.RequestMakeTripRequest;
-import com.bikiegang.ridesharing.pojo.response.angel.RequestMakeTripResponse;
+import com.bikiegang.ridesharing.pojo.request.angel.ReplyVerifyRequest;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -22,10 +21,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class RequestMakeTripAPI extends HttpServlet {
+public class ReplyVerifyAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
-    public Class requestClass = RequestMakeTripRequest.class;
-    public Class responseClass = RequestMakeTripResponse.class;
+    public Class requestClass = ReplyVerifyRequest.class;
+    public Class responseClass = null;
     public boolean responseIsArray = false;
 
     /**
@@ -50,9 +49,9 @@ public class RequestMakeTripAPI extends HttpServlet {
                 jsonData.append(line);
             }
             logger.info(jsonData.toString());
-            RequestMakeTripRequest requestMakeTripRequest = (RequestMakeTripRequest) Parser.JSonToObject(jsonData.toString(), RequestMakeTripRequest.class);
-            RequestMakeTripController controller = new RequestMakeTripController();
-            String result = controller.sendRequestMakeTrip(requestMakeTripRequest);
+            ReplyVerifyRequest replyVerifyRequest = (ReplyVerifyRequest) Parser.JSonToObject(jsonData.toString(), ReplyVerifyRequest.class);
+            RequestVerifyController controller = new RequestVerifyController();
+            String result = controller.sendVerificationReply(replyVerifyRequest);
             logger.info(result);
             out.print(result);
         } catch (Exception ex) {
@@ -100,6 +99,6 @@ public class RequestMakeTripAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Send a request to other user to go with him";
+        return "Reply a request which other user have sent to you";
     }
 }

@@ -15,6 +15,7 @@ public class RequestMakeTrip implements PojoBase {
     private long driverPlannedTripId;
     private long passengerPlannedTripId;
     private int status;
+    private double price;
 
     @JsonIgnore
     public static final int WAITING = 0;
@@ -46,6 +47,7 @@ public class RequestMakeTrip implements PojoBase {
         this.passengerPlannedTripId = that.passengerPlannedTripId;
         this.senderRole = that.senderRole;
         this.status = that.status;
+        this.price = that.price;
     }
 
     public long getId() {
@@ -112,4 +114,16 @@ public class RequestMakeTrip implements PojoBase {
         this.status = status;
     }
 
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
 }
+
+/**
+ * Change log
+ * them field price
+ */

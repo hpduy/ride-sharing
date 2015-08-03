@@ -13,6 +13,7 @@ public class PlannedTripShortDetailResponse {
     private int role;
     private boolean hasHelmet;
     private long createdTime;
+    private boolean isRequested;
 
     public PlannedTripShortDetailResponse() {
     }
@@ -26,6 +27,7 @@ public class PlannedTripShortDetailResponse {
         this.role = that.role;
         this.hasHelmet = that.hasHelmet;
         this.createdTime = that.createdTime;
+        this.isRequested = that.isRequested;
     }
 
     public long getId() {
@@ -98,5 +100,13 @@ public class PlannedTripShortDetailResponse {
 
     public void setCreatedTime(long createdTime) {
         this.createdTime = createdTime;
+    }
+
+    public boolean isRequested() {
+        return isRequested;
+    }
+
+    public void setIsRequested(boolean isRequested) {
+        this.isRequested = isRequested;
     }
 }

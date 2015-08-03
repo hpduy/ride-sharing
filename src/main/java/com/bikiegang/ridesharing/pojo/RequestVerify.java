@@ -14,6 +14,7 @@ public class RequestVerify implements PojoBase {
     private int numberOfCertificate;
     private String signature = RandomStringUtils.random(NUM_CHAR_SIGNATURE);
     private int status;
+    private long createdTime;
 
 
     @JsonIgnore
@@ -98,4 +99,16 @@ public class RequestVerify implements PojoBase {
     public void setStatus(int status) {
         this.status = status;
     }
+
+    public long getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(long createdTime) {
+        this.createdTime = createdTime;
+    }
 }
+/**
+ * Change log
+ * them field createdTime
+ */

@@ -1,4 +1,4 @@
-package com.bikiegang.ridesharing.pojo.request;
+package com.bikiegang.ridesharing.pojo.request.angel;
 
 /**
  * Created by hpduy17 on 7/15/15.

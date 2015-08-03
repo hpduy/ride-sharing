@@ -3,16 +3,24 @@ package com.bikiegang.ridesharing.controller;
 import com.bikiegang.ridesharing.dao.RequestVerifyDao;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.database.IdGenerator;
+import com.bikiegang.ridesharing.parsing.NotificationParser;
 import com.bikiegang.ridesharing.parsing.Parser;
+import com.bikiegang.ridesharing.pojo.CertificateDetail;
 import com.bikiegang.ridesharing.pojo.RequestVerify;
 import com.bikiegang.ridesharing.pojo.User;
-import com.bikiegang.ridesharing.pojo.request.ReplyVerifyRequest;
-import com.bikiegang.ridesharing.pojo.request.RequestVerifyRequest;
+import com.bikiegang.ridesharing.pojo.VerifiedCertificate;
+import com.bikiegang.ridesharing.pojo.request.angel.GetListRequestVerifyRequest;
+import com.bikiegang.ridesharing.pojo.request.angel.ReplyVerifyRequest;
+import com.bikiegang.ridesharing.pojo.request.angel.RequestVerifyRequest;
 import com.bikiegang.ridesharing.pojo.response.Notification.ObjectNoti;
 import com.bikiegang.ridesharing.pojo.response.Notification.ReplyVerifyNoti;
 import com.bikiegang.ridesharing.pojo.response.Notification.RequestVerifyNoti;
+import com.bikiegang.ridesharing.pojo.response.angel.RequestVerifySortDetailResponse;
 import com.bikiegang.ridesharing.utilities.BroadcastCenterUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by hpduy17 on 7/22/15.
@@ -28,8 +36,8 @@ public class RequestVerifyController {
         if (null == request.getAngelId() || request.getAngelId().equals("")) {
             return Parser.ObjectToJSon(false, "'angelId' is not found");
         }
-        if (request.getNumberOfCertificate() <= 0) {
-            return Parser.ObjectToJSon(false, "'numberOfCertificate' should more than 0 (> 0)");
+        if (request.getCertificates().length == 0) {
+            return Parser.ObjectToJSon(false, "Certificates is not found");
         }
         User user = database.getUserHashMap().get(request.getUserId());
         if (null == user) {
@@ -45,15 +53,21 @@ public class RequestVerifyController {
         requestVerify.setId(IdGenerator.getRequestVerifyId());
         requestVerify.setAngelId(request.getAngelId());
         requestVerify.setUserId(request.getUserId());
-        requestVerify.setNumberOfCertificate(request.getNumberOfCertificate());
+        requestVerify.setNumberOfCertificate(request.getCertificates().length);
         requestVerify.setStatus(RequestVerify.WAITING);
         requestVerify.createSignature();
 
         if (dao.insert(requestVerify)) {
+            //Create certificate
+            List<CertificateDetail> failCertificates = new VerifiedCertificateController().createCertificate(request.getCertificates(), request.getUserId(), request.getAngelId(), VerifiedCertificate.WAITING);
+            if (!failCertificates.isEmpty()) {
+                return Parser.ObjectToJSon(false, "Some Certificates cannot insert", failCertificates);
+            }
             //TODO push notification
-            RequestVerifyNoti noti = new RequestVerifyNoti(requestVerify, user, ObjectNoti.REQUEST_VERIFY);
-            new BroadcastCenterUtil().pushNotification(noti.toString(), angel.getId(), BroadcastCenterUtil.ANGEL_SPECIAL_APP_SENDER_ID);
+            RequestVerifyNoti noti = new RequestVerifyNoti(requestVerify);
+            new BroadcastCenterUtil().pushNotification(NotificationParser.ObjectToJSon(ObjectNoti.REQUEST_VERIFY, noti), angel.getId(), BroadcastCenterUtil.ANGEL_SPECIAL_APP_SENDER_ID);
             return Parser.ObjectToJSon(true, "Request sent successfully");
+
         }
         return Parser.ObjectToJSon(false, "Cannot send request");
     }
@@ -83,6 +97,22 @@ public class RequestVerifyController {
         return Parser.ObjectToJSon(false, "Cannot send request");
     }
 
+    public String getListRequestVerify(GetListRequestVerifyRequest request) throws JsonProcessingException {
+        if (null == request.getAngelId() || request.getAngelId().equals("")) {
+            return Parser.ObjectToJSon(false, "'angelId' is not found");
+        }
+        List<RequestVerifySortDetailResponse> responses = new ArrayList<>();
+        List<Long> requestIds = database.getAngelRequestsBox().get(request.getAngelId());
+        if(requestIds != null){
+            for(long id : requestIds){
+                RequestVerify requestVerify = database.getRequestVerifyHashMap().get(id);
+                if(requestVerify != null){
+                    responses.add(new RequestVerifySortDetailResponse(requestVerify));
+                }
+            }
+        }
+        return Parser.ObjectToJSon(true, "Get list requests successfully",responses);
+    }
 
 
 }

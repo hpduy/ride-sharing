@@ -3,7 +3,7 @@ package com.bikiegang.ridesharing;
 import com.bikiegang.ridesharing.controller.AngelController;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.User;
-import com.bikiegang.ridesharing.pojo.request.AngelForgetPasswordRequest;
+import com.bikiegang.ridesharing.pojo.request.angel.AngelForgetPasswordRequest;
 import com.bikiegang.ridesharing.utilities.FakeGroup.FakeUser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.Before;

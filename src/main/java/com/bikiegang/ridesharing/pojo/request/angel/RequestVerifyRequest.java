@@ -1,5 +1,6 @@
-package com.bikiegang.ridesharing.pojo.request;
+package com.bikiegang.ridesharing.pojo.request.angel;
 
+import com.bikiegang.ridesharing.pojo.CertificateDetail;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -9,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class RequestVerifyRequest {
     private String userId = "";
     private String angelId = "";
-    private int numberOfCertificate;
+    CertificateDetail[] certificates;
 
     public String getUserId() {
         return userId;
@@ -27,11 +28,11 @@ public class RequestVerifyRequest {
         this.angelId = angelId;
     }
 
-    public int getNumberOfCertificate() {
-        return numberOfCertificate;
+    public CertificateDetail[] getCertificates() {
+        return certificates;
     }
 
-    public void setNumberOfCertificate(int numberOfCertificate) {
-        this.numberOfCertificate = numberOfCertificate;
+    public void setCertificates(CertificateDetail[] certificates) {
+        this.certificates = certificates;
     }
 }

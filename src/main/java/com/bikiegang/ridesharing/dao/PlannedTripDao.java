@@ -7,6 +7,7 @@ import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
 import com.bikiegang.ridesharing.cache.RideSharingCA;
 import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.database.Database;
+import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.PlannedTrip;
 import com.bikiegang.ridesharing.utilities.Const;
 import org.apache.log4j.Logger;
@@ -43,7 +44,7 @@ public class PlannedTripDao {
                 database.getUserIdRFPlanedTrips().put(obj.getCreatorId(), setRfUser);
             }
 
-            if (setRfGroup != null) {
+            if (setRfGroup == null) {
                 setRfGroup = new HashSet<>();
                 database.getGroupIdRFPlannedTrips().put(obj.getGroupId(), setRfGroup);
             }
@@ -117,7 +118,9 @@ public class PlannedTripDao {
             mapRfRole.remove((Long) obj.getId());
             mapRfUser.remove((Long) obj.getId());
             mapRfGroup.remove((Long) obj.getId());
-
+            // remove from cell
+            // put start location into geocell
+            database.getGeoCellStartLocation().removeFromCell(obj.getStartLocation(), String.valueOf(obj.getId()));
             //Step 2: put redis
             result = cache.hdel(obj.getClass().getName(),
                     String.valueOf(obj.getId()));
@@ -158,6 +161,9 @@ public class PlannedTripDao {
             if (obj == null) {
                 return false;
             }
+            //update geocell
+            LatLng oldStartLocation = new LatLng(database.getPlannedTripHashMap().get(obj.getId()).getStartLocation());
+            database.getGeoCellStartLocation().updateInCell(oldStartLocation,obj.getStartLocation(),String.valueOf(obj.getId()));
             //Step 1: put in hashmap
             database.getPlannedTripHashMap().put(obj.getId(), obj);
             //Step 2: put redis

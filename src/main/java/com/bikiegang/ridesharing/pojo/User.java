@@ -27,6 +27,7 @@ public class User implements PojoBase {
     private boolean isBusy;
     private int currentRole;
     private int privacy;
+    private String career;
     // final field & dont print to JSON;
     /**
      * GENDER
@@ -89,6 +90,7 @@ public class User implements PojoBase {
         this.gender = gender;
         this.status = status;
         this.isBusy = isBusy;
+
     }
 
     public User(User that) {
@@ -111,6 +113,7 @@ public class User implements PojoBase {
         this.status = that.status;
         this.isBusy = that.isBusy;
         this.privacy = that.privacy;
+        this.career = that.career;
     }
 
 
@@ -265,4 +268,16 @@ public class User implements PojoBase {
     public void setPrivacy(int privacy) {
         this.privacy = privacy;
     }
+
+    public String getCareer() {
+        return career;
+    }
+
+    public void setCareer(String career) {
+        this.career = career;
+    }
 }
+/**
+ * Change log
+ * them field career
+ * */

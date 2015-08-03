@@ -7,7 +7,10 @@ import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
 import com.bikiegang.ridesharing.cache.RideSharingCA;
 import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.database.Database;
+import com.bikiegang.ridesharing.geocoding.GeoCell;
 import com.bikiegang.ridesharing.pojo.LinkedLocation;
+import com.bikiegang.ridesharing.pojo.PlannedTrip;
+import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.utilities.Const;
 import org.apache.log4j.Logger;
 
@@ -37,8 +40,18 @@ public class LinkedLocationDao {
                 database.getPlannedTripIdRFLinkedLocations().put(obj.getRefId(), get);
             }
             get.add(obj.getId());
-            database.getPlannedTripIdRFLinkedLocations().put(obj.getRefId(),get);
+            database.getPlannedTripIdRFLinkedLocations().put(obj.getRefId(), get);
             // more (put to geocell)
+            if (obj.getRefType() == LinkedLocation.IN_PLANNED_TRIP) {
+                PlannedTrip pt = database.getPlannedTripHashMap().get(obj.getRefId());
+                GeoCell geoCell = null;
+                if (pt.getRole() == User.DRIVER)
+                    geoCell = database.getGeoCellDriver();
+                if (pt.getRole() == User.PASSENGER)
+                    geoCell = database.getGeoCellPassenger();
+                if (null != geoCell)
+                    geoCell.putToCell(obj);
+            }
             //Step 2: put redis
             result = cache.hset(obj.getClass().getName(),
                     String.valueOf(obj.getId()), JSONUtil.Serialize(obj));
@@ -60,7 +73,7 @@ public class LinkedLocationDao {
                 }
             } else {
                 logger.error(String.format("Can't not insert redis with key=%s, "
-                        + "field=%s, value=%s",
+                                + "field=%s, value=%s",
                         obj.getClass().getName(), String.valueOf(obj.getId()),
                         JSONUtil.Serialize(obj)));
             }
@@ -77,6 +90,18 @@ public class LinkedLocationDao {
         try {
             if (obj == null) {
                 return false;
+            }
+            // remove from geo cell
+            if (obj.getRefType() == LinkedLocation.IN_PLANNED_TRIP) {
+                PlannedTrip pt = database.getPlannedTripHashMap().get(obj.getRefId());
+                GeoCell geoCell = null;
+                if (pt.getRole() == User.DRIVER)
+                    geoCell = database.getGeoCellDriver();
+                if (pt.getRole() == User.PASSENGER)
+                    geoCell = database.getGeoCellPassenger();
+                if (null != geoCell){
+                    geoCell.removeFromCell(obj);
+                }
             }
             //Step 1: put in hashmap
             database.getLinkedLocationHashMap().remove(obj.getId());
@@ -122,8 +147,24 @@ public class LinkedLocationDao {
             if (obj == null) {
                 return false;
             }
+            //get old linkedlocation
+            LinkedLocation older =  new LinkedLocation(database.getLinkedLocationHashMap().get(obj.getId()));
+            // more (put to geocell)
+            if (obj.getRefType() == LinkedLocation.IN_PLANNED_TRIP) {
+                PlannedTrip pt = database.getPlannedTripHashMap().get(obj.getRefId());
+                GeoCell geoCell = null;
+                if (pt.getRole() == User.DRIVER)
+                    geoCell = database.getGeoCellDriver();
+                if (pt.getRole() == User.PASSENGER)
+                    geoCell = database.getGeoCellPassenger();
+                if (null != geoCell){
+                    geoCell.removeFromCell(older);
+                    geoCell.putToCell(obj);
+                }
+            }
             //Step 1: put in hashmap
             database.getLinkedLocationHashMap().put(obj.getId(), obj);
+
             //Step 2: put redis
             result = cache.hset(obj.getClass().getName(), String.valueOf(obj.getId()), JSONUtil.Serialize(obj));
             if (result) {

@@ -38,15 +38,18 @@ public class FetchingDataFromGoogleRouting {
         }
         RoutingResult routingResult = (RoutingResult) Parser.JSonToObject(plannedTrip.getRawRoutingResult().toString(), RoutingResult.class);
         //update plannedTrip info
-        GoogleRoute googleRoute = routingResult.getRoutes()[0];
-        plannedTrip.setSumDistance(googleRoute.getLegs()[0].getDistance().getValue());
-        // create linkLocation
-        List<LinkedLocation> locations = getLocations(googleRoute, plannedTrip.getId());
-        plannedTrip.setEstimatedTime(locations.get(locations.size() - 1).getEstimatedTime());
-        plannedTrip.setStartLocation(googleRoute.getLegs()[0].getStart_location());
-        plannedTrip.setEndLocation(googleRoute.getLegs()[0].getEnd_location());
-        plannedTrip.setPolyLine(googleRoute.getOverview_polyline().getPoints());
-        return locations;
+        if(routingResult.getRoutes().length > 0) {
+            GoogleRoute googleRoute = routingResult.getRoutes()[0];
+            plannedTrip.setSumDistance(googleRoute.getLegs()[0].getDistance().getValue());
+            // create linkLocation
+            List<LinkedLocation> locations = getLocations(googleRoute, plannedTrip.getId());
+            plannedTrip.setEstimatedTime(locations.get(locations.size() - 1).getEstimatedTime());
+            plannedTrip.setStartLocation(googleRoute.getLegs()[0].getStart_location());
+            plannedTrip.setEndLocation(googleRoute.getLegs()[0].getEnd_location());
+            plannedTrip.setPolyLine(googleRoute.getOverview_polyline().getPoints());
+            return locations;
+        }
+        return null;
     }
 
 
@@ -90,7 +93,7 @@ public class FetchingDataFromGoogleRouting {
         for (int i = 0; i < cellcodes.size(); i++) {
             String cellcode = cellcodes.get(i);
             LatLng center = geoCell.getLatLngCenterFromCellCode(cellcode);
-            LinkedLocation location = new LinkedLocation(center.getLat(), center.getLng(), center.getTime(), 0, timeForCellCodes[i], i, plannedTripId, LinkedLocation.IN_ROUTE);
+            LinkedLocation location = new LinkedLocation(center.getLat(), center.getLng(), center.getTime(), 0, timeForCellCodes[i], i, plannedTripId, LinkedLocation.IN_PLANNED_TRIP);
             locations.add(location);
         }
         return locations;
