@@ -10,10 +10,11 @@ import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.RequestMakeTrip;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.utilities.Const;
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import org.apache.log4j.Logger;
 
 /**
  * Created by hpduy17 on 6/26/15.
@@ -68,6 +69,7 @@ public class RequestMakeTripDao {
                         listRequest = new ArrayList<>();
                     }
                     listRequest.add(obj.getId());
+                    mapReceiver.put(obj.getDriverPlannedTripId(),listRequest);
                 }
             }
             //Step 2: put redis

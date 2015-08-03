@@ -261,9 +261,9 @@ public class PlannedTripController {
         plannedTripSortDetailResponse.setHasHelmet(plannedTrip.isHasHelmet());
         plannedTripSortDetailResponse.setCreatedTime(plannedTrip.getCreatedTime());
         try{
-            plannedTripSortDetailResponse.setIsRequested(database.getSenderRequestsBox().get(senderId).containsKey(plannedTrip.getId()));
+            plannedTripSortDetailResponse.setRequested(database.getSenderRequestsBox().get(senderId).containsKey(plannedTrip.getId()));
         }catch (Exception ignored){
-            plannedTripSortDetailResponse.setIsRequested(false);
+            plannedTripSortDetailResponse.setRequested(false);
         }
         if (googleRoute != null) {
             plannedTripSortDetailResponse.setStartAddress(googleRoute.getLegs()[0].getStart_address());
