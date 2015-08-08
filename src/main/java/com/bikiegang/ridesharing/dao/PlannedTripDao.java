@@ -54,7 +54,7 @@ public class PlannedTripDao {
             setRfGroup.add(obj.getGroupId());
 
             // put start location into geocell
-            database.getGeoCellStartLocation().putToCell(obj.getStartLocation(),String.valueOf(obj.getId()));
+            database.getGeoCellStartLocation().putToCell(obj.getStartLocation(),obj.getId());
             //Step 2: put redis
             result = cache.hset(obj.getClass().getName(), String.valueOf(obj.getId()),
                     JSONUtil.Serialize(obj));
@@ -120,7 +120,7 @@ public class PlannedTripDao {
             mapRfGroup.remove((Long) obj.getId());
             // remove from cell
             // put start location into geocell
-            database.getGeoCellStartLocation().removeFromCell(obj.getStartLocation(), String.valueOf(obj.getId()));
+            database.getGeoCellStartLocation().removeFromCell(obj.getStartLocation(), obj.getId());
             //Step 2: put redis
             result = cache.hdel(obj.getClass().getName(),
                     String.valueOf(obj.getId()));
@@ -163,7 +163,7 @@ public class PlannedTripDao {
             }
             //update geocell
             LatLng oldStartLocation = new LatLng(database.getPlannedTripHashMap().get(obj.getId()).getStartLocation());
-            database.getGeoCellStartLocation().updateInCell(oldStartLocation,obj.getStartLocation(),String.valueOf(obj.getId()));
+            database.getGeoCellStartLocation().updateInCell(oldStartLocation,obj.getStartLocation(),obj.getId());
             //Step 1: put in hashmap
             database.getPlannedTripHashMap().put(obj.getId(), obj);
             //Step 2: put redis

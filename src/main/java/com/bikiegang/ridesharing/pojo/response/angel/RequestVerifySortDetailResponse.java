@@ -1,20 +1,24 @@
 package com.bikiegang.ridesharing.pojo.response.angel;
 
+import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.RequestVerify;
+import com.bikiegang.ridesharing.pojo.User;
+import com.bikiegang.ridesharing.pojo.response.UserShortDetailResponse;
 
 /**
  * Created by hpduy17 on 7/31/15.
  */
 public class RequestVerifySortDetailResponse {
     private long id;
-    private String userId = "";
-    private long requestedTime;
+    private long createdTime;
     private int numberOfCertificate;
-
+    private UserShortDetailResponse userDetail = new UserShortDetailResponse();
     public RequestVerifySortDetailResponse(RequestVerify that) {
         this.id = that.getId();
-        this.userId = that.getUserId();
         this.numberOfCertificate = that.getNumberOfCertificate();
+        User user = Database.getInstance().getUserHashMap().get(that.getUserId());
+        if (user != null)
+            this.userDetail = new UserShortDetailResponse(user);
     }
 
     public long getId() {
@@ -25,14 +29,6 @@ public class RequestVerifySortDetailResponse {
         this.id = id;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
     public int getNumberOfCertificate() {
         return numberOfCertificate;
     }
@@ -41,11 +37,19 @@ public class RequestVerifySortDetailResponse {
         this.numberOfCertificate = numberOfCertificate;
     }
 
-    public long getRequestedTime() {
-        return requestedTime;
+    public long getCreatedTime() {
+        return createdTime;
     }
 
-    public void setRequestedTime(long requestedTime) {
-        this.requestedTime = requestedTime;
+    public void setCreatedTime(long createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    public UserShortDetailResponse getUserDetail() {
+        return userDetail;
+    }
+
+    public void setUserDetail(UserShortDetailResponse userDetail) {
+        this.userDetail = userDetail;
     }
 }

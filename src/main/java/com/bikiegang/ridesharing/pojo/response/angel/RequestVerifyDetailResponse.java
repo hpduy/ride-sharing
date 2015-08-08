@@ -1,19 +1,25 @@
 package com.bikiegang.ridesharing.pojo.response.angel;
 
+import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.RequestVerify;
 import com.bikiegang.ridesharing.pojo.User;
+import com.bikiegang.ridesharing.pojo.response.UserDetailWithCertificatesResponse;
 
 /**
  * Created by hpduy17 on 7/31/15.
  */
-public class RequestVerifyDetailResponse extends RequestVerifySortDetailResponse {
+public class RequestVerifyDetailResponse {
     private long id;
-    private String userId = "";
-    private long requestedTime;
+    private long createdTime;
     private int numberOfCertificate;
+    private UserDetailWithCertificatesResponse userDetail = new UserDetailWithCertificatesResponse();
 
-    public RequestVerifyDetailResponse(RequestVerify that,User user) {
-        super(that);
+    public RequestVerifyDetailResponse(RequestVerify that) {
+        this.id = that.getId();
+        this.numberOfCertificate = that.getNumberOfCertificate();
+        User user = Database.getInstance().getUserHashMap().get(that.getUserId());
+        if (user != null)
+            this.userDetail = new UserDetailWithCertificatesResponse(user);
     }
 
     public long getId() {
@@ -24,12 +30,12 @@ public class RequestVerifyDetailResponse extends RequestVerifySortDetailResponse
         this.id = id;
     }
 
-    public String getUserId() {
-        return userId;
+    public long getCreatedTime() {
+        return createdTime;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setCreatedTime(long createdTime) {
+        this.createdTime = createdTime;
     }
 
     public int getNumberOfCertificate() {
@@ -40,11 +46,11 @@ public class RequestVerifyDetailResponse extends RequestVerifySortDetailResponse
         this.numberOfCertificate = numberOfCertificate;
     }
 
-    public long getRequestedTime() {
-        return requestedTime;
+    public UserDetailWithCertificatesResponse getUserDetail() {
+        return userDetail;
     }
 
-    public void setRequestedTime(long requestedTime) {
-        this.requestedTime = requestedTime;
+    public void setUserDetail(UserDetailWithCertificatesResponse userDetail) {
+        this.userDetail = userDetail;
     }
 }

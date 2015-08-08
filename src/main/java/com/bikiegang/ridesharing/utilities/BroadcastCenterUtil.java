@@ -1,5 +1,6 @@
 package com.bikiegang.ridesharing.utilities;
 
+import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.static_object.GCMTransferMessage;
 
@@ -39,26 +40,28 @@ public class BroadcastCenterUtil implements Runnable {
     public void run() {
         try {
             //connect different server;
-            URL url = new URL(urlStringPath);
-            HttpURLConnection myConn = (HttpURLConnection) url.openConnection();
-            myConn.setDoOutput(true); // do output or post
-            PrintWriter po = new PrintWriter(new OutputStreamWriter(myConn.getOutputStream(), "UTF-8"));
-            GCMTransferMessage gcmMessage = new GCMTransferMessage();
-            gcmMessage.setCollapseKey(collapseKey);
-            gcmMessage.setContents(contents);
-            gcmMessage.setUserIds(userIds);
-            gcmMessage.setSenderId(senderId);
-            po.println(Parser.ObjectToJSon(gcmMessage));
-            po.close();
-            //read data
-            StringBuffer strBuffer = new StringBuffer();
-            BufferedReader in = new BufferedReader(new InputStreamReader(myConn.getInputStream(), "UTF-8"));
-            String inputLine = null;
-            while ((inputLine = in.readLine()) != null) {
-                strBuffer.append(inputLine);
+            if(Database.databaseStatus != Database.TESTING) {
+                URL url = new URL(urlStringPath);
+                HttpURLConnection myConn = (HttpURLConnection) url.openConnection();
+                myConn.setDoOutput(true); // do output or post
+                PrintWriter po = new PrintWriter(new OutputStreamWriter(myConn.getOutputStream(), "UTF-8"));
+                GCMTransferMessage gcmMessage = new GCMTransferMessage();
+                gcmMessage.setCollapseKey(collapseKey);
+                gcmMessage.setContents(contents);
+                gcmMessage.setUserIds(userIds);
+                gcmMessage.setSenderId(senderId);
+                po.println(Parser.ObjectToJSon(gcmMessage));
+                po.close();
+                //read data
+                StringBuffer strBuffer = new StringBuffer();
+                BufferedReader in = new BufferedReader(new InputStreamReader(myConn.getInputStream(), "UTF-8"));
+                String inputLine = null;
+                while ((inputLine = in.readLine()) != null) {
+                    strBuffer.append(inputLine);
+                }
+                System.out.print(strBuffer.toString());
+                in.close();
             }
-            System.out.print(strBuffer.toString());
-            in.close();
         } catch (Exception ex) {
             ex.printStackTrace();
         }

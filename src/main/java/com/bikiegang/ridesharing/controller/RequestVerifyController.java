@@ -5,16 +5,14 @@ import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.database.IdGenerator;
 import com.bikiegang.ridesharing.parsing.NotificationParser;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.CertificateDetail;
-import com.bikiegang.ridesharing.pojo.RequestVerify;
-import com.bikiegang.ridesharing.pojo.User;
-import com.bikiegang.ridesharing.pojo.VerifiedCertificate;
+import com.bikiegang.ridesharing.pojo.*;
 import com.bikiegang.ridesharing.pojo.request.angel.GetListRequestVerifyRequest;
+import com.bikiegang.ridesharing.pojo.request.angel.GetRequestDetailRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.ReplyVerifyRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.RequestVerifyRequest;
 import com.bikiegang.ridesharing.pojo.response.Notification.ObjectNoti;
 import com.bikiegang.ridesharing.pojo.response.Notification.ReplyVerifyNoti;
-import com.bikiegang.ridesharing.pojo.response.Notification.RequestVerifyNoti;
+import com.bikiegang.ridesharing.pojo.response.angel.RequestVerifyDetailResponse;
 import com.bikiegang.ridesharing.pojo.response.angel.RequestVerifySortDetailResponse;
 import com.bikiegang.ridesharing.utilities.BroadcastCenterUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -64,7 +62,7 @@ public class RequestVerifyController {
                 return Parser.ObjectToJSon(false, "Some Certificates cannot insert", failCertificates);
             }
             //TODO push notification
-            RequestVerifyNoti noti = new RequestVerifyNoti(requestVerify);
+            RequestVerifySortDetailResponse noti = new RequestVerifySortDetailResponse(requestVerify);
             new BroadcastCenterUtil().pushNotification(NotificationParser.ObjectToJSon(ObjectNoti.REQUEST_VERIFY, noti), angel.getId(), BroadcastCenterUtil.ANGEL_SPECIAL_APP_SENDER_ID);
             return Parser.ObjectToJSon(true, "Request sent successfully");
 
@@ -81,7 +79,10 @@ public class RequestVerifyController {
         }
         RequestVerify requestVerify = database.getRequestVerifyHashMap().get(request.getRequestId());
         if (null == requestVerify) {
-            return Parser.ObjectToJSon(false, "User does not exist");
+            return Parser.ObjectToJSon(false, "Request does not exist");
+        }
+        if (requestVerify.getStatus() == RequestVerify.DENY) {
+            return Parser.ObjectToJSon(false, "Request was canceled or denied");
         }
         requestVerify.setStatus(request.getStatus());
         if (dao.update(requestVerify)) {
@@ -103,16 +104,38 @@ public class RequestVerifyController {
         }
         List<RequestVerifySortDetailResponse> responses = new ArrayList<>();
         List<Long> requestIds = database.getAngelRequestsBox().get(request.getAngelId());
-        if(requestIds != null){
-            for(long id : requestIds){
+        if (requestIds != null) {
+            for (long id : requestIds) {
                 RequestVerify requestVerify = database.getRequestVerifyHashMap().get(id);
-                if(requestVerify != null){
-                    responses.add(new RequestVerifySortDetailResponse(requestVerify));
+                if (requestVerify != null && requestVerify.getStatus() != RequestVerify.DENY) {
+                    int i;
+                    for (i = 0; i < responses.size(); i++) {
+                        if (requestVerify.getCreatedTime() > responses.get(i).getCreatedTime()) {
+                            break;
+                        }
+                    }
+                    RequestVerifySortDetailResponse response = new RequestVerifySortDetailResponse(requestVerify);
+                    responses.add(i, response);
                 }
             }
         }
-        return Parser.ObjectToJSon(true, "Get list requests successfully",responses);
+        return Parser.ObjectToJSon(true, "Get list requests successfully", responses);
     }
 
+    public String getRequestDetail(GetRequestDetailRequest request) throws JsonProcessingException {
+        if (request.getRequestId() <= 0) {
+            return Parser.ObjectToJSon(false, "'requestId' is invalid");
+        }
+        RequestVerify requestVerify = database.getRequestVerifyHashMap().get(request.getRequestId());
+        if (null == requestVerify) {
+            return Parser.ObjectToJSon(false, "Request does not exist");
+        }
+        // update current location for angel
+        new UserController().updateCurrentLocation(request);
+        if (!new UserController().checkSameBox(requestVerify.getAngelId(), requestVerify.getUserId()))
+            return Parser.ObjectToJSon(false, "You and requester is not in a same place at a same time");
+        RequestVerifyDetailResponse response = new RequestVerifyDetailResponse(requestVerify);
+        return Parser.ObjectToJSon(true, "Get request detail successfully", response);
+    }
 
 }

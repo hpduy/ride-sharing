@@ -22,7 +22,7 @@ public class VerifiedCertificate extends CertificateDetail implements PojoBase {
     @JsonIgnore
     public static final int AVAILABLE = 1;
     @JsonIgnore
-    public static final int OUT_OF_DATE = 2;
+    public static final int IS_EXPIRED = 2;
     public VerifiedCertificate() {
         super();
     }

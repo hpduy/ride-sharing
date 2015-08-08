@@ -8,6 +8,7 @@ import com.bikiegang.ridesharing.pojo.CertificateDetail;
 import com.bikiegang.ridesharing.pojo.RequestVerify;
 import com.bikiegang.ridesharing.pojo.VerifiedCertificate;
 import com.bikiegang.ridesharing.pojo.request.angel.CreateCertificateRequest;
+import com.bikiegang.ridesharing.pojo.request.angel.VerifyCertificateRequest;
 import com.bikiegang.ridesharing.utilities.DateTimeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -27,16 +28,13 @@ public class VerifiedCertificateController {
         }
         RequestVerify requestVerify = database.getRequestVerifyHashMap().get(request.getRequestId());
         if (null == requestVerify) {
-            return Parser.ObjectToJSon(false, "Request is not exist");
+            return Parser.ObjectToJSon(false, "Request does not exist");
         }
         if (request.getCertificates() == null) {
-            return Parser.ObjectToJSon(false, "Certificates is not exist");
+            return Parser.ObjectToJSon(false, "Certificates does not exist");
         }
         if (request.getCertificates().length == 0) {
             return Parser.ObjectToJSon(false, "Certificates is empty");
-        }
-        if (!request.getSignature().equals(requestVerify.getSignature())) {
-            return Parser.ObjectToJSon(false, "Signature is wrong");
         }
         List<CertificateDetail> failCertificates = createCertificate(request.getCertificates(), requestVerify.getUserId(), requestVerify.getAngelId(), VerifiedCertificate.AVAILABLE);
         if (!failCertificates.isEmpty()) {
@@ -55,6 +53,31 @@ public class VerifiedCertificateController {
             }
         }
         return failCertificates;
+    }
+
+    public String verifyCertificate(VerifyCertificateRequest request) throws JsonProcessingException {
+        if (null == request.getUserId()) {
+            return Parser.ObjectToJSon(false, "'userId' is invalid");
+        }
+        if (request.getCertificateId() <= 0) {
+            return Parser.ObjectToJSon(false, "'certificateId' is invalid");
+        }
+        VerifiedCertificate certificate = database.getVerifiedCertificateHashMap().get(request.getCertificateId());
+        if (null == certificate) {
+            return Parser.ObjectToJSon(false, "Certificate does not exist");
+        }
+        if (certificate.getStatus() == VerifiedCertificate.AVAILABLE){
+            return Parser.ObjectToJSon(false, "Certificate is verified");
+        }
+        if (certificate.getStatus() == VerifiedCertificate.IS_EXPIRED){
+            return Parser.ObjectToJSon(false, "Certificate is expired");
+        }
+        certificate.setStatus(VerifiedCertificate.AVAILABLE);
+        certificate.setEndorserId(request.getUserId());
+        certificate.setCreatedTime(DateTimeUtil.now());
+        if(dao.update(certificate))
+            return Parser.ObjectToJSon(true, "Verify successfully");
+        return Parser.ObjectToJSon(false, "Cannot verify this certificate");
     }
 
 

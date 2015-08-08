@@ -45,7 +45,7 @@ public class PlannedTripController {
         if (plannedTrip == null) {
             return Parser.ObjectToJSon(false, "Planned Trip is not found");
         }
-        PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(getPlannedTripSortDetail(plannedTrip,request.getUserId()), plannedTrip.getRawRoutingResult().toString());
+        PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(getPlannedTripSortDetail(plannedTrip,request.getUserId()), plannedTrip.getRawRoutingResult());
         return Parser.ObjectToJSon(true, "Get Planned Trip detail successfully", plannedTripDetailResponse);
     }
 
@@ -92,7 +92,7 @@ public class PlannedTripController {
             for (PlannedTrip r : plannedTripList) {
                 User creator = database.getUserHashMap().get(r.getCreatorId());
                 if (null != creator) {
-                    PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(getPlannedTripSortDetail(r,request.getCreatorId()), r.getRawRoutingResult().toString());
+                    PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(getPlannedTripSortDetail(r,request.getCreatorId()), r.getRawRoutingResult());
                     UserDetailWithPlannedTripDetailResponse userPlannedTripDetail = new UserDetailWithPlannedTripDetailResponse(creator, plannedTripDetailResponse);
                     details.add(userPlannedTripDetail);
                 }
@@ -179,14 +179,14 @@ public class PlannedTripController {
             return Parser.ObjectToJSon(false, "Radius is invalid (< 0)");
         }
         LatLng center = new LatLng(request.getCenterLat(), request.getCenterLng());
-        List<String> plannedTripsIds = database.getGeoCellStartLocation().getIdsInFrame(center, request.getRadius());
+        List<Long> plannedTripsIds = database.getGeoCellStartLocation().getIdsInFrame(center, request.getRadius());
         List<PlannedTrip> plannedTrips = getPlannedTripsFromPlannedTripIds(plannedTripsIds);
         sortPlannedTripByDistance(center, plannedTrips);
         List<UserDetailWithPlannedTripDetailResponse> details = new ArrayList<>();
         for (PlannedTrip r : plannedTrips) {
             User creator = database.getUserHashMap().get(r.getCreatorId());
             if (null != creator) {
-                PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(getPlannedTripSortDetail(r,request.getUserId()), r.getRawRoutingResult().toString());
+                PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(getPlannedTripSortDetail(r,request.getUserId()), r.getRawRoutingResult());
                 UserDetailWithPlannedTripDetailResponse userPlannedTripDetail = new UserDetailWithPlannedTripDetailResponse(creator, plannedTripDetailResponse);
                 details.add(userPlannedTripDetail);
             }
@@ -237,7 +237,7 @@ public class PlannedTripController {
             PlannedTrip r = plannedTrips.get(i);
             User creator = database.getUserHashMap().get(r.getCreatorId());
             if (null != creator) {
-                PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(getPlannedTripSortDetail(r,senderId), r.getRawRoutingResult().toString());
+                PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(getPlannedTripSortDetail(r,senderId), r.getRawRoutingResult());
                 UserDetailWithPlannedTripDetailResponse userPlannedTripDetail = new UserDetailWithPlannedTripDetailResponse(creator, plannedTripDetailResponse);
                 userDetailWithPlannedTripDetailResponses[i] = userPlannedTripDetail;
             }
@@ -247,7 +247,7 @@ public class PlannedTripController {
 
     public UserDetailWithPlannedTripDetailResponse getUserAndPlannedTripDetailFromObject(PlannedTrip plannedTrip) throws IOException {
         User creator = database.getUserHashMap().get(plannedTrip.getCreatorId());
-        PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(getPlannedTripSortDetail(plannedTrip,"this is my trip"), plannedTrip.getRawRoutingResult().toString());
+        PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(getPlannedTripSortDetail(plannedTrip,"this is my trip"), plannedTrip.getRawRoutingResult());
         UserDetailWithPlannedTripDetailResponse userPlannedTripDetail = new UserDetailWithPlannedTripDetailResponse(creator, plannedTripDetailResponse);
         return userPlannedTripDetail;
     }
@@ -282,7 +282,7 @@ public class PlannedTripController {
 
     public PlannedTripDetailResponse getPlannedTripDetailResponse(PlannedTrip plannedTrip, String senderId) throws IOException {
 
-        PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(getPlannedTripSortDetail(plannedTrip, senderId), plannedTrip.getRawRoutingResult().toString());
+        PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(getPlannedTripSortDetail(plannedTrip, senderId), plannedTrip.getRawRoutingResult());
         return plannedTripDetailResponse;
     }
 
@@ -299,12 +299,12 @@ public class PlannedTripController {
         });
     }
 
-    public List<PlannedTrip> getPlannedTripsFromPlannedTripIds(List<String> ids) {
+    public List<PlannedTrip> getPlannedTripsFromPlannedTripIds(List<Long> ids) {
 
         List<PlannedTrip> plannedTrips = new ArrayList<>();
         if (ids != null) {
-            for (String id : ids) {
-                PlannedTrip plannedTrip = database.getPlannedTripHashMap().get(Long.parseLong(id));
+            for (long id : ids) {
+                PlannedTrip plannedTrip = database.getPlannedTripHashMap().get(id);
                 if (null != plannedTrip) {
                     plannedTrips.add(plannedTrip);
                 }

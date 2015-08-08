@@ -8,17 +8,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CreateCertificateRequest {
-    private String signature;
     private long requestId;
     private String note;
     CertificateDetail[] certificates;
-    public String getSignature() {
-        return signature;
-    }
-
-    public void setSignature(String signature) {
-        this.signature = signature;
-    }
 
     public long getRequestId() {
         return requestId;

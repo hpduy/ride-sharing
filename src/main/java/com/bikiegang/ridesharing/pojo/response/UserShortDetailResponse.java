@@ -24,7 +24,7 @@ public class UserShortDetailResponse {
             this.id = user.getId();
             this.firstName = user.getFirstName();
             this.lastName = user.getLastName();
-            this.profilePictureLink = Path.getProfilePictureUrlFromPath(user.getProfilePictureLink());
+            this.profilePictureLink = Path.getUrlFromPath(user.getProfilePictureLink());
             this.currentLocation = user.getCurrentLocation();
             this.birthDay = user.getBirthDay();
             this.status = user.getStatus();

@@ -61,6 +61,7 @@ public class RequestMakeTripDao {
                     listRequest = new ArrayList<>();
                 }
                 listRequest.add(obj.getId());
+                mapReceiver.put(obj.getDriverPlannedTripId(),listRequest);
             } else {
                 if (obj.getSenderRole() == User.PASSENGER) {
                     mapSender.put(obj.getDriverPlannedTripId(), obj.getId());

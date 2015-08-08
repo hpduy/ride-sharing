@@ -44,13 +44,13 @@ public class LinkedLocationDao {
             // more (put to geocell)
             if (obj.getRefType() == LinkedLocation.IN_PLANNED_TRIP) {
                 PlannedTrip pt = database.getPlannedTripHashMap().get(obj.getRefId());
-                GeoCell geoCell = null;
+                GeoCell<Long> geoCell = null;
                 if (pt.getRole() == User.DRIVER)
                     geoCell = database.getGeoCellDriver();
                 if (pt.getRole() == User.PASSENGER)
                     geoCell = database.getGeoCellPassenger();
                 if (null != geoCell)
-                    geoCell.putToCell(obj);
+                    geoCell.putToCell(obj,obj.getId());
             }
             //Step 2: put redis
             result = cache.hset(obj.getClass().getName(),
@@ -94,13 +94,13 @@ public class LinkedLocationDao {
             // remove from geo cell
             if (obj.getRefType() == LinkedLocation.IN_PLANNED_TRIP) {
                 PlannedTrip pt = database.getPlannedTripHashMap().get(obj.getRefId());
-                GeoCell geoCell = null;
+                GeoCell<Long> geoCell = null;
                 if (pt.getRole() == User.DRIVER)
                     geoCell = database.getGeoCellDriver();
                 if (pt.getRole() == User.PASSENGER)
                     geoCell = database.getGeoCellPassenger();
                 if (null != geoCell){
-                    geoCell.removeFromCell(obj);
+                    geoCell.removeFromCell(obj,obj.getId());
                 }
             }
             //Step 1: put in hashmap
@@ -152,14 +152,14 @@ public class LinkedLocationDao {
             // more (put to geocell)
             if (obj.getRefType() == LinkedLocation.IN_PLANNED_TRIP) {
                 PlannedTrip pt = database.getPlannedTripHashMap().get(obj.getRefId());
-                GeoCell geoCell = null;
+                GeoCell<Long> geoCell = null;
                 if (pt.getRole() == User.DRIVER)
                     geoCell = database.getGeoCellDriver();
                 if (pt.getRole() == User.PASSENGER)
                     geoCell = database.getGeoCellPassenger();
                 if (null != geoCell){
-                    geoCell.removeFromCell(older);
-                    geoCell.putToCell(obj);
+                    geoCell.removeFromCell(older,older.getId());
+                    geoCell.putToCell(obj,obj.getId());
                 }
             }
             //Step 1: put in hashmap

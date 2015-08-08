@@ -3,6 +3,7 @@ package com.bikiegang.ridesharing.pojo;
 
 import com.bikiegang.ridesharing.utilities.DateTimeUtil;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -80,6 +81,13 @@ public class LatLng {
         return String.format("%s,%s",this.getLat(),this.getLng());
     }
 
+    public String toStringFromList(List<LatLng> latLngs){
+        String line = "";
+        for (LatLng ll : latLngs) {
+            line += "(" + ll.getLat() + "," + ll.getLng() + ") ";
+        }
+        return line;
+    }
     //GET-SET METHOD
 
 

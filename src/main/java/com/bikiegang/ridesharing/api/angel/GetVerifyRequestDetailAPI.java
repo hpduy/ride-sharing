@@ -4,12 +4,13 @@
  * and open the template in the editor.
  */
 
-package com.bikiegang.ridesharing.api;
+package com.bikiegang.ridesharing.api.angel;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
-import com.bikiegang.ridesharing.controller.UserController;
+import com.bikiegang.ridesharing.controller.RequestVerifyController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.request.UpdateCurrentLocationRequest;
+import com.bikiegang.ridesharing.pojo.request.angel.GetRequestDetailRequest;
+import com.bikiegang.ridesharing.pojo.response.angel.RequestVerifyDetailResponse;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -21,10 +22,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class  UpdateCurrentLocationAPI extends HttpServlet {
+public class GetVerifyRequestDetailAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
-    public Class requestClass = UpdateCurrentLocationRequest.class;
-    public Class responseClass = null;
+    public Class requestClass = GetRequestDetailRequest.class;
+    public Class responseClass = RequestVerifyDetailResponse.class;
     public boolean responseIsArray = false;
 
     /**
@@ -49,9 +50,9 @@ public class  UpdateCurrentLocationAPI extends HttpServlet {
                 jsonData.append(line);
             }
             logger.info(jsonData.toString());
-            UpdateCurrentLocationRequest updateCurrentLocationRequest = (UpdateCurrentLocationRequest) Parser.JSonToObject(jsonData.toString(), UpdateCurrentLocationRequest.class);
-            UserController controller = new UserController();
-            String result = controller.updateCurrentLocation(updateCurrentLocationRequest);
+            GetRequestDetailRequest getRequestDetailRequest = (GetRequestDetailRequest) Parser.JSonToObject(jsonData.toString(), GetRequestDetailRequest.class);
+            RequestVerifyController controller = new RequestVerifyController();
+            String result = controller.getRequestDetail(getRequestDetailRequest);
             logger.info(result);
             out.print(result);
         } catch (Exception ex) {
@@ -99,6 +100,6 @@ public class  UpdateCurrentLocationAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Update user current location";
+        return "Get detail of verify request";
     }
 }

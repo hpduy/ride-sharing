@@ -18,7 +18,7 @@ public class PolyLineProcess {
         while (index < len) {
             int b, shift = 0, result = 0;
             do {
-                 b = encoded.charAt(index++) - 63;
+                b = encoded.charAt(index++) - 63;
                 result |= (b & 0x1f) << shift;
                 shift += 5;
             } while (b >= 0x20);
@@ -42,7 +42,12 @@ public class PolyLineProcess {
     }
 
     public static void main(String... args) {
-        String poly = "uj}`Ago_jS_@k@}@aAo@Yu@s@GI?CXaBHsAX@bEJbAJfCd@AJRE~@RpBt@bAj@lD|C|AbBp@|@Tn@b@xB^ZTDX?f@XJRTb@|B`CvE~EbA~@bHtHtD`EmAhAyBvB_@^|C`DrHzHjArARHdD{HzCnA`DdAnBZfEm@tHuA~GuAhDm@zVsErGqAnOsC|_@aHbLuB~@UQc@m@q@yFoGaCkCaCcBcBmAgE_D_IeFIMrBw@fI{BzAg@zFyAdNgEbCo@|@[tGaC`@AjFw@bFq@LTEWgBTs@}Ew@uEGe@c@BIAUD[Bo@F[A}BWc@IPiH@gD";
-        System.out.println(decodePoly(poly).size());
+        String poly = "ao|`Aeo{iSw@e@IIAM@Of@sAFOAMg@e@c@Sc@M{@OaAOq@C@c@PgEJoC?cBV}G`@oMPg@PmE\\\\\\\\_JhAoY^eK`@uNNaGNqFXiFJcBP{GZqINaC~@sV`@yMXiHJcCkDB\\";
+        List<LatLng> latLngs = decodePoly(poly);
+        String line = "";
+        for (LatLng ll : latLngs) {
+            line += "(" + ll.getLat() + "," + ll.getLng() + ") ";
+        }
+        System.out.print(line);
     }
 }

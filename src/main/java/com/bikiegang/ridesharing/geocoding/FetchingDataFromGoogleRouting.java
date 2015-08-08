@@ -55,7 +55,7 @@ public class FetchingDataFromGoogleRouting {
 
     private List<LinkedLocation> getLocations(GoogleRoute googleRoute, long plannedTripId) {
         // decode polyline
-        GeoCell geoCell = new GeoCell();
+        GeoCell<Long> geoCell = new GeoCell<>(GeoCell.CELL_LEN_OF_PLANNED_TRIP);
         List<LatLng> latLngs = PolyLineProcess.decodePoly(googleRoute.getOverview_polyline().getPoints());
         List<String> cellcodes = geoCell.getCellCodesFromLatLngs(latLngs);
         long[] timeForCellCodes = new long[cellcodes.size()];
@@ -102,7 +102,7 @@ public class FetchingDataFromGoogleRouting {
 
     private void loadTimeRecursive(Step[] steps, long[] timeForCellCodes, List<String> cellcodes) {
         try {
-            GeoCell geoCell = new GeoCell();
+            GeoCell<Long> geoCell = new GeoCell<>(GeoCell.CELL_LEN_OF_PLANNED_TRIP);
             for (Step step : steps) {
                 // get time
                 String cellCodeStart = geoCell.getCellCodeFromLatLng(step.getStart_location());

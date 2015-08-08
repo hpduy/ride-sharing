@@ -4,12 +4,12 @@
  * and open the template in the editor.
  */
 
-package com.bikiegang.ridesharing.api;
+package com.bikiegang.ridesharing.api.angel;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
-import com.bikiegang.ridesharing.controller.UserController;
+import com.bikiegang.ridesharing.controller.VerifiedCertificateController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.request.UpdateCurrentLocationRequest;
+import com.bikiegang.ridesharing.pojo.request.angel.VerifyCertificateRequest;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -21,9 +21,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class  UpdateCurrentLocationAPI extends HttpServlet {
+public class VerifyCertificateAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
-    public Class requestClass = UpdateCurrentLocationRequest.class;
+    public Class requestClass = VerifyCertificateRequest.class;
     public Class responseClass = null;
     public boolean responseIsArray = false;
 
@@ -49,9 +49,9 @@ public class  UpdateCurrentLocationAPI extends HttpServlet {
                 jsonData.append(line);
             }
             logger.info(jsonData.toString());
-            UpdateCurrentLocationRequest updateCurrentLocationRequest = (UpdateCurrentLocationRequest) Parser.JSonToObject(jsonData.toString(), UpdateCurrentLocationRequest.class);
-            UserController controller = new UserController();
-            String result = controller.updateCurrentLocation(updateCurrentLocationRequest);
+            VerifyCertificateRequest verifyCertificateRequest = (VerifyCertificateRequest) Parser.JSonToObject(jsonData.toString(), VerifyCertificateRequest.class);
+            VerifiedCertificateController controller = new VerifiedCertificateController();
+            String result = controller.verifyCertificate(verifyCertificateRequest);
             logger.info(result);
             out.print(result);
         } catch (Exception ex) {
@@ -99,6 +99,6 @@ public class  UpdateCurrentLocationAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Update user current location";
+        return "Reply a request which other user have sent to you";
     }
 }

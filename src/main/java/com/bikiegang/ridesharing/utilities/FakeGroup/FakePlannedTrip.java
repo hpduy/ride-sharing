@@ -93,6 +93,34 @@ public class FakePlannedTrip {
         return -1;
     }
 
+    public long fakePlannedTrip( String creatorId, boolean hasHelmet, int role) throws Exception {
+        LatLng[] latlngs = new LatLng[2];
+        latlngs[0] = new LatLng(10.7925,106.6375);
+        latlngs[1] = new LatLng(10.8075,106.6825);
+        // get new google routing result for fake trip
+        JSONObject googleRoutingResult = new GoogleDirectionAPIProcess().direction(latlngs);
+        // create fake planned trip
+        CreatePlannedTripRequest createRequest = new CreatePlannedTripRequest();
+        createRequest.setCreatorId(creatorId);
+        createRequest.setGoTime(DateTimeUtil.now());
+        createRequest.setRole(role);
+        createRequest.setGoogleRoutingResult(googleRoutingResult.toString());
+        createRequest.setIsParing(false);// no paring
+        createRequest.setPrice(-1);// default price
+        createRequest.setHasHelmet(hasHelmet);
+        String response = new PlannedTripController().createPlannedTrip(createRequest);
+        Parser parser = Parser.JSonToParser(response, CreatePlannedTripResponse.class);
+        if (parser.isSuccess()) {
+            if (parser.getResult() != null) {
+                CreatePlannedTripResponse createPlannedTripResponse = (CreatePlannedTripResponse) parser.getResult();
+                return createPlannedTripResponse.getYourPlannedTrip().getPlannedTrip().getId();
+            }
+
+
+        }
+        return -1;
+    }
+
     public void fakePlannedTrip(PlannedTrip rawSrc) throws Exception {
         int length = 4;
         for (int i = 0; i < length; i++) {

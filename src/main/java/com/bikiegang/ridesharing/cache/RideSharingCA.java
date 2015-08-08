@@ -178,7 +178,7 @@ public class RideSharingCA {
                     if (pt.getRole() == User.PASSENGER)
                         geoCell = database.getGeoCellPassenger();
                     if (null != geoCell)
-                        geoCell.putToCell(obj);
+                        geoCell.putToCell(obj,obj.getId());
                 }
             }
 
@@ -256,7 +256,7 @@ public class RideSharingCA {
                 String value = entrySet.getValue();
                 PlannedTrip obj = (PlannedTrip) JSONUtil.DeSerialize(value, PlannedTrip.class);
                 database.getPlannedTripHashMap().put(ConvertUtils.toLong(key), obj);
-                database.getGeoCellStartLocation().putToCell(obj.getStartLocation(), String.valueOf(obj.getId()));
+                database.getGeoCellStartLocation().putToCell(obj.getStartLocation(), obj.getId());
             }
 
             //User=>plannedtrip

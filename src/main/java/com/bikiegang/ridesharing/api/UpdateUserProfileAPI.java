@@ -23,7 +23,7 @@ import java.io.PrintWriter;
 
 public class UpdateUserProfileAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
-    public Class requestClass = UpdateUserProfileAPI.class;
+    public Class requestClass = UpdateProfileRequest.class;
     public Class responseClass = null;
     public boolean responseIsArray = false;
 

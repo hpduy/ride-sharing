@@ -40,7 +40,8 @@ public class Database {
     private HashMap<Long, RequestMakeTrip> requestMakeTripHashMap = new HashMap<>();
     private HashMap<Long, RequestVerify> requestVerifyHashMap = new HashMap<>();
     private HashMap<Long, VerifiedCertificate> verifiedCertificateHashMap = new HashMap<>();
-
+    private HashMap<Long, AngelGroup> angelGroupHashMap = new HashMap<>();
+    private HashMap<Long, AngelGroupMember> angelGroupMemberHashMap = new HashMap<>();
     //REFERENCE
     /**
      * USER
@@ -87,12 +88,20 @@ public class Database {
     private HashMap<Long, List<Long>> plannedTripIdRFLinkedLocations = new HashMap<>(); //<plannedTripId,<LinkedLocationId>>
 
     /**
+     * ANGEL GROUP MEMBER
+     */
+    private HashMap<String, HashSet<Long>> UserIdRFAngelGroups = new HashMap<>(); // <userId,<angelGroupId>>
+    private HashMap<Long, HashSet<String>> AngelGroupIdRFUsers = new HashMap<>(); // <angelGroupId,<userId>>
+    private HashMap<String, Long> UserAndGroupRFAngelGroupMember = new HashMap<>(); // <userId#angelGroupId, angelGroupMemberId>
+
+    /**
      * GEOCELL
      */
-    private GeoCell geoCellDriver = new GeoCell(); // for plannedTrip
-    private GeoCell geoCellPassenger = new GeoCell();// for plannedTrip
-    private GeoCell geoCellCurrentLocation = new GeoCell();
-    private GeoCell geoCellStartLocation = new GeoCell();
+    private GeoCell<Long> geoCellDriver = new GeoCell<>(GeoCell.CELL_LEN_OF_PLANNED_TRIP); // for plannedTrip
+    private GeoCell<Long> geoCellPassenger = new GeoCell<>(GeoCell.CELL_LEN_OF_PLANNED_TRIP);// for plannedTrip
+    private GeoCell<String> geoCellCurrentLocation = new GeoCell<>(GeoCell.CELL_LEN_OF_PT_START_LOCATION);
+    private GeoCell<Long> geoCellStartLocation = new GeoCell<>(GeoCell.CELL_LEN_OF_PT_START_LOCATION);
+    private GeoCell<Long> geoCellAngelGroup= new GeoCell<>(GeoCell.CELL_LEN_OF_ANGEL_GROUP);
 
     //    /*PERSONAL FUNCTION*/
     public void restore() {
@@ -144,6 +153,14 @@ public class Database {
 
     public HashMap<Long, VerifiedCertificate> getVerifiedCertificateHashMap() {
         return verifiedCertificateHashMap;
+    }
+
+    public HashMap<Long, AngelGroup> getAngelGroupHashMap() {
+        return angelGroupHashMap;
+    }
+
+    public HashMap<Long, AngelGroupMember> getAngelGroupMemberHashMap() {
+        return angelGroupMemberHashMap;
     }
 
     /*REFERENCE GET-SET*/
@@ -231,33 +248,57 @@ public class Database {
         return angelRequestsBox;
     }
 
+    public HashMap<String, HashSet<Long>> getUserIdRFAngelGroups() {
+        return UserIdRFAngelGroups;
+    }
+
+    public HashMap<Long, HashSet<String>> getAngelGroupIdRFUsers() {
+        return AngelGroupIdRFUsers;
+    }
+
+    public HashMap<String, Long> getUserAndGroupRFAngelGroupMember() {
+        return UserAndGroupRFAngelGroupMember;
+    }
+
     /*GEOCELL GET-SET*/
-    public GeoCell getGeoCellDriver() {
+
+    public GeoCell<Long> getGeoCellDriver() {
         return geoCellDriver;
     }
 
-    public void setGeoCellDriver(GeoCell geoCellDriver) {
+    public void setGeoCellDriver(GeoCell<Long> geoCellDriver) {
         this.geoCellDriver = geoCellDriver;
     }
 
-    public GeoCell getGeoCellPassenger() {
+    public GeoCell<Long> getGeoCellPassenger() {
         return geoCellPassenger;
     }
 
-    public void setGeoCellPassenger(GeoCell geoCellPassenger) {
+    public void setGeoCellPassenger(GeoCell<Long> geoCellPassenger) {
         this.geoCellPassenger = geoCellPassenger;
-
     }
 
-    public GeoCell getGeoCellCurrentLocation() {
+    public GeoCell<String> getGeoCellCurrentLocation() {
         return geoCellCurrentLocation;
     }
 
-    public GeoCell getGeoCellStartLocation() {
+    public void setGeoCellCurrentLocation(GeoCell<String> geoCellCurrentLocation) {
+        this.geoCellCurrentLocation = geoCellCurrentLocation;
+    }
+
+    public GeoCell<Long> getGeoCellStartLocation() {
         return geoCellStartLocation;
     }
 
-    public void setGeoCellStartLocation(GeoCell geoCellStartLocation) {
+    public void setGeoCellStartLocation(GeoCell<Long> geoCellStartLocation) {
         this.geoCellStartLocation = geoCellStartLocation;
+    }
+
+    public GeoCell<Long> getGeoCellAngelGroup() {
+        return geoCellAngelGroup;
+    }
+
+    public void setGeoCellAngelGroup(GeoCell<Long> geoCellAngelGroup) {
+        this.geoCellAngelGroup = geoCellAngelGroup;
     }
 }

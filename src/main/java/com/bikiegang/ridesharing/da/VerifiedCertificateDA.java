@@ -13,9 +13,10 @@ import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.pojo.PojoBase;
 import com.bikiegang.ridesharing.pojo.VerifiedCertificate;
 import com.bikiegang.ridesharing.utilities.Const;
+import org.apache.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import org.apache.log4j.Logger;
 
 /**
  *
@@ -63,14 +64,12 @@ public class VerifiedCertificateDA implements IDA {
                 stmt.setString(4, value.getOwnerId());
                 stmt.setString(5, value.getEndorserId());
                 stmt.setInt(6, value.getStatus());
-                stmt.setString(7, value.getFullname());
-                stmt.setString(8, value.getIdNumber());
-                stmt.setString(9, value.getDayOfBirth());
-                stmt.setString(10, value.getAddress());
-                stmt.setString(11, value.getRegisterDay());
-                stmt.setString(12, value.getExpiredDay());
-                stmt.setString(13, StringUtils.join(value.getImage(), ","));
-                stmt.setInt(14, value.getType());
+                stmt.setString(7, value.getIdNumber());
+                stmt.setString(8, value.getAddress());
+                stmt.setString(9, value.getRegoDay());
+                stmt.setString(10, value.getExpiryDay());
+                stmt.setString(11, StringUtils.join(value.getImageLinks(), ","));
+                stmt.setInt(12, value.getType());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {
@@ -100,15 +99,13 @@ public class VerifiedCertificateDA implements IDA {
                 stmt.setString(4, value.getOwnerId());
                 stmt.setString(5, value.getEndorserId());
                 stmt.setInt(6, value.getStatus());
-                stmt.setString(7, value.getFullname());
-                stmt.setString(8, value.getIdNumber());
-                stmt.setString(9, value.getDayOfBirth());
-                stmt.setString(10, value.getAddress());
-                stmt.setString(11, value.getRegisterDay());
-                stmt.setString(12, value.getExpiredDay());
-                stmt.setString(13, StringUtils.join(value.getImage(), ","));
-                stmt.setInt(14, value.getType());
-                stmt.setLong(15, value.getId());
+                stmt.setString(7, value.getIdNumber());
+                stmt.setString(8, value.getAddress());
+                stmt.setString(9, value.getRegoDay());
+                stmt.setString(10, value.getExpiryDay());
+                stmt.setString(11, StringUtils.join(value.getImageLinks(), ","));
+                stmt.setInt(12, value.getType());
+                stmt.setLong(13, value.getId());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {

@@ -8,18 +8,12 @@ import java.util.Set;
  * Created by hpduy17 on 3/20/15.
  */
 public class IdGenerator {
-    private static long linkedLocationId = 0;
-    private static long plannedTripId = 0;
-    private static long tripId = 0;
-    private static long requestMakeTripId = 0;
-    private static long requestVerifyId = 0;
-    private static long verifiedCertificatedId = 0;
-    private static long groupPlannedTripId = 0;
     private static Database database = Database.getInstance();
 
 
     public static synchronized long getLinkedLocationId() {
         Set<Long> idSet = database.getLinkedLocationHashMap().keySet();
+        long linkedLocationId;
         do {
             linkedLocationId = RandomUtils.nextLong();
         }
@@ -29,6 +23,7 @@ public class IdGenerator {
 
     public static synchronized long getPlannedTripId() {
         Set<Long> idSet = database.getPlannedTripHashMap().keySet();
+        long plannedTripId;
         do {
             plannedTripId = RandomUtils.nextLong();
         }
@@ -38,6 +33,7 @@ public class IdGenerator {
 
     public static synchronized long getTripId() {
         Set<Long> idSet = database.getTripHashMap().keySet();
+        long tripId;
         do {
             tripId = RandomUtils.nextLong();
         }
@@ -47,6 +43,7 @@ public class IdGenerator {
 
     public static synchronized long getRequestMakeTripId() {
         Set<Long> idSet = database.getRequestMakeTripHashMap().keySet();
+        long requestMakeTripId;
         do {
             requestMakeTripId = RandomUtils.nextLong();
         }
@@ -54,8 +51,9 @@ public class IdGenerator {
         return requestMakeTripId;
     }
 
-    public static long getGroupPlannedTripId() {
+    public static synchronized long getGroupPlannedTripId() {
         Set<Long> idSet = database.getGroupIdRFPlannedTrips().keySet();
+        long groupPlannedTripId;
         do {
             groupPlannedTripId = RandomUtils.nextLong();
         }
@@ -63,8 +61,9 @@ public class IdGenerator {
         return groupPlannedTripId;
     }
 
-    public static long getRequestVerifyId() {
-        Set<Long > idSet = database.getRequestVerifyHashMap().keySet();
+    public static synchronized long getRequestVerifyId() {
+        Set<Long> idSet = database.getRequestVerifyHashMap().keySet();
+        long requestVerifyId;
         do {
             requestVerifyId = RandomUtils.nextLong();
         }
@@ -72,12 +71,33 @@ public class IdGenerator {
         return requestVerifyId;
     }
 
-    public static long getVerifiedCertificatedId() {
-        Set<Long > idSet = database.getVerifiedCertificateHashMap().keySet();
+    public static synchronized long getVerifiedCertificatedId() {
+        Set<Long> idSet = database.getVerifiedCertificateHashMap().keySet();
+        long verifiedCertificatedId;
         do {
             verifiedCertificatedId = RandomUtils.nextLong();
         }
         while (idSet.contains(verifiedCertificatedId));
         return verifiedCertificatedId;
+    }
+
+    public static synchronized long getAngelGroupId() {
+        Set<Long> idSet = database.getAngelGroupHashMap().keySet();
+        long angelGroupId;
+        do {
+            angelGroupId = RandomUtils.nextLong();
+        }
+        while (idSet.contains(angelGroupId));
+        return angelGroupId;
+    }
+
+    public static synchronized long getAngelGroupMemberId() {
+        Set<Long> idSet = database.getAngelGroupMemberHashMap().keySet();
+        long angelGroupMemberId;
+        do {
+            angelGroupMemberId = RandomUtils.nextLong();
+        }
+        while (idSet.contains(angelGroupMemberId));
+        return angelGroupMemberId;
     }
 }

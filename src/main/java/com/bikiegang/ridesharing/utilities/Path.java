@@ -18,7 +18,7 @@ public class Path {
     private static final String serverPort = "8080";
     private static final String appName = "RideSharing";
 
-    private static String dataPath,imagePath,logPath;
+    private static String dataPath, imagePath, logPath;
     private static String serverAddress = "";
     private static String defaultAvatar = "";
 
@@ -45,14 +45,21 @@ public class Path {
         }
     }
 
-    public static String getProfilePictureUrlFromPath(String profilePicturePath){
+    public static String getUrlFromPath(String path) {
         try {
-            URL url = new URL(profilePicturePath);
+            URL url = new URL(path);
             return url.toString();
         } catch (MalformedURLException e) {
             // it wasn't a URL
-            return Path.getServerAddress() + (profilePicturePath.replaceAll(" ","").equals("") ? defaultAvatar : profilePicturePath);
+            return Path.getServerAddress() + (path.replaceAll(" ", "").equals("") ? defaultAvatar : path);
         }
+    }
+
+    public static String[] getUrlsFromPaths(String[] paths) {
+        String[] urls = new String[paths.length];
+        for (int i = 0; i < paths.length; i++)
+            urls[i] = getUrlFromPath(paths[i]);
+        return urls;
     }
 
     @NotNull
@@ -83,6 +90,6 @@ public class Path {
 
     public static void setServerAddress(String serverAddress) {
 
-        Path.serverAddress = "http://"+serverAddress+":"+serverPort+"/"+appName;
+        Path.serverAddress = "http://" + serverAddress + ":" + serverPort + "/" + appName;
     }
 }

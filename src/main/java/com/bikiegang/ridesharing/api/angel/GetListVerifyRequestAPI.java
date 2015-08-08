@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class GetListRequestVerifyAPI extends HttpServlet {
+public class GetListVerifyRequestAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
     public Class requestClass = GetListRequestVerifyRequest.class;
     public Class responseClass = RequestVerifySortDetailResponse.class;

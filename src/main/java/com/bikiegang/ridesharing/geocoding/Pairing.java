@@ -8,9 +8,7 @@ import com.bikiegang.ridesharing.pojo.PlannedTrip;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.utilities.DateTimeUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by hpduy17 on 6/23/15.
@@ -78,11 +76,11 @@ public class Pairing {
     private List<PlannedTrip> getDriversCompatible(PlannedTrip plannedTrip, LinkedLocation src, LinkedLocation des) throws Exception {
         List<PlannedTrip> listDriverPlannedTripResult = new ArrayList<>();
         // you are passenger -> get start and end location of passenger
-        GeoCell geoCell = database.getGeoCellDriver();
+        GeoCell<Long> geoCell = database.getGeoCellDriver();
 
         // get all plannedTrip id in cell and neighbor cell
-        List<String> srcNeighborList = new ArrayList<>(geoCell.getIdsInCellAndNeighbor(src.getLat(), src.getLng()));
-        List<String> desNeighborList = new ArrayList<>(geoCell.getIdsInCellAndNeighbor(des.getLat(), des.getLng()));
+        List<Long> srcNeighborList = new ArrayList<>(geoCell.getIdsInCellAndNeighbor(src.getLat(), src.getLng()));
+        List<Long> desNeighborList = new ArrayList<>(geoCell.getIdsInCellAndNeighbor(des.getLat(), des.getLng()));
 
         // remover duplicate location
         srcNeighborList.remove(String.valueOf(src.getId()));
@@ -91,15 +89,12 @@ public class Pairing {
 
         //TODO START TO PARE
 
-        for (String srcStringId : srcNeighborList) {
+        for (long  srcId : srcNeighborList) {
 
             // parse to long
-            long srcId = Long.parseLong(srcStringId);
             LinkedLocation nearSrcLocation = database.getLinkedLocationHashMap().get(srcId);
-            for (String desStringId : desNeighborList) {
+            for (long desId : desNeighborList) {
 
-                // parse to long
-                long desId = Long.parseLong(desStringId);
                 LinkedLocation nearDesLocation = database.getLinkedLocationHashMap().get(desId);
 
                 // check same plannedTrip ? -> that means plannedTrip via location near des and src or not
@@ -154,7 +149,7 @@ public class Pairing {
 
     private List<PlannedTrip> getPassengersCompatible(PlannedTrip plannedTrip, List<LinkedLocation> linkedLocations) throws Exception {
         List<PlannedTrip> listPassengerPlannedTripResult = new ArrayList<>();
-        GeoCell geoCellPassenger = database.getGeoCellPassenger();
+        GeoCell<Long> geoCellPassenger = database.getGeoCellPassenger();
         // get list cell code of driver plannedTrip
         List<String> driverPlannedTripCellCodes = geoCellPassenger.getCellCodesFromLinkLocation(linkedLocations);
 
@@ -162,13 +157,12 @@ public class Pairing {
         Bound bound = new FetchingDataFromGoogleRouting().getBoundFromRoutingResult(plannedTrip);
 
         // get list passenger plannedTrip in frame
-        List<String> passengersPlannedTripLinkedLocationIds = geoCellPassenger.getIdsInFrame(bound.getNortheast(), bound.getSouthwest());
+        List<Long> passengersPlannedTripLinkedLocationIds = geoCellPassenger.getIdsInFrame(bound.getNortheast(), bound.getSouthwest());
 
         //get distinct passenger plannedTrips
-        List<Long> passengerPlannedTripIds = new ArrayList<>();
-        for (String locationStringId : passengersPlannedTripLinkedLocationIds) {
+        Set<Long> passengerPlannedTripIds = new HashSet<>();
+        for (Long locationId : passengersPlannedTripLinkedLocationIds) {
             // parse to long
-            long locationId = Long.parseLong(locationStringId);
             LinkedLocation location = database.getLinkedLocationHashMap().get(locationId);
             if (location != null)
                 passengerPlannedTripIds.add(location.getRefId());

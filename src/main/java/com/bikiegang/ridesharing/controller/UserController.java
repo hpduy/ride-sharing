@@ -11,6 +11,7 @@ import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.*;
 import com.bikiegang.ridesharing.pojo.response.UserDetailWithPlannedTripResponse;
 import com.bikiegang.ridesharing.pojo.response.UserShortDetailResponse;
+import com.bikiegang.ridesharing.utilities.DateTimeUtil;
 import com.bikiegang.ridesharing.utilities.StringProcessUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -24,6 +25,8 @@ import java.util.List;
 public class UserController {
     private UserDao dao = new UserDao();
     private Database database = Database.getInstance();
+    public static final long ACCEPTABLE_IN_BOX_TIME_IN_SECOND = 30 * DateTimeUtil.MINUTES;
+    public static final long ACCEPTABLE_IN_BOX_DISTANCE_IN_METER = 100;
 
     /**
      * REGISTER
@@ -405,7 +408,11 @@ public class UserController {
         if (user == null) {
             return Parser.ObjectToJSon(false, "User is not found by userId");
         }
-        user.setCurrentLocation(new LatLng(request.getLat(), request.getLng()));
+        LatLng oldLocation = new LatLng(user.getCurrentLocation());
+        LatLng newLocation = new LatLng(request.getLat(), request.getLng());
+        database.getGeoCellCurrentLocation().updateInCell(oldLocation, newLocation, user.getId());
+        user.setCurrentLocation(newLocation);
+
         return Parser.ObjectToJSon(true, "Update current location successfully");
     }
 
@@ -420,12 +427,23 @@ public class UserController {
         if (user == null) {
             return Parser.ObjectToJSon(false, "User is not found by userId");
         }
-        user.setCurrentLocation(new LatLng(request.getLat(), request.getLng()));
+        LatLng oldLocation = new LatLng(user.getCurrentLocation());
+        LatLng newLocation = new LatLng(request.getLat(), request.getLng());
+        database.getGeoCellCurrentLocation().updateInCell(oldLocation, newLocation, user.getId());
+        user.setCurrentLocation(newLocation);
         User partner = database.getUserHashMap().get(request.getPartnerId());
         if (partner == null) {
             return Parser.ObjectToJSon(false, "Partner is not found by partnerId");
         }
         return Parser.ObjectToJSon(true, "Get partner's location successfully", partner.getCurrentLocation());
+    }
+
+    public boolean checkSameBox(String firstUserId, String secondUserId) {
+        User firstUser = database.getUserHashMap().get(firstUserId);
+        User secondUser = database.getUserHashMap().get(secondUserId);
+        return DateTimeUtil.now() - secondUser.getCurrentLocation().getTime() < ACCEPTABLE_IN_BOX_TIME_IN_SECOND
+                && DateTimeUtil.now() - firstUser.getCurrentLocation().getTime() < ACCEPTABLE_IN_BOX_TIME_IN_SECOND
+                && firstUser.getCurrentLocation().distanceInMetres(secondUser.getCurrentLocation()) <= ACCEPTABLE_IN_BOX_DISTANCE_IN_METER;
     }
 
     /**

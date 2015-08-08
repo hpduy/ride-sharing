@@ -1,6 +1,7 @@
 package com.bikiegang.ridesharing.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang.RandomStringUtils;
 
 /**
@@ -23,6 +24,7 @@ public class User implements PojoBase {
     private LatLng currentLocation = new LatLng();
     private String birthDay;
     private int gender;
+    @SerializedName("verifyStatus")
     private int status;
     private boolean isBusy;
     private int currentRole;
