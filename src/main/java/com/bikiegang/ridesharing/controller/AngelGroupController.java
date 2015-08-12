@@ -6,8 +6,11 @@ import com.bikiegang.ridesharing.database.IdGenerator;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.AngelGroup;
 import com.bikiegang.ridesharing.pojo.LatLng;
-import com.bikiegang.ridesharing.pojo.request.AddGroupRequest;
+import com.bikiegang.ridesharing.pojo.request.GetInformationUsingUserIdRequest;
 import com.bikiegang.ridesharing.pojo.request.MergeGroupRequest;
+import com.bikiegang.ridesharing.pojo.request.angel.AddGroupRequest;
+import com.bikiegang.ridesharing.pojo.request.angel.AutocompleteSearchGroupRequest;
+import com.bikiegang.ridesharing.pojo.response.angel.AngelGroupDetailResponse;
 import com.bikiegang.ridesharing.pojo.static_object.University;
 import com.bikiegang.ridesharing.utilities.DateTimeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -84,7 +87,10 @@ public class AngelGroupController {
         return Parser.ObjectToJSon(false, "Cannot merge two group");
     }
 
-    public String getListAngelGroupByAlphabet() throws JsonProcessingException {
+    public String getListAngelGroupByAlphabet(GetInformationUsingUserIdRequest request) throws JsonProcessingException {
+        if (null == request.getUserId() || request.getUserId().equals("")) {
+            return Parser.ObjectToJSon(false, "'userId' is not found");
+        }
         List<AngelGroup> groups = new ArrayList<>(database.getAngelGroupHashMap().values());
         //sort by alphabet
         Collections.sort(groups, new Comparator<AngelGroup>() {
@@ -93,8 +99,24 @@ public class AngelGroupController {
                 return o1.getCanonicalName().compareTo(o2.getCanonicalName());
             }
         });
+        List<AngelGroupDetailResponse> responses = new ArrayList<>();
+        for(AngelGroup group : groups){
+            responses.add(new AngelGroupDetailResponse(group,request.getUserId()));
+        }
+        return Parser.ObjectToJSon(true,"Get a list of groups successfully", responses);
+    }
 
-        return Parser.ObjectToJSon(true,"Get a list of groups successfully", groups);
+    public String autoCompleteSearchGroup(AutocompleteSearchGroupRequest request) throws JsonProcessingException {
+        if (null == request.getUserId() || request.getUserId().equals("")) {
+            return Parser.ObjectToJSon(false, "'userId' is not found");
+        }
+        List<AngelGroup> groups = new ArrayList<>(database.getAngelGroupHashMap().values());
+        // TODO call text search module from ann
+        List<AngelGroupDetailResponse> responses = new ArrayList<>();
+        for(AngelGroup group : groups){
+            responses.add(new AngelGroupDetailResponse(group,request.getUserId()));
+        }
+        return Parser.ObjectToJSon(true,"Get a list of groups successfully", responses);
     }
 
 

@@ -265,6 +265,41 @@
         <servlet-name>VerifyCertificateAPI</servlet-name>
         <url-pattern>/VerifyCertificateAPI</url-pattern>
     </servlet-mapping>
+    <!--** ANGEL GROUP**-->
+    <servlet>
+        <servlet-name>GetAlphabetAngelGroupsAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.angel.GetAlphabetAngelGroupsAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetAlphabetAngelGroupsAPI</servlet-name>
+        <url-pattern>/GetAlphabetAngelGroupsAPI</url-pattern>
+    </servlet-mapping>
+      <servlet>
+        <servlet-name>AutocompleteGroupSearchAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.angel.AutocompleteGroupSearchAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AutocompleteGroupSearchAPI</servlet-name>
+        <url-pattern>/AutocompleteGroupSearchAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>JoinGroupAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.angel.JoinGroupAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>JoinGroupAPI</servlet-name>
+        <url-pattern>/JoinGroupAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>ExitGroupAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.angel.ExitGroupAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ExitGroupAPI</servlet-name>
+        <url-pattern>/ExitGroupAPI</url-pattern>
+    </servlet-mapping>
+
+
     <!--**GCM**-->
     <servlet>
         <servlet-name>GCMBroadcast</servlet-name>

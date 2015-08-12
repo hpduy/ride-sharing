@@ -1,4 +1,4 @@
-package com.bikiegang.ridesharing.pojo.request;
+package com.bikiegang.ridesharing.pojo.request.angel;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

@@ -13,6 +13,7 @@ public class CertificateDetail {
     protected String expiryDay = "";
     protected String[] imageLinks;
     protected int type;
+    protected String organization = "";
     @JsonIgnore
     public static final int VISA = 1;
     @JsonIgnore
@@ -43,6 +44,7 @@ public class CertificateDetail {
         this.expiryDay = that.expiryDay;
         this.imageLinks = that.imageLinks;
         this.type = that.type;
+        this.organization = that.organization;
     }
 
 
@@ -92,5 +94,13 @@ public class CertificateDetail {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public String getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(String organization) {
+        this.organization = organization;
     }
 }

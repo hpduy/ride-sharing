@@ -5,7 +5,8 @@ import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.database.IdGenerator;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.AngelGroupMember;
-import com.bikiegang.ridesharing.pojo.request.JoinGroupRequest;
+import com.bikiegang.ridesharing.pojo.request.angel.ExitGroupRequest;
+import com.bikiegang.ridesharing.pojo.request.angel.JoinGroupRequest;
 import com.bikiegang.ridesharing.utilities.DateTimeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -40,7 +41,7 @@ public class AngelGroupMemberController {
         return Parser.ObjectToJSon(false, "Cannot join this group. Try again later");
     }
 
-    public String exitGroup(JoinGroupRequest request) throws JsonProcessingException {
+    public String exitGroup(ExitGroupRequest request) throws JsonProcessingException {
         if (null == request.getUserId() || request.getUserId().equals("")) {
             return Parser.ObjectToJSon(false, "'userId' is not found");
         }
