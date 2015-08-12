@@ -9,6 +9,7 @@ public class UserDetailResponse extends UserShortDetailResponse {
     private int gender;
     private String phone;
     private String selfIntro;
+    private String job;
     public UserDetailResponse() {
     }
 
@@ -17,6 +18,7 @@ public class UserDetailResponse extends UserShortDetailResponse {
         this.gender = user.getGender();
         this.phone = user.getPhone();
         this.selfIntro = user.getSelfIntro();
+        this.job = user.getJob();
     }
 
     public int getGender() {
@@ -41,5 +43,13 @@ public class UserDetailResponse extends UserShortDetailResponse {
 
     public void setSelfIntro(String selfIntro) {
         this.selfIntro = selfIntro;
+    }
+
+    public String getJob() {
+        return job;
+    }
+
+    public void setJob(String job) {
+        this.job = job;
     }
 }

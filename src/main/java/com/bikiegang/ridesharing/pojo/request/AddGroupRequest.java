@@ -10,6 +10,7 @@ public class AddGroupRequest {
     private String tagName ;
     private double lat;
     private double lng;
+    private String address;
 
     public String getTagName() {
         return tagName;
@@ -33,5 +34,13 @@ public class AddGroupRequest {
 
     public void setLng(double lng) {
         this.lng = lng;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

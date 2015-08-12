@@ -19,6 +19,7 @@ public class AngelGroupDao {
     public boolean insert(AngelGroup obj) {
         boolean result = false;
         try {
+            database.getAngelGroupHashMap().put(obj.getId(),obj);
 
         } catch (Exception ex) {
 

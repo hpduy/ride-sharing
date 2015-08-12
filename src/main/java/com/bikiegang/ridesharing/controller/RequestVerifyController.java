@@ -132,8 +132,9 @@ public class RequestVerifyController {
         }
         // update current location for angel
         new UserController().updateCurrentLocation(request);
-        if (!new UserController().checkSameBox(requestVerify.getAngelId(), requestVerify.getUserId()))
-            return Parser.ObjectToJSon(false, "You and requester is not in a same place at a same time");
+        if (Database.databaseStatus != Database.TESTING)
+            if (!new UserController().checkSameBox(requestVerify.getAngelId(), requestVerify.getUserId()))
+                return Parser.ObjectToJSon(false, "You and requester is not in a same place at a same time");
         RequestVerifyDetailResponse response = new RequestVerifyDetailResponse(requestVerify);
         return Parser.ObjectToJSon(true, "Get request detail successfully", response);
     }

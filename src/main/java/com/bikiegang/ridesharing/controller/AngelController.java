@@ -4,10 +4,10 @@ import com.bikiegang.ridesharing.dao.UserDao;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.User;
+import com.bikiegang.ridesharing.pojo.request.GetAngelActiveCodesRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.AngelForgetPasswordRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.AngelLoginRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.AngelRegisterRequest;
-import com.bikiegang.ridesharing.pojo.request.GetAngelActiveCodesRequest;
 import com.bikiegang.ridesharing.pojo.response.GetAngelActiveCodesResponse;
 import com.bikiegang.ridesharing.utilities.DateTimeUtil;
 import com.bikiegang.ridesharing.utilities.SendMailUtil;
@@ -27,6 +27,7 @@ public class AngelController {
     private static HashMap<String, Long> angelCodeHashMap = new HashMap<>();
     private final int codeLength = 4;
     private final long expiredTime = 30 * DateTimeUtil.MINUTES;
+
 
     public String getAngelActiveCode(GetAngelActiveCodesRequest request) throws JsonProcessingException {
         if (request.getNumberOfCode() <= 0) {

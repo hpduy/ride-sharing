@@ -8,10 +8,13 @@ import com.bikiegang.ridesharing.pojo.AngelGroup;
 import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.request.AddGroupRequest;
 import com.bikiegang.ridesharing.pojo.request.MergeGroupRequest;
+import com.bikiegang.ridesharing.pojo.static_object.University;
 import com.bikiegang.ridesharing.utilities.DateTimeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -21,51 +24,78 @@ public class AngelGroupController {
     private AngelGroupDao dao = new AngelGroupDao();
     private Database database = Database.getInstance();
 
+    public AngelGroupController() {
+        if(database.getAngelGroupHashMap().isEmpty()){
+            University.loadData();
+            for(University u : University.universities){
+                List<String> tagNames = new ArrayList<>();
+                tagNames.add(u.getName());
+                AngelGroup angelGroup = new AngelGroup(IdGenerator.getAngelGroupId(), u.getLocation(),tagNames,DateTimeUtil.now(),u.getAddress());
+                try{
+                    dao.insert(angelGroup);
+                }catch (Exception ignored){}
+            }
+        }
+    }
 
     public String addGroup(AddGroupRequest request) throws JsonProcessingException {
-        if(null == request.getTagName() || request.getTagName().equals("")){
-            return Parser.ObjectToJSon(false,"' '");
+        if (null == request.getTagName() || request.getTagName().equals("")) {
+            return Parser.ObjectToJSon(false, "' '");
         }
         if (request.getLat() <= 0 && request.getLng() <= 0) {
             return Parser.ObjectToJSon(false, "'lat' and 'lng' is invalid");
         }
         List<String> tagNames = new ArrayList<>();
         tagNames.add(request.getTagName());
-        AngelGroup angelGroup = new AngelGroup(IdGenerator.getAngelGroupId(),new LatLng(request.getLat(),request.getLng()),tagNames, DateTimeUtil.now());
-        if(dao.insert(angelGroup)){
+        AngelGroup angelGroup = new AngelGroup(IdGenerator.getAngelGroupId(), new LatLng(request.getLat(), request.getLng()), tagNames, DateTimeUtil.now(),request.getAddress());
+        if (dao.insert(angelGroup)) {
             //TODO what is response? waiting designer
             return Parser.ObjectToJSon(true, "Add group successfully");
         }
         return Parser.ObjectToJSon(false, "Cannot add this group");
     }
-     public String mergeGroup(MergeGroupRequest request) throws JsonProcessingException {
-         if (request.getFirstGroupId() <= 0 ) {
-             return Parser.ObjectToJSon(false, "'firstGroupId' is invalid");
-         }
-         if (request.getSecondGroupId() <= 0 ) {
-             return Parser.ObjectToJSon(false, "'secondGroupId' is invalid");
-         }
-         AngelGroup firstGroup = database .getAngelGroupHashMap().get(request.getFirstGroupId());
-         if (null == firstGroup ) {
-             return Parser.ObjectToJSon(false, "first group does not exist");
-         }
-         AngelGroup secondGroup = database .getAngelGroupHashMap().get(request.getSecondGroupId());
-         if (null == secondGroup ) {
-             return Parser.ObjectToJSon(false, " second group does not exist");
-         }
-         // move all user from the second group to first group
-         if(new AngelGroupMemberController().changeGroup(request.getSecondGroupId(),request.getFirstGroupId())){
-             try {
-                 firstGroup.getTagName().addAll(secondGroup.getTagName());
-                 dao.update(firstGroup);
-                 dao.delete(secondGroup);
-             }catch (Exception ignored){}
-             return Parser.ObjectToJSon(true, "Merge successfully");
 
-         }
-         return Parser.ObjectToJSon(false, "Cannot merge two group");
+    public String mergeGroup(MergeGroupRequest request) throws JsonProcessingException {
+        if (request.getFirstGroupId() <= 0) {
+            return Parser.ObjectToJSon(false, "'firstGroupId' is invalid");
+        }
+        if (request.getSecondGroupId() <= 0) {
+            return Parser.ObjectToJSon(false, "'secondGroupId' is invalid");
+        }
+        AngelGroup firstGroup = database.getAngelGroupHashMap().get(request.getFirstGroupId());
+        if (null == firstGroup) {
+            return Parser.ObjectToJSon(false, "first group does not exist");
+        }
+        AngelGroup secondGroup = database.getAngelGroupHashMap().get(request.getSecondGroupId());
+        if (null == secondGroup) {
+            return Parser.ObjectToJSon(false, " second group does not exist");
+        }
+        // move all user from the second group to first group
+        if (new AngelGroupMemberController().changeGroup(request.getSecondGroupId(), request.getFirstGroupId())) {
+            try {
+                firstGroup.getTagName().addAll(secondGroup.getTagName());
+                dao.update(firstGroup);
+                dao.delete(secondGroup);
+            } catch (Exception ignored) {
+            }
+            return Parser.ObjectToJSon(true, "Merge successfully");
+
+        }
+        return Parser.ObjectToJSon(false, "Cannot merge two group");
     }
 
+    public String getListAngelGroupByAlphabet() throws JsonProcessingException {
+        List<AngelGroup> groups = new ArrayList<>(database.getAngelGroupHashMap().values());
+        //sort by alphabet
+        Collections.sort(groups, new Comparator<AngelGroup>() {
+            @Override
+            public int compare(AngelGroup o1, AngelGroup o2) {
+                return o1.getCanonicalName().compareTo(o2.getCanonicalName());
+            }
+        });
+
+        return Parser.ObjectToJSon(true,"Get a list of groups successfully", groups);
+    }
 
 
 }

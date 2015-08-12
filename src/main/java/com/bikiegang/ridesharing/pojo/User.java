@@ -1,7 +1,6 @@
 package com.bikiegang.ridesharing.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang.RandomStringUtils;
 
 /**
@@ -24,12 +23,11 @@ public class User implements PojoBase {
     private LatLng currentLocation = new LatLng();
     private String birthDay;
     private int gender;
-    @SerializedName("verifyStatus")
     private int status;
     private boolean isBusy;
     private int currentRole;
     private int privacy;
-    private String career;
+    private String job = "";
     // final field & dont print to JSON;
     /**
      * GENDER
@@ -115,7 +113,7 @@ public class User implements PojoBase {
         this.status = that.status;
         this.isBusy = that.isBusy;
         this.privacy = that.privacy;
-        this.career = that.career;
+        this.job = that.job;
     }
 
 
@@ -271,15 +269,15 @@ public class User implements PojoBase {
         this.privacy = privacy;
     }
 
-    public String getCareer() {
-        return career;
+    public String getJob() {
+        return job;
     }
 
-    public void setCareer(String career) {
-        this.career = career;
+    public void setJob(String job) {
+        this.job = job;
     }
 }
 /**
  * Change log
- * them field career
+ * them field job
  * */

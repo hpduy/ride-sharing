@@ -14,7 +14,7 @@ public class UserShortDetailResponse {
     private String profilePictureLink = "";
     private LatLng currentLocation = new LatLng();
     private String birthDay;
-    private int status;
+    private int verifyStatus;
 
     public UserShortDetailResponse() {
     }
@@ -27,7 +27,7 @@ public class UserShortDetailResponse {
             this.profilePictureLink = Path.getUrlFromPath(user.getProfilePictureLink());
             this.currentLocation = user.getCurrentLocation();
             this.birthDay = user.getBirthDay();
-            this.status = user.getStatus();
+            this.verifyStatus = user.getStatus();
         }
     }
 
@@ -79,13 +79,11 @@ public class UserShortDetailResponse {
         this.birthDay = birthDay;
     }
 
-
-    public int getStatus() {
-        return status;
+    public int getVerifyStatus() {
+        return verifyStatus;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setVerifyStatus(int verifyStatus) {
+        this.verifyStatus = verifyStatus;
     }
-
 }

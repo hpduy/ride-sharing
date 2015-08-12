@@ -1,3 +1,4 @@
+<%@ page import="com.bikiegang.ridesharing.utilities.FakeGroup.FakeUser" %>
 <!DOCTYPE html>
 <!--
 To change this license header, choose License Headers in Project Properties.
@@ -36,7 +37,12 @@ and open the template in the editor.
 <div align="center">
     <input value="GO" title="go" type="button" onclick="testAPI()" style="width: 100px">
 </div>
-
+<hr>
+<h1>Fake data</h1>
+<div align="center">
+    <input value="Create tester" title="ctest" type="button" onclick="createTester()" style="width: 100px">
+    <input value="Create angel" title="cangel" type="button" onclick="createAngel()" style="width: 100px">
+</div>
 </body>
 <script type="text/javascript">
     function testAPI() {
@@ -54,6 +60,15 @@ and open the template in the editor.
                 console.log(response);
             }
         });
+    }function createTester() {
+        <%
+            FakeUser.createTester();
+        %>
+    }
+    function createAngel() {
+       <%
+           FakeUser.createAngel();
+       %>
     }
 </script>
 </html>
