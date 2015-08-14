@@ -32,7 +32,7 @@ public class ApiDocumentGeneratorTest {
     public void generateTest() throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException, IOException {
         Path.buildRoot();
         ApiDocumentGenerator.generate();
-        for (ApiDocument doc : ApiDocumentGenerator.apiDocs) {
+        for (ApiDocument doc : ApiDocumentGenerator.apiDocs.values()) {
             System.out.println("API Name:" + doc.getName());
             System.out.println("API Description:" + doc.getApiDescription());
             System.out.println("API request:");

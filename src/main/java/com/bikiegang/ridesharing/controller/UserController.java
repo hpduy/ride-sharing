@@ -10,6 +10,7 @@ import com.bikiegang.ridesharing.pojo.PlannedTrip;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.*;
 import com.bikiegang.ridesharing.pojo.response.UserDetailWithPlannedTripResponse;
+import com.bikiegang.ridesharing.pojo.response.UserResponse;
 import com.bikiegang.ridesharing.pojo.response.UserShortDetailResponse;
 import com.bikiegang.ridesharing.utilities.DateTimeUtil;
 import com.bikiegang.ridesharing.utilities.StringProcessUtil;
@@ -57,7 +58,7 @@ public class UserController {
             String id = database.getFacebookRFUserId().get(registerRequest.getFacebookId());
             User existUser = database.getUserHashMap().get(id);
             if (existUser != null) {
-                return Parser.ObjectToJSon(true, "'facebookId' has been registered", existUser);
+                return Parser.ObjectToJSon(true, "'facebookId' has been registered", new UserResponse(existUser));
             }
         }
         User user = new User();
@@ -79,7 +80,7 @@ public class UserController {
         if (null != registerRequest.getBirthDay())
             user.setBirthDay(registerRequest.getBirthDay());
         if (dao.insert(user)) {
-            return Parser.ObjectToJSon(true, "Register successfully", user);
+            return Parser.ObjectToJSon(true, "Register successfully", new UserResponse(user));
         }
         return Parser.ObjectToJSon(false, "Cannot register now. Try again later!");
     }
@@ -99,7 +100,7 @@ public class UserController {
         user.setEmail(new StringProcessUtil().EncryptText(registerRequest.getEmail()));
         user.setPassword(registerRequest.getPassword());
         if (dao.insert(user)) {
-            return Parser.ObjectToJSon(true, "Register successfully", user);
+            return Parser.ObjectToJSon(true, "Register successfully", new UserResponse(user));
         }
         return Parser.ObjectToJSon(false, "Cannot register now. Try again later!");
     }
@@ -112,7 +113,7 @@ public class UserController {
             String id = database.getGoogleRFUserId().get(registerRequest.getGoogleId());
             User existUser = database.getUserHashMap().get(id);
             if (existUser != null) {
-                return Parser.ObjectToJSon(true, "'googleId' has been registered", existUser);
+                return Parser.ObjectToJSon(true, "'googleId' has been registered", new UserResponse(existUser));
             }
         }
         User user = new User();
@@ -133,7 +134,7 @@ public class UserController {
         user.setGender(registerRequest.getGender());
         user.setBirthDay(registerRequest.getBirthDay());
         if (dao.insert(user)) {
-            return Parser.ObjectToJSon(true, "Register successfully", user);
+            return Parser.ObjectToJSon(true, "Register successfully", new UserResponse(user));
         }
         return Parser.ObjectToJSon(false, "Cannot register now. Try again later!");
     }
@@ -146,7 +147,7 @@ public class UserController {
             String id = database.getTwitterRFUserId().get(registerRequest.getTwitterId());
             User existUser = database.getUserHashMap().get(id);
             if (existUser != null) {
-                return Parser.ObjectToJSon(true, "'twitterId' has been registered", existUser);
+                return Parser.ObjectToJSon(true, "'twitterId' has been registered", new UserResponse(existUser));
             }
         }
         User user = new User();
@@ -167,7 +168,7 @@ public class UserController {
         user.setGender(registerRequest.getGender());
         user.setBirthDay(registerRequest.getBirthDay());
         if (dao.insert(user)) {
-            return Parser.ObjectToJSon(true, "Register successfully", user);
+            return Parser.ObjectToJSon(true, "Register successfully", new UserResponse(user));
         }
         return Parser.ObjectToJSon(false, "Cannot register now. Try again later!");
     }
@@ -180,7 +181,7 @@ public class UserController {
             String id = database.getLinkedInRFUserId().get(registerRequest.getLinkedInId());
             User existUser = database.getUserHashMap().get(id);
             if (existUser != null) {
-                return Parser.ObjectToJSon(true, "'linkedInId' has been registered", existUser);
+                return Parser.ObjectToJSon(true, "'linkedInId' has been registered", new UserResponse(existUser));
             }
         }
         User user = new User();
@@ -201,7 +202,7 @@ public class UserController {
         user.setGender(registerRequest.getGender());
         user.setBirthDay(registerRequest.getBirthDay());
         if (dao.insert(user)) {
-            return Parser.ObjectToJSon(true, "Register successfully", user);
+            return Parser.ObjectToJSon(true, "Register successfully",new UserResponse(user));
         }
         return Parser.ObjectToJSon(false, "Cannot register now. Try again later!");
     }
@@ -239,7 +240,7 @@ public class UserController {
         if (user == null) {
             return Parser.ObjectToJSon(false, "User is not found by userId");
         }
-        return Parser.ObjectToJSon(true, "Login successfully", user);
+        return Parser.ObjectToJSon(true, "Login successfully", new UserResponse(user));
     }
 
     private String loginEmail(LoginRequest loginRequest) throws JsonProcessingException {
@@ -260,7 +261,7 @@ public class UserController {
         if (!user.getPassword().equals(new StringProcessUtil().EncryptText(loginRequest.getPassword()))) {
             return Parser.ObjectToJSon(false, "Password is wrong");
         }
-        return Parser.ObjectToJSon(true, "Login successfully", user);
+        return Parser.ObjectToJSon(true, "Login successfully", new UserResponse(user));
     }
 
     private String loginGoogle(LoginRequest loginRequest) throws JsonProcessingException {
@@ -275,7 +276,7 @@ public class UserController {
         if (user == null) {
             return Parser.ObjectToJSon(false, "User is not found by userId");
         }
-        return Parser.ObjectToJSon(true, "Login successfully", user);
+        return Parser.ObjectToJSon(true, "Login successfully", new UserResponse(user));
     }
 
     private String loginTwitter(LoginRequest loginRequest) throws JsonProcessingException {
@@ -290,7 +291,7 @@ public class UserController {
         if (user == null) {
             return Parser.ObjectToJSon(false, "User is not found by userId");
         }
-        return Parser.ObjectToJSon(true, "Login successfully", user);
+        return Parser.ObjectToJSon(true, "Login successfully", new UserResponse(user));
     }
 
     private String loginLinkedIn(LoginRequest loginRequest) throws JsonProcessingException {
@@ -305,7 +306,7 @@ public class UserController {
         if (user == null) {
             return Parser.ObjectToJSon(false, "User is not found by userId");
         }
-        return Parser.ObjectToJSon(true, "Login successfully", user);
+        return Parser.ObjectToJSon(true, "Login successfully", new UserResponse(user));
     }
 
     /**

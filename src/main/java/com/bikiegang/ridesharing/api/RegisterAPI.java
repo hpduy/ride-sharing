@@ -9,8 +9,8 @@ package com.bikiegang.ridesharing.api;
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.controller.UserController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.RegisterRequest;
+import com.bikiegang.ridesharing.pojo.response.UserResponse;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -25,7 +25,7 @@ import java.io.PrintWriter;
 public class RegisterAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
     public Class requestClass = RegisterRequest.class;
-    public Class responseClass = User.class;
+    public Class responseClass = UserResponse.class;
     public boolean responseIsArray = false;
 
     /**

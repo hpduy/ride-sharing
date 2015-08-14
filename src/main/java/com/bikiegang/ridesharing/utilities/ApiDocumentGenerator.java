@@ -4,15 +4,14 @@ import com.bikiegang.ridesharing.pojo.static_object.ApiDocument;
 import org.reflections.Reflections;
 
 import javax.servlet.http.HttpServlet;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Set;
 
 /**
  * Created by hpduy17 on 7/6/15.
  */
 public class ApiDocumentGenerator {
-    public static List<ApiDocument> apiDocs = new ArrayList<>();
+    public static HashMap<String,ApiDocument> apiDocs = new HashMap<>();
     private static String packagePath = "com.bikiegang.ridesharing.api";
     public static void generate() throws NoSuchFieldException, ClassNotFoundException, IllegalAccessException, InstantiationException {
         // get all api
@@ -30,7 +29,7 @@ public class ApiDocumentGenerator {
             boolean responseIsArray = cls.getField("responseIsArray").getBoolean(api);
             ApiDocument apiDocument = new ApiDocument(apiName, requestClass, responseClass, apiDescription, responseIsArray);
             apiDocument.generate();
-            apiDocs.add(apiDocument);
+            apiDocs.put(apiDocument.getName(),apiDocument);
         }
     }
 

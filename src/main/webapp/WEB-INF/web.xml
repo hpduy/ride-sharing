@@ -299,6 +299,15 @@
         <url-pattern>/ExitGroupAPI</url-pattern>
     </servlet-mapping>
 
+    <!--**SLACK**-->
+    <servlet>
+        <servlet-name>GenerateApiDoccumentServlet</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.servlet.slack.GenerateApiDoccumentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GenerateApiDoccumentServlet</servlet-name>
+        <url-pattern>/GenerateApiDoccumentServlet</url-pattern>
+    </servlet-mapping>
 
     <!--**GCM**-->
     <servlet>

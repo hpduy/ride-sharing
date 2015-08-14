@@ -15,6 +15,7 @@ import com.bikiegang.ridesharing.pojo.response.Notification.ReplyVerifyNoti;
 import com.bikiegang.ridesharing.pojo.response.angel.RequestVerifyDetailResponse;
 import com.bikiegang.ridesharing.pojo.response.angel.RequestVerifySortDetailResponse;
 import com.bikiegang.ridesharing.utilities.BroadcastCenterUtil;
+import com.bikiegang.ridesharing.utilities.DateTimeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.ArrayList;
@@ -49,6 +50,7 @@ public class RequestVerifyController {
         // create request
         RequestVerify requestVerify = new RequestVerify();
         requestVerify.setId(IdGenerator.getRequestVerifyId());
+        requestVerify.setCreatedTime(DateTimeUtil.now());
         requestVerify.setAngelId(request.getAngelId());
         requestVerify.setUserId(request.getUserId());
         requestVerify.setNumberOfCertificate(request.getCertificates().length);
@@ -57,6 +59,7 @@ public class RequestVerifyController {
 
         if (dao.insert(requestVerify)) {
             //Create certificate
+            System.out.println(request.getUserId());
             List<CertificateDetail> failCertificates = new VerifiedCertificateController().createCertificate(request.getCertificates(), request.getUserId(), request.getAngelId(), VerifiedCertificate.WAITING);
             if (!failCertificates.isEmpty()) {
                 return Parser.ObjectToJSon(false, "Some Certificates cannot insert", failCertificates);

@@ -17,7 +17,7 @@ public class GoogleDirectionAPIProcess extends GoogleQuery {
         LatLng src = latLngs[0];
         LatLng des = latLngs[latLngs.length - 1];
         String wayPoints = "";
-        if (latLngs.length >= 2) {
+        if (latLngs.length > 2) {
             String via = "";
             for (int i = 1; i <= latLngs.length - 2; i++) {
                 via += String.format(viaInWayPoint, latLngs[i].toGoogleParameter());

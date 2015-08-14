@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by hpduy17 on 8/8/15.
  */
-public class AngelGroup {
+public class AngelGroup implements PojoBase {
     private long id;
     private LatLng location = new LatLng();
     private List<String> tagName = new ArrayList<>();

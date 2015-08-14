@@ -42,6 +42,7 @@ public class Database {
     private HashMap<Long, VerifiedCertificate> verifiedCertificateHashMap = new HashMap<>();
     private HashMap<Long, AngelGroup> angelGroupHashMap = new HashMap<>();
     private HashMap<Long, AngelGroupMember> angelGroupMemberHashMap = new HashMap<>();
+    private HashMap<Long, PopularLocation> popularLocationHashMap = new HashMap<>();
     //REFERENCE
     /**
      * USER
@@ -157,6 +158,10 @@ public class Database {
 
     public HashMap<Long, AngelGroup> getAngelGroupHashMap() {
         return angelGroupHashMap;
+    }
+
+    public HashMap<Long, PopularLocation> getPopularLocationHashMap() {g
+        return popularLocationHashMap;
     }
 
     public HashMap<Long, AngelGroupMember> getAngelGroupMemberHashMap() {
@@ -301,4 +306,6 @@ public class Database {
     public void setGeoCellAngelGroup(GeoCell<Long> geoCellAngelGroup) {
         this.geoCellAngelGroup = geoCellAngelGroup;
     }
+
+
 }
