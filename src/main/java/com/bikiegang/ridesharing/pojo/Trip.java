@@ -3,13 +3,14 @@ package com.bikiegang.ridesharing.pojo;
 /**
  * Created by hpduy17 on 6/24/15.
  */
-public class Trip  implements PojoBase{
+public class Trip implements PojoBase {
+
     private long id;
     private long startTime;
-    private long endTime;
     private String driverId = "";
     private String passengerId = "";
     private double realDistance;
+    private long endTime;
     private double pricePaid;
     private long sensitiveLocationId; // break or danger location
     private String breakReason = "";
@@ -17,7 +18,8 @@ public class Trip  implements PojoBase{
     private boolean dangerTrip;
     private long driverPlannedTripId;
     private long passengerPlannedTripId;
-    private String tripTrailPolyLine ="";
+    private String tripTrailPolyLine = "";
+
     public Trip() {
     }
 
@@ -37,6 +39,7 @@ public class Trip  implements PojoBase{
         this.passengerPlannedTripId = passengerPlannedTripId;
         this.tripTrailPolyLine = tripTrailPolyLine;
     }
+
     public Trip(Trip that) {
         this.id = that.id;
         this.startTime = that.startTime;
@@ -53,6 +56,7 @@ public class Trip  implements PojoBase{
         this.passengerPlannedTripId = that.passengerPlannedTripId;
         this.tripTrailPolyLine = that.tripTrailPolyLine;
     }
+
     public long getId() {
         return id;
     }
@@ -165,4 +169,3 @@ public class Trip  implements PojoBase{
         this.tripTrailPolyLine = tripTrailPolyLine;
     }
 }
-

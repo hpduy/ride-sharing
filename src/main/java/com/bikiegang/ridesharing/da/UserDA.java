@@ -77,6 +77,7 @@ public class UserDA implements IDA {
                 stmt.setString(17, value.getLinkedInId());
                 stmt.setString(18, value.getSelfIntro());
                 stmt.setInt(19, value.getPrivacy());
+                stmt.setString(20, value.getJob());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {
@@ -119,7 +120,8 @@ public class UserDA implements IDA {
                 stmt.setString(17, value.getLinkedInId());
                 stmt.setString(18, value.getSelfIntro());
                 stmt.setInt(19, value.getPrivacy());
-                stmt.setString(20, value.getId());
+                stmt.setString(20, value.getJob());
+                stmt.setString(21, value.getId());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {

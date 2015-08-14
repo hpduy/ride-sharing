@@ -13,8 +13,6 @@ public class User implements PojoBase {
     private String password = RandomStringUtils.randomAlphabetic(10);
     private String facebookId = "";
     private String googleId = "";
-    private String linkedInId = "";
-    private String selfIntro = "";
     private String twitterId = "";
     private String firstName = "";
     private String lastName = "";
@@ -26,6 +24,8 @@ public class User implements PojoBase {
     private int status;
     private boolean isBusy;
     private int currentRole;
+    private String linkedInId = "";
+    private String selfIntro = "";
     private int privacy;
     private String job = "";
     // final field & dont print to JSON;
@@ -66,8 +66,6 @@ public class User implements PojoBase {
     public static final int FRIEND = 1;
     @JsonIgnore
     public static final int PRIVATE = 2;
-
-
 
     public User() {
 
@@ -115,7 +113,6 @@ public class User implements PojoBase {
         this.privacy = that.privacy;
         this.job = that.job;
     }
-
 
     public String getId() {
         return id;

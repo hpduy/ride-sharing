@@ -6,23 +6,21 @@
 package com.bikiegang.ridesharing.da;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
-import com.bikiegang.ridesharing.annn.framework.dbconn.ClientManager;
-import com.bikiegang.ridesharing.annn.framework.dbconn.ManagerIF;
-import com.bikiegang.ridesharing.annn.framework.util.StringUtils;
 import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.pojo.PojoBase;
-import com.bikiegang.ridesharing.pojo.VerifiedCertificate;
 import com.bikiegang.ridesharing.utilities.Const;
-import org.apache.log4j.Logger;
-
+import com.bikiegang.ridesharing.annn.framework.dbconn.ClientManager;
+import com.bikiegang.ridesharing.annn.framework.dbconn.ManagerIF;
+import com.bikiegang.ridesharing.pojo.AngelGroupMember;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author root
  */
-public class VerifiedCertificateDA implements IDA {
+public class AngelGroupMemberDA implements IDA {
 
     @Override
     public boolean DoAction(PojoBase value, int actionType) {
@@ -34,13 +32,13 @@ public class VerifiedCertificateDA implements IDA {
 
         switch (actionType) {
             case Const.RideSharing.ActionType.INSERT:
-                result = Insert((VerifiedCertificate) value);
+                result = Insert((AngelGroupMember) value);
                 break;
             case Const.RideSharing.ActionType.UPDATE:
-                result = Update((VerifiedCertificate) value);
+                result = Update((AngelGroupMember) value);
                 break;
             case Const.RideSharing.ActionType.DELETE:
-                result = Delete((VerifiedCertificate) value);
+                result = Delete((AngelGroupMember) value);
                 break;
         }
 
@@ -49,28 +47,19 @@ public class VerifiedCertificateDA implements IDA {
 
     Logger logger = LogUtil.getLogger(this.getClass());
 
-    boolean Insert(VerifiedCertificate value) {
+    boolean Insert(AngelGroupMember value) {
 
         boolean result = false;
         ManagerIF cm = ClientManager.getInstance(ConfigInfo.RIDESHARING_DB);
 
         Connection cnn = cm.borrowClient();
         try {
-            String query = ConfigInfo.VERIFIEDCERTIFICATE_INSERT_QUERY;
+            String query = ConfigInfo.ANGEL_GROUP_MEMBER_INSERT_QUERY;
             try (PreparedStatement stmt = cnn.prepareStatement(query)) {
                 stmt.setLong(1, value.getId());
-                stmt.setString(2, value.getNote());
-                stmt.setLong(3, value.getCreatedTime());
-                stmt.setString(4, value.getOwnerId());
-                stmt.setString(5, value.getEndorserId());
-                stmt.setInt(6, value.getStatus());
-                stmt.setString(7, value.getIdNumber());
-                stmt.setString(8, value.getAddress());
-                stmt.setString(9, value.getRegoDay());
-                stmt.setString(10, value.getExpiryDay());
-                stmt.setString(11, StringUtils.join(value.getImageLinks(), ","));
-                stmt.setInt(12, value.getType());
-                stmt.setString(13, value.getOrganization());
+                stmt.setLong(2, value.getGroupId());
+                stmt.setString(3, value.getAngelId());
+                stmt.setLong(4, value.getCreatedTime());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {
@@ -85,29 +74,20 @@ public class VerifiedCertificateDA implements IDA {
         return result;
     }
 
-    boolean Update(VerifiedCertificate value) {
+    boolean Update(AngelGroupMember value) {
 
         boolean result = false;
         ManagerIF cm = ClientManager.getInstance(ConfigInfo.RIDESHARING_DB);
 
         Connection cnn = cm.borrowClient();
         try {
-            String query = ConfigInfo.VERIFIEDCERTIFICATE_UPDATE_QUERY;
+            String query = ConfigInfo.ANGEL_GROUP_MEMBER_UPDATE_QUERY;
             try (PreparedStatement stmt = cnn.prepareStatement(query)) {
                 stmt.setLong(1, value.getId());
-                stmt.setString(2, value.getNote());
-                stmt.setLong(3, value.getCreatedTime());
-                stmt.setString(4, value.getOwnerId());
-                stmt.setString(5, value.getEndorserId());
-                stmt.setInt(6, value.getStatus());
-                stmt.setString(7, value.getIdNumber());
-                stmt.setString(8, value.getAddress());
-                stmt.setString(9, value.getRegoDay());
-                stmt.setString(10, value.getExpiryDay());
-                stmt.setString(11, StringUtils.join(value.getImageLinks(), ","));
-                stmt.setInt(12, value.getType());
-                stmt.setString(13, value.getOrganization());
-                stmt.setLong(14, value.getId());
+                stmt.setLong(2, value.getGroupId());
+                stmt.setString(3, value.getAngelId());
+                stmt.setLong(4, value.getCreatedTime());
+                stmt.setLong(5, value.getId());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {
@@ -122,14 +102,14 @@ public class VerifiedCertificateDA implements IDA {
         return result;
     }
 
-    boolean Delete(VerifiedCertificate value) {
+    boolean Delete(AngelGroupMember value) {
 
         boolean result = false;
         ManagerIF cm = ClientManager.getInstance(ConfigInfo.RIDESHARING_DB);
 
         Connection cnn = cm.borrowClient();
         try {
-            String query = ConfigInfo.VERIFIEDCERTIFICATE_DELETE_QUERY;
+            String query = ConfigInfo.ANGEL_GROUP_MEMBER_DELETE_QUERY;
             try (PreparedStatement stmt = cnn.prepareStatement(query)) {
                 stmt.setLong(1, value.getId());
 
@@ -145,5 +125,4 @@ public class VerifiedCertificateDA implements IDA {
         }
         return result;
     }
-
 }

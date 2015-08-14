@@ -62,7 +62,7 @@ public class RequestVerifyDA implements IDA {
                 stmt.setInt(4, value.getNumberOfCertificate());
                 stmt.setString(5, value.getSignature());
                 stmt.setInt(6, value.getStatus());
-
+                stmt.setLong(7, value.getCreatedTime());
                 int row = stmt.executeUpdate();
                 if (row > 0) {
                     result = true;
@@ -91,7 +91,8 @@ public class RequestVerifyDA implements IDA {
                 stmt.setInt(4, value.getNumberOfCertificate());
                 stmt.setString(5, value.getSignature());
                 stmt.setInt(6, value.getStatus());
-                stmt.setLong(7, value.getId());
+                stmt.setLong(7, value.getCreatedTime());
+                stmt.setLong(8, value.getId());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {
