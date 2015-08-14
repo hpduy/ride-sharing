@@ -11,9 +11,16 @@ package com.bikiegang.ridesharing.config;
  */
 public class ConfigInfo {
 
+    /*
+     Config db, redis, gearman
+     */
     public static String RIDESHARING_DB = "ridesharing_db";
     public static String REDIS_SERVER = "redis_server";
     public static String RIDESHARING_WORKER_GEARMAN = "ridesharing_gearman";
+
+    /*
+     Query database
+     */
     public static String BROADCAST_INSERT_QUERY;
     public static String BROADCAST_UPDATE_QUERY;
     public static String BROADCAST_DELETE_QUERY;
@@ -38,6 +45,12 @@ public class ConfigInfo {
     public static String VERIFIEDCERTIFICATE_INSERT_QUERY;
     public static String VERIFIEDCERTIFICATE_UPDATE_QUERY;
     public static String VERIFIEDCERTIFICATE_DELETE_QUERY;
+    public static String ANGEL_GROUP_INSERT_QUERY;
+    public static String ANGEL_GROUP_UPDATE_QUERY;
+    public static String ANGEL_GROUP_DELETE_QUERY;
+    public static String ANGEL_GROUP_MEMBER_INSERT_QUERY;
+    public static String ANGEL_GROUP_MEMBER_UPDATE_QUERY;
+    public static String ANGEL_GROUP_MEMBER_DELETE_QUERY;
 
     static {
         RIDESHARING_DB = "ridesharing_db";
@@ -92,11 +105,11 @@ public class ConfigInfo {
                 + "`receiverId`,\n"
                 + "`senderRole`,\n"
                 + "`createdTime`,\n"
-                + "`driverRouteId`,\n"
-                + "`passengerRouteId`,\n"
-                + "`status`)\n"
+                + "`driverPlannedTripId`,\n"
+                + "`passengerPlannedTripId`,\n"
+                + "`status`, `price`)\n"
                 + "VALUES\n"
-                + "(?,?,?,?,?,?,?,?);";
+                + "(?,?,?,?,?,?,?,?,?);";
         REQUESTMAKETRIP_UPDATE_QUERY = "UPDATE `ridesharing_db`.`RequestMakeTrip`\n"
                 + "SET\n"
                 + "`id` = ?,\n"
@@ -104,9 +117,10 @@ public class ConfigInfo {
                 + "`receiverId` = ?,\n"
                 + "`senderRole` = ?,\n"
                 + "`createdTime` = ?,\n"
-                + "`driverRouteId` = ?,\n"
-                + "`passengerRouteId` = ?,\n"
-                + "`status` = ?\n"
+                + "`driverPlannedTripId` = ?,\n"
+                + "`passengerPlannedTripId` = ?,\n"
+                + "`status` = ?,\n"
+                + "`price` = ?\n"
                 + "WHERE `id` = ?;";
         REQUESTMAKETRIP_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`RequestMakeTrip`\n"
                 + "WHERE `id` = ?;";
@@ -122,10 +136,15 @@ public class ConfigInfo {
                 + "`creatorId`,\n"
                 + "`role`,\n"
                 + "`type`,\n"
-                + "`routeTrailPolyLine`,\n"
-                + "`rawRoutingResult`, `groupId`, `startLocation`, `endLocation`, `polyLine`, `hasHelmet`)\n"
+                + "`plannedTripTrailPolyLine`,\n"
+                + "`rawRoutingResult`, `groupId`, `startLocation`, `endLocation`,"
+                + " `polyLine`, `hasHelmet`, `createdTime`, `isBusy`)\n"
                 + "VALUES\n"
-                + "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                + "(?,?,?,?,"
+                + "?,?,?,?,?,"
+                + "?,?,?,?,?,"
+                + "?,?,?,?,"
+                + "?,?);";
         PLANNEDTRIP_UPDATE_QUERY = "UPDATE `ridesharing_db`.`PlannedTrip`\n"
                 + "SET\n"
                 + "`id` = ?,\n"
@@ -139,13 +158,15 @@ public class ConfigInfo {
                 + "`creatorId` = ?,\n"
                 + "`role` = ?,\n"
                 + "`type` = ?,\n"
-                + "`routeTrailPolyLine` = ?,\n"
+                + "`plannedTripTrailPolyLine` = ?,\n"
                 + "`rawRoutingResult` = ?,\n"
                 + "`groupId` = ?,\n"
                 + "`startLocation` = ?,\n"
                 + "`endLocation` = ?,\n"
                 + "`polyLine` = ?,\n"
-                + "`hasHelmet` = ?\n"
+                + "`hasHelmet` = ?,\n"
+                + "`createdTime` = ?\n,"
+                + "`isBusy` = ?\n"
                 + "WHERE `id` = ?;";
         PLANNEDTRIP_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`PlannedTrip`\n"
                 + "WHERE `id` = ?;";
@@ -161,8 +182,8 @@ public class ConfigInfo {
                 + "`breakReason`,\n"
                 + "`breakTrip`,\n"
                 + "`dangerTrip`,\n"
-                + "`driverRouteId`,\n"
-                + "`passengerRouteId`,\n"
+                + "`driverPlannedTripId`,\n"
+                + "`passengerPlannedTripId`,\n"
                 + "`tripTrailPolyLine`)\n"
                 + "VALUES\n"
                 + "(?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
@@ -179,8 +200,8 @@ public class ConfigInfo {
                 + "`breakReason` = ?,\n"
                 + "`breakTrip` = ?,\n"
                 + "`dangerTrip` = ?,\n"
-                + "`driverRouteId` = ?,\n"
-                + "`passengerRouteId` = ?,\n"
+                + "`driverPlannedTripId` = ?,\n"
+                + "`passengerPlannedTripId` = ?,\n"
                 + "`tripTrailPolyLine` = ?\n"
                 + "WHERE `id` = ?;";
         TRIP_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`Trip`\n"
@@ -204,9 +225,9 @@ public class ConfigInfo {
                 + "`currentRole`,\n"
                 + "`linkedInId`,\n"
                 + "`selfIntro`, \n"
-                + "`privacy`)\n"
+                + "`privacy`, `job`)\n"
                 + "VALUES\n"
-                + "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                + "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
         USER_UPDATE_QUERY = "UPDATE `ridesharing_db`.`User`\n"
                 + "SET\n"
                 + "`id` = ?,\n"
@@ -227,20 +248,20 @@ public class ConfigInfo {
                 + "`currentRole` = ?,\n"
                 + "`linkedInId` = ?,\n"
                 + "`selfIntro` = ?,\n"
-                + "`privacy` = ?\n"
+                + "`privacy` = ?,\n"
+                + "`job` = ?\n"
                 + "WHERE `id` = ?;";
         USER_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`User`\n"
                 + "WHERE `id` = ?;";
-
         REQUESTVERIFY_INSERT_QUERY = "INSERT INTO `ridesharing_db`.`RequestVerify`\n"
                 + "(`id`,\n"
                 + "`userId`,\n"
                 + "`angelId`,\n"
                 + "`numberOfCertificate`,\n"
                 + "`signature`,\n"
-                + "`status`)\n"
+                + "`status`, `createdTime`)\n"
                 + "VALUES\n"
-                + "(?,?,?,?,?,?);";
+                + "(?,?,?,?,?,?,?);";
         REQUESTVERIFY_UPDATE_QUERY = "UPDATE `ridesharing_db`.`RequestVerify`\n"
                 + "SET\n"
                 + "`id` = ?,\n"
@@ -248,11 +269,11 @@ public class ConfigInfo {
                 + "`angelId` = ?,\n"
                 + "`numberOfCertificate` = ?,\n"
                 + "`signature` = ?,\n"
-                + "`status` = ?\n"
+                + "`status` = ?,\n"
+                + "`createdTime` = ?\n"
                 + "WHERE `id` = ?;";
         REQUESTVERIFY_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`RequestVerify`\n"
                 + "WHERE `id` = ?;";
-
         VERIFIEDCERTIFICATE_INSERT_QUERY = "INSERT INTO `ridesharing_db`.`VerifiedCertificate`\n"
                 + "(`id`,\n"
                 + "`note`,\n"
@@ -264,10 +285,10 @@ public class ConfigInfo {
                 + "`address`,\n"
                 + "`regoDay`,\n"
                 + "`expiryDay`,\n"
-                + "`image`,\n"
-                + "`type`)\n"
+                + "`imageLinks`,\n"
+                + "`type`,`organization`)\n"
                 + "VALUES\n"
-                + "(?,?,?,?,?,?,?,?,?,?,?,?);";
+                + "(?,?,?,?,?,?,?,?,?,?,?,?,?);";
         VERIFIEDCERTIFICATE_UPDATE_QUERY = "UPDATE `ridesharing_db`.`VerifiedCertificate`\n"
                 + "SET\n"
                 + "`id` = ?,\n"
@@ -281,10 +302,46 @@ public class ConfigInfo {
                 + "`regoDay` = ?,\n"
                 + "`expiryDay` = ?,\n"
                 + "`image` = ?,\n"
-                + "`type` = ?\n"
+                + "`type` = ?,\n"
+                + "`organization` = ?\n"
                 + "WHERE `id` = ?;";
-
         VERIFIEDCERTIFICATE_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`VerifiedCertificate`\n"
+                + "WHERE `id` = ?;";
+        ANGEL_GROUP_INSERT_QUERY = "INSERT INTO `ridesharing_db`.`AngelGroup`\n"
+                + "(`id`,\n"
+                + "`location`,\n"
+                + "`tagName`,\n"
+                + "`canonicalName`,\n"
+                + "`address`,\n"
+                + "`createdTime`)\n"
+                + "VALUES\n"
+                + "(?,?,?,?,?,?);";
+        ANGEL_GROUP_UPDATE_QUERY = "UPDATE `ridesharing_db`.`AngelGroup`\n"
+                + "SET\n"
+                + "`id` = ?,\n"
+                + "`location` = ?,\n"
+                + "`tagName` = ?,\n"
+                + "`canonicalName` = ?,\n"
+                + "`address` = ?,\n"
+                + "`createdTime` = ?\n"
+                + "WHERE `id` = ?;";
+        ANGEL_GROUP_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`AngelGroup`\n"
+                + "WHERE `id` = ?;";
+        ANGEL_GROUP_MEMBER_INSERT_QUERY = "INSERT INTO `ridesharing_db`.`AngelGroupMember`\n"
+                + "(`id`,\n"
+                + "`groupId`,\n"
+                + "`angelId`,\n"
+                + "`createdTime`)\n"
+                + "VALUES\n"
+                + "(?,?,?,?);";
+        ANGEL_GROUP_MEMBER_UPDATE_QUERY = "UPDATE `ridesharing_db`.`AngelGroupMember`\n"
+                + "SET\n"
+                + "`id` = ?,\n"
+                + "`groupId` = ?,\n"
+                + "`angelId` = ?,\n"
+                + "`createdTime` = ?\n"
+                + "WHERE `id` = ?;";
+        ANGEL_GROUP_MEMBER_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`AngelGroupMember`\n"
                 + "WHERE `id` = ?;";
 
     }
