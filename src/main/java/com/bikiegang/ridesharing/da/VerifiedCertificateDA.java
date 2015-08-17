@@ -14,7 +14,6 @@ import com.bikiegang.ridesharing.pojo.PojoBase;
 import com.bikiegang.ridesharing.pojo.VerifiedCertificate;
 import com.bikiegang.ridesharing.utilities.Const;
 import org.apache.log4j.Logger;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
