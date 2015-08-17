@@ -5,6 +5,7 @@ import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.Broadcast;
 import com.bikiegang.ridesharing.pojo.request.UpdateBroadcastRequest;
+import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
@@ -18,13 +19,13 @@ public class BroadcastController {
         if (request.getType() <= 0 ||
                 (request.getType() != UpdateBroadcastRequest.DELETE
                         && request.getType() != UpdateBroadcastRequest.UPDATE)) {
-            return Parser.ObjectToJSon(false, "'type' is invalid");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'type'");
         }
         if (null == request.getUserId() || request.getUserId().equals("")) {
-            return Parser.ObjectToJSon(false, "'userId' is invalid");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'userId'");
         }
         if (null == request.getDeviceId() || request.getDeviceId().equals("")) {
-            return Parser.ObjectToJSon(false, "'deviceId' is invalid");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'deviceId'");
         }
         switch (request.getType()) {
             case UpdateBroadcastRequest.DELETE:
@@ -32,18 +33,18 @@ public class BroadcastController {
             case UpdateBroadcastRequest.UPDATE:
                 return insertAndUpdateBroadcast(request);
         }
-        return Parser.ObjectToJSon(false, "Cannot update broadcast, please try again");
+        return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
     }
 
     private String insertAndUpdateBroadcast(UpdateBroadcastRequest request) throws JsonProcessingException {
         if (null == request.getRegId() || request.getRegId().equals("")) {
-            return Parser.ObjectToJSon(false, "'regId' is invalid");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'regId'");
         }
         if (request.getOs() <= 0 ||
                 (request.getOs() != Broadcast.ANDROID
                         && request.getOs() != Broadcast.IOS
                         && request.getOs() != Broadcast.WINDOW_PHONE)) {
-            return Parser.ObjectToJSon(false, "'os' is invalid");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'os'");
         }
         String id = request.getDeviceId() + "#" + request.getUserId();
         Broadcast broadcast = new Broadcast();
@@ -54,14 +55,14 @@ public class BroadcastController {
         broadcast.setOs(request.getOs());
         if (database.getBroadcastHashMap().containsKey(id)) {
             if (dao.insert(broadcast)) {
-                return Parser.ObjectToJSon(true, "Broadcast has been inserted successfully");
+                return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
             }
-            return Parser.ObjectToJSon(false, "Cannot insert broadcast");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
         } else {
             if (dao.update(broadcast)) {
-                return Parser.ObjectToJSon(true, "Broadcast has been updated successfully");
+                return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
             }
-            return Parser.ObjectToJSon(false, "Cannot update broadcast");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
         }
     }
 
@@ -69,11 +70,11 @@ public class BroadcastController {
         String id = request.getDeviceId() + "#" + request.getUserId();
         Broadcast broadcast = database.getBroadcastHashMap().get(id);
         if (null == broadcast) {
-            return Parser.ObjectToJSon(false, "Broadcast is not found");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "Broadcast");
         }
         if (dao.delete(broadcast)) {
-            return Parser.ObjectToJSon(true, "Broadcast has been deleted successfully");
+            return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
         }
-        return Parser.ObjectToJSon(false, "Cannot delete broadcast");
+        return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
     }
 }

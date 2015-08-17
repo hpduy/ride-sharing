@@ -9,6 +9,8 @@ package com.bikiegang.ridesharing.api;
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.static_object.DefaultSetting;
+import com.bikiegang.ridesharing.utilities.ApiDocumentGenerator;
+import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -41,13 +43,13 @@ public class GetDefaultSettingAPI extends HttpServlet {
         PrintWriter out = response.getWriter();
         try {
             logger.info("{non-parameter}");
-            String result = Parser.ObjectToJSon(true,"Get default setting successfully", new DefaultSetting());
+            String result = Parser.ObjectToJSon(true,MessageMappingUtil.Successfully, new DefaultSetting());
             logger.info(result);
             out.print(result);
         } catch (Exception ex) {
             ex.printStackTrace();
             logger.error(ex.getStackTrace());
-            out.print(Parser.ObjectToJSon(false, ex.getMessage()));
+            out.print(Parser.ObjectToJSon(false, MessageMappingUtil.System_Exception, ex.getMessage()));
         }
     }
 
@@ -89,6 +91,6 @@ public class GetDefaultSettingAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Login by email, facebookId, googleId, linkedIn and twitterId";
+        return ApiDocumentGenerator.apiDescriptions.get(this.getClass().getSimpleName());
     }
 }

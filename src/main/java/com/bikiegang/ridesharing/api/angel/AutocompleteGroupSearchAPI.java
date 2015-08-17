@@ -11,6 +11,8 @@ import com.bikiegang.ridesharing.controller.AngelGroupController;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.request.angel.AutocompleteSearchGroupRequest;
 import com.bikiegang.ridesharing.pojo.response.angel.AngelGroupDetailResponse;
+import com.bikiegang.ridesharing.utilities.ApiDocumentGenerator;
+import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -58,7 +60,7 @@ public class AutocompleteGroupSearchAPI extends HttpServlet {
         } catch (Exception ex) {
             ex.printStackTrace();
             logger.error(ex.getStackTrace());
-            out.print(Parser.ObjectToJSon(false, ex.getMessage()));
+            out.print(Parser.ObjectToJSon(false, MessageMappingUtil.System_Exception,  ex.getMessage()));
         }
     }
 
@@ -100,6 +102,6 @@ public class AutocompleteGroupSearchAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Get all Angel have current location around you";
+        return ApiDocumentGenerator.apiDescriptions.get(this.getClass().getSimpleName());
     }
 }

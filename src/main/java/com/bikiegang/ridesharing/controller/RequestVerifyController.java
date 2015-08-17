@@ -16,6 +16,7 @@ import com.bikiegang.ridesharing.pojo.response.angel.RequestVerifyDetailResponse
 import com.bikiegang.ridesharing.pojo.response.angel.RequestVerifySortDetailResponse;
 import com.bikiegang.ridesharing.utilities.BroadcastCenterUtil;
 import com.bikiegang.ridesharing.utilities.DateTimeUtil;
+import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.ArrayList;
@@ -30,22 +31,22 @@ public class RequestVerifyController {
 
     public String sendVerificationRequest(RequestVerifyRequest request) throws JsonProcessingException {
         if (null == request.getUserId() || request.getUserId().equals("")) {
-            return Parser.ObjectToJSon(false, "'userId' is not found");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
         }
         if (null == request.getAngelId() || request.getAngelId().equals("")) {
-            return Parser.ObjectToJSon(false, "'angelId' is not found");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'angelId'");
         }
         if (request.getCertificates().length == 0) {
-            return Parser.ObjectToJSon(false, "Certificates is not found");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "Certificates");
         }
         User user = database.getUserHashMap().get(request.getUserId());
         if (null == user) {
-            return Parser.ObjectToJSon(false, "User is not found by userId");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User");
         }
 
         User angel = database.getUserHashMap().get(request.getAngelId());
         if (null == angel) {
-            return Parser.ObjectToJSon(false, "Angel is not found by angelId");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "Angel");
         }
         // create request
         RequestVerify requestVerify = new RequestVerify();
@@ -62,30 +63,30 @@ public class RequestVerifyController {
             System.out.println(request.getUserId());
             List<CertificateDetail> failCertificates = new VerifiedCertificateController().createCertificate(request.getCertificates(), request.getUserId(), request.getAngelId(), VerifiedCertificate.WAITING);
             if (!failCertificates.isEmpty()) {
-                return Parser.ObjectToJSon(false, "Some Certificates cannot insert", failCertificates);
+                return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail, failCertificates);
             }
             //TODO push notification
             RequestVerifySortDetailResponse noti = new RequestVerifySortDetailResponse(requestVerify);
             new BroadcastCenterUtil().pushNotification(NotificationParser.ObjectToJSon(ObjectNoti.REQUEST_VERIFY, noti), angel.getId(), BroadcastCenterUtil.ANGEL_SPECIAL_APP_SENDER_ID);
-            return Parser.ObjectToJSon(true, "Request sent successfully");
+            return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
 
         }
-        return Parser.ObjectToJSon(false, "Cannot send request");
+        return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
     }
 
     public String sendVerificationReply(ReplyVerifyRequest request) throws JsonProcessingException {
         if (request.getRequestId() <= 0) {
-            return Parser.ObjectToJSon(false, "'requestId' is invalid");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'requestId'");
         }
         if (request.getStatus() != RequestVerify.ACCEPT && request.getStatus() != RequestVerify.DENY) {
-            return Parser.ObjectToJSon(false, "'status' is invalid");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'status'");
         }
         RequestVerify requestVerify = database.getRequestVerifyHashMap().get(request.getRequestId());
         if (null == requestVerify) {
-            return Parser.ObjectToJSon(false, "Request does not exist");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "Request");
         }
         if (requestVerify.getStatus() == RequestVerify.DENY) {
-            return Parser.ObjectToJSon(false, "Request was canceled or denied");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Request_has_denied);
         }
         requestVerify.setStatus(request.getStatus());
         if (dao.update(requestVerify)) {
@@ -96,14 +97,14 @@ public class RequestVerifyController {
                     new BroadcastCenterUtil().pushNotification(Parser.ObjectToJSon(noti), requestVerify.getUserId(), BroadcastCenterUtil.CLOUD_BIKE_SENDER_ID);
                 }
             }
-            return Parser.ObjectToJSon(true, "Request sent successfully");
+            return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
         }
-        return Parser.ObjectToJSon(false, "Cannot send request");
+        return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
     }
 
     public String getListRequestVerify(GetListRequestVerifyRequest request) throws JsonProcessingException {
         if (null == request.getAngelId() || request.getAngelId().equals("")) {
-            return Parser.ObjectToJSon(false, "'angelId' is not found");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'angelId'");
         }
         List<RequestVerifySortDetailResponse> responses = new ArrayList<>();
         List<Long> requestIds = database.getAngelRequestsBox().get(request.getAngelId());
@@ -122,24 +123,24 @@ public class RequestVerifyController {
                 }
             }
         }
-        return Parser.ObjectToJSon(true, "Get list requests successfully", responses);
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, responses);
     }
 
     public String getRequestDetail(GetRequestDetailRequest request) throws JsonProcessingException {
         if (request.getRequestId() <= 0) {
-            return Parser.ObjectToJSon(false, "'requestId' is invalid");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'requestId'");
         }
         RequestVerify requestVerify = database.getRequestVerifyHashMap().get(request.getRequestId());
         if (null == requestVerify) {
-            return Parser.ObjectToJSon(false, "Request does not exist");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "Request");
         }
         // update current location for angel
         new UserController().updateCurrentLocation(request);
         if (Database.databaseStatus != Database.TESTING)
             if (!new UserController().checkSameBox(requestVerify.getAngelId(), requestVerify.getUserId()))
-                return Parser.ObjectToJSon(false, "You and requester is not in a same place at a same time");
+                return Parser.ObjectToJSon(false, MessageMappingUtil.User_and_angel_is_not_same_place_and_time);
         RequestVerifyDetailResponse response = new RequestVerifyDetailResponse(requestVerify);
-        return Parser.ObjectToJSon(true, "Get request detail successfully", response);
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, response);
     }
 
 }

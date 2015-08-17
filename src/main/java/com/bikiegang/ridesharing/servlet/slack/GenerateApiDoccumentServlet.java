@@ -10,6 +10,7 @@ import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.static_object.ApiDocument;
 import com.bikiegang.ridesharing.utilities.ApiDocumentGenerator;
+import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -63,10 +64,11 @@ public class GenerateApiDoccumentServlet extends HttpServlet {
                         for (ApiDocument doc : ApiDocumentGenerator.apiDocs.values()) {
                             docString += "API Name:" + doc.getName() + "\n";
                             docString += "API Description:" + doc.getApiDescription() + "\n";
+                            docString += "-------------------------------------------\n";
                         }
                         break;
                     default:
-                        if(ApiDocumentGenerator.apiDocs.containsKey(query)){
+                        if (ApiDocumentGenerator.apiDocs.containsKey(query)) {
                             ApiDocument doc = ApiDocumentGenerator.apiDocs.get(query);
                             docString += "API Name:" + doc.getName() + "\n";
                             docString += "API Description:" + doc.getApiDescription() + "\n";
@@ -75,7 +77,7 @@ public class GenerateApiDoccumentServlet extends HttpServlet {
                             docString += "API response:\n";
                             docString += doc.toNiceString(ApiDocument.RESPONSE) + "\n";
                             docString += "-------------------------------------------\n";
-                        }else {
+                        } else {
                             docString = "Api does not exits";
                         }
                 }
@@ -84,7 +86,7 @@ public class GenerateApiDoccumentServlet extends HttpServlet {
         } catch (Exception ex) {
             ex.printStackTrace();
             logger.error(ex.getStackTrace());
-            out.print(Parser.ObjectToJSon(false, ex.getMessage()));
+            out.print(Parser.ObjectToJSon(false, MessageMappingUtil.System_Exception, ex.getMessage()));
         }
 
     }

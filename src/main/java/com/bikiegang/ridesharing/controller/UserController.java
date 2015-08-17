@@ -13,6 +13,7 @@ import com.bikiegang.ridesharing.pojo.response.UserDetailWithPlannedTripResponse
 import com.bikiegang.ridesharing.pojo.response.UserResponse;
 import com.bikiegang.ridesharing.pojo.response.UserShortDetailResponse;
 import com.bikiegang.ridesharing.utilities.DateTimeUtil;
+import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import com.bikiegang.ridesharing.utilities.StringProcessUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -34,7 +35,7 @@ public class UserController {
      */
     public String register(RegisterRequest registerRequest) throws JsonProcessingException {
         if (registerRequest.getType() == 0)
-            return Parser.ObjectToJSon(false, "'type' is not found");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'type'");
         switch (registerRequest.getType()) {
             case RegisterRequest.EMAIL:
                 return registerEmail(registerRequest);
@@ -47,18 +48,18 @@ public class UserController {
             case RegisterRequest.LINKEDIN:
                 return registerLinkedIn(registerRequest);
         }
-        return Parser.ObjectToJSon(false, "type is invalid");
+        return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'type'");
     }
 
     private String registerFacebook(RegisterRequest registerRequest) throws JsonProcessingException {
         if (null == registerRequest.getFacebookId() || registerRequest.getFacebookId().equals("")) {
-            return Parser.ObjectToJSon(false, "'facebookId' is not found");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'facebookId'");
         }
         if (database.getFacebookRFUserId().keySet().contains(registerRequest.getFacebookId())) {
             String id = database.getFacebookRFUserId().get(registerRequest.getFacebookId());
             User existUser = database.getUserHashMap().get(id);
             if (existUser != null) {
-                return Parser.ObjectToJSon(true, "'facebookId' has been registered", new UserResponse(existUser));
+                return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new UserResponse(existUser));
             }
         }
         User user = new User();
@@ -80,40 +81,40 @@ public class UserController {
         if (null != registerRequest.getBirthDay())
             user.setBirthDay(registerRequest.getBirthDay());
         if (dao.insert(user)) {
-            return Parser.ObjectToJSon(true, "Register successfully", new UserResponse(user));
+            return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new UserResponse(user));
         }
-        return Parser.ObjectToJSon(false, "Cannot register now. Try again later!");
+        return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
     }
 
     private String registerEmail(RegisterRequest registerRequest) throws JsonProcessingException {
         if (null == registerRequest.getEmail() || registerRequest.getEmail().equals("")) {
-            return Parser.ObjectToJSon(false, "'email' is not found");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'email'");
         }
         if (null == registerRequest.getPassword() || registerRequest.getPassword().equals("")) {
-            return Parser.ObjectToJSon(false, "'password' is not found");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'password'");
         }
         if (database.getEmailRFUserId().keySet().contains(registerRequest.getEmail())) {
-            return Parser.ObjectToJSon(false, "'email' has been used");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_has_been_used, "'email'");
         }
         User user = new User();
         user.setId("e_" + registerRequest.getEmail());
         user.setEmail(new StringProcessUtil().EncryptText(registerRequest.getEmail()));
         user.setPassword(registerRequest.getPassword());
         if (dao.insert(user)) {
-            return Parser.ObjectToJSon(true, "Register successfully", new UserResponse(user));
+            return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new UserResponse(user));
         }
-        return Parser.ObjectToJSon(false, "Cannot register now. Try again later!");
+        return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
     }
 
     private String registerGoogle(RegisterRequest registerRequest) throws JsonProcessingException {
         if (null == registerRequest.getGoogleId() || registerRequest.getGoogleId().equals("")) {
-            return Parser.ObjectToJSon(false, "'googleId' is not found");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'googleId'");
         }
         if (database.getGoogleRFUserId().keySet().contains(registerRequest.getGoogleId())) {
             String id = database.getGoogleRFUserId().get(registerRequest.getGoogleId());
             User existUser = database.getUserHashMap().get(id);
             if (existUser != null) {
-                return Parser.ObjectToJSon(true, "'googleId' has been registered", new UserResponse(existUser));
+                return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new UserResponse(existUser));
             }
         }
         User user = new User();
@@ -134,20 +135,20 @@ public class UserController {
         user.setGender(registerRequest.getGender());
         user.setBirthDay(registerRequest.getBirthDay());
         if (dao.insert(user)) {
-            return Parser.ObjectToJSon(true, "Register successfully", new UserResponse(user));
+            return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new UserResponse(user));
         }
-        return Parser.ObjectToJSon(false, "Cannot register now. Try again later!");
+        return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
     }
 
     private String registerTwitter(RegisterRequest registerRequest) throws JsonProcessingException {
         if (null == registerRequest.getTwitterId() || registerRequest.getTwitterId().equals("")) {
-            return Parser.ObjectToJSon(false, "'twitterId' is not found");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'twitterId'");
         }
         if (database.getTwitterRFUserId().keySet().contains(registerRequest.getTwitterId())) {
             String id = database.getTwitterRFUserId().get(registerRequest.getTwitterId());
             User existUser = database.getUserHashMap().get(id);
             if (existUser != null) {
-                return Parser.ObjectToJSon(true, "'twitterId' has been registered", new UserResponse(existUser));
+                return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new UserResponse(existUser));
             }
         }
         User user = new User();
@@ -168,20 +169,20 @@ public class UserController {
         user.setGender(registerRequest.getGender());
         user.setBirthDay(registerRequest.getBirthDay());
         if (dao.insert(user)) {
-            return Parser.ObjectToJSon(true, "Register successfully", new UserResponse(user));
+            return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new UserResponse(user));
         }
-        return Parser.ObjectToJSon(false, "Cannot register now. Try again later!");
+        return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
     }
 
     private String registerLinkedIn(RegisterRequest registerRequest) throws JsonProcessingException {
         if (null == registerRequest.getLinkedInId() || registerRequest.getLinkedInId().equals("")) {
-            return Parser.ObjectToJSon(false, "'linkedInId' is not found");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'linkedInId'");
         }
         if (database.getLinkedInRFUserId().keySet().contains(registerRequest.getLinkedInId())) {
             String id = database.getLinkedInRFUserId().get(registerRequest.getLinkedInId());
             User existUser = database.getUserHashMap().get(id);
             if (existUser != null) {
-                return Parser.ObjectToJSon(true, "'linkedInId' has been registered", new UserResponse(existUser));
+                return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new UserResponse(existUser));
             }
         }
         User user = new User();
@@ -202,9 +203,9 @@ public class UserController {
         user.setGender(registerRequest.getGender());
         user.setBirthDay(registerRequest.getBirthDay());
         if (dao.insert(user)) {
-            return Parser.ObjectToJSon(true, "Register successfully",new UserResponse(user));
+            return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new UserResponse(user));
         }
-        return Parser.ObjectToJSon(false, "Cannot register now. Try again later!");
+        return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
     }
 
     /**
@@ -212,7 +213,7 @@ public class UserController {
      */
     public String login(LoginRequest loginRequest) throws JsonProcessingException {
         if (loginRequest.getType() == 0)
-            return Parser.ObjectToJSon(false, "'type' is not found");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'type");
         switch (loginRequest.getType()) {
             case LoginRequest.EMAIL:
                 return loginEmail(loginRequest);
@@ -225,88 +226,88 @@ public class UserController {
             case LoginRequest.LINKEDIN:
                 return loginLinkedIn(loginRequest);
         }
-        return Parser.ObjectToJSon(false, "type is invalid");
+        return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'type'");
     }
 
     private String loginFacebook(LoginRequest loginRequest) throws JsonProcessingException {
         if (null == loginRequest.getUserId() || loginRequest.getUserId().equals("")) {
-            return Parser.ObjectToJSon(false, "'userId' is not found");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
         }
         String userId = database.getFacebookRFUserId().get(loginRequest.getUserId());
         if (null == userId || userId.equals("")) {
-            return Parser.ObjectToJSon(false, "User does not exist");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User");
         }
         User user = database.getUserHashMap().get(userId);
         if (user == null) {
-            return Parser.ObjectToJSon(false, "User is not found by userId");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User");
         }
-        return Parser.ObjectToJSon(true, "Login successfully", new UserResponse(user));
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Object_is_not_found, new UserResponse(user));
     }
 
     private String loginEmail(LoginRequest loginRequest) throws JsonProcessingException {
         if (null == loginRequest.getUserId() || loginRequest.getUserId().equals("")) {
-            return Parser.ObjectToJSon(false, "'userId' is not found");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
         }
         if (null == loginRequest.getPassword() || loginRequest.getPassword().equals("")) {
-            return Parser.ObjectToJSon(false, "'password' is not found");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'password'");
         }
         String userId = database.getEmailRFUserId().get(loginRequest.getUserId());
         if (null == userId || userId.equals("")) {
-            return Parser.ObjectToJSon(false, "User does not exist");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User");
         }
         User user = database.getUserHashMap().get(userId);
         if (user == null) {
-            return Parser.ObjectToJSon(false, "User is not found by userId");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User is not found by userId");
         }
         if (!user.getPassword().equals(new StringProcessUtil().EncryptText(loginRequest.getPassword()))) {
-            return Parser.ObjectToJSon(false, "Password is wrong");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "password");
         }
-        return Parser.ObjectToJSon(true, "Login successfully", new UserResponse(user));
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new UserResponse(user));
     }
 
     private String loginGoogle(LoginRequest loginRequest) throws JsonProcessingException {
         if (null == loginRequest.getUserId() || loginRequest.getUserId().equals("")) {
-            return Parser.ObjectToJSon(false, "'userId' is not found");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
         }
         String userId = database.getGoogleRFUserId().get(loginRequest.getUserId());
         if (null == userId || userId.equals("")) {
-            return Parser.ObjectToJSon(false, "User does not exist");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User");
         }
         User user = database.getUserHashMap().get(userId);
         if (user == null) {
-            return Parser.ObjectToJSon(false, "User is not found by userId");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User");
         }
-        return Parser.ObjectToJSon(true, "Login successfully", new UserResponse(user));
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new UserResponse(user));
     }
 
     private String loginTwitter(LoginRequest loginRequest) throws JsonProcessingException {
         if (null == loginRequest.getUserId() || loginRequest.getUserId().equals("")) {
-            return Parser.ObjectToJSon(false, "'userId' is not found");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
         }
         String userId = database.getTwitterRFUserId().get(loginRequest.getUserId());
         if (null == userId || userId.equals("")) {
-            return Parser.ObjectToJSon(false, "User does not exist");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User");
         }
         User user = database.getUserHashMap().get(userId);
         if (user == null) {
-            return Parser.ObjectToJSon(false, "User is not found by userId");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User");
         }
-        return Parser.ObjectToJSon(true, "Login successfully", new UserResponse(user));
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new UserResponse(user));
     }
 
     private String loginLinkedIn(LoginRequest loginRequest) throws JsonProcessingException {
         if (null == loginRequest.getUserId() || loginRequest.getUserId().equals("")) {
-            return Parser.ObjectToJSon(false, "'userId' is not found");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
         }
         String userId = database.getLinkedInRFUserId().get(loginRequest.getUserId());
         if (null == userId || userId.equals("")) {
-            return Parser.ObjectToJSon(false, "User does not exist");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User");
         }
         User user = database.getUserHashMap().get(userId);
         if (user == null) {
-            return Parser.ObjectToJSon(false, "User is not found by userId");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User");
         }
-        return Parser.ObjectToJSon(true, "Login successfully", new UserResponse(user));
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new UserResponse(user));
     }
 
     /**
@@ -314,11 +315,11 @@ public class UserController {
      */
     public String getUserDetailWithRoutes(GetInformationUsingUserIdRequest request) throws IOException {
         if (null == request.getUserId() || request.getUserId().equals("")) {
-            return Parser.ObjectToJSon(false, "'userId' is not found");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
         }
         User user = database.getUserHashMap().get(request.getUserId());
         if (user == null) {
-            return Parser.ObjectToJSon(false, "User is not found by userId");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User");
         }
         //get list route of user
         List<Long> routeIds;
@@ -330,16 +331,16 @@ public class UserController {
         }
 
         UserDetailWithPlannedTripResponse response = new UserDetailWithPlannedTripResponse(user, new PlannedTripController().getListPlannedTripDetailResponse(routeIds, "this is my trip"));
-        return Parser.ObjectToJSon(true, "Get detail successfully", response);
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, response);
     }
 
     public String getUsersAroundFromMe(GetUsersAroundFromMeRequest request, boolean filterByAngel) throws JsonProcessingException {
 
         if (request.getCenterLat() == 0 && request.getCenterLng() == 0) {
-            return Parser.ObjectToJSon(false, "Latitude and Longitude is invalid (0,0)");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'lat' and 'lng'");
         }
         if (request.getRadius() < 0) {
-            return Parser.ObjectToJSon(false, "Radius is invalid (< 0)");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "radius");
         }
         LatLng center = new LatLng(request.getCenterLat(), request.getCenterLng());
         List<String> userIds = database.getGeoCellCurrentLocation().getIdsInFrame(center, request.getRadius());
@@ -351,7 +352,7 @@ public class UserController {
                 userDetails.add(detail);
             }
         }
-        return Parser.ObjectToJSon(true, "Get list users success", userDetails);
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, userDetails);
     }
 
     public List<User> getUsersFromUserIds(List<String> ids) {
@@ -373,21 +374,21 @@ public class UserController {
      */
     public String updateCurrentWithRouteLocation(UpdateCurrentLocationWithPlannedTripRequest request) throws JsonProcessingException {
         if (null == request.getCurrentPolyLine() || request.getCurrentPolyLine().equals("")) {
-            return Parser.ObjectToJSon(false, "'currentPolyLine' is not found");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'currentPolyLine'");
         }
         if (null == request.getUserId() || request.getUserId().equals("")) {
-            return Parser.ObjectToJSon(false, "'userId' is not found");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
         }
         if (request.getPlannedTripId() <= 0) {
-            return Parser.ObjectToJSon(false, "'plannedTripId' is invalid");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'plannedTripId'");
         }
         User user = database.getUserHashMap().get(request.getUserId());
         if (user == null) {
-            return Parser.ObjectToJSon(false, "User is not found by userId");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User");
         }
         PlannedTrip route = database.getPlannedTripHashMap().get(request.getPlannedTripId());
         if (null == route) {
-            return Parser.ObjectToJSon(false, "Planned Trip is not found by plannedTripId");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "Planned Trip");
         }
         List<LatLng> currentList = PolyLineProcess.decodePoly(request.getCurrentPolyLine());
         if (null != currentList && currentList.size() > 0) {
@@ -395,38 +396,38 @@ public class UserController {
         }
         route.setPlannedTripTrailPolyLine(request.getCurrentPolyLine());
         new PlannedTripDao().update(route);
-        return Parser.ObjectToJSon(true, "Update current location successfully");
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
     }
 
     public String updateCurrentLocation(UpdateCurrentLocationRequest request) throws JsonProcessingException {
         if (request.getLat() <= 0 && request.getLng() <= 0) {
-            return Parser.ObjectToJSon(false, "'latitude' and 'longitude' is invalid");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'lat' and 'lng'");
         }
         if (null == request.getUserId() || request.getUserId().equals("")) {
-            return Parser.ObjectToJSon(false, "'userId' is not found");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
         }
         User user = database.getUserHashMap().get(request.getUserId());
         if (user == null) {
-            return Parser.ObjectToJSon(false, "User is not found by userId");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User");
         }
         LatLng oldLocation = new LatLng(user.getCurrentLocation());
         LatLng newLocation = new LatLng(request.getLat(), request.getLng());
         database.getGeoCellCurrentLocation().updateInCell(oldLocation, newLocation, user.getId());
         user.setCurrentLocation(newLocation);
 
-        return Parser.ObjectToJSon(true, "Update current location successfully");
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully );
     }
 
     public String getPartnerLocation(GetPartnerLocationRequest request) throws JsonProcessingException {
         if (request.getLat() <= 0 && request.getLng() <= 0) {
-            return Parser.ObjectToJSon(false, "'latitude' and 'longitude' is invalid");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'lat' and 'lng'");
         }
         if (null == request.getUserId() || request.getUserId().equals("")) {
-            return Parser.ObjectToJSon(false, "'userId' is not found");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
         }
         User user = database.getUserHashMap().get(request.getUserId());
         if (user == null) {
-            return Parser.ObjectToJSon(false, "User is not found by userId");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User");
         }
         LatLng oldLocation = new LatLng(user.getCurrentLocation());
         LatLng newLocation = new LatLng(request.getLat(), request.getLng());
@@ -434,9 +435,9 @@ public class UserController {
         user.setCurrentLocation(newLocation);
         User partner = database.getUserHashMap().get(request.getPartnerId());
         if (partner == null) {
-            return Parser.ObjectToJSon(false, "Partner is not found by partnerId");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "Partner");
         }
-        return Parser.ObjectToJSon(true, "Get partner's location successfully", partner.getCurrentLocation());
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, partner.getCurrentLocation());
     }
 
     public boolean checkSameBox(String firstUserId, String secondUserId) {
@@ -452,11 +453,11 @@ public class UserController {
      */
     public String updateProfile(UpdateProfileRequest request) throws JsonProcessingException {
         if (null == request.getId() || request.getId().equals("")) {
-            return Parser.ObjectToJSon(false, "'id' is not found");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found,"'id'");
         }
         User user = database.getUserHashMap().get(request.getId());
         if (user == null) {
-            return Parser.ObjectToJSon(false, "User does not exist");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found,"User");
         }
         if (null != request.getProfilePictureLink())
             user.setProfilePictureLink(request.getProfilePictureLink());
@@ -475,23 +476,23 @@ public class UserController {
         if (request.getPrivacy() >= 0)
             user.setPrivacy(request.getPrivacy());
         if (dao.update(user)) {
-            return Parser.ObjectToJSon(true, "Update profile successfully");
+            return Parser.ObjectToJSon(true,MessageMappingUtil.Successfully);
         }
-        return Parser.ObjectToJSon(false, "Cannot update your profile now. Try again later!");
+        return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
     }
 
     public String updateSocialNetworkAccount(UpdateSocialNetworkAccountRequest request) throws JsonProcessingException {
         if (null == request.getUserId() || request.getUserId().equals("")) {
-            return Parser.ObjectToJSon(false, "'userId' is not found");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found,"'userId'");
         }
         if (null == request.getSocialNetworkId() || request.getSocialNetworkId().equals("")) {
-            return Parser.ObjectToJSon(false, "'socialNetworkId' is not found");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found,"'socialNetworkId'");
         }
         if (request.getType() == 0)
-            return Parser.ObjectToJSon(false, "'type' is not found");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found,"'type'");
         User user = database.getUserHashMap().get(request.getUserId());
         if (user == null) {
-            return Parser.ObjectToJSon(false, "User does not exist");
+            return Parser.ObjectToJSon(false,MessageMappingUtil.Object_is_not_found, "User");
         }
         switch (request.getType()) {
             case UpdateSocialNetworkAccountRequest.FACEBOOK:
@@ -512,53 +513,53 @@ public class UserController {
                 break;
         }
         if (dao.update(user)) {
-            return Parser.ObjectToJSon(true, "Update your social account successfully");
+            return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
         }
-        return Parser.ObjectToJSon(false, "Cannot update  your social account");
+        return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
     }
 
     public String removeSocialNetworkAccount(UpdateSocialNetworkAccountRequest request) throws JsonProcessingException {
         if (null == request.getUserId() || request.getUserId().equals("")) {
-            return Parser.ObjectToJSon(false, "'userId' is not found");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found,"'userId'");
         }
         if (null == request.getSocialNetworkId() || request.getSocialNetworkId().equals("")) {
-            return Parser.ObjectToJSon(false, "'socialNetworkId' is not found");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found,"'socialNetworkId'");
         }
         if (request.getType() == 0)
-            return Parser.ObjectToJSon(false, "'type' is not found");
+            return Parser.ObjectToJSon(false,MessageMappingUtil.Element_is_not_found, "'type'");
         User user = database.getUserHashMap().get(request.getUserId());
         if (user == null) {
-            return Parser.ObjectToJSon(false, "User does not exist");
+            return Parser.ObjectToJSon(false,MessageMappingUtil.Object_is_not_found, "User");
         }
         switch (request.getType()) {
             case UpdateSocialNetworkAccountRequest.FACEBOOK:
                 if (user.getGoogleId().equals("") && user.getTwitterId().equals("") && user.getLinkedInId().equals(""))
-                    return Parser.ObjectToJSon(false, "Cannot remove this social account because you will cannot login after remove that");
+                    return Parser.ObjectToJSon(false, MessageMappingUtil.Fail,"Cannot remove this social account because you will cannot login after remove that");
                 database.getFacebookRFUserId().remove(user.getFacebookId());
                 user.setFacebookId("");
                 break;
             case UpdateSocialNetworkAccountRequest.GOOGLE:
                 if (user.getFacebookId().equals("") && user.getTwitterId().equals("") && user.getLinkedInId().equals(""))
-                    return Parser.ObjectToJSon(false, "Cannot remove this social account because you will cannot login after remove that");
+                    return Parser.ObjectToJSon(false,MessageMappingUtil.Fail, "Cannot remove this social account because you will cannot login after remove that");
                 database.getGoogleRFUserId().remove(user.getGoogleId());
                 user.setGoogleId("");
                 break;
             case UpdateSocialNetworkAccountRequest.TWITTER:
                 if (user.getGoogleId().equals("") && user.getFacebookId().equals("") && user.getLinkedInId().equals(""))
-                    return Parser.ObjectToJSon(false, "Cannot remove this social account because you will cannot login after remove that");
+                    return Parser.ObjectToJSon(false,MessageMappingUtil.Fail, "Cannot remove this social account because you will cannot login after remove that");
                 database.getTwitterRFUserId().remove(user.getTwitterId());
                 user.setTwitterId("");
                 break;
             case UpdateSocialNetworkAccountRequest.LINKEDIN:
                 if (user.getGoogleId().equals("") && user.getTwitterId().equals("") && user.getFacebookId().equals(""))
-                    return Parser.ObjectToJSon(false, "Cannot remove this social account because you will cannot login after remove that");
+                    return Parser.ObjectToJSon(false, MessageMappingUtil.Fail,"Cannot remove this social account because you will cannot login after remove that");
                 database.getLinkedInRFUserId().remove(user.getLinkedInId());
                 user.setLinkedInId("");
                 break;
         }
         if (dao.update(user)) {
-            return Parser.ObjectToJSon(true, "Update your social account successfully");
+            return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
         }
-        return Parser.ObjectToJSon(false, "Cannot update  your social account");
+        return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
     }
 }

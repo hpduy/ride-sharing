@@ -53,6 +53,13 @@ public class ApiDocumentGeneratorTest {
     }
 
     @Test
+    public void getListOfApiName() throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException {
+        for(String name : ApiDocumentGenerator.getListOfApi()){
+            System.out.println(name);
+        }
+    }
+
+    @Test
     public void autoTestAPI() throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchFieldException, NoSuchMethodException, JsonProcessingException {
         String packagePath = "com.bikiegang.ridesharing.api";
         Reflections reflections = new Reflections(packagePath);

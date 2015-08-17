@@ -54,6 +54,7 @@ and open the template in the editor.
                 console.log(response);
             }
         });
+    }
 
 </script>
 </html>

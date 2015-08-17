@@ -10,6 +10,7 @@ import com.bikiegang.ridesharing.pojo.request.angel.AngelLoginRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.AngelRegisterRequest;
 import com.bikiegang.ridesharing.pojo.response.GetAngelActiveCodesResponse;
 import com.bikiegang.ridesharing.utilities.DateTimeUtil;
+import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import com.bikiegang.ridesharing.utilities.SendMailUtil;
 import com.bikiegang.ridesharing.utilities.StringProcessUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -31,10 +32,10 @@ public class AngelController {
 
     public String getAngelActiveCode(GetAngelActiveCodesRequest request) throws JsonProcessingException {
         if (request.getNumberOfCode() <= 0) {
-            return Parser.ObjectToJSon(false, "'numberOfCode' is invalid");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid,"'numberOfCode'");
         }
         String[] codes = getAngelActiveCode(request.getNumberOfCode());
-        return Parser.ObjectToJSon(true, "Get code successfully", new GetAngelActiveCodesResponse(codes));
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new GetAngelActiveCodesResponse(codes));
     }
 
     public String [] getAngelActiveCode(int numberOfCode){
@@ -53,23 +54,23 @@ public class AngelController {
 
     public synchronized String register(AngelRegisterRequest registerRequest) throws JsonProcessingException {
         if (null == registerRequest.getEmail() || registerRequest.getEmail().equals("")) {
-            return Parser.ObjectToJSon(false, "'email' is not found");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'email'");
         }
         if (null == registerRequest.getPassword() || registerRequest.getPassword().equals("")) {
-            return Parser.ObjectToJSon(false, "'password' is not found");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found,"'password'");
         }
         if (null == registerRequest.getActiveCode() || registerRequest.getActiveCode().equals("")) {
-            return Parser.ObjectToJSon(false, "'activeCode' is not found");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found,"'activeCode'");
         }
         if (database.getEmailRFUserId().keySet().contains(registerRequest.getEmail())) {
-            return Parser.ObjectToJSon(false, "'email' has been used");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_has_been_used,"'email' has been used");
         }
         if (!angelCodeHashMap.keySet().contains(registerRequest.getActiveCode())) {
-            return Parser.ObjectToJSon(false, "'activeCode' is wrong or used");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid_or_used,"'activeCode'");
         }
         if ((DateTimeUtil.now() - angelCodeHashMap.get(registerRequest.getActiveCode())) > expiredTime) {
             angelCodeHashMap.remove(registerRequest.getActiveCode());
-            return Parser.ObjectToJSon(false, "'activeCode' is expired and it is deleted now");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_expired,"'activeCode'");
         }
         angelCodeHashMap.remove(registerRequest.getActiveCode());
         User user = new User();
@@ -78,45 +79,45 @@ public class AngelController {
         user.setPassword(registerRequest.getPassword());
         user.setStatus(User.ANGEL);
         if (dao.insert(user)) {
-            return Parser.ObjectToJSon(true, "Register successfully", user.getId());
+            return Parser.ObjectToJSon(true,MessageMappingUtil.Successfully, user.getId());
         }
-        return Parser.ObjectToJSon(false, "Cannot register now. Try again later!");
+        return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
     }
 
     public String login(AngelLoginRequest loginRequest) throws JsonProcessingException {
         if (null == loginRequest.getEmail() || loginRequest.getEmail().equals("")) {
-            return Parser.ObjectToJSon(false, "'email' is not found");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found,"'email'");
         }
         if (null == loginRequest.getPassword() || loginRequest.getPassword().equals("")) {
-            return Parser.ObjectToJSon(false, "'password' is not found");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found,"'password'");
         }
         String userId = database.getEmailRFUserId().get(loginRequest.getEmail());
         if (null == userId || userId.equals("")) {
-            return Parser.ObjectToJSon(false, "User does not exist");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found,"Cannot find userId by email");
         }
         User user = database.getUserHashMap().get(userId);
         if (user == null){
-            return Parser.ObjectToJSon(false, "User is not found by email");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found,"User");
         }
         if (!user.getPassword().equals(loginRequest.getPassword())) {
-            return Parser.ObjectToJSon(false, "Password is wrong");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid,"Password");
         }
-        return Parser.ObjectToJSon(true, "Login successfully", user.getId());
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, user.getId());
     }
 
     public String forgetPassword(AngelForgetPasswordRequest request) throws JsonProcessingException, UnsupportedEncodingException {
         if (request.getEmail() == null || request.getEmail().equals("")) {
-            return Parser.ObjectToJSon(false, "'email' is not found");
+            return Parser.ObjectToJSon(false,MessageMappingUtil.Element_is_not_found, "'email'");
         }
         String userId = database.getEmailRFUserId().get(request.getEmail());
         if (null == userId || userId.equals("")) {
-            return Parser.ObjectToJSon(false, "User does not exist");
+            return Parser.ObjectToJSon(false,MessageMappingUtil.Element_is_not_found, "userId is not found by email");
         }
         User user = database.getUserHashMap().get(userId);
         if (user == null) {
-            return Parser.ObjectToJSon(false, "User is not found by email");
+            return Parser.ObjectToJSon(false,MessageMappingUtil.Object_is_not_found, "User");
         }
         new SendMailUtil(user.getEmail(), "Your Angel-Password", "<p>Someone just requested your CloudBike's Angel password, if it was you, please use the following one:</p><p>Password:<b>" + new StringProcessUtil().DecryptText(user.getPassword()) + "</b></p>");
-        return Parser.ObjectToJSon(true, "Your password have been sent to your mail");
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
     }
 }

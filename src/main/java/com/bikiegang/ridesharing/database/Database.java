@@ -5,9 +5,7 @@ import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.geocoding.GeoCell;
 import com.bikiegang.ridesharing.pojo.*;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by hpduy17 on 6/16/15.
@@ -94,7 +92,10 @@ public class Database {
     private HashMap<String, HashSet<Long>> UserIdRFAngelGroups = new HashMap<>(); // <userId,<angelGroupId>>
     private HashMap<Long, HashSet<String>> AngelGroupIdRFUsers = new HashMap<>(); // <angelGroupId,<userId>>
     private HashMap<String, Long> UserAndGroupRFAngelGroupMember = new HashMap<>(); // <userId#angelGroupId, angelGroupMemberId>
-
+    /**
+     * POPULAR LOCATION
+     */
+    private List<Long> orderedPopularLocation = new ArrayList<>(); // < popularLocationId> which sorted
     /**
      * GEOCELL
      */
@@ -160,7 +161,7 @@ public class Database {
         return angelGroupHashMap;
     }
 
-    public HashMap<Long, PopularLocation> getPopularLocationHashMap() {g
+    public HashMap<Long, PopularLocation> getPopularLocationHashMap() {
         return popularLocationHashMap;
     }
 
@@ -263,6 +264,10 @@ public class Database {
 
     public HashMap<String, Long> getUserAndGroupRFAngelGroupMember() {
         return UserAndGroupRFAngelGroupMember;
+    }
+
+    public List<Long> getOrderedPopularLocation() {
+        return orderedPopularLocation;
     }
 
     /*GEOCELL GET-SET*/
