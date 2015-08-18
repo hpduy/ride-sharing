@@ -37,10 +37,10 @@ public class RequestMakeTripController {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'senderId'");
         }
         if (null == request.getReceiverId() || request.getReceiverId().equals("")) {
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found,"'receiverId'");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'receiverId'");
         }
         if (request.getReceiverPlannedTripId() <= 0) {
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid,"receiverPlannedTripId");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "receiverPlannedTripId");
         }
         // process plannedTrip
         //case 1 : sender's planned trips is created ->
@@ -67,7 +67,7 @@ public class RequestMakeTripController {
             //copy from passenger's planned trip
             PlannedTrip passengerPlannedTrip = database.getPlannedTripHashMap().get(passengerPlannedTripId);
             if (passengerPlannedTrip == null) {
-                return Parser.ObjectToJSon(false,MessageMappingUtil.Object_is_not_found, "Receiver's PlannedTrip");
+                return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "Receiver's PlannedTrip");
             }
             CreatePlannedTripRequest createRequest = new CreatePlannedTripRequest();
             createRequest.setCreatorId(request.getSenderId());
@@ -82,7 +82,7 @@ public class RequestMakeTripController {
                 CreatePlannedTripResponse createPlannedTripResponse = (CreatePlannedTripResponse) parser.getResult();
                 driverPlannedTripId = createPlannedTripResponse.getYourPlannedTrip().getPlannedTrip().getId();
             } else {
-                return Parser.ObjectToJSon(false, parser.getMessageCode(),parser.getMessage());
+                return Parser.ObjectToJSon(false, parser.getMessageCode(), parser.getMessage());
             }
 
         }
@@ -102,7 +102,7 @@ public class RequestMakeTripController {
                 CreatePlannedTripResponse createPlannedTripResponse = (CreatePlannedTripResponse) parser.getResult();
                 passengerPlannedTripId = createPlannedTripResponse.getYourPlannedTrip().getPlannedTrip().getId();
             } else {
-                return Parser.ObjectToJSon(false, parser.getMessageCode(),parser.getMessage());
+                return Parser.ObjectToJSon(false, parser.getMessageCode(), parser.getMessage());
             }
         }
         // process request
@@ -130,17 +130,17 @@ public class RequestMakeTripController {
 
     public String replyRequestMakeTrip(ReplyMakeTripRequest request) throws JsonProcessingException {
         if (request.getRequestMakeTripId() <= 0) {
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found,"'requestMakeTripId'");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'requestMakeTripId'");
         }
         if (request.getStatus() != RequestMakeTrip.ACCEPT && request.getStatus() != RequestMakeTrip.DENY) {
-            return Parser.ObjectToJSon(false,MessageMappingUtil.Element_is_invalid, "'status'");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'status'");
         }
         RequestMakeTrip requestMakeTrip = database.getRequestMakeTripHashMap().get(request.getRequestMakeTripId());
         if (null == requestMakeTrip) {
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found,"Request");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "Request");
         }
         if (request.getStatus() == RequestMakeTrip.ACCEPT) {
-            return Parser.ObjectToJSon(false,MessageMappingUtil.Request_has_accepted);
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Request_has_accepted);
         }
         if (request.getStatus() == RequestMakeTrip.DENY) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Request_has_denied);
@@ -179,18 +179,25 @@ public class RequestMakeTripController {
                 denyRequest(request.getReplierId(), plannedTripId);
                 //TODO make a trip
             }
-            return Parser.ObjectToJSon(true,MessageMappingUtil.Successfully);
+            return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
         }
-        return Parser.ObjectToJSon(false,MessageMappingUtil.Interactive_with_database_fail);
+        return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
     }
 
     public String removeRequestMakeTrip(RemoveRequestMakeTripRequest request) throws JsonProcessingException {
-        if (request.getRequestMakeTripId() <= 0) {
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found,"'requestMakeTripId'");
+        if (request.getPlannedTripId() <= 0) {
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'plannedTripId'");
         }
-        RequestMakeTrip requestMakeTrip = database.getRequestMakeTripHashMap().get(request.getRequestMakeTripId());
+        if (null == request.getUserId() || request.getUserId().equals("")) {
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
+        }
+        if (null == database.getSenderRequestsBox().get(request.getUserId()).get(request.getPlannedTripId())) {
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "Request");
+        }
+        long requestId = database.getSenderRequestsBox().get(request.getUserId()).get(request.getPlannedTripId());
+        RequestMakeTrip requestMakeTrip = database.getRequestMakeTripHashMap().get(requestId);
         if (null == requestMakeTrip) {
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found,"Request");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "Request");
         }
         // change to deny status
         requestMakeTrip.setStatus(RequestMakeTrip.DENY);
@@ -215,7 +222,7 @@ public class RequestMakeTripController {
 
     public String getListRequestMakeTrip(GetListRequestMakeTripRequest request) throws JsonProcessingException {
         if (null == request.getUserId() || request.getUserId().equals("")) {
-            return Parser.ObjectToJSon(false,MessageMappingUtil.Element_is_not_found, "'userId'");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
         }
         HashMap<Long, List<Long>> requestIdsByPlannedTripId = database.getReceiverRequestsBox().get(request.getUserId());
         List<RequestMakeTripDetailResponse> responses = new ArrayList<>();

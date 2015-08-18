@@ -46,7 +46,7 @@ public class PlannedTripController {
         if (plannedTrip == null) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "Planned Trip");
         }
-        PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(getPlannedTripSortDetail(plannedTrip, request.getUserId()), plannedTrip.getRawRoutingResult());
+        PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(plannedTrip, request.getUserId(), plannedTrip.getRawRoutingResult());
         return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, plannedTripDetailResponse);
     }
 
@@ -92,7 +92,7 @@ public class PlannedTripController {
             for (PlannedTrip r : plannedTripList) {
                 User creator = database.getUserHashMap().get(r.getCreatorId());
                 if (null != creator) {
-                    PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(getPlannedTripSortDetail(r, request.getCreatorId()), r.getRawRoutingResult());
+                    PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(r, request.getCreatorId(), r.getRawRoutingResult());
                     UserDetailWithPlannedTripDetailResponse userPlannedTripDetail = new UserDetailWithPlannedTripDetailResponse(creator, plannedTripDetailResponse);
                     details.add(userPlannedTripDetail);
                 }
@@ -139,7 +139,7 @@ public class PlannedTripController {
             plannedTrip.setOwnerPrice(DEFAULT_PRICE);
         } else {
             plannedTrip.setOwnerPrice(request.getPrice() / plannedTrip.getSumDistance() != Double.POSITIVE_INFINITY
-                    ? request.getPrice() / plannedTrip.getSumDistance() : PlannedTrip.DEFAULT_PRICE_1KM / 1000);
+                    ? request.getPrice() / plannedTrip.getSumDistance() : PlannedTrip.DEFAULT_PRICE_1M);
         }
         if (dao.insert(plannedTrip) || Database.databaseStatus == Database.TESTING) {
             if (null != locations) {
@@ -186,7 +186,7 @@ public class PlannedTripController {
         for (PlannedTrip r : plannedTrips) {
             User creator = database.getUserHashMap().get(r.getCreatorId());
             if (null != creator) {
-                PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(getPlannedTripSortDetail(r, request.getUserId()), r.getRawRoutingResult());
+                PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(r, request.getUserId(), r.getRawRoutingResult());
                 UserDetailWithPlannedTripDetailResponse userPlannedTripDetail = new UserDetailWithPlannedTripDetailResponse(creator, plannedTripDetailResponse);
                 details.add(userPlannedTripDetail);
             }
@@ -199,17 +199,6 @@ public class PlannedTripController {
     /**
      * SUPPORT FUNCTION
      */
-    public PlannedTripShortDetailResponse[] getListPlannedTripSortDetailResponse(List<Long> plannedTripIds, String senderId) throws IOException {
-        PlannedTripShortDetailResponse[] plannedTripSortDetailResponses = new PlannedTripShortDetailResponse[plannedTripIds.size()];
-        for (int i = 0; i < plannedTripIds.size(); i++) {
-            long id = plannedTripIds.get(i);
-            PlannedTrip r = database.getPlannedTripHashMap().get(id);
-            if (null != r) {
-                plannedTripSortDetailResponses[i] = getPlannedTripSortDetail(r, senderId);
-            }
-        }
-        return plannedTripSortDetailResponses;
-    }
 
     public PlannedTripDetailResponse[] getListPlannedTripDetailResponse(List<Long> plannedTripIds, String senderId) throws IOException {
         PlannedTripDetailResponse[] plannedTripDetailResponses = new PlannedTripDetailResponse[plannedTripIds.size()];
@@ -223,13 +212,6 @@ public class PlannedTripController {
         return plannedTripDetailResponses;
     }
 
-    public PlannedTripShortDetailResponse[] getListPlannedTripSortDetailFromObject(List<PlannedTrip> plannedTrips, String senderId) throws IOException {
-        PlannedTripShortDetailResponse[] plannedTripSortDetailResponses = new PlannedTripShortDetailResponse[plannedTrips.size()];
-        for (int i = 0; i < plannedTrips.size(); i++) {
-            plannedTripSortDetailResponses[i] = getPlannedTripSortDetail(plannedTrips.get(i), senderId);
-        }
-        return plannedTripSortDetailResponses;
-    }
 
     public UserDetailWithPlannedTripDetailResponse[] getListUserAndPlannedTripDetailFromObject(List<PlannedTrip> plannedTrips, String senderId) throws IOException {
         UserDetailWithPlannedTripDetailResponse[] userDetailWithPlannedTripDetailResponses = new UserDetailWithPlannedTripDetailResponse[plannedTrips.size()];
@@ -237,7 +219,7 @@ public class PlannedTripController {
             PlannedTrip r = plannedTrips.get(i);
             User creator = database.getUserHashMap().get(r.getCreatorId());
             if (null != creator) {
-                PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(getPlannedTripSortDetail(r, senderId), r.getRawRoutingResult());
+                PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(r, senderId, r.getRawRoutingResult());
                 UserDetailWithPlannedTripDetailResponse userPlannedTripDetail = new UserDetailWithPlannedTripDetailResponse(creator, plannedTripDetailResponse);
                 userDetailWithPlannedTripDetailResponses[i] = userPlannedTripDetail;
             }
@@ -247,7 +229,7 @@ public class PlannedTripController {
 
     public UserDetailWithPlannedTripDetailResponse getUserAndPlannedTripDetailFromObject(PlannedTrip plannedTrip) throws IOException {
         User creator = database.getUserHashMap().get(plannedTrip.getCreatorId());
-        PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(getPlannedTripSortDetail(plannedTrip, "this is my trip"), plannedTrip.getRawRoutingResult());
+        PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(plannedTrip, "this is my trip", plannedTrip.getRawRoutingResult());
         UserDetailWithPlannedTripDetailResponse userPlannedTripDetail = new UserDetailWithPlannedTripDetailResponse(creator, plannedTripDetailResponse);
         return userPlannedTripDetail;
     }
@@ -282,7 +264,7 @@ public class PlannedTripController {
 
     public PlannedTripDetailResponse getPlannedTripDetailResponse(PlannedTrip plannedTrip, String senderId) throws IOException {
 
-        PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(getPlannedTripSortDetail(plannedTrip, senderId), plannedTrip.getRawRoutingResult());
+        PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(plannedTrip, senderId, plannedTrip.getRawRoutingResult());
         return plannedTripDetailResponse;
     }
 

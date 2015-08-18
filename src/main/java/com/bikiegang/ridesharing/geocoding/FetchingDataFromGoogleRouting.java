@@ -44,6 +44,8 @@ public class FetchingDataFromGoogleRouting {
             // create linkLocation
             List<LinkedLocation> locations = getLocations(googleRoute, plannedTrip.getId());
             plannedTrip.setEstimatedTime(locations.get(locations.size() - 1).getEstimatedTime());
+            if(plannedTrip.getEstimatedTime() <= 0)
+                plannedTrip.setEstimatedTime(googleRoute.getLegs()[0].getDuration().getValue());
             plannedTrip.setStartLocation(googleRoute.getLegs()[0].getStart_location());
             plannedTrip.setEndLocation(googleRoute.getLegs()[0].getEnd_location());
             plannedTrip.setPolyLine(googleRoute.getOverview_polyline().getPoints());

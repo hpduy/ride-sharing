@@ -41,6 +41,7 @@ public class Database {
     private HashMap<Long, AngelGroup> angelGroupHashMap = new HashMap<>();
     private HashMap<Long, AngelGroupMember> angelGroupMemberHashMap = new HashMap<>();
     private HashMap<Long, PopularLocation> popularLocationHashMap = new HashMap<>();
+    private HashMap<Long, SocialTrip> socialTripHashMap = new HashMap<>();
     //REFERENCE
     /**
      * USER
@@ -89,9 +90,9 @@ public class Database {
     /**
      * ANGEL GROUP MEMBER
      */
-    private HashMap<String, HashSet<Long>> UserIdRFAngelGroups = new HashMap<>(); // <userId,<angelGroupId>>
-    private HashMap<Long, HashSet<String>> AngelGroupIdRFUsers = new HashMap<>(); // <angelGroupId,<userId>>
-    private HashMap<String, Long> UserAndGroupRFAngelGroupMember = new HashMap<>(); // <userId#angelGroupId, angelGroupMemberId>
+    private HashMap<String, HashSet<Long>> userIdRFAngelGroups = new HashMap<>(); // <userId,<angelGroupId>>
+    private HashMap<Long, HashSet<String>> angelGroupIdRFUsers = new HashMap<>(); // <angelGroupId,<userId>>
+    private HashMap<String, Long> userAndGroupRFAngelGroupMember = new HashMap<>(); // <userId#angelGroupId, angelGroupMemberId>
     /**
      * POPULAR LOCATION
      */
@@ -255,20 +256,23 @@ public class Database {
     }
 
     public HashMap<String, HashSet<Long>> getUserIdRFAngelGroups() {
-        return UserIdRFAngelGroups;
+        return userIdRFAngelGroups;
     }
 
     public HashMap<Long, HashSet<String>> getAngelGroupIdRFUsers() {
-        return AngelGroupIdRFUsers;
+        return angelGroupIdRFUsers;
     }
 
     public HashMap<String, Long> getUserAndGroupRFAngelGroupMember() {
-        return UserAndGroupRFAngelGroupMember;
+        return userAndGroupRFAngelGroupMember;
     }
 
     public List<Long> getOrderedPopularLocation() {
         return orderedPopularLocation;
     }
+
+
+
 
     /*GEOCELL GET-SET*/
 
@@ -311,6 +315,8 @@ public class Database {
     public void setGeoCellAngelGroup(GeoCell<Long> geoCellAngelGroup) {
         this.geoCellAngelGroup = geoCellAngelGroup;
     }
+
+
 
 
 }

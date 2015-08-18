@@ -5,13 +5,14 @@ package com.bikiegang.ridesharing.pojo.request;
  */
 
 public class RemoveRequestMakeTripRequest {
-    private long requestMakeTripId;
+    private String userId;
+    private long plannedTripId;
 
-    public long getRequestMakeTripId() {
-        return requestMakeTripId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setRequestMakeTripId(long requestMakeTripId) {
-        this.requestMakeTripId = requestMakeTripId;
+    public long getPlannedTripId() {
+        return plannedTripId;
     }
 }

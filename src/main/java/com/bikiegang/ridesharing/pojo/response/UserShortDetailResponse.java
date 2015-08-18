@@ -1,6 +1,5 @@
 package com.bikiegang.ridesharing.pojo.response;
 
-import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.utilities.Path;
 
@@ -12,20 +11,20 @@ public class UserShortDetailResponse {
     private String firstName = "";
     private String lastName = "";
     private String profilePictureLink = "";
-    private LatLng currentLocation = new LatLng();
     private String birthDay;
     private int verifyStatus;
+    private String job;
 
     public UserShortDetailResponse() {
     }
 
     public UserShortDetailResponse(User user) {
-        if(null != user) {
+        if (null != user) {
             this.id = user.getId();
             this.firstName = user.getFirstName();
             this.lastName = user.getLastName();
             this.profilePictureLink = Path.getUrlFromPath(user.getProfilePictureLink());
-            this.currentLocation = user.getCurrentLocation();
+            this.job = user.getJob();
             this.birthDay = user.getBirthDay();
             this.verifyStatus = user.getStatus();
         }
@@ -63,12 +62,12 @@ public class UserShortDetailResponse {
         this.profilePictureLink = profilePictureLink;
     }
 
-    public LatLng getCurrentLocation() {
-        return currentLocation;
+    public String getJob() {
+        return job;
     }
 
-    public void setCurrentLocation(LatLng currentLocation) {
-        this.currentLocation = currentLocation;
+    public void setJob(String job) {
+        this.job = job;
     }
 
     public String getBirthDay() {

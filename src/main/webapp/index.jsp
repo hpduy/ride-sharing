@@ -23,7 +23,7 @@ and open the template in the editor.
         APIName:
     </div>
     <div style="float: none">
-        <input type="text" name="apiName" id="apiName" style="width: 500px;">
+        <input type="text" title="apiName" id="apiName" style="width: 500px;">
     </div>
 </div>
 <div>
@@ -31,7 +31,7 @@ and open the template in the editor.
         Insert Your RequestJSON:
     </div>
     <div style="float: none">
-        <textarea name="jsonData" id="jsonData" style="width: 500px; height: 100px"></textarea>
+        <textarea title="jsonData" id="jsonData" style="width: 500px; height: 100px"></textarea>
     </div>
 </div>
 <div align="center">

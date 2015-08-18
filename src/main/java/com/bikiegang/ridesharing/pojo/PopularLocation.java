@@ -9,6 +9,7 @@ public class PopularLocation extends LatLng implements PojoBase {
     private long id;
     private String name;
     private String address;
+    private String backgroundImageLink = "";
     private HashSet<String> searcher = new HashSet<>();
 
     public PopularLocation() {

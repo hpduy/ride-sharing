@@ -1,5 +1,6 @@
 package com.bikiegang.ridesharing.pojo.response;
 
+import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.User;
 
 /**
@@ -9,8 +10,9 @@ public class UserDetailResponse extends UserShortDetailResponse {
     private int gender;
     private String phone;
     private String selfIntro;
-    private String job;
+    private LatLng currentLocation = new LatLng();
     public UserDetailResponse() {
+
     }
 
     public UserDetailResponse(User user) {
@@ -18,7 +20,7 @@ public class UserDetailResponse extends UserShortDetailResponse {
         this.gender = user.getGender();
         this.phone = user.getPhone();
         this.selfIntro = user.getSelfIntro();
-        this.job = user.getJob();
+        this.currentLocation = user.getCurrentLocation();
     }
 
     public int getGender() {
@@ -45,11 +47,11 @@ public class UserDetailResponse extends UserShortDetailResponse {
         this.selfIntro = selfIntro;
     }
 
-    public String getJob() {
-        return job;
+    public LatLng getCurrentLocation() {
+        return currentLocation;
     }
 
-    public void setJob(String job) {
-        this.job = job;
+    public void setCurrentLocation(LatLng currentLocation) {
+        this.currentLocation = currentLocation;
     }
 }

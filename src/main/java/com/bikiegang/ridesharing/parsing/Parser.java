@@ -45,11 +45,11 @@ public class Parser {
     }
 
     public static String ObjectToJSon(boolean success) throws JsonProcessingException {
-        int errorCode = 2;
+        int messageCode = 2;
         if (success) {
-            errorCode = 1;
+            messageCode = 1;
         }
-        return toJson(new Parser(success, errorCode));
+        return toJson(new Parser(success, messageCode));
 
     }
 
