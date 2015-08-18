@@ -30,7 +30,9 @@ public class RequestVerifyDao {
             }
             //Step 1: put in hashmap
             database.getRequestVerifyHashMap().put(obj.getId(), obj);
+            //userRequestBox = new HashMap<>(); //<senderId,<receiverPlannedTripId,requestIds>>
             database.getUserRequestBox().put(obj.getUserId(), obj.getId());
+            //angelRequestsBox = new HashMap<>(); //<receiverId,<receiverPlannedTripId,<requestIds>>>
             List<Long> angelRequests = database.getAngelRequestsBox().get(obj.getAngelId());
 
             if (angelRequests == null) {
@@ -79,7 +81,9 @@ public class RequestVerifyDao {
             }
             //Step 1: put in hashmap
             database.getRequestVerifyHashMap().remove(obj.getId());
+            //userRequestBox = new HashMap<>(); //<senderId,<receiverPlannedTripId,requestIds>>
             database.getUserRequestBox().remove(obj.getUserId());
+            //angelRequestsBox = new HashMap<>(); //<receiverId,<receiverPlannedTripId,<requestIds>>>
             List<Long> angelRequests = database.getAngelRequestsBox().get(obj.getAngelId());
 
             if (angelRequests == null) {

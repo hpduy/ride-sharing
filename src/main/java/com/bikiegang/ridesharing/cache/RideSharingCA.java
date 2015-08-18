@@ -127,6 +127,75 @@ public class RideSharingCA {
     //<editor-fold defaultstate="collapsed" desc="Restore function">
     Database database = Database.getInstance();
 
+    public boolean RestoreAngelGroup() {
+        boolean result = false;
+        try {
+            database.getAngelGroupHashMap().clear();
+            Map<String, String> hgetAll = hgetAll(AngelGroup.class.getName());
+            for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+
+                database.getAngelGroupHashMap().put(ConvertUtils.toLong(key),
+                        (AngelGroup) JSONUtil.DeSerialize(value, AngelGroup.class));
+            }
+            result = true;
+        } catch (Exception ex) {
+            _logger.error(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
+    public boolean RestoreAngelMemberGroup() {
+        boolean result = false;
+        try {
+            database.getAngelGroupMemberHashMap().clear();
+            database.getUserIdRFAngelGroups().clear();
+            database.getAngelGroupIdRFUsers().clear();
+            database.getUserAndGroupRFAngelGroupMember().clear();
+
+            //cache.hset(obj.getClass().getName(), String.valueOf(obj.getId()), JSONUtil.Serialize(obj));
+            Map<String, String> hgetAll = hgetAll(AngelGroupMember.class.getName());
+            for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+
+                database.getAngelGroupMemberHashMap().put(ConvertUtils.toLong(key),
+                        (AngelGroupMember) JSONUtil.DeSerialize(value, AngelGroupMember.class));
+            }
+
+            hgetAll = hgetAll(AngelGroupMember.class.getName() + ":user");
+            for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+
+                database.getUserIdRFAngelGroups().put(key, (HashSet<Long>) JSONUtil.DeSerialize(value, new TypeToken<HashSet<Long>>() {
+                }.getType()));
+            }
+            hgetAll = hgetAll(AngelGroupMember.class.getName() + ":angelgroup");
+            for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+
+                database.getAngelGroupIdRFUsers().put(ConvertUtils.toLong(key), (HashSet<String>) JSONUtil.DeSerialize(value, new TypeToken<HashSet<String>>() {
+                }.getType()));
+            }
+            hgetAll = hgetAll(AngelGroupMember.class.getName() + ":userandgroup");
+            for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+
+                database.getUserAndGroupRFAngelGroupMember().put(key, ConvertUtils.toLong(value));
+            }
+            result = true;
+        } catch (Exception ex) {
+            _logger.error(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
     public boolean RestoreBroadcast() {
         boolean result = false;
         try {
@@ -173,12 +242,15 @@ public class RideSharingCA {
                 if (obj.getRefType() == LinkedLocation.IN_PLANNED_TRIP) {
                     PlannedTrip pt = database.getPlannedTripHashMap().get(obj.getRefId());
                     GeoCell geoCell = null;
-                    if (pt.getRole() == User.DRIVER)
+                    if (pt.getRole() == User.DRIVER) {
                         geoCell = database.getGeoCellDriver();
-                    if (pt.getRole() == User.PASSENGER)
+                    }
+                    if (pt.getRole() == User.PASSENGER) {
                         geoCell = database.getGeoCellPassenger();
-                    if (null != geoCell)
-                        geoCell.putToCell(obj,obj.getId());
+                    }
+                    if (null != geoCell) {
+                        geoCell.putToCell(obj, obj.getId());
+                    }
                 }
             }
 
@@ -247,7 +319,6 @@ public class RideSharingCA {
             database.getPlannedTripHashMap().clear();
             database.getUserIdRFPlanedTrips().clear();
             database.getRoleRFPlannedTrips().clear();
-            ;
             database.getGroupIdRFPlannedTrips().clear();
 
             Map<String, String> hgetAll = hgetAll(PlannedTrip.class.getName());
@@ -323,7 +394,7 @@ public class RideSharingCA {
                 String key = entrySet.getKey();
                 String value = entrySet.getValue();
 
-                database.getDriverIdRFTrips().put(key, (HashSet<Long>) JSONUtil.DeSerialize(value, new TypeToken<HashSet<Long>>() {
+                database.getPassengerIdRFTrips().put(key, (HashSet<Long>) JSONUtil.DeSerialize(value, new TypeToken<HashSet<Long>>() {
                 }.getType()));
             }
             result = true;
@@ -359,7 +430,7 @@ public class RideSharingCA {
             Map<String, String> googleFR = hgetAll(User.class.getName() + ":google");
             database.setGoogleRFUserId((HashMap<String, String>) googleFR);
             //Mail
-            Map<String, String> mailFR = hgetAll(User.class.getName() + ":mail");
+            Map<String, String> mailFR = hgetAll(User.class.getName() + ":email");
             database.setEmailRFUserId((HashMap<String, String>) mailFR);
             //Twitter
             Map<String, String> twitterFR = hgetAll(User.class.getName() + ":twitter");
@@ -455,6 +526,9 @@ public class RideSharingCA {
         result &= RestoreUser();
         result &= RestoreVerifiedCertificate();
         result &= RestoreRequestVerify();
+        result &= RestoreAngelGroup();
+        result &= RestoreAngelMemberGroup();
+
         return result;
     }
 

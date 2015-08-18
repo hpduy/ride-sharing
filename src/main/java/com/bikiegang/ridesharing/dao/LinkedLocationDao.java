@@ -34,29 +34,32 @@ public class LinkedLocationDao {
             }
             //Step 1: put in hashmap
             database.getLinkedLocationHashMap().put(obj.getId(), obj);
-            List<Long> get = database.getPlannedTripIdRFLinkedLocations().get(obj.getRefId());
-            if (get == null) {
-                get = new ArrayList<>();
-                database.getPlannedTripIdRFLinkedLocations().put(obj.getRefId(), get);
+            //plannedTripIdRFLinkedLocations = new HashMap<>(); //<plannedTripId,<LinkedLocationId>>
+            List<Long> linkedLocationIds = database.getPlannedTripIdRFLinkedLocations().get(obj.getRefId());
+            if (linkedLocationIds == null) {
+                linkedLocationIds = new ArrayList<>();
+                database.getPlannedTripIdRFLinkedLocations().put(obj.getRefId(), linkedLocationIds);
             }
-            get.add(obj.getId());
-            database.getPlannedTripIdRFLinkedLocations().put(obj.getRefId(), get);
+            linkedLocationIds.add(obj.getId());
             // more (put to geocell)
             if (obj.getRefType() == LinkedLocation.IN_PLANNED_TRIP) {
                 PlannedTrip pt = database.getPlannedTripHashMap().get(obj.getRefId());
                 GeoCell<Long> geoCell = null;
-                if (pt.getRole() == User.DRIVER)
+                if (pt.getRole() == User.DRIVER) {
                     geoCell = database.getGeoCellDriver();
-                if (pt.getRole() == User.PASSENGER)
+                }
+                if (pt.getRole() == User.PASSENGER) {
                     geoCell = database.getGeoCellPassenger();
-                if (null != geoCell)
-                    geoCell.putToCell(obj,obj.getId());
+                }
+                if (null != geoCell) {
+                    geoCell.putToCell(obj, obj.getId());
+                }
             }
             //Step 2: put redis
             result = cache.hset(obj.getClass().getName(),
                     String.valueOf(obj.getId()), JSONUtil.Serialize(obj));
             result &= cache.hset(obj.getClass().getName() + ":plannedtrip",
-                    String.valueOf(obj.getRefId()), JSONUtil.Serialize(get));
+                    String.valueOf(obj.getRefId()), JSONUtil.Serialize(linkedLocationIds));
             if (result) {
                 //Step 3: put job gearman
                 short actionType = Const.RideSharing.ActionType.INSERT;
@@ -73,7 +76,7 @@ public class LinkedLocationDao {
                 }
             } else {
                 logger.error(String.format("Can't not insert redis with key=%s, "
-                                + "field=%s, value=%s",
+                        + "field=%s, value=%s",
                         obj.getClass().getName(), String.valueOf(obj.getId()),
                         JSONUtil.Serialize(obj)));
             }
@@ -95,28 +98,31 @@ public class LinkedLocationDao {
             if (obj.getRefType() == LinkedLocation.IN_PLANNED_TRIP) {
                 PlannedTrip pt = database.getPlannedTripHashMap().get(obj.getRefId());
                 GeoCell<Long> geoCell = null;
-                if (pt.getRole() == User.DRIVER)
+                if (pt.getRole() == User.DRIVER) {
                     geoCell = database.getGeoCellDriver();
-                if (pt.getRole() == User.PASSENGER)
+                }
+                if (pt.getRole() == User.PASSENGER) {
                     geoCell = database.getGeoCellPassenger();
-                if (null != geoCell){
-                    geoCell.removeFromCell(obj,obj.getId());
+                }
+                if (null != geoCell) {
+                    geoCell.removeFromCell(obj, obj.getId());
                 }
             }
             //Step 1: put in hashmap
             database.getLinkedLocationHashMap().remove(obj.getId());
-            List<Long> get = database.getPlannedTripIdRFLinkedLocations().get(obj.getRefId());
-            if (get == null) {
-                get = new ArrayList<>();
-                database.getPlannedTripIdRFLinkedLocations().put(obj.getRefId(), get);
+            //plannedTripIdRFLinkedLocations = new HashMap<>(); //<plannedTripId,<LinkedLocationId>>
+            List<Long> linkedLocationIds = database.getPlannedTripIdRFLinkedLocations().get(obj.getRefId());
+            if (linkedLocationIds == null) {
+                linkedLocationIds = new ArrayList<>();
+                database.getPlannedTripIdRFLinkedLocations().put(obj.getRefId(), linkedLocationIds);
             }
-            get.remove((Long) obj.getId());
+            linkedLocationIds.remove((Long) obj.getId());
 
             //Step 2: put redis
             result = cache.hdel(obj.getClass().getName(),
                     String.valueOf(obj.getId()));
             result &= cache.hset(obj.getClass().getName() + ":plannedtrip",
-                    String.valueOf(obj.getRefId()), JSONUtil.Serialize(get));
+                    String.valueOf(obj.getRefId()), JSONUtil.Serialize(linkedLocationIds));
             if (result) {
                 //Step 3: put job gearman
                 short actionType = Const.RideSharing.ActionType.DELETE;
@@ -148,18 +154,23 @@ public class LinkedLocationDao {
                 return false;
             }
             //get old linkedlocation
-            LinkedLocation older =  new LinkedLocation(database.getLinkedLocationHashMap().get(obj.getId()));
-            // more (put to geocell)
-            if (obj.getRefType() == LinkedLocation.IN_PLANNED_TRIP) {
-                PlannedTrip pt = database.getPlannedTripHashMap().get(obj.getRefId());
-                GeoCell<Long> geoCell = null;
-                if (pt.getRole() == User.DRIVER)
-                    geoCell = database.getGeoCellDriver();
-                if (pt.getRole() == User.PASSENGER)
-                    geoCell = database.getGeoCellPassenger();
-                if (null != geoCell){
-                    geoCell.removeFromCell(older,older.getId());
-                    geoCell.putToCell(obj,obj.getId());
+            LinkedLocation tmp = database.getLinkedLocationHashMap().get(obj.getId());
+            if (tmp != null) {
+                LinkedLocation older = new LinkedLocation(tmp);
+                // more (put to geocell)
+                if (obj.getRefType() == LinkedLocation.IN_PLANNED_TRIP) {
+                    PlannedTrip pt = database.getPlannedTripHashMap().get(obj.getRefId());
+                    GeoCell<Long> geoCell = null;
+                    if (pt.getRole() == User.DRIVER) {
+                        geoCell = database.getGeoCellDriver();
+                    }
+                    if (pt.getRole() == User.PASSENGER) {
+                        geoCell = database.getGeoCellPassenger();
+                    }
+                    if (null != geoCell) {
+                        geoCell.removeFromCell(older, older.getId());
+                        geoCell.putToCell(obj, obj.getId());
+                    }
                 }
             }
             //Step 1: put in hashmap

@@ -28,10 +28,15 @@ public class UserDao {
             }
             //Step 1: put in hashmap
             database.getUserHashMap().put(obj.getId(), obj);
+            //facebookRFUserId = new HashMap<>();//<fbId, userId>
             database.getFacebookRFUserId().put(obj.getFacebookId(), obj.getId());
+            //googleRFUserId = new HashMap<>();//<ggId, userId>
             database.getGoogleRFUserId().put(obj.getGoogleId(), obj.getId());
+            //twitterRFUserId = new HashMap<>();//<twId, userId>
             database.getTwitterRFUserId().put(obj.getTwitterId(), obj.getId());
+            //emailRFUserId = new HashMap<>();//<email, userId>
             database.getEmailRFUserId().put(obj.getEmail(), obj.getId());
+            //linkedInRFUserId = new HashMap<>();//<lkId, userId>
             database.getLinkedInRFUserId().put(obj.getLinkedInId(), obj.getId());
 
             //Step 2: put redis
@@ -75,10 +80,15 @@ public class UserDao {
             }
             //Step 1: put in hashmap
             database.getUserHashMap().remove(obj.getId());
+            //facebookRFUserId = new HashMap<>();//<fbId, userId>
             database.getFacebookRFUserId().remove(obj.getFacebookId());
+            //googleRFUserId = new HashMap<>();//<ggId, userId>
             database.getGoogleRFUserId().remove(obj.getGoogleId());
+            //twitterRFUserId = new HashMap<>();//<twId, userId>
             database.getTwitterRFUserId().remove(obj.getTwitterId());
+            //emailRFUserId = new HashMap<>();//<email, userId>
             database.getEmailRFUserId().remove(obj.getEmail());
+            //linkedInRFUserId = new HashMap<>();//<lkId, userId>
             database.getLinkedInRFUserId().remove(obj.getLinkedInId());
 
             //Step 2: put redis
@@ -122,9 +132,24 @@ public class UserDao {
             }
             //Step 1: put in hashmap
             database.getUserHashMap().put(obj.getId(), obj);
+            //facebookRFUserId = new HashMap<>();//<fbId, userId>
+            database.getFacebookRFUserId().put(obj.getFacebookId(), obj.getId());
+            //googleRFUserId = new HashMap<>();//<ggId, userId>
+            database.getGoogleRFUserId().put(obj.getGoogleId(), obj.getId());
+            //twitterRFUserId = new HashMap<>();//<twId, userId>
+            database.getTwitterRFUserId().put(obj.getTwitterId(), obj.getId());
+            //emailRFUserId = new HashMap<>();//<email, userId>
+            database.getEmailRFUserId().put(obj.getEmail(), obj.getId());
+            //linkedInRFUserId = new HashMap<>();//<lkId, userId>
+            database.getLinkedInRFUserId().put(obj.getLinkedInId(), obj.getId());
 
             //Step 2: put redis
             result = cache.hset(obj.getClass().getName(), String.valueOf(obj.getId()), JSONUtil.Serialize(obj));
+            result &= cache.hset(obj.getClass().getName() + ":facebook", String.valueOf(obj.getFacebookId()), obj.getId());
+            result &= cache.hset(obj.getClass().getName() + ":google", String.valueOf(obj.getGoogleId()), obj.getId());
+            result &= cache.hset(obj.getClass().getName() + ":twitter", String.valueOf(obj.getTwitterId()), obj.getId());
+            result &= cache.hset(obj.getClass().getName() + ":email", String.valueOf(obj.getEmail()), obj.getId());
+            result &= cache.hset(obj.getClass().getName() + ":linked", String.valueOf(obj.getLinkedInId()), obj.getId());
 
             if (result) {
                 //Step 3: put job gearman

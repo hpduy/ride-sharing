@@ -76,7 +76,8 @@ public class PlannedTripDA implements IDA {
                 stmt.setString(16, JSONUtil.Serialize(value.getEndLocation()));
                 stmt.setString(17, value.getPolyLine());
                 stmt.setBoolean(18, value.isHasHelmet());
-                stmt.setBoolean(19, value.isBusy());
+                stmt.setLong(19, value.getCreatedTime());
+                stmt.setBoolean(20, value.isBusy());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {
@@ -118,8 +119,9 @@ public class PlannedTripDA implements IDA {
                 stmt.setString(16, JSONUtil.Serialize(value.getEndLocation()));
                 stmt.setString(17, value.getPolyLine());
                 stmt.setBoolean(18, value.isHasHelmet());
-                stmt.setBoolean(19, value.isBusy());
-                stmt.setLong(20, value.getId());
+                stmt.setLong(19, value.getCreatedTime());
+                stmt.setBoolean(20, value.isBusy());
+                stmt.setLong(21, value.getId());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {

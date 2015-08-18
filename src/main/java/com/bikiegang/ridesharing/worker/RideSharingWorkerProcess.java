@@ -9,20 +9,28 @@ import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.annn.framework.gearman.JobEnt;
 import com.bikiegang.ridesharing.annn.framework.util.ConvertUtils;
 import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
+import com.bikiegang.ridesharing.da.AngelGroupDA;
+import com.bikiegang.ridesharing.da.AngelGroupMemberDA;
 import com.bikiegang.ridesharing.da.BroadcastDA;
 import com.bikiegang.ridesharing.da.IDA;
 import com.bikiegang.ridesharing.da.LinkedLocationDA;
 import com.bikiegang.ridesharing.da.PlannedTripDA;
 import com.bikiegang.ridesharing.da.RequestMakeTripDA;
+import com.bikiegang.ridesharing.da.RequestVerifyDA;
 import com.bikiegang.ridesharing.da.TripDA;
 import com.bikiegang.ridesharing.da.UserDA;
+import com.bikiegang.ridesharing.da.VerifiedCertificateDA;
+import com.bikiegang.ridesharing.pojo.AngelGroup;
+import com.bikiegang.ridesharing.pojo.AngelGroupMember;
 import com.bikiegang.ridesharing.pojo.Broadcast;
 import com.bikiegang.ridesharing.pojo.LinkedLocation;
 import com.bikiegang.ridesharing.pojo.PlannedTrip;
 import com.bikiegang.ridesharing.pojo.PojoBase;
 import com.bikiegang.ridesharing.pojo.RequestMakeTrip;
+import com.bikiegang.ridesharing.pojo.RequestVerify;
 import com.bikiegang.ridesharing.pojo.Trip;
 import com.bikiegang.ridesharing.pojo.User;
+import com.bikiegang.ridesharing.pojo.VerifiedCertificate;
 import java.util.concurrent.atomic.AtomicLong;
 import org.apache.log4j.Logger;
 import org.gearman.client.GearmanJobResult;
@@ -81,6 +89,26 @@ public class RideSharingWorkerProcess extends AbstractGearmanFunction {
                 case "com.bikiegang.ridesharing.pojo.User":
                     _value = JSONUtil.DeSerialize(job.Data, User.class);
                     _rideSharingDA = new UserDA();
+                    chk = _rideSharingDA.DoAction(_value, job.ActionType);
+                    break;
+                case "com.bikiegang.ridesharing.pojo.VerifiedCertificate":
+                    _value = JSONUtil.DeSerialize(job.Data, VerifiedCertificate.class);
+                    _rideSharingDA = new VerifiedCertificateDA();
+                    chk = _rideSharingDA.DoAction(_value, job.ActionType);
+                    break;
+                case "com.bikiegang.ridesharing.pojo.RequestVerify":
+                    _value = JSONUtil.DeSerialize(job.Data, RequestVerify.class);
+                    _rideSharingDA = new RequestVerifyDA();
+                    chk = _rideSharingDA.DoAction(_value, job.ActionType);
+                    break;
+                case "com.bikiegang.ridesharing.pojo.AngelGroup":
+                    _value = JSONUtil.DeSerialize(job.Data, AngelGroup.class);
+                    _rideSharingDA = new AngelGroupDA();
+                    chk = _rideSharingDA.DoAction(_value, job.ActionType);
+                    break;
+                case "com.bikiegang.ridesharing.pojo.AngelGroupMember":
+                    _value = JSONUtil.DeSerialize(job.Data, AngelGroupMember.class);
+                    _rideSharingDA = new AngelGroupMemberDA();
                     chk = _rideSharingDA.DoAction(_value, job.ActionType);
                     break;
             }
