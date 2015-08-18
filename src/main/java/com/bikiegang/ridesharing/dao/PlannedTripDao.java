@@ -31,30 +31,32 @@ public class PlannedTripDao {
             }
             //Step 1: put in hashmap
             database.getPlannedTripHashMap().put(obj.getId(), obj);
+            //roleRFPlannedTrips = new HashMap<>(); // <role,<plannedTripId>>
             HashSet<Long> setRfRole = database.getRoleRFPlannedTrips().get(obj.getRole());
-            HashSet<Long> setRfUser = database.getUserIdRFPlanedTrips().get(obj.getCreatorId());
-            HashSet<Long> setRfGroup = database.getGroupIdRFPlannedTrips().get(obj.getGroupId());
-
             if (setRfRole == null) {
                 setRfRole = new HashSet<>();
                 database.getRoleRFPlannedTrips().put(obj.getRole(), setRfRole);
             }
+            setRfRole.add(obj.getId());
+
+            // userIdRFPlanedTrips = new HashMap<>(); // <userId,<plannedTripId>>
+            HashSet<Long> setRfUser = database.getUserIdRFPlanedTrips().get(obj.getCreatorId());
             if (setRfUser == null) {
                 setRfUser = new HashSet<>();
                 database.getUserIdRFPlanedTrips().put(obj.getCreatorId(), setRfUser);
             }
+            setRfUser.add(obj.getId());
 
+            //groupIdRFPlannedTrips = new HashMap<>(); // <groupId,<plannedTripId>>
+            HashSet<Long> setRfGroup = database.getGroupIdRFPlannedTrips().get(obj.getGroupId());
             if (setRfGroup == null) {
                 setRfGroup = new HashSet<>();
                 database.getGroupIdRFPlannedTrips().put(obj.getGroupId(), setRfGroup);
             }
-
-            setRfRole.add(obj.getId());
-            setRfUser.add(obj.getId());
-            setRfGroup.add(obj.getGroupId());
+            setRfGroup.add(obj.getId());
 
             // put start location into geocell
-            database.getGeoCellStartLocation().putToCell(obj.getStartLocation(),obj.getId());
+            database.getGeoCellStartLocation().putToCell(obj.getStartLocation(), obj.getId());
             //Step 2: put redis
             result = cache.hset(obj.getClass().getName(), String.valueOf(obj.getId()),
                     JSONUtil.Serialize(obj));
@@ -98,26 +100,30 @@ public class PlannedTripDao {
             }
             //Step 1: put in hashmap
             database.getPlannedTripHashMap().remove(obj.getId());
-            HashSet<Long> mapRfRole = database.getRoleRFPlannedTrips().get(obj.getRole());
-            HashSet<Long> mapRfUser = database.getUserIdRFPlanedTrips().get(obj.getCreatorId());
-            HashSet<Long> mapRfGroup = database.getGroupIdRFPlannedTrips().get(obj.getGroupId());
 
-            if (mapRfRole == null) {
-                mapRfRole = new HashSet<>();
-                database.getRoleRFPlannedTrips().put(obj.getRole(), mapRfRole);
+            //roleRFPlannedTrips = new HashMap<>(); // <role,<plannedTripId>>
+            HashSet<Long> setRfRole = database.getRoleRFPlannedTrips().get(obj.getRole());
+            if (setRfRole == null) {
+                setRfRole = new HashSet<>();
+                database.getRoleRFPlannedTrips().put(obj.getRole(), setRfRole);
             }
-            if (mapRfUser == null) {
-                mapRfUser = new HashSet<>();
-                database.getUserIdRFPlanedTrips().put(obj.getCreatorId(), mapRfUser);
-            }
-            if (mapRfGroup != null) {
-                mapRfGroup = new HashSet<>();
-                database.getGroupIdRFPlannedTrips().put(obj.getGroupId(), mapRfGroup);
-            }
+            setRfRole.remove((Long) obj.getId());
 
-            mapRfRole.remove((Long) obj.getId());
-            mapRfUser.remove((Long) obj.getId());
-            mapRfGroup.remove((Long) obj.getId());
+            // userIdRFPlanedTrips = new HashMap<>(); // <userId,<plannedTripId>>
+            HashSet<Long> setRfUser = database.getUserIdRFPlanedTrips().get(obj.getCreatorId());
+            if (setRfUser == null) {
+                setRfUser = new HashSet<>();
+                database.getUserIdRFPlanedTrips().put(obj.getCreatorId(), setRfUser);
+            }
+            setRfUser.remove((Long) obj.getId());
+
+            //groupIdRFPlannedTrips = new HashMap<>(); // <groupId,<plannedTripId>>
+            HashSet<Long> setRfGroup = database.getGroupIdRFPlannedTrips().get(obj.getGroupId());
+            if (setRfGroup == null) {
+                setRfGroup = new HashSet<>();
+                database.getGroupIdRFPlannedTrips().put(obj.getGroupId(), setRfGroup);
+            }
+            setRfGroup.remove((Long) obj.getId());
             // remove from cell
             // put start location into geocell
             database.getGeoCellStartLocation().removeFromCell(obj.getStartLocation(), obj.getId());
@@ -125,11 +131,11 @@ public class PlannedTripDao {
             result = cache.hdel(obj.getClass().getName(),
                     String.valueOf(obj.getId()));
             result &= cache.hset(obj.getClass().getName() + ":user",
-                    String.valueOf(obj.getCreatorId()), JSONUtil.Serialize(mapRfUser));
+                    String.valueOf(obj.getCreatorId()), JSONUtil.Serialize(setRfUser));
             result &= cache.hset(obj.getClass().getName() + ":role",
-                    String.valueOf(obj.getCreatorId()), JSONUtil.Serialize(mapRfRole));
+                    String.valueOf(obj.getCreatorId()), JSONUtil.Serialize(setRfRole));
             result &= cache.hset(obj.getClass().getName() + ":group", String.valueOf(obj.getGroupId()),
-                    JSONUtil.Serialize(mapRfGroup));
+                    JSONUtil.Serialize(setRfGroup));
 
             if (result) {
                 //Step 3: put job gearman
@@ -162,8 +168,12 @@ public class PlannedTripDao {
                 return false;
             }
             //update geocell
-            LatLng oldStartLocation = new LatLng(database.getPlannedTripHashMap().get(obj.getId()).getStartLocation());
-            database.getGeoCellStartLocation().updateInCell(oldStartLocation,obj.getStartLocation(),obj.getId());
+            PlannedTrip tmp = database.getPlannedTripHashMap().get(obj.getId());
+            if (tmp != null) {
+                LatLng tmpStartLocation = tmp.getStartLocation();
+                LatLng oldStartLocation = new LatLng(tmpStartLocation);
+                database.getGeoCellStartLocation().updateInCell(oldStartLocation, obj.getStartLocation(), obj.getId());
+            }
             //Step 1: put in hashmap
             database.getPlannedTripHashMap().put(obj.getId(), obj);
             //Step 2: put redis

@@ -30,13 +30,12 @@ public class VerifiedCertificateDao {
             }
             //Step 1: put in hashmap
             database.getVerifiedCertificateHashMap().put(obj.getId(), obj);
+            //userIdRFCertificates = new HashMap<>(); //<userId,<verifiedCertificateId>>
             HashSet<Long> userRF = database.getUserIdRFCertificates().get(obj.getOwnerId());
-
             if (userRF == null) {
                 userRF = new HashSet<>();
                 database.getUserIdRFCertificates().put(obj.getOwnerId(), userRF);
             }
-
             userRF.add(obj.getId());
 
             //Step 2: put redis
@@ -77,14 +76,14 @@ public class VerifiedCertificateDao {
             }
             //Step 1: put in hashmap
             database.getVerifiedCertificateHashMap().remove(obj.getId());
+            //userIdRFCertificates = new HashMap<>(); //<userId,<verifiedCertificateId>>
             HashSet<Long> userRF = database.getUserIdRFCertificates().get(obj.getOwnerId());
-
             if (userRF == null) {
                 userRF = new HashSet<>();
                 database.getUserIdRFCertificates().put(obj.getOwnerId(), userRF);
             }
-
             userRF.remove((Long) obj.getId());
+
             //Step 2: put redis
             result = cache.hdel(obj.getClass().getName(), String.valueOf(obj.getId()));
             result &= cache.hset(obj.getClass().getName() + ":user", obj.getOwnerId(),

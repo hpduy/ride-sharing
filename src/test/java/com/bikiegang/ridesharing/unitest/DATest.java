@@ -52,7 +52,7 @@ public class DATest {
         result = instance.DoAction(value, actionType);
         assertTrue(result);
 
-        value = utils.CreateRoute();
+        value = utils.CreatePlannedTrip();
         instance = new PlannedTripDA();
         result = instance.DoAction(value, actionType);
         assertTrue(result);
@@ -99,7 +99,7 @@ public class DATest {
         result = instance.DoAction(value, actionTypeUpdate);
         assertTrue(result);
 
-        value = utils.CreateRoute();
+        value = utils.CreatePlannedTrip();
         instance = new PlannedTripDA();
         result = instance.DoAction(value, actionType);
         assertTrue(result);
@@ -152,7 +152,7 @@ public class DATest {
         result = instance.DoAction(value, actionTypeDelete);
         assertTrue(result);
 
-        value = utils.CreateRoute();
+        value = utils.CreatePlannedTrip();
         instance = new PlannedTripDA();
         result = instance.DoAction(value, actionType);
         assertTrue(result);

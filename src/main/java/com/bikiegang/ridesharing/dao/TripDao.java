@@ -29,18 +29,21 @@ public class TripDao {
             }
             //Step 1: put in hashmap
             database.getTripHashMap().put(obj.getId(), obj);
+            //driverIdRFTrips = new HashMap<>(); // <userId,<tripId>>
             HashSet<Long> setRfDrive = database.getDriverIdRFTrips().get(obj.getDriverId());
-            HashSet<Long> setRfPassenger = database.getPassengerIdRFTrips()
-                    .get(obj.getPassengerId());
             if (setRfDrive == null) {
                 setRfDrive = new HashSet<>();
                 database.getDriverIdRFTrips().put(obj.getDriverId(), setRfDrive);
             }
+            setRfDrive.add(obj.getId());
+
+            //passengerIdRFTrips = new HashMap<>(); // <userId,<tripId>>
+            HashSet<Long> setRfPassenger = database.getPassengerIdRFTrips()
+                    .get(obj.getPassengerId());
             if (setRfPassenger == null) {
                 setRfPassenger = new HashSet<>();
                 database.getPassengerIdRFTrips().put(obj.getPassengerId(), setRfPassenger);
             }
-            setRfDrive.add(obj.getId());
             setRfPassenger.add(obj.getId());
 
             //Step 2: put redis
@@ -82,18 +85,21 @@ public class TripDao {
             }
             //Step 1: put in hashmap
             database.getTripHashMap().remove(obj.getId());
+            //driverIdRFTrips = new HashMap<>(); // <userId,<tripId>>
             HashSet<Long> setRfDrive = database.getDriverIdRFTrips().get(obj.getDriverId());
-            HashSet<Long> setRfPassenger = database.getPassengerIdRFTrips()
-                    .get(obj.getPassengerId());
             if (setRfDrive == null) {
                 setRfDrive = new HashSet<>();
                 database.getDriverIdRFTrips().put(obj.getDriverId(), setRfDrive);
             }
+            setRfDrive.remove((Long) obj.getId());
+
+            //passengerIdRFTrips = new HashMap<>(); // <userId,<tripId>>
+            HashSet<Long> setRfPassenger = database.getPassengerIdRFTrips()
+                    .get(obj.getPassengerId());
             if (setRfPassenger == null) {
                 setRfPassenger = new HashSet<>();
                 database.getPassengerIdRFTrips().put(obj.getPassengerId(), setRfPassenger);
             }
-            setRfDrive.remove((Long) obj.getId());
             setRfPassenger.remove((Long) obj.getId());
             //Step 2: put redis
             result = cache.hdel(obj.getClass().getName(), String.valueOf(obj.getId()));

@@ -8,7 +8,8 @@ import java.util.List;
 /**
  * Created by hpduy17 on 8/8/15.
  */
-public class AngelGroup {
+public class AngelGroup implements PojoBase {
+
     private long id;
     private LatLng location = new LatLng();
     private List<String> tagName = new ArrayList<>();
@@ -26,9 +27,10 @@ public class AngelGroup {
         this.tagName = tagName;
         this.createdTime = createdTime;
         this.address = address;
-        for(String n : tagName){
-            if(n.length() > this.canonicalName.length())
+        for (String n : tagName) {
+            if (n.length() > this.canonicalName.length()) {
                 this.canonicalName = n;
+            }
         }
     }
 

@@ -29,16 +29,17 @@ public class BroadcastDao {
             }
             //Step 1: put in hashmap
             database.getBroadcastHashMap().put(obj.getId(), obj);
-            HashSet<String> get = database.getUserIdRFBroadcasts().get(obj.getUserId());
-            if (get == null) {
-                get = new HashSet<>();
-                database.getUserIdRFBroadcasts().put(obj.getUserId(), get);
+            // userIdRFBroadcasts = new HashMap<>(); //<userId,<broadcastId>>
+            HashSet<String> broadcastIds = database.getUserIdRFBroadcasts().get(obj.getUserId());
+            if (broadcastIds == null) {
+                broadcastIds = new HashSet<>();
+                database.getUserIdRFBroadcasts().put(obj.getUserId(), broadcastIds);
             }
-            get.add(obj.getId());
+            broadcastIds.add(obj.getId());
 
             //Step 2: put redis
             result = cache.hset(obj.getClass().getName(), String.valueOf(obj.getId()), JSONUtil.Serialize(obj));
-            result &= cache.hset(obj.getClass().getName() + ":user", obj.getUserId(), JSONUtil.Serialize(get));
+            result &= cache.hset(obj.getClass().getName() + ":user", obj.getUserId(), JSONUtil.Serialize(broadcastIds));
             if (result) {
                 //Step 3: put job gearman
                 short actionType = Const.RideSharing.ActionType.INSERT;
@@ -70,17 +71,18 @@ public class BroadcastDao {
             }
             //Step 1: remove in hashmap
             database.getBroadcastHashMap().remove(obj.getId());
-            HashSet<String> get = database.getUserIdRFBroadcasts().get(obj.getUserId());
-            if (get == null) {
-                get = new HashSet<>();
-                database.getUserIdRFBroadcasts().put(obj.getUserId(), get);
+            // userIdRFBroadcasts = new HashMap<>(); //<userId,<broadcastId>>
+            HashSet<String> broadcastIds = database.getUserIdRFBroadcasts().get(obj.getUserId());
+            if (broadcastIds == null) {
+                broadcastIds = new HashSet<>();
+                database.getUserIdRFBroadcasts().put(obj.getUserId(), broadcastIds);
             }
-            get.remove(obj.getId());
+            broadcastIds.remove(obj.getId());
 
             //Step 2: remove redis
             result = cache.hdel(obj.getClass().getName(), obj.getId());
             result &= cache.hset(obj.getClass().getName() + ":user",
-                    obj.getUserId(), JSONUtil.Serialize(get));
+                    obj.getUserId(), JSONUtil.Serialize(broadcastIds));
 
             if (result) {
                 //Step 3: put job gearman
@@ -138,5 +140,4 @@ public class BroadcastDao {
         }
         return result;
     }
-
 }

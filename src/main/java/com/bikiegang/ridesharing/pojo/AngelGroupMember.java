@@ -3,7 +3,8 @@ package com.bikiegang.ridesharing.pojo;
 /**
  * Created by hpduy17 on 8/8/15.
  */
-public class AngelGroupMember {
+public class AngelGroupMember implements PojoBase {
+
     private long id;
     private long groupId;
     private String angelId;
@@ -18,6 +19,7 @@ public class AngelGroupMember {
         this.angelId = angelId;
         this.createdTime = createdTime;
     }
+
     public AngelGroupMember(AngelGroupMember that) {
         this.id = that.id;
         this.groupId = that.groupId;
