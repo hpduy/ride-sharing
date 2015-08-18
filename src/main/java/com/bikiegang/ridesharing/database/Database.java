@@ -42,6 +42,9 @@ public class Database {
     private HashMap<Long, AngelGroupMember> angelGroupMemberHashMap = new HashMap<>();
     private HashMap<Long, PopularLocation> popularLocationHashMap = new HashMap<>();
     private HashMap<Long, SocialTrip> socialTripHashMap = new HashMap<>();
+    private LinkedHashMap<Long, Feed> feedHashMap = new LinkedHashMap<>();
+    private HashMap<Long, Rating> ratingHashMap = new LinkedHashMap<>();
+    private HashMap<Long, SocialTripAttendance> socialTripAttendanceHashMap = new LinkedHashMap<>();
     //REFERENCE
     /**
      * USER
@@ -98,6 +101,14 @@ public class Database {
      */
     private List<Long> orderedPopularLocation = new ArrayList<>(); // < popularLocationId> which sorted
     /**
+     * SOCIAL TRIP
+     */
+    private HashMap<String, HashSet<Long>> userIdRFSocialTrips = new HashMap<>(); // <userId,<socialTripId>>
+    /**
+     * SOCIAL ATTENDANCE
+     */
+
+    /**
      * GEOCELL
      */
     private GeoCell<Long> geoCellDriver = new GeoCell<>(GeoCell.CELL_LEN_OF_PLANNED_TRIP); // for plannedTrip
@@ -105,6 +116,7 @@ public class Database {
     private GeoCell<String> geoCellCurrentLocation = new GeoCell<>(GeoCell.CELL_LEN_OF_PT_START_LOCATION);
     private GeoCell<Long> geoCellStartLocation = new GeoCell<>(GeoCell.CELL_LEN_OF_PT_START_LOCATION);
     private GeoCell<Long> geoCellAngelGroup= new GeoCell<>(GeoCell.CELL_LEN_OF_ANGEL_GROUP);
+    private GeoCell<Long> geoCellSocialTrip = new GeoCell<>(GeoCell.CELL_LEN_OF_PT_START_LOCATION);
 
     //    /*PERSONAL FUNCTION*/
     public void restore() {
@@ -168,6 +180,14 @@ public class Database {
 
     public HashMap<Long, AngelGroupMember> getAngelGroupMemberHashMap() {
         return angelGroupMemberHashMap;
+    }
+
+    public HashMap<Long, SocialTrip> getSocialTripHashMap() {
+        return socialTripHashMap;
+    }
+
+    public LinkedHashMap<Long, Feed> getFeedHashMap() {
+        return feedHashMap;
     }
 
     /*REFERENCE GET-SET*/
@@ -271,8 +291,17 @@ public class Database {
         return orderedPopularLocation;
     }
 
+    public HashMap<String, HashSet<Long>> getUserIdRFSocialTrips() {
+        return userIdRFSocialTrips;
+    }
 
+    public HashMap<Long, Rating> getRatingHashMap() {
+        return ratingHashMap;
+    }
 
+    public HashMap<Long, SocialTripAttendance> getSocialTripAttendanceHashMap() {
+        return socialTripAttendanceHashMap;
+    }
 
     /*GEOCELL GET-SET*/
 
@@ -316,7 +345,7 @@ public class Database {
         this.geoCellAngelGroup = geoCellAngelGroup;
     }
 
-
-
-
+    public GeoCell<Long> getGeoCellSocialTrip() {
+        return geoCellSocialTrip;
+    }
 }
