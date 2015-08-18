@@ -6,8 +6,8 @@
 package com.bikiegang.ridesharing.DAOTest;
 
 import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
-import com.bikiegang.ridesharing.dao.VerifiedCertificateDao;
-import com.bikiegang.ridesharing.pojo.VerifiedCertificate;
+import com.bikiegang.ridesharing.dao.PlannedTripDao;
+import com.bikiegang.ridesharing.pojo.PlannedTrip;
 import com.bikiegang.ridesharing.utilities.TestUtils;
 
 /**
@@ -17,9 +17,10 @@ import com.bikiegang.ridesharing.utilities.TestUtils;
 public class Insert {
 
     public static void main(String[] args) {
-        VerifiedCertificate _value = null;
-        _value = TestUtils.CreateVerifiedCertificate();
-       VerifiedCertificateDao dao = new VerifiedCertificateDao();
+        PlannedTrip _value = null;
+        _value = TestUtils.CreatePlannedTrip();
+        PlannedTripDao dao = new PlannedTripDao();
+        _value.setTitle("test");
         boolean DoAction = dao.insert(_value);
         System.out.println(DoAction);
         System.out.println(JSONUtil.Serialize(_value));

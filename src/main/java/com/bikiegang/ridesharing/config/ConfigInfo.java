@@ -51,6 +51,21 @@ public class ConfigInfo {
     public static String ANGEL_GROUP_MEMBER_INSERT_QUERY;
     public static String ANGEL_GROUP_MEMBER_UPDATE_QUERY;
     public static String ANGEL_GROUP_MEMBER_DELETE_QUERY;
+    public static String FEED_GROUP_INSERT_QUERY;
+    public static String FEED_GROUP_UPDATE_QUERY;
+    public static String FEED_GROUP_DELETE_QUERY;
+    public static String POPULARLOCATION_GROUP_INSERT_QUERY;
+    public static String POPULARLOCATION_GROUP_UPDATE_QUERY;
+    public static String POPULARLOCATION_GROUP_DELETE_QUERY;
+    public static String RATING_GROUP_INSERT_QUERY;
+    public static String RATING_GROUP_UPDATE_QUERY;
+    public static String RATING_GROUP_DELETE_QUERY;
+    public static String SOCIALTRIP_ATTENDANCEGROUP_INSERT_QUERY;
+    public static String SOCIALTRIP_ATTENDANCEGROUP_UPDATE_QUERY;
+    public static String SOCIALTRIP_ATTENDANCEGROUP_DELETE_QUERY;
+    public static String SOCIALTRIP_GROUP_INSERT_QUERY;
+    public static String SOCIALTRIP_GROUP_UPDATE_QUERY;
+    public static String SOCIALTRIP_GROUP_DELETE_QUERY;
 
     static {
         RIDESHARING_DB = "ridesharing_db";
@@ -138,13 +153,13 @@ public class ConfigInfo {
                 + "`type`,\n"
                 + "`plannedTripTrailPolyLine`,\n"
                 + "`rawRoutingResult`, `groupId`, `startLocation`, `endLocation`,\n"
-                + "`polyLine`, `hasHelmet`, `createdTime`, `isBusy`)\n"
+                + "`polyLine`, `hasHelmet`, `createdTime`, `isBusy`, `title`)\n"
                 + "VALUES\n"
                 + "(?,?,?,?,"
                 + "?,?,?,?,?,"
                 + "?,?,?,?,?,"
                 + "?,?,?,?,"
-                + "?,?);";
+                + "?,?,?);";
         PLANNEDTRIP_UPDATE_QUERY = "UPDATE `ridesharing_db`.`PlannedTrip`\n"
                 + "SET\n"
                 + "`id` = ?,\n"
@@ -166,7 +181,8 @@ public class ConfigInfo {
                 + "`polyLine` = ?,\n"
                 + "`hasHelmet` = ?,\n"
                 + "`createdTime` = ?\n,"
-                + "`isBusy` = ?\n"
+                + "`isBusy` = ?,\n"
+                + "`title` = ?\n"
                 + "WHERE `id` = ?;";
         PLANNEDTRIP_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`PlannedTrip`\n"
                 + "WHERE `id` = ?;";
@@ -344,6 +360,110 @@ public class ConfigInfo {
         ANGEL_GROUP_MEMBER_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`AngelGroupMember`\n"
                 + "WHERE `id` = ?;";
 
+        FEED_GROUP_INSERT_QUERY = "INSERT INTO `ridesharing_db`.`Feed`\n"
+                + "(`id`,\n"
+                + "`type`,\n"
+                + "`refId`)\n"
+                + "VALUES\n"
+                + "(?,?,?);";
+        FEED_GROUP_UPDATE_QUERY = "UPDATE `ridesharing_db`.`Feed`\n"
+                + "SET\n"
+                + "`id` = ?,\n"
+                + "`type` = ?,\n"
+                + "`refId` = ?\n"
+                + "WHERE `id` = ?;";
+        FEED_GROUP_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`Feed`\n"
+                + "WHERE `id` = ?;";
+
+        POPULARLOCATION_GROUP_INSERT_QUERY = "INSERT INTO `ridesharing_db`.`PopularLocation`\n"
+                + "(`id`,\n"
+                + "`name`,\n"
+                + "`address`,\n"
+                + "`backgroundImageLink`,\n"
+                + "`searcher`,\n"
+                + "`lat`,\n"
+                + "`lng`,\n"
+                + "`time`)\n"
+                + "VALUES\n"
+                + "(?,?,?,?,?,?,?,?);";
+        POPULARLOCATION_GROUP_UPDATE_QUERY = "UPDATE `ridesharing_db`.`PopularLocation`\n"
+                + "SET\n"
+                + "`id` = ?,\n"
+                + "`name` = ?,\n"
+                + "`address` = ?,\n"
+                + "`backgroundImageLink` = ?,\n"
+                + "`searcher` = ?,\n"
+                + "`lat` = ?,\n"
+                + "`lng` = ?,\n"
+                + "`time` = ?\n"
+                + "WHERE `id` = ?;";
+        POPULARLOCATION_GROUP_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`PopularLocation`\n"
+                + "WHERE `id` = ?;";
+
+        RATING_GROUP_INSERT_QUERY = "INSERT INTO `ridesharing_db`.`Rating`\n"
+                + "(`id`,\n"
+                + "`ratedUserId`,\n"
+                + "`ratingUserId`,\n"
+                + "`numberOfStart`,\n"
+                + "`createdTime`,\n"
+                + "`comment`,\n"
+                + "`tripId`)\n"
+                + "VALUES\n"
+                + "(?,?,?,?,?,?,?);";
+        RATING_GROUP_UPDATE_QUERY = "UPDATE `ridesharing_db`.`Rating`\n"
+                + "SET\n"
+                + "`id` = ?,\n"
+                + "`ratedUserId` = ?,\n"
+                + "`ratingUserId` = ?,\n"
+                + "`numberOfStart` = ?,\n"
+                + "`createdTime` = ?,\n"
+                + "`comment` = ?,\n"
+                + "`tripId` = ?\n"
+                + "WHERE `id` = ?;";
+        RATING_GROUP_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`Rating`\n"
+                + "WHERE `id` = ?;";
+        SOCIALTRIP_ATTENDANCEGROUP_INSERT_QUERY = "INSERT INTO `ridesharing_db`.`SocialTripAttendance`\n"
+                + "(`id`,\n"
+                + "`userId`,\n"
+                + "`socialTripId`,\n"
+                + "`role`)\n"
+                + "VALUES\n"
+                + "(?,?,?,?);";
+        SOCIALTRIP_ATTENDANCEGROUP_UPDATE_QUERY = "UPDATE `ridesharing_db`.`SocialTripAttendance`\n"
+                + "SET\n"
+                + "`id` = ?,\n"
+                + "`userId` = ?,\n"
+                + "`socialTripId` = ?,\n"
+                + "`role` = ?\n"
+                + "WHERE `id` = ?;";
+        SOCIALTRIP_ATTENDANCEGROUP_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`SocialTripAttendance`\n"
+                + "WHERE `id` = ?;";
+        SOCIALTRIP_GROUP_INSERT_QUERY = "INSERT INTO `ridesharing_db`.`SocialTrip`\n"
+                + "(`id`,\n"
+                + "`creatorId`,\n"
+                + "`location`,\n"
+                + "`feeling`,\n"
+                + "`feelingIcon`,\n"
+                + "`wantToGo`,\n"
+                + "`wantToGoIcon`,\n"
+                + "`content`,\n"
+                + "`createdTime`)\n"
+                + "VALUES\n"
+                + "(?,?,?,?,?,?,?,?,?);";
+        SOCIALTRIP_GROUP_UPDATE_QUERY = "UPDATE `ridesharing_db`.`SocialTrip`\n"
+                + "SET\n"
+                + "`id` = ?,\n"
+                + "`creatorId` = ?,\n"
+                + "`location` = ?,\n"
+                + "`feeling` = ?,\n"
+                + "`feelingIcon` = ?,\n"
+                + "`wantToGo` = ?,\n"
+                + "`wantToGoIcon` = ?,\n"
+                + "`content` = ?,\n"
+                + "`createdTime` = ?\n"
+                + "WHERE `id` = ?;";
+        SOCIALTRIP_GROUP_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`SocialTrip`\n"
+                + "WHERE `id` = ?;";
     }
 
 }

@@ -62,4 +62,13 @@ public class PopularLocation extends LatLng implements PojoBase {
     public void setSearcher(HashSet<String> searcher) {
         this.searcher = searcher;
     }
+
+    public String getBackgroundImageLink() {
+        return backgroundImageLink;
+    }
+
+    public void setBackgroundImageLink(String backgroundImageLink) {
+        this.backgroundImageLink = backgroundImageLink;
+    }
+    
 }

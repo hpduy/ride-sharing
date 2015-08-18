@@ -6,8 +6,8 @@
 package com.bikiegang.ridesharing.DAOTest;
 
 import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
-import com.bikiegang.ridesharing.dao.VerifiedCertificateDao;
-import com.bikiegang.ridesharing.pojo.VerifiedCertificate;
+import com.bikiegang.ridesharing.dao.PlannedTripDao;
+import com.bikiegang.ridesharing.pojo.PlannedTrip;
 import com.bikiegang.ridesharing.utilities.TestUtils;
 
 /**
@@ -17,10 +17,10 @@ import com.bikiegang.ridesharing.utilities.TestUtils;
 public class Delete {
 
     public static void main(String[] args) {
-        VerifiedCertificate _value = null;
-        _value = TestUtils.CreateVerifiedCertificate();
-        _value.setId(4674241192058272228l);
-        VerifiedCertificateDao dao = new VerifiedCertificateDao();
+        PlannedTrip _value = null;
+        _value = TestUtils.CreatePlannedTrip();
+        _value.setId(3644526365975364492l);
+        PlannedTripDao dao = new PlannedTripDao();
         boolean DoAction = dao.delete(_value);
         System.out.println(DoAction);
         System.out.println(JSONUtil.Serialize(_value));

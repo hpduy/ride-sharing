@@ -78,6 +78,7 @@ public class PlannedTripDA implements IDA {
                 stmt.setBoolean(18, value.isHasHelmet());
                 stmt.setLong(19, value.getCreatedTime());
                 stmt.setBoolean(20, value.isBusy());
+                stmt.setString(21, value.getTitle());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {
@@ -121,7 +122,8 @@ public class PlannedTripDA implements IDA {
                 stmt.setBoolean(18, value.isHasHelmet());
                 stmt.setLong(19, value.getCreatedTime());
                 stmt.setBoolean(20, value.isBusy());
-                stmt.setLong(21, value.getId());
+                stmt.setString(21, value.getTitle());
+                stmt.setLong(22, value.getId());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {

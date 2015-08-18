@@ -40,4 +40,78 @@ public class SocialTrip implements PojoBase {
         this.content = that.content;
         this.createdTime = that.createdTime;
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(String creatorId) {
+        this.creatorId = creatorId;
+    }
+
+    public LatLng getLocation() {
+        return location;
+    }
+
+    public void setLocation(LatLng location) {
+        this.location = location;
+    }
+
+    public String getFeeling() {
+        return feeling;
+    }
+
+    public void setFeeling(String feeling) {
+        this.feeling = feeling;
+    }
+
+    public int getFeelingIcon() {
+        return feelingIcon;
+    }
+
+    public void setFeelingIcon(int feelingIcon) {
+        this.feelingIcon = feelingIcon;
+    }
+
+    public String getWantToGo() {
+        return wantToGo;
+    }
+
+    public void setWantToGo(String wantToGo) {
+        this.wantToGo = wantToGo;
+    }
+
+    public int getWantToGoIcon() {
+        return wantToGoIcon;
+    }
+
+    public void setWantToGoIcon(int wantToGoIcon) {
+        this.wantToGoIcon = wantToGoIcon;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public long getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(long createdTime) {
+        this.createdTime = createdTime;
+    }
+    
+    
 }
