@@ -21,7 +21,7 @@ public class FakeRequestVerify {
             requestVerifyRequest.setAngelId(angel.getId());
             CertificateDetail[] details = new CertificateDetail[2];
             for (int j = 0; j < 2; j++) {
-                details[j] = new FakeCertificate().fakeCertificates(user);
+                details[j] = new FakeCertificate().fakeCertificates();
             }
             requestVerifyRequest.setCertificates(details);
             String result = new RequestVerifyController().sendVerificationRequest(requestVerifyRequest);

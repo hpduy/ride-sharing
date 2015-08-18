@@ -3,6 +3,7 @@ package com.bikiegang.ridesharing;
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.controller.AngelGroupController;
 import com.bikiegang.ridesharing.database.Database;
+import com.bikiegang.ridesharing.utilities.FakeGroup.FakeUser;
 import com.bikiegang.ridesharing.utilities.Path;
 import org.apache.log4j.Logger;
 
@@ -34,13 +35,16 @@ public class StartupListener implements ServletContextListener, HttpSessionListe
          You can initialize servlet context related data here.
          */
         try {
-            logger.info("CLOUD BIKE WAKED UP");
+
             Path.setServerAddress(InetAddress.getLocalHost().getHostAddress());
             Path.buildRoot();
             Database.getInstance().restore();
-
-            new AngelGroupController();
-            System.out.println(Database.getInstance().getAngelGroupHashMap().size());
+            if(Database.databaseStatus ==  Database.TESTING) {
+                FakeUser.createAngel();
+                new AngelGroupController();
+                System.out.println(Database.getInstance().getAngelGroupHashMap().size());
+            }
+            logger.info("CLOUD BIKE WAKED UP");
         } catch (Exception ex) {
             ex.printStackTrace();
         }

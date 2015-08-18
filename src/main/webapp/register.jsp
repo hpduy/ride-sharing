@@ -11,7 +11,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Admin Marqet | Registration Page</title>
-    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' title='viewport'>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"
           type="text/css"/>
@@ -32,16 +32,16 @@
     <form action="register.marqet" method="post" onSubmit="return validate(this);">
         <div class="body bg-gray">
             <div class="form-group">
-                <input type="text" id="email" name="email" class="form-control" placeholder="Email"/>
+                <input type="text" id="email" title="email" class="form-control" placeholder="Email"/>
             </div>
             <div class="form-group">
-                <input type="text" id="userName" name="userName" class="form-control" placeholder="User Name"/>
+                <input type="text" id="userName" title="userName" class="form-control" placeholder="User Name"/>
             </div>
             <div class="form-group">
-                <input type="password" id="password" name="password" class="form-control" placeholder="Password"/>
+                <input type="password" id="password" title="password" class="form-control" placeholder="Password"/>
             </div>
             <div class="form-group">
-                <input type="password" id="password2" name="password2" class="form-control"
+                <input type="password" id="password2" title="password2" class="form-control"
                        placeholder="Retype password"/>
             </div>
         </div>
@@ -74,7 +74,7 @@
             errors[errors.length] = "You must enter a valid email address.";
         }
         if (userName == '') {
-            errors[errors.length] = "You must enter the user name. ";
+            errors[errors.length] = "You must enter the user title. ";
         }
         if (password == '') {
             errors[errors.length] = "You must enter the password. ";

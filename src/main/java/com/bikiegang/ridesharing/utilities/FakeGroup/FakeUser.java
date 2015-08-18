@@ -7,6 +7,7 @@ import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.GetUsersAroundFromMeRequest;
 import com.bikiegang.ridesharing.pojo.response.UserShortDetailResponse;
 import com.bikiegang.ridesharing.utilities.DateTimeUtil;
+import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.lang.math.RandomUtils;
 
@@ -165,10 +166,10 @@ public class FakeUser {
     public String getUsersAroundFromMeFake(GetUsersAroundFromMeRequest request) throws JsonProcessingException {
 
         if (request.getCenterLat() == 0 && request.getCenterLng() == 0) {
-            return Parser.ObjectToJSon(false, "Latitude and Longitude is invalid (0,0)");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid,"Latitude and Longitude is invalid (0,0)");
         }
         if (request.getRadius() < 0) {
-            return Parser.ObjectToJSon(false, "Radius is invalid (< 0)");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid,"Radius is invalid (< 0)");
         }
         LatLng center = new LatLng(request.getCenterLat(), request.getCenterLng());
         List<User> users = new ArrayList<>();
@@ -180,7 +181,7 @@ public class FakeUser {
             UserShortDetailResponse detail = new UserShortDetailResponse(user);
             userDetails.add(detail);
         }
-        return Parser.ObjectToJSon(true, "Get list users success", userDetails);
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, userDetails);
     }
     public static void createTester() throws Exception {
         User user = new FakeUser().fakeUser(2,1,false);

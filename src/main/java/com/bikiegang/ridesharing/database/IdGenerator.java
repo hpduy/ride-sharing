@@ -100,4 +100,13 @@ public class IdGenerator {
         while (idSet.contains(angelGroupMemberId));
         return angelGroupMemberId;
     }
+    public static synchronized long getPopularLocationId() {
+        Set<Long> idSet = database.getPopularLocationHashMap().keySet();
+        long popularLocationId;
+        do {
+            popularLocationId = RandomUtils.nextLong();
+        }
+        while (idSet.contains(popularLocationId));
+        return popularLocationId;
+    }
 }

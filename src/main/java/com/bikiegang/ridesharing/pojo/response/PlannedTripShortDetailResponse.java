@@ -1,9 +1,16 @@
 package com.bikiegang.ridesharing.pojo.response;
 
+import com.bikiegang.ridesharing.database.Database;
+import com.bikiegang.ridesharing.geocoding.FetchingDataFromGoogleRouting;
+import com.bikiegang.ridesharing.geocoding.GoogleRoutingObject.GoogleRoute;
+import com.bikiegang.ridesharing.pojo.PlannedTrip;
+
+import java.io.IOException;
+
 /**
  * Created by hpduy17 on 7/8/15.
  */
-public class PlannedTripShortDetailResponse {
+public class PlannedTripShortDetailResponse implements TripInFeed {
     private long id;
     private int numberOfRequest;
     private String startAddress;
@@ -13,21 +20,40 @@ public class PlannedTripShortDetailResponse {
     private int role;
     private boolean hasHelmet;
     private long createdTime;
+    private long goTime;
+    private long duration;
     private boolean requested;
 
     public PlannedTripShortDetailResponse() {
     }
 
-    public PlannedTripShortDetailResponse(PlannedTripShortDetailResponse that) {
-        this.id = that.id;
-        this.numberOfRequest = that.numberOfRequest;
-        this.startAddress = that.startAddress;
-        this.endAddress = that.endAddress;
-        this.unitPrice = that.unitPrice;
-        this.role = that.role;
-        this.hasHelmet = that.hasHelmet;
-        this.createdTime = that.createdTime;
-        this.requested = that.requested;
+    public PlannedTripShortDetailResponse(PlannedTrip that, String senderId) throws IOException {
+        Database database = Database.getInstance();
+        GoogleRoute googleRoute = new FetchingDataFromGoogleRouting().getRouteFromRoutingResult(that);
+        this.id = that.getId();
+        this.role = that.getRole();
+        this.unitPrice = that.getOwnerPrice();
+        this.hasHelmet = that.isHasHelmet();
+        this.createdTime = that.getCreatedTime();
+        this.ownerDistance = that.getSumDistance();
+        this.goTime = that.getGoTime();
+        this.duration = that.getEstimatedTime();
+        try {
+            this.requested = (database.getSenderRequestsBox().get(senderId).containsKey(that.getId()));
+        } catch (Exception ignored) {
+            this.requested = false;
+        }
+        if (googleRoute != null) {
+            this.startAddress = googleRoute.getLegs()[0].getStart_address();
+            this.endAddress = googleRoute.getLegs()[0].getEnd_address();
+        }
+        int numberOfRequest = 0;
+        try {
+            numberOfRequest = database.getReceiverRequestsBox().get(that.getCreatorId()).get(that.getId()).size();
+        } catch (Exception ignored) {
+
+        }
+        this.numberOfRequest = numberOfRequest;
     }
 
     public long getId() {
@@ -108,5 +134,21 @@ public class PlannedTripShortDetailResponse {
 
     public void setRequested(boolean requested) {
         this.requested = requested;
+    }
+
+    public long getGoTime() {
+        return goTime;
+    }
+
+    public void setGoTime(long goTime) {
+        this.goTime = goTime;
+    }
+
+    public long getDuration() {
+        return duration;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
     }
 }

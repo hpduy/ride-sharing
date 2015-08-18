@@ -10,6 +10,8 @@ import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.controller.VerifiedCertificateController;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.request.angel.VerifyCertificateRequest;
+import com.bikiegang.ridesharing.utilities.ApiDocumentGenerator;
+import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -57,7 +59,7 @@ public class VerifyCertificateAPI extends HttpServlet {
         } catch (Exception ex) {
             ex.printStackTrace();
             logger.error(ex.getStackTrace());
-            out.print(Parser.ObjectToJSon(false, ex.getMessage()));
+            out.print(Parser.ObjectToJSon(false, MessageMappingUtil.System_Exception,  ex.getMessage()));
         }
     }
 
@@ -99,6 +101,6 @@ public class VerifyCertificateAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Reply a request which other user have sent to you";
+        return ApiDocumentGenerator.apiDescriptions.get(this.getClass().getSimpleName());
     }
 }

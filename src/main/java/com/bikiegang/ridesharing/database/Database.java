@@ -5,9 +5,7 @@ import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.geocoding.GeoCell;
 import com.bikiegang.ridesharing.pojo.*;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by hpduy17 on 6/16/15.
@@ -42,6 +40,11 @@ public class Database {
     private HashMap<Long, VerifiedCertificate> verifiedCertificateHashMap = new HashMap<>();
     private HashMap<Long, AngelGroup> angelGroupHashMap = new HashMap<>();
     private HashMap<Long, AngelGroupMember> angelGroupMemberHashMap = new HashMap<>();
+    private HashMap<Long, PopularLocation> popularLocationHashMap = new HashMap<>();
+    private HashMap<Long, SocialTrip> socialTripHashMap = new HashMap<>();
+    private LinkedHashMap<Long, Feed> feedHashMap = new LinkedHashMap<>();
+    private HashMap<Long, Rating> ratingHashMap = new LinkedHashMap<>();
+    private HashMap<Long, SocialTripAttendance> socialTripAttendanceHashMap = new LinkedHashMap<>();
     //REFERENCE
     /**
      * USER
@@ -90,9 +93,20 @@ public class Database {
     /**
      * ANGEL GROUP MEMBER
      */
-    private HashMap<String, HashSet<Long>> UserIdRFAngelGroups = new HashMap<>(); // <userId,<angelGroupId>>
-    private HashMap<Long, HashSet<String>> AngelGroupIdRFUsers = new HashMap<>(); // <angelGroupId,<userId>>
-    private HashMap<String, Long> UserAndGroupRFAngelGroupMember = new HashMap<>(); // <userId#angelGroupId, angelGroupMemberId>
+    private HashMap<String, HashSet<Long>> userIdRFAngelGroups = new HashMap<>(); // <userId,<angelGroupId>>
+    private HashMap<Long, HashSet<String>> angelGroupIdRFUsers = new HashMap<>(); // <angelGroupId,<userId>>
+    private HashMap<String, Long> userAndGroupRFAngelGroupMember = new HashMap<>(); // <userId#angelGroupId, angelGroupMemberId>
+    /**
+     * POPULAR LOCATION
+     */
+    private List<Long> orderedPopularLocation = new ArrayList<>(); // < popularLocationId> which sorted
+    /**
+     * SOCIAL TRIP
+     */
+    private HashMap<String, HashSet<Long>> userIdRFSocialTrips = new HashMap<>(); // <userId,<socialTripId>>
+    /**
+     * SOCIAL ATTENDANCE
+     */
 
     /**
      * GEOCELL
@@ -102,6 +116,7 @@ public class Database {
     private GeoCell<String> geoCellCurrentLocation = new GeoCell<>(GeoCell.CELL_LEN_OF_PT_START_LOCATION);
     private GeoCell<Long> geoCellStartLocation = new GeoCell<>(GeoCell.CELL_LEN_OF_PT_START_LOCATION);
     private GeoCell<Long> geoCellAngelGroup= new GeoCell<>(GeoCell.CELL_LEN_OF_ANGEL_GROUP);
+    private GeoCell<Long> geoCellSocialTrip = new GeoCell<>(GeoCell.CELL_LEN_OF_PT_START_LOCATION);
 
     //    /*PERSONAL FUNCTION*/
     public void restore() {
@@ -159,8 +174,20 @@ public class Database {
         return angelGroupHashMap;
     }
 
+    public HashMap<Long, PopularLocation> getPopularLocationHashMap() {
+        return popularLocationHashMap;
+    }
+
     public HashMap<Long, AngelGroupMember> getAngelGroupMemberHashMap() {
         return angelGroupMemberHashMap;
+    }
+
+    public HashMap<Long, SocialTrip> getSocialTripHashMap() {
+        return socialTripHashMap;
+    }
+
+    public LinkedHashMap<Long, Feed> getFeedHashMap() {
+        return feedHashMap;
     }
 
     /*REFERENCE GET-SET*/
@@ -249,15 +276,31 @@ public class Database {
     }
 
     public HashMap<String, HashSet<Long>> getUserIdRFAngelGroups() {
-        return UserIdRFAngelGroups;
+        return userIdRFAngelGroups;
     }
 
     public HashMap<Long, HashSet<String>> getAngelGroupIdRFUsers() {
-        return AngelGroupIdRFUsers;
+        return angelGroupIdRFUsers;
     }
 
     public HashMap<String, Long> getUserAndGroupRFAngelGroupMember() {
-        return UserAndGroupRFAngelGroupMember;
+        return userAndGroupRFAngelGroupMember;
+    }
+
+    public List<Long> getOrderedPopularLocation() {
+        return orderedPopularLocation;
+    }
+
+    public HashMap<String, HashSet<Long>> getUserIdRFSocialTrips() {
+        return userIdRFSocialTrips;
+    }
+
+    public HashMap<Long, Rating> getRatingHashMap() {
+        return ratingHashMap;
+    }
+
+    public HashMap<Long, SocialTripAttendance> getSocialTripAttendanceHashMap() {
+        return socialTripAttendanceHashMap;
     }
 
     /*GEOCELL GET-SET*/
@@ -300,5 +343,9 @@ public class Database {
 
     public void setGeoCellAngelGroup(GeoCell<Long> geoCellAngelGroup) {
         this.geoCellAngelGroup = geoCellAngelGroup;
+    }
+
+    public GeoCell<Long> getGeoCellSocialTrip() {
+        return geoCellSocialTrip;
     }
 }

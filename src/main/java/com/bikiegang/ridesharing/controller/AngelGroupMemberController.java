@@ -8,6 +8,7 @@ import com.bikiegang.ridesharing.pojo.AngelGroupMember;
 import com.bikiegang.ridesharing.pojo.request.angel.ExitGroupRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.JoinGroupRequest;
 import com.bikiegang.ridesharing.utilities.DateTimeUtil;
+import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.ArrayList;
@@ -26,37 +27,37 @@ public class AngelGroupMemberController {
 
     public String joinGroup(JoinGroupRequest request) throws JsonProcessingException {
         if (null == request.getUserId() || request.getUserId().equals("")) {
-            return Parser.ObjectToJSon(false, "'userId' is not found");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
         }
         if (request.getGroupId() <= 0) {
-            return Parser.ObjectToJSon(false, "'groupId' is invalid");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found,"'groupId'");
         }
         if (database.getUserAndGroupRFAngelGroupMember().containsKey(combineKey(request.getUserId(), request.getGroupId()))) {
-            return Parser.ObjectToJSon(false, "You have joined this group");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_has_been_used,"'groupId'");
         }
         AngelGroupMember groupMember = new AngelGroupMember(IdGenerator.getAngelGroupMemberId(), request.getGroupId(), request.getUserId(), DateTimeUtil.now());
         if (dao.insert(groupMember)) {
-            return Parser.ObjectToJSon(true, "Join group successfully");
+            return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
         }
-        return Parser.ObjectToJSon(false, "Cannot join this group. Try again later");
+        return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
     }
 
     public String exitGroup(ExitGroupRequest request) throws JsonProcessingException {
         if (null == request.getUserId() || request.getUserId().equals("")) {
-            return Parser.ObjectToJSon(false, "'userId' is not found");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found,"'userId'");
         }
         if (request.getGroupId() <= 0) {
-            return Parser.ObjectToJSon(false, "'groupId' is invalid");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid,"'groupId'");
         }
         if (!database.getUserAndGroupRFAngelGroupMember().containsKey(combineKey(request.getUserId(), request.getGroupId()))) {
-            return Parser.ObjectToJSon(false, "You does not belong to this group");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Fail);
         }
         long angelGroupMemberId = database.getUserAndGroupRFAngelGroupMember().get(combineKey(request.getUserId(), request.getGroupId()));
         AngelGroupMember groupMember = database.getAngelGroupMemberHashMap().get(angelGroupMemberId);
         if (dao.delete(groupMember)) {
-            return Parser.ObjectToJSon(true, "Exit group successfully");
+            return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
         }
-        return Parser.ObjectToJSon(false, "Cannot exit this group. Try again later");
+        return Parser.ObjectToJSon(false,MessageMappingUtil.Interactive_with_database_fail);
     }
 
     public boolean changeGroup(String userId, long oldGroupId, long newGroupId){

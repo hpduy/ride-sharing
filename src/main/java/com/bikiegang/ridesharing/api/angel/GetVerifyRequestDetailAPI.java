@@ -11,6 +11,8 @@ import com.bikiegang.ridesharing.controller.RequestVerifyController;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.request.angel.GetRequestDetailRequest;
 import com.bikiegang.ridesharing.pojo.response.angel.RequestVerifyDetailResponse;
+import com.bikiegang.ridesharing.utilities.ApiDocumentGenerator;
+import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -58,7 +60,7 @@ public class GetVerifyRequestDetailAPI extends HttpServlet {
         } catch (Exception ex) {
             ex.printStackTrace();
             logger.error(ex.getStackTrace());
-            out.print(Parser.ObjectToJSon(false, ex.getMessage()));
+            out.print(Parser.ObjectToJSon(false, MessageMappingUtil.System_Exception, ex.getMessage()));
         }
     }
 
@@ -100,6 +102,6 @@ public class GetVerifyRequestDetailAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Get detail of verify request";
+        return ApiDocumentGenerator.apiDescriptions.get(this.getClass().getSimpleName());
     }
 }

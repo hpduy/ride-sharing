@@ -9,9 +9,7 @@ package com.bikiegang.ridesharing.api;
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.response.UploadImageResponse;
-import com.bikiegang.ridesharing.utilities.DateTimeUtil;
-import com.bikiegang.ridesharing.utilities.Path;
-import com.bikiegang.ridesharing.utilities.UploadImageUtil;
+import com.bikiegang.ridesharing.utilities.*;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -48,13 +46,13 @@ public class UploadImageAPI extends HttpServlet {
         final String fileName = getFileName(filePart);
         try {
             UploadImageResponse uploadImageResponse = new UploadImageResponse(new UploadImageUtil().upload(fileName + "_" + new DateTimeUtil().now(), Path.getImagePath(), filePart));
-            String result = Parser.ObjectToJSon(true,"Upload image successfully",uploadImageResponse);
+            String result = Parser.ObjectToJSon(true, MessageMappingUtil.Successfully ,uploadImageResponse);
             logger.info(result);
             out.print(result);
 
         } catch (Exception fne) {
             logger.error(fne.getStackTrace());
-            out.print(Parser.ObjectToJSon(false,"Upload image false - caused by :"+fne.getLocalizedMessage()));
+            out.print(Parser.ObjectToJSon(false,MessageMappingUtil.System_Exception, fne.getLocalizedMessage()));
         }
     }
     private String getFileName(final Part part) {
@@ -107,6 +105,6 @@ public class UploadImageAPI extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Upload image using multipart";
+        return ApiDocumentGenerator.apiDescriptions.get(this.getClass().getSimpleName());
     }
 }

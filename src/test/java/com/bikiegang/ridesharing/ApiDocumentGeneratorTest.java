@@ -32,7 +32,7 @@ public class ApiDocumentGeneratorTest {
     public void generateTest() throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException, IOException {
         Path.buildRoot();
         ApiDocumentGenerator.generate();
-        for (ApiDocument doc : ApiDocumentGenerator.apiDocs) {
+        for (ApiDocument doc : ApiDocumentGenerator.apiDocs.values()) {
             System.out.println("API Name:" + doc.getName());
             System.out.println("API Description:" + doc.getApiDescription());
             System.out.println("API request:");
@@ -50,6 +50,13 @@ public class ApiDocumentGeneratorTest {
     public void testA() throws NoSuchFieldException {
         System.out.print(ApiDocumentGeneratorTest.class.getDeclaredField("users").getType());
         System.out.print(ApiDocumentGeneratorTest.class.getDeclaredField("userArray").getType());
+    }
+
+    @Test
+    public void getListOfApiName() throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException {
+        for(String name : ApiDocumentGenerator.getListOfApi()){
+            System.out.println(name);
+        }
     }
 
     @Test

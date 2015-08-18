@@ -23,7 +23,7 @@ and open the template in the editor.
         APIName:
     </div>
     <div style="float: none">
-        <input type="text" name="apiName" id="apiName" style="width: 500px;">
+        <input type="text" title="apiName" id="apiName" style="width: 500px;">
     </div>
 </div>
 <div>
@@ -31,17 +31,11 @@ and open the template in the editor.
         Insert Your RequestJSON:
     </div>
     <div style="float: none">
-        <textarea name="jsonData" id="jsonData" style="width: 500px; height: 100px"></textarea>
+        <textarea title="jsonData" id="jsonData" style="width: 500px; height: 100px"></textarea>
     </div>
 </div>
 <div align="center">
     <input value="GO" title="go" type="button" onclick="testAPI()" style="width: 100px">
-</div>
-<hr>
-<h1>Fake data</h1>
-<div align="center">
-    <input value="Create tester" title="ctest" type="button" onclick="createTester()" style="width: 100px">
-    <input value="Create angel" title="cangel" type="button" onclick="createAngel()" style="width: 100px">
 </div>
 </body>
 <script type="text/javascript">
@@ -60,15 +54,7 @@ and open the template in the editor.
                 console.log(response);
             }
         });
-    }function createTester() {
-        <%
-            FakeUser.createTester();
-        %>
     }
-    function createAngel() {
-       <%
-           FakeUser.createAngel();
-       %>
-    }
+
 </script>
 </html>

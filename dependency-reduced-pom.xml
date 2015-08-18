@@ -56,7 +56,7 @@
     </repository>
     <repository>
       <id>maven2-repository.dev.java.net</id>
-      <name>Java.net Repository for Maven</name>
+      <title>Java.net Repository for Maven</title>
       <url>http://download.java.net/maven/2/</url>
     </repository>
   </repositories>

@@ -46,17 +46,17 @@ public class ApiDocument {
             ApiParameter apiParameter = new ApiParameter();
             apiParameter.name = field.getName();
             if (isWrapperType(field.getType()) || isPrimaryType(field.getType().toString())) {
-                apiParameter.dataType = field.getType().getSimpleName();
+                apiParameter.dataType = field.getType();
             } else {
                 if (field.getType().getCanonicalName().contains("[]")) {
                     String childClassPath = field.getType().getCanonicalName().replaceAll("\\[\\]", "");
                     Field[] allChildFields = getFieldExceptFinalAndStatic(Class.forName(childClassPath));
                     generate(allChildFields, apiParameter.childParameter);
-                    apiParameter.dataType = field.getType().getSimpleName();
+                    apiParameter.dataType = field.getType();
                 } else {
                     Field[] allChildFields = getFieldExceptFinalAndStatic(field.getType());
                     generate(allChildFields, apiParameter.childParameter);
-                    apiParameter.dataType = field.getType().getSimpleName();
+                    apiParameter.dataType = field.getType();
                 }
             }
             parameterList.put(apiParameter.name, apiParameter);
@@ -155,10 +155,15 @@ public class ApiDocument {
             ApiParameter param = src.get(paramName);
             result += "\"" + paramName + "\"";
             //result += " - " + (param.isRequired ? "required" : "optional");
-            if (!isPrimaryType(param.getDataType()) && !param.getDataType().equals("String")) {
-                result += " : [{" + toNiceString(param.getChildParameter()).replaceAll("\\n", "") + "}]";
+            if (!isPrimaryType(param.getDataType().getSimpleName()) && !param.getDataType().getSimpleName().equals("String")) {
+                if(param.getDataType().getCanonicalName().contains("[]")) {
+                    result += " : [{" + toNiceString(param.getChildParameter()).replaceAll("\\n", "") + "}]";
+                }
+                else {
+                    result += " : {" + toNiceString(param.getChildParameter()).replaceAll("\\n", "") + "}";
+                }
             } else {
-                result += ":\"" + param.dataType + "\"";
+                result += ":\"" + param.dataType.getSimpleName() + "\"";
             }
             if (count < src.keySet().size() - 1) {
                 result += ",";
@@ -252,7 +257,7 @@ public class ApiDocument {
     public class ApiParameter {
         public String name = "";
         public String description = "";
-        public String dataType;
+        public Class dataType;
         public boolean dataTypeIsObject = false;
         public LinkedHashMap<String, ApiParameter> childParameter = new LinkedHashMap();
         public boolean isRequired = true;
@@ -273,13 +278,6 @@ public class ApiDocument {
             this.description = description;
         }
 
-        public String getDataType() {
-            return dataType;
-        }
-
-        public void setDataType(String dataType) {
-            this.dataType = dataType;
-        }
 
         public LinkedHashMap<String, ApiParameter> getChildParameter() {
             return childParameter;
@@ -303,6 +301,14 @@ public class ApiDocument {
 
         public void setDataTypeIsObject(boolean dataTypeIsObject) {
             this.dataTypeIsObject = dataTypeIsObject;
+        }
+
+        public Class getDataType() {
+            return dataType;
+        }
+
+        public void setDataType(Class dataType) {
+            this.dataType = dataType;
         }
     }
 }

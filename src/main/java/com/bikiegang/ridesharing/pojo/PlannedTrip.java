@@ -8,7 +8,6 @@ import org.json.JSONObject;
  * Created by hpduy17 on 6/24/15.
  */
 public class PlannedTrip implements PojoBase {
-
     private long id;
     private long goTime;
     private long arriveTime;
@@ -29,6 +28,7 @@ public class PlannedTrip implements PojoBase {
     private boolean hasHelmet;
     private long createdTime;
     private boolean isBusy;
+    private String title = "";
     /**
      * ROUTE TYPE
      */
@@ -48,7 +48,7 @@ public class PlannedTrip implements PojoBase {
     @JsonIgnore
     public static final double DEFAULT_PRICE_1KM = 3000; // 3000vnd / 1km
     @JsonIgnore
-    public static final double DEFAULT_PRICE_1M = DEFAULT_PRICE_1KM/1000;
+    public static final double DEFAULT_PRICE_1M = DEFAULT_PRICE_1KM / 1000;
 
     public PlannedTrip() {
     }
@@ -249,11 +249,22 @@ public class PlannedTrip implements PojoBase {
     public void setIsBusy(boolean isBusy) {
         this.isBusy = isBusy;
     }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 }
 /**
  * CHANGE LOG
- *
- *29/7/2015
+ * <p/>
+ * 29/7/2015
  * them field createdTime
  * them field isBusy
+ * <p/>
+ * 17.8.2015
+ * them field title
  */
