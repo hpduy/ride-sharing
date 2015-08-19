@@ -115,7 +115,7 @@ public class Database {
     private GeoCell<Long> geoCellPassenger = new GeoCell<>(GeoCell.CELL_LEN_OF_PLANNED_TRIP);// for plannedTrip
     private GeoCell<String> geoCellCurrentLocation = new GeoCell<>(GeoCell.CELL_LEN_OF_PT_START_LOCATION);
     private GeoCell<Long> geoCellStartLocation = new GeoCell<>(GeoCell.CELL_LEN_OF_PT_START_LOCATION);
-    private GeoCell<Long> geoCellAngelGroup= new GeoCell<>(GeoCell.CELL_LEN_OF_ANGEL_GROUP);
+    private GeoCell<Long> geoCellAngelGroup = new GeoCell<>(GeoCell.CELL_LEN_OF_ANGEL_GROUP);
     private GeoCell<Long> geoCellSocialTrip = new GeoCell<>(GeoCell.CELL_LEN_OF_PT_START_LOCATION);
 
     //    /*PERSONAL FUNCTION*/
@@ -303,8 +303,11 @@ public class Database {
         return socialTripAttendanceHashMap;
     }
 
-    /*GEOCELL GET-SET*/
+    public void setOrderedPopularLocation(List<Long> orderedPopularLocation) {
+        this.orderedPopularLocation = orderedPopularLocation;
+    }
 
+    /*GEOCELL GET-SET*/
     public GeoCell<Long> getGeoCellDriver() {
         return geoCellDriver;
     }

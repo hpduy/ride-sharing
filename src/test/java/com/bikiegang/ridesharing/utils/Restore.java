@@ -20,7 +20,7 @@ public class Restore {
         long start, end;
         start = System.currentTimeMillis();
         RideSharingCA.getInstance(ConfigInfo.REDIS_SERVER).RestoreDatabase();
-        System.out.println(JSONUtil.Serialize(Database.getInstance()));
+        System.out.println(JSONUtil.Serialize(Database.getInstance().getSocialTripAttendanceHashMap()));
         end = System.currentTimeMillis();
         System.out.println("Worker lost time: " + (end - start) / 1000 + "s");
     }

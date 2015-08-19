@@ -3,7 +3,7 @@ package com.bikiegang.ridesharing.pojo;
 /**
  * Created by hpduy17 on 8/17/15.
  */
-public class SocialTripAttendance {
+public class SocialTripAttendance implements PojoBase{
 
     private long id;
     private String userId;

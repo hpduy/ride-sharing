@@ -15,6 +15,8 @@ import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.geocoding.GeoCell;
 import com.bikiegang.ridesharing.pojo.*;
 import com.google.gson.reflect.TypeToken;
+import java.util.ArrayList;
+import java.util.Arrays;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
@@ -123,6 +125,33 @@ public class RideSharingCA {
         return result;
     }
 
+    public boolean lpush(String key, String value) {
+        try {
+            redisClient.lpush(buildKeyWithPrefix(key), new String[]{value});
+        } catch (Exception ex) {
+            _logger.error(ex.getMessage(), ex);
+        }
+        return true;
+    }
+
+    public boolean lrem(String key, String value) {
+        try {
+            redisClient.lrem(buildKeyWithPrefix(key), 1, value);
+        } catch (Exception ex) {
+            _logger.error(ex.getMessage(), ex);
+        }
+        return true;
+    }
+
+    public List<String> lrange(String key) {
+        List<String> lrange = new ArrayList<>();
+        try {
+            lrange = redisClient.lrange(buildKeyWithPrefix(key), 0, redisClient.llen(buildKeyWithPrefix(key)));
+        } catch (Exception ex) {
+            _logger.error(ex.getMessage(), ex);
+        }
+        return lrange;
+    }
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Restore function">
     Database database = Database.getInstance();
@@ -516,6 +545,116 @@ public class RideSharingCA {
         return result;
     }
 
+    public boolean RestoreFeed() {
+        boolean result = false;
+        try {
+            database.getFeedHashMap().clear();
+
+            Map<String, String> hgetAll = hgetAll(Feed.class.getName());
+            for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+                database.getFeedHashMap().put(ConvertUtils.toLong(key), (Feed) JSONUtil.DeSerialize(value, Feed.class));
+            }
+            result = true;
+        } catch (Exception ex) {
+            _logger.error(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
+    public boolean RestorePopularLocation() {
+        boolean result = false;
+        try {
+            database.getPopularLocationHashMap().clear();
+            database.getOrderedPopularLocation().clear();
+
+            Map<String, String> hgetAll = hgetAll(PopularLocation.class.getName());
+            for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+                database.getPopularLocationHashMap().put(ConvertUtils.toLong(key),
+                        (PopularLocation) JSONUtil.DeSerialize(value, PopularLocation.class));
+            }
+            database.setOrderedPopularLocation(ConvertUtils.convertListString(lrange(PopularLocation.class.getName() + ":ordered")));
+            result = true;
+        } catch (Exception ex) {
+            _logger.error(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
+    public boolean RestoreRating() {
+        boolean result = false;
+        try {
+            database.getRatingHashMap().clear();
+
+            Map<String, String> hgetAll = hgetAll(Rating.class.getName());
+            for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+                database.getRatingHashMap().put(ConvertUtils.toLong(key), (Rating) JSONUtil.DeSerialize(value, Rating.class));
+            }
+
+            result = true;
+        } catch (Exception ex) {
+            _logger.error(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
+    public boolean RestoreSocialTrip() {
+        boolean result = false;
+        try {
+            database.getSocialTripHashMap().clear();
+            database.getUserIdRFSocialTrips().clear();
+
+            Map<String, String> hgetAll = hgetAll(SocialTrip.class.getName());
+            for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+                database.getSocialTripHashMap().put(ConvertUtils.toLong(key), (SocialTrip) JSONUtil.DeSerialize(value, SocialTrip.class));
+            }
+            hgetAll = hgetAll(SocialTrip.class.getName() + ":user");
+            for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+                database.getUserIdRFSocialTrips().put(key,
+                        (HashSet<Long>) JSONUtil.DeSerialize(value, new TypeToken<HashSet<Long>>() {
+                        }.getType()));
+
+            }
+            result = true;
+        } catch (Exception ex) {
+            _logger.error(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
+    public boolean RestoreSocialTripAttendance() {
+        boolean result = false;
+        try {
+            database.getSocialTripAttendanceHashMap().clear();
+
+            Map<String, String> hgetAll = hgetAll(SocialTripAttendance.class.getName());
+            for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+                database.getSocialTripAttendanceHashMap().put(ConvertUtils.toLong(key), (SocialTripAttendance) JSONUtil.DeSerialize(value, SocialTripAttendance.class));
+            }
+
+            result = true;
+        } catch (Exception ex) {
+            _logger.error(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
     public boolean RestoreDatabase() {
         boolean result = false;
         result = RestoreBroadcast();
@@ -528,6 +667,12 @@ public class RideSharingCA {
         result &= RestoreRequestVerify();
         result &= RestoreAngelGroup();
         result &= RestoreAngelMemberGroup();
+
+        result &= RestoreFeed();
+        result &= RestorePopularLocation();
+        result &= RestoreRating();
+        result &= RestoreSocialTrip();
+        result &= RestoreSocialTripAttendance();
 
         return result;
     }

@@ -9,15 +9,21 @@ import com.bikiegang.ridesharing.pojo.AngelGroup;
 import com.bikiegang.ridesharing.pojo.AngelGroupMember;
 import com.bikiegang.ridesharing.pojo.Broadcast;
 import com.bikiegang.ridesharing.pojo.CertificateDetail;
+import com.bikiegang.ridesharing.pojo.Feed;
 import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.LinkedLocation;
 import com.bikiegang.ridesharing.pojo.RequestMakeTrip;
 import com.bikiegang.ridesharing.pojo.PlannedTrip;
+import com.bikiegang.ridesharing.pojo.PopularLocation;
+import com.bikiegang.ridesharing.pojo.Rating;
 import com.bikiegang.ridesharing.pojo.RequestVerify;
+import com.bikiegang.ridesharing.pojo.SocialTrip;
+import com.bikiegang.ridesharing.pojo.SocialTripAttendance;
 import com.bikiegang.ridesharing.pojo.Trip;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.VerifiedCertificate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.math.RandomUtils;
@@ -28,6 +34,62 @@ import org.json.JSONObject;
  * @author root
  */
 public class TestUtils {
+
+    public static Feed CreateFeed() {
+        Feed result = new Feed(
+                RandomUtils.nextLong(),
+                RandomUtils.nextInt(),
+                RandomUtils.nextLong());
+
+        return result;
+    }
+
+    public static PopularLocation CreatePopularLocation() {
+        PopularLocation result = new PopularLocation(new LatLng(RandomUtils.nextDouble(),
+                RandomUtils.nextDouble(),
+                RandomUtils.nextLong()),
+                RandomUtils.nextLong(),
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomStringUtils.randomAlphanumeric(30),
+                new HashSet<String>());
+        return result;
+    }
+
+    public static Rating CreateRating() {
+        Rating result = new Rating(RandomUtils.nextLong(),
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomUtils.nextInt(),
+                RandomUtils.nextLong(),
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomUtils.nextLong());
+
+        return result;
+    }
+
+    public static SocialTrip CreateSocialTrip() {
+        SocialTrip result = new SocialTrip(RandomUtils.nextLong(),
+                RandomStringUtils.randomAlphanumeric(30),
+                new LatLng(RandomUtils.nextDouble(),
+                        RandomUtils.nextDouble(),
+                        RandomUtils.nextLong()),
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomUtils.nextInt(),
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomUtils.nextInt(),
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomUtils.nextLong());
+        return result;
+    }
+
+    public static SocialTripAttendance CreateSocialTripAttendance() {
+        SocialTripAttendance result = new SocialTripAttendance(RandomUtils.nextLong(),
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomUtils.nextLong(),
+                RandomUtils.nextInt());
+
+        return result;
+    }
 
     private TestUtils() {
     }

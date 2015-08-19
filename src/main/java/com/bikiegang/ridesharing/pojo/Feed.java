@@ -5,8 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 /**
  * Created by hpduy17 on 8/18/15.
  */
-public class Feed implements PojoBase{
-    private long id ;
+public class Feed implements PojoBase {
+
+    private long id;
     private int type;
     private long refId;
 
@@ -14,6 +15,15 @@ public class Feed implements PojoBase{
     public static final int PLANNED_TRIP = 1;
     @JsonIgnore
     public static final int SOCIAL_TRIP = 2;
+
+    public Feed() {
+    }
+
+    public Feed(long id, int type, long refId) {
+        this.id = id;
+        this.type = type;
+        this.refId = refId;
+    }
 
     public long getId() {
         return id;
@@ -39,4 +49,3 @@ public class Feed implements PojoBase{
         this.refId = refId;
     }
 }
-

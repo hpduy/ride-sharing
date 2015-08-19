@@ -6,8 +6,8 @@
 package com.bikiegang.ridesharing.DAOTest;
 
 import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
-import com.bikiegang.ridesharing.dao.PlannedTripDao;
-import com.bikiegang.ridesharing.pojo.PlannedTrip;
+import com.bikiegang.ridesharing.dao.SocialTripAttendanceDao;
+import com.bikiegang.ridesharing.pojo.SocialTripAttendance;
 import com.bikiegang.ridesharing.utilities.TestUtils;
 
 /**
@@ -17,10 +17,10 @@ import com.bikiegang.ridesharing.utilities.TestUtils;
 public class Delete {
 
     public static void main(String[] args) {
-        PlannedTrip _value = null;
-        _value = TestUtils.CreatePlannedTrip();
-        _value.setId(3644526365975364492l);
-        PlannedTripDao dao = new PlannedTripDao();
+        SocialTripAttendance _value = null;
+        _value = TestUtils.CreateSocialTripAttendance();
+        _value.setId(6256953374922167320l);
+        SocialTripAttendanceDao dao = new SocialTripAttendanceDao();
         boolean DoAction = dao.delete(_value);
         System.out.println(DoAction);
         System.out.println(JSONUtil.Serialize(_value));
