@@ -15,7 +15,12 @@ public class FakeRequestVerify {
         Database database = Database.getInstance();
         for (int i = 0; i < numberOfRequest; i++) {
             RequestVerifyRequest requestVerifyRequest = new RequestVerifyRequest();
-            User user = new FakeUser().fakeUser(User.FEMALE, User.UNVERIFIED, false);
+            FakeUser fakeUser = new FakeUser();
+            User user  = new User();
+            synchronized (user){
+                 user = fakeUser.fakeUser(User.FEMALE, User.UNVERIFIED, false);
+            }
+            System.out.println("Fake user done:"+user.getId());
             database.getUserHashMap().put(user.getId(), user);
             requestVerifyRequest.setUserId(user.getId());
             requestVerifyRequest.setAngelId(angel.getId());
@@ -25,7 +30,8 @@ public class FakeRequestVerify {
             }
             requestVerifyRequest.setCertificates(details);
             String result = new RequestVerifyController().sendVerificationRequest(requestVerifyRequest);
-            System.out.print("Fake verify request :::: " + result);
+            System.out.println("Fake verify request :::: " + result);
+            System.out.println("----------------------------");
         }
     }
 }

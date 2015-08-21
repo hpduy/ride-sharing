@@ -7,18 +7,22 @@ import com.bikiegang.ridesharing.geocoding.PolyLineProcess;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.PlannedTrip;
+import com.bikiegang.ridesharing.pojo.Trip;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.*;
+import com.bikiegang.ridesharing.pojo.response.ExPartnerInfoResponse;
 import com.bikiegang.ridesharing.pojo.response.UserDetailWithPlannedTripResponse;
 import com.bikiegang.ridesharing.pojo.response.UserResponse;
 import com.bikiegang.ridesharing.pojo.response.UserShortDetailResponse;
-import com.bikiegang.ridesharing.utilities.DateTimeUtil;
+import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
+import com.bikiegang.ridesharing.utilities.Path;
 import com.bikiegang.ridesharing.utilities.StringProcessUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -415,7 +419,7 @@ public class UserController {
         database.getGeoCellCurrentLocation().updateInCell(oldLocation, newLocation, user.getId());
         user.setCurrentLocation(newLocation);
 
-        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully );
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
     }
 
     public String getPartnerLocation(GetPartnerLocationRequest request) throws JsonProcessingException {
@@ -453,11 +457,11 @@ public class UserController {
      */
     public String updateProfile(UpdateProfileRequest request) throws JsonProcessingException {
         if (null == request.getId() || request.getId().equals("")) {
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found,"'id'");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'id'");
         }
         User user = database.getUserHashMap().get(request.getId());
         if (user == null) {
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found,"User");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User");
         }
         if (null != request.getProfilePictureLink())
             user.setProfilePictureLink(request.getProfilePictureLink());
@@ -476,23 +480,23 @@ public class UserController {
         if (request.getPrivacy() >= 0)
             user.setPrivacy(request.getPrivacy());
         if (dao.update(user)) {
-            return Parser.ObjectToJSon(true,MessageMappingUtil.Successfully);
+            return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
         }
         return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
     }
 
     public String updateSocialNetworkAccount(UpdateSocialNetworkAccountRequest request) throws JsonProcessingException {
         if (null == request.getUserId() || request.getUserId().equals("")) {
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found,"'userId'");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
         }
         if (null == request.getSocialNetworkId() || request.getSocialNetworkId().equals("")) {
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found,"'socialNetworkId'");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'socialNetworkId'");
         }
         if (request.getType() == 0)
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found,"'type'");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'type'");
         User user = database.getUserHashMap().get(request.getUserId());
         if (user == null) {
-            return Parser.ObjectToJSon(false,MessageMappingUtil.Object_is_not_found, "User");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User");
         }
         switch (request.getType()) {
             case UpdateSocialNetworkAccountRequest.FACEBOOK:
@@ -520,39 +524,39 @@ public class UserController {
 
     public String removeSocialNetworkAccount(UpdateSocialNetworkAccountRequest request) throws JsonProcessingException {
         if (null == request.getUserId() || request.getUserId().equals("")) {
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found,"'userId'");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
         }
         if (null == request.getSocialNetworkId() || request.getSocialNetworkId().equals("")) {
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found,"'socialNetworkId'");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'socialNetworkId'");
         }
         if (request.getType() == 0)
-            return Parser.ObjectToJSon(false,MessageMappingUtil.Element_is_not_found, "'type'");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'type'");
         User user = database.getUserHashMap().get(request.getUserId());
         if (user == null) {
-            return Parser.ObjectToJSon(false,MessageMappingUtil.Object_is_not_found, "User");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User");
         }
         switch (request.getType()) {
             case UpdateSocialNetworkAccountRequest.FACEBOOK:
                 if (user.getGoogleId().equals("") && user.getTwitterId().equals("") && user.getLinkedInId().equals(""))
-                    return Parser.ObjectToJSon(false, MessageMappingUtil.Fail,"Cannot remove this social account because you will cannot login after remove that");
+                    return Parser.ObjectToJSon(false, MessageMappingUtil.Fail, "Cannot remove this social account because you will cannot login after remove that");
                 database.getFacebookRFUserId().remove(user.getFacebookId());
                 user.setFacebookId("");
                 break;
             case UpdateSocialNetworkAccountRequest.GOOGLE:
                 if (user.getFacebookId().equals("") && user.getTwitterId().equals("") && user.getLinkedInId().equals(""))
-                    return Parser.ObjectToJSon(false,MessageMappingUtil.Fail, "Cannot remove this social account because you will cannot login after remove that");
+                    return Parser.ObjectToJSon(false, MessageMappingUtil.Fail, "Cannot remove this social account because you will cannot login after remove that");
                 database.getGoogleRFUserId().remove(user.getGoogleId());
                 user.setGoogleId("");
                 break;
             case UpdateSocialNetworkAccountRequest.TWITTER:
                 if (user.getGoogleId().equals("") && user.getFacebookId().equals("") && user.getLinkedInId().equals(""))
-                    return Parser.ObjectToJSon(false,MessageMappingUtil.Fail, "Cannot remove this social account because you will cannot login after remove that");
+                    return Parser.ObjectToJSon(false, MessageMappingUtil.Fail, "Cannot remove this social account because you will cannot login after remove that");
                 database.getTwitterRFUserId().remove(user.getTwitterId());
                 user.setTwitterId("");
                 break;
             case UpdateSocialNetworkAccountRequest.LINKEDIN:
                 if (user.getGoogleId().equals("") && user.getTwitterId().equals("") && user.getFacebookId().equals(""))
-                    return Parser.ObjectToJSon(false, MessageMappingUtil.Fail,"Cannot remove this social account because you will cannot login after remove that");
+                    return Parser.ObjectToJSon(false, MessageMappingUtil.Fail, "Cannot remove this social account because you will cannot login after remove that");
                 database.getLinkedInRFUserId().remove(user.getLinkedInId());
                 user.setLinkedInId("");
                 break;
@@ -561,5 +565,43 @@ public class UserController {
             return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
         }
         return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
+    }
+
+    public ExPartnerInfoResponse getExPartners(String userId) {
+        ExPartnerInfoResponse response = new ExPartnerInfoResponse();
+        HashSet<Long> driverTrip = database.getDriverIdRFTrips().get(userId);
+        HashSet<Long> passengerTrip = database.getPassengerIdRFTrips().get(userId);
+        List<String> userPictureLinks = new ArrayList<>();
+        int size = 0;
+        if (driverTrip != null && !driverTrip.isEmpty()) {
+            for (long tId : driverTrip) {
+                if (userPictureLinks.size() >= 3) break;
+                Trip trip = database.getTripHashMap().get(tId);
+                if (null != trip) {
+                    User partner = database.getUserHashMap().get(trip.getPassengerId());
+                    if (null != partner.getProfilePictureLink() && !partner.getProfilePictureLink().equals("")) {
+                        userPictureLinks.add(Path.getUrlFromPath(partner.getProfilePictureLink()));
+                    }
+                }
+            }
+            size += driverTrip.size();
+        }
+        if (passengerTrip != null && !passengerTrip.isEmpty()) {
+            for (long tId : passengerTrip) {
+                if (userPictureLinks.size() >= 3) break;
+                Trip trip = database.getTripHashMap().get(tId);
+                if (null != trip) {
+                    User partner = database.getUserHashMap().get(trip.getPassengerId());
+                    if (null != partner.getProfilePictureLink() && !partner.getProfilePictureLink().equals("")) {
+                        userPictureLinks.add(Path.getUrlFromPath(partner.getProfilePictureLink()));
+                    }
+                }
+            }
+            size += passengerTrip.size();
+        }
+        response.setNumberOfExPartner(size);
+        response.setPartnerPictureLinks(userPictureLinks.toArray(new String[userPictureLinks.size()]));
+        return response;
+
     }
 }

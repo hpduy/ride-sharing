@@ -15,6 +15,7 @@ public class RequestVerifySortDetailResponse {
     private UserShortDetailResponse userDetail = new UserShortDetailResponse();
     public RequestVerifySortDetailResponse(RequestVerify that) {
         this.id = that.getId();
+        this.createdTime = that.getCreatedTime();
         this.numberOfCertificate = that.getNumberOfCertificate();
         User user = Database.getInstance().getUserHashMap().get(that.getUserId());
         if (user != null)

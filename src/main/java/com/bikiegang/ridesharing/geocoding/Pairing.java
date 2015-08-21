@@ -6,7 +6,7 @@ import com.bikiegang.ridesharing.geocoding.GoogleRoutingObject.Bound;
 import com.bikiegang.ridesharing.pojo.LinkedLocation;
 import com.bikiegang.ridesharing.pojo.PlannedTrip;
 import com.bikiegang.ridesharing.pojo.User;
-import com.bikiegang.ridesharing.utilities.DateTimeUtil;
+import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 
 import java.util.*;
 

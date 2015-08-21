@@ -3,6 +3,7 @@ package com.bikiegang.ridesharing.pojo.response;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.geocoding.FetchingDataFromGoogleRouting;
 import com.bikiegang.ridesharing.geocoding.GoogleRoutingObject.GoogleRoute;
+import com.bikiegang.ridesharing.pojo.Feed;
 import com.bikiegang.ridesharing.pojo.PlannedTrip;
 
 import java.io.IOException;
@@ -10,8 +11,7 @@ import java.io.IOException;
 /**
  * Created by hpduy17 on 7/8/15.
  */
-public class PlannedTripShortDetailResponse implements TripInFeed {
-    private long id;
+public class PlannedTripShortDetailResponse extends TripInFeed {
     private int numberOfRequest;
     private String startAddress;
     private String endAddress;
@@ -19,11 +19,10 @@ public class PlannedTripShortDetailResponse implements TripInFeed {
     private double ownerDistance;
     private int role;
     private boolean hasHelmet;
-    private long createdTime;
     private long goTime;
     private long duration;
     private boolean requested;
-
+    private int typeOfTrip;
     public PlannedTripShortDetailResponse() {
     }
 
@@ -54,6 +53,7 @@ public class PlannedTripShortDetailResponse implements TripInFeed {
 
         }
         this.numberOfRequest = numberOfRequest;
+        this.typeOfTrip = Feed.PLANNED_TRIP;
     }
 
     public long getId() {
@@ -150,5 +150,13 @@ public class PlannedTripShortDetailResponse implements TripInFeed {
 
     public void setDuration(long duration) {
         this.duration = duration;
+    }
+
+    public int getTypeOfTrip() {
+        return typeOfTrip;
+    }
+
+    public void setTypeOfTrip(int typeOfTrip) {
+        this.typeOfTrip = typeOfTrip;
     }
 }

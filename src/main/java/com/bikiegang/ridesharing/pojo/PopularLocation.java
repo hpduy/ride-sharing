@@ -15,12 +15,13 @@ public class PopularLocation extends LatLng implements PojoBase {
     public PopularLocation() {
     }
 
-    public PopularLocation(LatLng that, long id, String name, String address, HashSet<String> searcher) {
+    public PopularLocation(LatLng that, long id, String name, String address, HashSet<String> searcher,String backgroundImageLink) {
         super(that);
         this.id = id;
         this.name = name;
         this.address = address;
         this.searcher = searcher;
+        this.backgroundImageLink = backgroundImageLink;
     }
 
     public PopularLocation(PopularLocation that) {
@@ -29,6 +30,7 @@ public class PopularLocation extends LatLng implements PojoBase {
         this.name = that.name;
         this.address = that.address;
         this.searcher = that.searcher;
+        this.backgroundImageLink = that.backgroundImageLink;
     }
 
     public String getName() {
@@ -61,5 +63,13 @@ public class PopularLocation extends LatLng implements PojoBase {
 
     public void setSearcher(HashSet<String> searcher) {
         this.searcher = searcher;
+    }
+
+    public String getBackgroundImageLink() {
+        return backgroundImageLink;
+    }
+
+    public void setBackgroundImageLink(String backgroundImageLink) {
+        this.backgroundImageLink = backgroundImageLink;
     }
 }

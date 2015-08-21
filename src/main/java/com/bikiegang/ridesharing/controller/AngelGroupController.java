@@ -12,7 +12,7 @@ import com.bikiegang.ridesharing.pojo.request.angel.AddGroupRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.AutocompleteSearchGroupRequest;
 import com.bikiegang.ridesharing.pojo.response.angel.AngelGroupDetailResponse;
 import com.bikiegang.ridesharing.pojo.static_object.University;
-import com.bikiegang.ridesharing.utilities.DateTimeUtil;
+import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -89,9 +89,6 @@ public class AngelGroupController {
     }
 
     public String getListAngelGroupByAlphabet(GetInformationUsingUserIdRequest request) throws JsonProcessingException {
-        if (null == request.getUserId() || request.getUserId().equals("")) {
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found,"'userId'");
-        }
         List<AngelGroup> groups = new ArrayList<>(database.getAngelGroupHashMap().values());
         //sort by alphabet
         Collections.sort(groups, new Comparator<AngelGroup>() {

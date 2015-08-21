@@ -1,4 +1,4 @@
-package com.bikiegang.ridesharing.pojo.response.angel;
+package com.bikiegang.ridesharing.pojo.response;
 
 /**
  * Created by hpduy17 on 7/23/15.

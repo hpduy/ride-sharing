@@ -1,15 +1,16 @@
 package com.bikiegang.ridesharing.pojo;
 
-import com.bikiegang.ridesharing.utilities.DateTimeUtil;
+import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.json.JSONObject;
+
+import java.util.Hashtable;
 
 /**
  * Created by hpduy17 on 6/24/15.
  */
 public class PlannedTrip implements PojoBase {
     private long id;
-    private long goTime;
     private long arriveTime;
     private double sumDistance;
     private long estimatedTime; // duration from first location
@@ -29,6 +30,8 @@ public class PlannedTrip implements PojoBase {
     private long createdTime;
     private boolean isBusy;
     private String title = "";
+    private long endDay;
+    private Hashtable<Long,Long> timeTable = new Hashtable<>(); // <epochDay,epochTime>
     /**
      * ROUTE TYPE
      */
@@ -55,7 +58,6 @@ public class PlannedTrip implements PojoBase {
 
     public PlannedTrip(long id, long goTime, long arriveTime, double sumDistance, int type, String creatorId, int role, double ownerPrice, String plannedTripTrailPolyLine, JSONObject rawRoutingResult, long groupId) {
         this.id = id;
-        this.goTime = goTime;
         this.arriveTime = arriveTime;
         this.sumDistance = sumDistance;
         this.type = type;
@@ -69,7 +71,6 @@ public class PlannedTrip implements PojoBase {
 
     public PlannedTrip(PlannedTrip that) {
         this.id = that.id;
-        this.goTime = that.goTime;
         this.arriveTime = that.arriveTime;
         this.sumDistance = that.sumDistance;
         this.estimatedTime = that.estimatedTime;
@@ -104,14 +105,6 @@ public class PlannedTrip implements PojoBase {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public long getGoTime() {
-        return goTime;
-    }
-
-    public void setGoTime(long goTime) {
-        this.goTime = goTime;
     }
 
     public double getSumDistance() {
@@ -256,6 +249,22 @@ public class PlannedTrip implements PojoBase {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public long getEndDay() {
+        return endDay;
+    }
+
+    public void setEndDay(long endDay) {
+        this.endDay = endDay;
+    }
+
+    public Hashtable<Long, Long> getTimeTable() {
+        return timeTable;
+    }
+
+    public void setTimeTable(Hashtable<Long, Long> timeTable) {
+        this.timeTable = timeTable;
     }
 }
 /**

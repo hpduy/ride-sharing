@@ -7,8 +7,8 @@ import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.PopularLocation;
 import com.bikiegang.ridesharing.pojo.request.AddPopularLocationRequest;
 import com.bikiegang.ridesharing.pojo.request.IncreasePopularityRequest;
-import com.bikiegang.ridesharing.utilities.DateTimeUtil;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
+import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
@@ -18,6 +18,12 @@ public class PopularLocationController {
     private PopularLocationDao dao = new PopularLocationDao();
     private Database database = Database.getInstance();
 
+    // image processing
+    public static final int bgImageWidth = 344*3;
+    public static final int bgImageHeight = 136*3;
+
+
+    //----------------
     public String increasePopularity(IncreasePopularityRequest request) throws JsonProcessingException {
         if (null == request.getUserId() || request.getUserId().equals("")) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
@@ -67,6 +73,7 @@ public class PopularLocationController {
         location.setName(request.getName());
         location.setAddress(request.getAddress());
         location.getSearcher().add(request.getUserId());
+        location.setBackgroundImageLink(request.getImagePath());
         if (dao.insert(location)) {
             return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
         }
@@ -76,6 +83,8 @@ public class PopularLocationController {
     public String getPopularLocationList() throws JsonProcessingException {
         return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, database.getPopularLocationHashMap().values());
     }
+
+
 
 
 }

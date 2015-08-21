@@ -1,6 +1,6 @@
 package com.bikiegang.ridesharing.pojo;
 
-import com.bikiegang.ridesharing.utilities.DateTimeUtil;
+import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 
 import java.util.ArrayList;
 import java.util.List;

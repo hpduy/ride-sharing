@@ -7,9 +7,12 @@
 package com.bikiegang.ridesharing.api;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
+import com.bikiegang.ridesharing.controller.PopularLocationController;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.response.UploadImageResponse;
-import com.bikiegang.ridesharing.utilities.*;
+import com.bikiegang.ridesharing.utilities.ApiDocumentGenerator;
+import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
+import com.bikiegang.ridesharing.utilities.UploadImageUtil;
 import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import org.apache.log4j.Logger;
 
@@ -23,7 +26,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 @MultipartConfig
-public class UploadImageAPI extends HttpServlet {
+public class UploadPopularImageAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
     public Class requestClass = null;
     public Class responseClass = null;
@@ -46,7 +49,8 @@ public class UploadImageAPI extends HttpServlet {
         final Part filePart = request.getPart("image");
         final String fileName = getFileName(filePart);
         try {
-            UploadImageResponse uploadImageResponse = new UploadImageResponse(new UploadImageUtil().upload(fileName + "_" + new DateTimeUtil().now(), Path.getImagePath(), filePart));
+            UploadImageResponse uploadImageResponse = new UploadImageResponse(new UploadImageUtil()
+                    .uploadAndSmartCrop(fileName + "_" + new DateTimeUtil().now(), filePart, PopularLocationController.bgImageWidth, PopularLocationController.bgImageHeight));
             String result = Parser.ObjectToJSon(true, MessageMappingUtil.Successfully ,uploadImageResponse);
             logger.info(result);
             out.print(result);

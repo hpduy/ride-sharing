@@ -15,7 +15,7 @@ public class AngelGroupDetailResponse extends AngelGroup {
     public AngelGroupDetailResponse(AngelGroup that, String userId) {
         super(that);
         HashSet<String> members = Database.getInstance().getAngelGroupIdRFUsers().get(that.getId());
-        if (null != members && members.contains(userId))
+        if (userId!= null && !userId.equals("") && null != members && members.contains(userId))
             this.joined = true;
     }
 

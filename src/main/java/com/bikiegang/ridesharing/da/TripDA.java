@@ -6,15 +6,16 @@
 package com.bikiegang.ridesharing.da;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
+import com.bikiegang.ridesharing.annn.framework.dbconn.ClientManager;
+import com.bikiegang.ridesharing.annn.framework.dbconn.ManagerIF;
 import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.pojo.PojoBase;
 import com.bikiegang.ridesharing.pojo.Trip;
 import com.bikiegang.ridesharing.utilities.Const;
-import com.bikiegang.ridesharing.annn.framework.dbconn.ClientManager;
-import com.bikiegang.ridesharing.annn.framework.dbconn.ManagerIF;
+import org.apache.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import org.apache.log4j.Logger;
 
 /**
  *
@@ -62,10 +63,10 @@ public class TripDA implements IDA {
                 stmt.setString(4, value.getPassengerId());
                 stmt.setDouble(5, value.getRealDistance());
                 stmt.setLong(6, value.getEndTime());
-                stmt.setDouble(7, value.getPricePaid());
-                stmt.setLong(8, value.getSensitiveLocationId());
+                stmt.setDouble(7, value.getFarePaid());
+                stmt.setLong(8, 0);// change to LatLng
                 stmt.setString(9, value.getBreakReason());
-                stmt.setBoolean(10, value.isBreakTrip());
+                stmt.setBoolean(10, value.isSmoothBreak());
                 stmt.setBoolean(11, value.isDangerTrip());
                 stmt.setLong(12, value.getDriverPlannedTripId());
                 stmt.setLong(13, value.getPassengerPlannedTripId());
@@ -99,10 +100,10 @@ public class TripDA implements IDA {
                 stmt.setString(4, value.getPassengerId());
                 stmt.setDouble(5, value.getRealDistance());
                 stmt.setLong(6, value.getEndTime());
-                stmt.setDouble(7, value.getPricePaid());
-                stmt.setLong(8, value.getSensitiveLocationId());
+                stmt.setDouble(7, value.getFarePaid());
+                stmt.setLong(8, 0); // change to LatLng
                 stmt.setString(9, value.getBreakReason());
-                stmt.setBoolean(10, value.isBreakTrip());
+                stmt.setBoolean(10, value.isSmoothBreak());
                 stmt.setBoolean(11, value.isDangerTrip());
                 stmt.setLong(12, value.getDriverPlannedTripId());
                 stmt.setLong(13, value.getPassengerPlannedTripId());

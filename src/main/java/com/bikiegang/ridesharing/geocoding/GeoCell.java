@@ -2,7 +2,7 @@ package com.bikiegang.ridesharing.geocoding;
 
 import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.LinkedLocation;
-import com.bikiegang.ridesharing.utilities.DateTimeUtil;
+import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -192,7 +192,7 @@ public class GeoCell<T> {
      * @Group GET OBJECT IN CELLS
      * @Description
      */
-    private List<String> getIdsInCellCodes(LatLng center, double latSpan, double lngSpan) {
+    private List<String> getCellCodes(LatLng center, double latSpan, double lngSpan) {
         List<String> ids = new ArrayList<>();
         try {
             int minLat = (int) ((center.getLat() - (latSpan / 2)) * CELLS_PER_DEGREE - 1);
@@ -212,7 +212,7 @@ public class GeoCell<T> {
 
     public List<T> getIdsInFrame(LatLng center, double latSpan, double lngSpan) {
         HashSet<T> ids = new HashSet<>();
-        List<String> cellCodes = getIdsInCellCodes(center, latSpan, lngSpan);
+        List<String> cellCodes = getCellCodes(center, latSpan, lngSpan);
         for (String code : cellCodes) {
             ids.addAll(getIdsInCell(code));
         }
@@ -221,7 +221,7 @@ public class GeoCell<T> {
 
     public List<T> getIdsInFrame(LatLng center, double radius) {
         HashSet<T> ids = new HashSet<>();
-        List<String> cellCodes = getIdsInCellCodes(center, radius, radius);
+        List<String> cellCodes = getCellCodes(center, radius, radius);
         for (String code : cellCodes) {
             ids.addAll(getIdsInCell(code));
         }

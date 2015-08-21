@@ -82,7 +82,23 @@ public class UploadImageUtil {
         }
 
     }
+    public String uploadAndSmartCrop(String fileName, Part filePart, int width , int height) throws IOException {
+        InputStream fileContent = null;
+        try {
+            fileName += "." + getExtension(filePart);
+            String filePath = StringProcessUtil.removeAccent(Path.getImagePath() + File.separator + fileName).replaceAll(" ", "");
+            fileContent = filePart.getInputStream();
+            ImageProcessUtil.smartCropAndWriteFile(fileContent, width, height, getExtension(filePart), new File(filePath));
+            return filePath;
+        } catch (Exception fne) {
+            return "";
+        } finally {
+            if (fileContent != null) {
+                fileContent.close();
+            }
+        }
 
+    }
     private String getExtension(final Part part) {
         final String partHeader = part.getHeader("content-disposition");
         System.out.println("Part Header = " + partHeader);

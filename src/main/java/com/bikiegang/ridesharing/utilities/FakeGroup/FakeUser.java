@@ -6,12 +6,13 @@ import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.GetUsersAroundFromMeRequest;
 import com.bikiegang.ridesharing.pojo.response.UserShortDetailResponse;
-import com.bikiegang.ridesharing.utilities.DateTimeUtil;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.lang.math.RandomUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -92,12 +93,20 @@ public class FakeUser {
             "Quyên",
             "Phương",
             "Nhi"};
+    String[] jobs = {"Student",
+            "Officer",
+            "CEO",
+            "PG",
+            "Developer",
+            "Audit",
+            "Designer"};
 
     public User fakeUser(int gender, int status, boolean isBusy) {
-        User user = new User("fake_" + DateTimeUtil.now(), "fakeUser_" + DateTimeUtil.now() + "@gmail.com", "password", "fake_fbId_" + DateTimeUtil.now(), "fake_ggId_" + DateTimeUtil.now(), "fake_twID_" + DateTimeUtil.now(), "fake_lkId_" + DateTimeUtil.now(), "I'm fake driver register at " + DateTimeUtil.now(), "fname", "lname", "img", "090xxxxxxx", "DoB", gender, status, isBusy);
+        User user = new User("fake_" + RandomUtils.nextLong(), "fakeUser_" + RandomUtils.nextLong() + "@gmail.com", "password", "fake_fbId_" + RandomUtils.nextLong(), "fake_ggId_" + RandomUtils.nextLong(), "fake_twID_" + RandomUtils.nextLong(), "fake_lkId_" + RandomUtils.nextLong(), "I'm fake driver register at " + RandomUtils.nextLong(), "fname", "lname", "img", "090xxxxxxx", "DoB", gender, status, isBusy);
         user.setFirstName(randomFName(gender));
         user.setLastName(randomLName(gender));
         user.setBirthDay(randomBirthDay());
+        user.setJob(randomJob());
         user.setProfilePictureLink(randomImage(gender));
         return user;
     }
@@ -111,12 +120,15 @@ public class FakeUser {
 
 
     public String randomBirthDay() {
-        String yyyy = "198" + RandomUtils.nextInt() % 10;
-        int month = RandomUtils.nextInt() % 12 + 1;
-        int day = RandomUtils.nextInt() % 29 + 1;
-        String MM = month < 9 ? "0" + month : String.valueOf(month);
-        String dd = day < 9 ? "0" + day : String.valueOf(day);
-        return yyyy + MM + dd;
+        long time = new Date().getTime() - RandomUtils.nextLong();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+        return simpleDateFormat.format(new Date(time));
+
+    }
+
+    public String randomJob() {
+        int idx = RandomUtils.nextInt() % jobs.length;
+        return jobs[idx];
     }
 
     public String randomFName(int gender) {
@@ -166,10 +178,10 @@ public class FakeUser {
     public String getUsersAroundFromMeFake(GetUsersAroundFromMeRequest request) throws JsonProcessingException {
 
         if (request.getCenterLat() == 0 && request.getCenterLng() == 0) {
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid,"Latitude and Longitude is invalid (0,0)");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "Latitude and Longitude is invalid (0,0)");
         }
         if (request.getRadius() < 0) {
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid,"Radius is invalid (< 0)");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "Radius is invalid (< 0)");
         }
         LatLng center = new LatLng(request.getCenterLat(), request.getCenterLng());
         List<User> users = new ArrayList<>();
@@ -183,11 +195,12 @@ public class FakeUser {
         }
         return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, userDetails);
     }
+
     public static void createTester() throws Exception {
-        User user = new FakeUser().fakeUser(2,1,false);
+        User user = new FakeUser().fakeUser(2, 1, false);
         user.setId("tester");
         Database.getInstance().getUserHashMap().put(user.getId(), user);
-        new FakeRequestMakeTrip().FakeRequestVerify(user,5);
+        new FakeRequestMakeTrip().FakeRequestVerify(user, 5);
     }
 
     public static void createAngel() throws JsonProcessingException {
@@ -195,6 +208,6 @@ public class FakeUser {
         user.setId("angel");
         user.setStatus(User.ANGEL);
         Database.getInstance().getUserHashMap().put(user.getId(), user);
-        new FakeRequestVerify().FakeRequestVerify(user,10);
+        new FakeRequestVerify().FakeRequestVerify(user, 10);
     }
 }

@@ -15,9 +15,9 @@ import com.bikiegang.ridesharing.pojo.response.Notification.ObjectNoti;
 import com.bikiegang.ridesharing.pojo.response.Notification.ReplyMakeTripNoti;
 import com.bikiegang.ridesharing.pojo.response.Notification.RequestMakeTripNoti;
 import com.bikiegang.ridesharing.pojo.response.RequestMakeTripDetailResponse;
-import com.bikiegang.ridesharing.pojo.response.angel.RequestMakeTripResponse;
+import com.bikiegang.ridesharing.pojo.response.RequestMakeTripResponse;
 import com.bikiegang.ridesharing.utilities.BroadcastCenterUtil;
-import com.bikiegang.ridesharing.utilities.DateTimeUtil;
+import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 

@@ -15,7 +15,7 @@ import com.bikiegang.ridesharing.pojo.response.Notification.ReplyVerifyNoti;
 import com.bikiegang.ridesharing.pojo.response.angel.RequestVerifyDetailResponse;
 import com.bikiegang.ridesharing.pojo.response.angel.RequestVerifySortDetailResponse;
 import com.bikiegang.ridesharing.utilities.BroadcastCenterUtil;
-import com.bikiegang.ridesharing.utilities.DateTimeUtil;
+import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 

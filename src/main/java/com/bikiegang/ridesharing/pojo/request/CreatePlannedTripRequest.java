@@ -1,5 +1,6 @@
 package com.bikiegang.ridesharing.pojo.request;
 
+import com.bikiegang.ridesharing.pojo.static_object.TripPattern;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -14,6 +15,9 @@ public class CreatePlannedTripRequest {
     private String googleRoutingResult;
     private boolean hasHelmet;
     private boolean isParing = true;
+    private int typeOfTrip;
+    private String title;
+    private TripPattern[] patterns;
 
     public String getCreatorId() {
         return creatorId;
@@ -69,5 +73,29 @@ public class CreatePlannedTripRequest {
 
     public void setHasHelmet(boolean hasHelmet) {
         this.hasHelmet = hasHelmet;
+    }
+
+    public int getTypeOfTrip() {
+        return typeOfTrip;
+    }
+
+    public void setTypeOfTrip(int typeOfTrip) {
+        this.typeOfTrip = typeOfTrip;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public TripPattern[] getPatterns() {
+        return patterns;
+    }
+
+    public void setPatterns(TripPattern[] patterns) {
+        this.patterns = patterns;
     }
 }

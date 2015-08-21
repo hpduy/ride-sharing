@@ -12,6 +12,7 @@ public class AddPopularLocationRequest {
     private double lng;
     private String name;
     private String address;
+    private String imagePath;
 
     public String getUserId() {
         return userId;
@@ -51,5 +52,13 @@ public class AddPopularLocationRequest {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 }

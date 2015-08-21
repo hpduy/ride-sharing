@@ -9,7 +9,7 @@ import com.bikiegang.ridesharing.pojo.request.angel.AngelForgetPasswordRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.AngelLoginRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.AngelRegisterRequest;
 import com.bikiegang.ridesharing.pojo.response.GetAngelActiveCodesResponse;
-import com.bikiegang.ridesharing.utilities.DateTimeUtil;
+import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import com.bikiegang.ridesharing.utilities.SendMailUtil;
 import com.bikiegang.ridesharing.utilities.StringProcessUtil;

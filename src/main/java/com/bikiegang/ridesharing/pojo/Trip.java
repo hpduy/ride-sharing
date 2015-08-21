@@ -11,10 +11,10 @@ public class Trip implements PojoBase {
     private String passengerId = "";
     private double realDistance;
     private long endTime;
-    private double pricePaid;
-    private long sensitiveLocationId; // break or danger location
+    private double farePaid;
+    private LatLng sensitiveLocationId = new LatLng(); // break or danger location
     private String breakReason = "";
-    private boolean breakTrip;
+    private boolean smoothBreak;
     private boolean dangerTrip;
     private long driverPlannedTripId;
     private long passengerPlannedTripId;
@@ -23,17 +23,17 @@ public class Trip implements PojoBase {
     public Trip() {
     }
 
-    public Trip(long id, long startTime, long endTime, String driverId, String passengerId, double realDistance, double pricePaid, long sensitiveLocationId, String breakReason, boolean breakTrip, boolean dangerTrip, long driverPlannedTripId, long passengerPlannedTripId, String tripTrailPolyLine) {
+    public Trip(long id, long startTime, long endTime, String driverId, String passengerId, double realDistance, double farePaid, LatLng sensitiveLocationId, String breakReason, boolean smoothBreak, boolean dangerTrip, long driverPlannedTripId, long passengerPlannedTripId, String tripTrailPolyLine) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
         this.driverId = driverId;
         this.passengerId = passengerId;
         this.realDistance = realDistance;
-        this.pricePaid = pricePaid;
+        this.farePaid = farePaid;
         this.sensitiveLocationId = sensitiveLocationId;
         this.breakReason = breakReason;
-        this.breakTrip = breakTrip;
+        this.smoothBreak = smoothBreak;
         this.dangerTrip = dangerTrip;
         this.driverPlannedTripId = driverPlannedTripId;
         this.passengerPlannedTripId = passengerPlannedTripId;
@@ -47,10 +47,10 @@ public class Trip implements PojoBase {
         this.driverId = that.driverId;
         this.passengerId = that.passengerId;
         this.realDistance = that.realDistance;
-        this.pricePaid = that.pricePaid;
+        this.farePaid = that.farePaid;
         this.sensitiveLocationId = that.sensitiveLocationId;
         this.breakReason = that.breakReason;
-        this.breakTrip = that.breakTrip;
+        this.smoothBreak = that.smoothBreak;
         this.dangerTrip = that.dangerTrip;
         this.driverPlannedTripId = that.driverPlannedTripId;
         this.passengerPlannedTripId = that.passengerPlannedTripId;
@@ -105,19 +105,19 @@ public class Trip implements PojoBase {
         this.endTime = endTime;
     }
 
-    public double getPricePaid() {
-        return pricePaid;
+    public double getFarePaid() {
+        return farePaid;
     }
 
-    public void setPricePaid(double pricePaid) {
-        this.pricePaid = pricePaid;
+    public void setFarePaid(double farePaid) {
+        this.farePaid = farePaid;
     }
 
-    public long getSensitiveLocationId() {
+    public LatLng getSensitiveLocationId() {
         return sensitiveLocationId;
     }
 
-    public void setSensitiveLocationId(long sensitiveLocationId) {
+    public void setSensitiveLocationId(LatLng sensitiveLocationId) {
         this.sensitiveLocationId = sensitiveLocationId;
     }
 
@@ -129,12 +129,12 @@ public class Trip implements PojoBase {
         this.breakReason = breakReason;
     }
 
-    public boolean isBreakTrip() {
-        return breakTrip;
+    public boolean isSmoothBreak() {
+        return smoothBreak;
     }
 
-    public void setBreakTrip(boolean breakTrip) {
-        this.breakTrip = breakTrip;
+    public void setSmoothBreak(boolean smoothBreak) {
+        this.smoothBreak = smoothBreak;
     }
 
     public boolean isDangerTrip() {

@@ -17,6 +17,7 @@ public class RequestVerifyDetailResponse {
     public RequestVerifyDetailResponse(RequestVerify that) {
         this.id = that.getId();
         this.numberOfCertificate = that.getNumberOfCertificate();
+        this.createdTime = that.getCreatedTime();
         User user = Database.getInstance().getUserHashMap().get(that.getUserId());
         if (user != null)
             this.userDetail = new UserDetailWithCertificatesResponse(user);

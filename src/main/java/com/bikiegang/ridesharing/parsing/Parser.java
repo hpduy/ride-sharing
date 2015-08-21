@@ -1,9 +1,15 @@
 package com.bikiegang.ridesharing.parsing;
 
+import com.bikiegang.ridesharing.pojo.Feed;
+import com.bikiegang.ridesharing.pojo.response.FeedResponse;
+import com.bikiegang.ridesharing.pojo.response.GetFeedsResponse;
+import com.bikiegang.ridesharing.pojo.response.PlannedTripShortDetailResponse;
+import com.bikiegang.ridesharing.pojo.response.SocialTripResponse;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -53,16 +59,16 @@ public class Parser {
 
     }
 
-    public static String ObjectToJSon(boolean success, int errorCode) throws JsonProcessingException {
-        return toJson(new Parser(success, errorCode));
+    public static String ObjectToJSon(boolean success, int messageCode) throws JsonProcessingException {
+        return toJson(new Parser(success, messageCode));
     }
 
-    public static String ObjectToJSon(boolean success, int errorCode, String note) throws JsonProcessingException {
-        return toJson(new Parser(success, errorCode, note));
+    public static String ObjectToJSon(boolean success, int messageCode, String note) throws JsonProcessingException {
+        return toJson(new Parser(success, messageCode, note));
     }
 
-    public static String ObjectToJSon(boolean success, int errorCode, Object result) throws JsonProcessingException {
-        return toJson(new Parser(success, errorCode, result));
+    public static String ObjectToJSon(boolean success, int messageCode, Object result) throws JsonProcessingException {
+        return toJson(new Parser(success, messageCode, result));
     }
 
     public static String ObjectToJSon(Object result) throws JsonProcessingException {
@@ -78,6 +84,26 @@ public class Parser {
         ObjectMapper mapper = new ObjectMapper();
         Object result = mapper.readValue(src, type);
         return result;
+    }
+
+    public static String FeedsToJSon(boolean success, int messageCode, GetFeedsResponse result) throws JsonProcessingException {
+        JSONObject response = new JSONObject();
+        JSONArray feeds = new JSONArray();
+        for(FeedResponse feedResponse : result.getFeeds()){
+            JSONObject feed = new JSONObject();
+            feed.put("partnerInfo",ObjectToJSon(feedResponse.getPartnerInfo()));
+            feed.put("userDetail",ObjectToJSon(feedResponse.getUserDetail()));
+            if (feedResponse.getTripDetail().getTypeOfTrip() == Feed.PLANNED_TRIP) {
+                feed.put("tripDetail", ObjectToJSon((PlannedTripShortDetailResponse)feedResponse.getTripDetail()));
+            }else{
+                feed.put("tripDetail", ObjectToJSon((SocialTripResponse)feedResponse.getTripDetail()));
+            }
+            feeds.put(feed);
+        }
+        response.put("success",success);
+        response.put("messageCode",messageCode);
+        response.put("result",new JSONObject().put("feeds",feeds));
+        return toJson(new Parser(success, messageCode, result));
     }
 
     public static Parser JSonToParser(String src, Class resultType) throws IOException {

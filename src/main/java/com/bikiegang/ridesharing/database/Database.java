@@ -45,6 +45,7 @@ public class Database {
     private LinkedHashMap<Long, Feed> feedHashMap = new LinkedHashMap<>();
     private HashMap<Long, Rating> ratingHashMap = new LinkedHashMap<>();
     private HashMap<Long, SocialTripAttendance> socialTripAttendanceHashMap = new LinkedHashMap<>();
+    private HashMap<Long, TripCalendar> tripCalendarHashMap = new LinkedHashMap<>();
     //REFERENCE
     /**
      * USER
@@ -108,6 +109,12 @@ public class Database {
      * SOCIAL ATTENDANCE
      */
 
+    //TODO: do later
+
+    /**
+     * TRIP CALENDAR
+     */
+    private HashMap<String, Long> userIdRFTripCalendar = new HashMap<>();// <userId,tripCalendarId>
     /**
      * GEOCELL
      */
@@ -115,7 +122,7 @@ public class Database {
     private GeoCell<Long> geoCellPassenger = new GeoCell<>(GeoCell.CELL_LEN_OF_PLANNED_TRIP);// for plannedTrip
     private GeoCell<String> geoCellCurrentLocation = new GeoCell<>(GeoCell.CELL_LEN_OF_PT_START_LOCATION);
     private GeoCell<Long> geoCellStartLocation = new GeoCell<>(GeoCell.CELL_LEN_OF_PT_START_LOCATION);
-    private GeoCell<Long> geoCellAngelGroup= new GeoCell<>(GeoCell.CELL_LEN_OF_ANGEL_GROUP);
+    private GeoCell<Long> geoCellAngelGroup = new GeoCell<>(GeoCell.CELL_LEN_OF_ANGEL_GROUP);
     private GeoCell<Long> geoCellSocialTrip = new GeoCell<>(GeoCell.CELL_LEN_OF_PT_START_LOCATION);
 
     //    /*PERSONAL FUNCTION*/
@@ -188,6 +195,18 @@ public class Database {
 
     public LinkedHashMap<Long, Feed> getFeedHashMap() {
         return feedHashMap;
+    }
+
+    public HashMap<Long, Rating> getRatingHashMap() {
+        return ratingHashMap;
+    }
+
+    public HashMap<Long, SocialTripAttendance> getSocialTripAttendanceHashMap() {
+        return socialTripAttendanceHashMap;
+    }
+
+    public HashMap<Long, TripCalendar> getTripCalendarHashMap() {
+        return tripCalendarHashMap;
     }
 
     /*REFERENCE GET-SET*/
@@ -295,12 +314,8 @@ public class Database {
         return userIdRFSocialTrips;
     }
 
-    public HashMap<Long, Rating> getRatingHashMap() {
-        return ratingHashMap;
-    }
-
-    public HashMap<Long, SocialTripAttendance> getSocialTripAttendanceHashMap() {
-        return socialTripAttendanceHashMap;
+    public HashMap<String, Long> getUserIdRFTripCalendar() {
+        return userIdRFTripCalendar;
     }
 
     /*GEOCELL GET-SET*/

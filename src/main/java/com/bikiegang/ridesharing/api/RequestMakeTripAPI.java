@@ -10,7 +10,7 @@ import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.controller.RequestMakeTripController;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.request.RequestMakeTripRequest;
-import com.bikiegang.ridesharing.pojo.response.angel.RequestMakeTripResponse;
+import com.bikiegang.ridesharing.pojo.response.RequestMakeTripResponse;
 import com.bikiegang.ridesharing.utilities.ApiDocumentGenerator;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import org.apache.log4j.Logger;

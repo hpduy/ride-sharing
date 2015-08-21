@@ -109,4 +109,39 @@ public class IdGenerator {
         while (idSet.contains(popularLocationId));
         return popularLocationId;
     }
+
+    public static synchronized long getFeedId() {
+        Set<Long> idSet = database.getFeedHashMap().keySet();
+        long feedId;
+        do {
+            feedId = RandomUtils.nextLong();
+        }
+        while (idSet.contains(feedId));
+        return feedId;
+    }
+    public static synchronized long getRatingId() {
+        Set<Long> idSet = database.getRatingHashMap().keySet();
+        long ratingId;
+        do {
+            ratingId = RandomUtils.nextLong();
+        }
+        while (idSet.contains(ratingId));
+        return ratingId;
+    }public static synchronized long getSocialTripId() {
+        Set<Long> idSet = database.getSocialTripHashMap().keySet();
+        long socialTripId;
+        do {
+            socialTripId = RandomUtils.nextLong();
+        }
+        while (idSet.contains(socialTripId));
+        return socialTripId;
+    }public static synchronized long getSocialTripAttendanceId() {
+        Set<Long> idSet = database.getSocialTripAttendanceHashMap().keySet();
+        long socialTripAttendance;
+        do {
+            socialTripAttendance = RandomUtils.nextLong();
+        }
+        while (idSet.contains(socialTripAttendance));
+        return socialTripAttendance;
+    }
 }

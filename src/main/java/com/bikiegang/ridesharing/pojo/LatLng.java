@@ -1,7 +1,7 @@
 package com.bikiegang.ridesharing.pojo;
 
 
-import com.bikiegang.ridesharing.utilities.DateTimeUtil;
+import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 
 import java.util.List;
 import java.util.regex.Matcher;

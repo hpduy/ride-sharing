@@ -1,8 +1,10 @@
-package com.bikiegang.ridesharing.utilities;
+package com.bikiegang.ridesharing.utilities.daytime;
 
 import com.bikiegang.ridesharing.geocoding.TimezoneMapper;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 /**
@@ -25,9 +27,9 @@ public class DateTimeUtil {
         return new Date().getTime() / 1000;
     }
 
-    public long getTimeByTimeZoneFromLatLng(long epochTimeInSec, double lat, double lng){
-        TimeZone timeZone = TimeZone.getTimeZone(TimezoneMapper.latLngToTimezoneString(lat,lng));
-        if(timeZone != null){
+    public long getTimeByTimeZoneFromLatLng(long epochTimeInSec, double lat, double lng) {
+        TimeZone timeZone = TimeZone.getTimeZone(TimezoneMapper.latLngToTimezoneString(lat, lng));
+        if (timeZone != null) {
             epochTimeInSec += timeZone.getOffset(epochTimeInSec);
         }
         return epochTimeInSec;
@@ -59,5 +61,18 @@ public class DateTimeUtil {
      */
     public static long timeDistance(long dateOne, long dateTwo) {
         return Math.abs(dateOne - dateTwo);
+    }
+
+    public static long getTimeOnDay(long date) {
+        return date % SECONDS_PER_DAY;
+    }
+
+    public List<Long> getTimePattern(long startDay, long timeDistance, long endDay){
+        List<Long> timePattern = new ArrayList<>();
+        while(startDay <= endDay){
+            timePattern.add(startDay);
+            timeDistance += timeDistance;
+        }
+        return timePattern;
     }
 }

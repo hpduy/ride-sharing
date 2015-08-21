@@ -7,315 +7,323 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          version="3.0">
-    <display-title>Cloud Bike Server</display-title>
+    <display-name>Cloud Bike Server</display-name>
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
     <!-- API -->
     <!--**PLANNED TRIP**-->
     <servlet>
-        <servlet-title>AutoParingWhenSearchAPI</servlet-title>
+        <servlet-name>AutoParingWhenSearchAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.AutoParingWhenSearchAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-title>AutoParingWhenSearchAPI</servlet-title>
+        <servlet-name>AutoParingWhenSearchAPI</servlet-name>
         <url-pattern>/AutoParingWhenSearchAPI</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-title>CreatePlannedTripAPI</servlet-title>
+        <servlet-name>CreatePlannedTripAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.CreatePlannedTripAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-title>CreatePlannedTripAPI</servlet-title>
+        <servlet-name>CreatePlannedTripAPI</servlet-name>
         <url-pattern>/CreatePlannedTripAPI</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-title>GetPlannedTripDetailAPI</servlet-title>
+        <servlet-name>GetPlannedTripDetailAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.GetPlannedTripDetailAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-title>GetPlannedTripDetailAPI</servlet-title>
+        <servlet-name>GetPlannedTripDetailAPI</servlet-name>
         <url-pattern>/GetPlannedTripDetailAPI</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-title>UpdateCurrentLocationWithPlannedTripAPI</servlet-title>
+        <servlet-name>UpdateCurrentLocationWithPlannedTripAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.UpdateCurrentLocationWithPlannedTripAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-title>UpdateCurrentLocationWithPlannedTripAPI</servlet-title>
+        <servlet-name>UpdateCurrentLocationWithPlannedTripAPI</servlet-name>
         <url-pattern>/UpdateCurrentLocationWithPlannedTripAPI</url-pattern>
     </servlet-mapping>
 
     <!--**USER**-->
     <servlet>
-        <servlet-title>LoginAPI</servlet-title>
+        <servlet-name>LoginAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.LoginAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-title>LoginAPI</servlet-title>
+        <servlet-name>LoginAPI</servlet-name>
         <url-pattern>/LoginAPI</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-title>UpdateBroadcastAPI</servlet-title>
+        <servlet-name>UpdateBroadcastAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.UpdateBroadcastAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-title>UpdateBroadcastAPI</servlet-title>
+        <servlet-name>UpdateBroadcastAPI</servlet-name>
         <url-pattern>/UpdateBroadcastAPI</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-title>UpdateCurrentLocationAPI</servlet-title>
+        <servlet-name>UpdateCurrentLocationAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.UpdateCurrentLocationAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-title>UpdateCurrentLocationAPI</servlet-title>
+        <servlet-name>UpdateCurrentLocationAPI</servlet-name>
         <url-pattern>/UpdateCurrentLocationAPI</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-title>RegisterAPI</servlet-title>
+        <servlet-name>RegisterAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.RegisterAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-title>RegisterAPI</servlet-title>
+        <servlet-name>RegisterAPI</servlet-name>
         <url-pattern>/RegisterAPI</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-title>GetPlannedTripsAroundFromMeAPI</servlet-title>
+        <servlet-name>GetPlannedTripsAroundFromMeAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.GetPlannedTripsAroundFromMeAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-title>GetPlannedTripsAroundFromMeAPI</servlet-title>
+        <servlet-name>GetPlannedTripsAroundFromMeAPI</servlet-name>
         <url-pattern>/GetPlannedTripsAroundFromMeAPI</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-title>GetUsersDetailWithPlannedTripsAPI</servlet-title>
+        <servlet-name>GetUsersDetailWithPlannedTripsAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.GetUsersDetailWithPlannedTripsAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-title>GetUsersDetailWithPlannedTripsAPI</servlet-title>
+        <servlet-name>GetUsersDetailWithPlannedTripsAPI</servlet-name>
         <url-pattern>/GetUsersDetailWithPlannedTripsAPI</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-title>UpdateUserProfileAPI</servlet-title>
+        <servlet-name>UpdateUserProfileAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.UpdateUserProfileAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-title>UpdateUserProfileAPI</servlet-title>
+        <servlet-name>UpdateUserProfileAPI</servlet-name>
         <url-pattern>/UpdateUserProfileAPI</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-title>UpdateUserSocialNetWorkAccountAPI</servlet-title>
+        <servlet-name>UpdateUserSocialNetWorkAccountAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.UpdateUserSocialNetWorkAccountAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-title>UpdateUserSocialNetWorkAccountAPI</servlet-title>
+        <servlet-name>UpdateUserSocialNetWorkAccountAPI</servlet-name>
         <url-pattern>/UpdateUserSocialNetWorkAccountAPI</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-title>GetPartnerLocationAPI</servlet-title>
+        <servlet-name>GetPartnerLocationAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.GetPartnerLocationAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-title>GetPartnerLocationAPI</servlet-title>
+        <servlet-name>GetPartnerLocationAPI</servlet-name>
         <url-pattern>/GetPartnerLocationAPI</url-pattern>
     </servlet-mapping>
 
 
     <!--**ANGEL**-->
     <servlet>
-        <servlet-title>GetAngelsAroundFromMeAPI</servlet-title>
+        <servlet-name>GetAngelsAroundFromMeAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.angel.GetAngelsAroundFromMeAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-title>GetAngelsAroundFromMeAPI</servlet-title>
+        <servlet-name>GetAngelsAroundFromMeAPI</servlet-name>
         <url-pattern>/GetAngelsAroundFromMeAPI</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-title>GetAngelActiveCodesAPI</servlet-title>
+        <servlet-name>GetAngelActiveCodesAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.angel.GetAngelActiveCodesAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-title>GetAngelActiveCodesAPI</servlet-title>
+        <servlet-name>GetAngelActiveCodesAPI</servlet-name>
         <url-pattern>/GetAngelActiveCodesAPI</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-title>AngelRegisterAPI</servlet-title>
+        <servlet-name>AngelRegisterAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.angel.AngelRegisterAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-title>AngelRegisterAPI</servlet-title>
+        <servlet-name>AngelRegisterAPI</servlet-name>
         <url-pattern>/AngelRegisterAPI</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-title>AngelLoginAPI</servlet-title>
+        <servlet-name>AngelLoginAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.angel.AngelLoginAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-title>GetAngelActiveCodesForWebAPI</servlet-title>
+        <servlet-name>GetAngelActiveCodesForWebAPI</servlet-name>
         <url-pattern>/GetAngelActiveCodesForWebAPI</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-title>AngelForgetPasswordAPI</servlet-title>
+        <servlet-name>AngelForgetPasswordAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.angel.AngelForgetPasswordAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-title>AngelForgetPasswordAPI</servlet-title>
+        <servlet-name>AngelForgetPasswordAPI</servlet-name>
         <url-pattern>/AngelForgetPasswordAPI</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-title>GetAngelActiveCodesForWebAPI</servlet-title>
+        <servlet-name>GetAngelActiveCodesForWebAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.angel.GetAngelActiveCodesForWebAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-title>AngelLoginAPI</servlet-title>
+        <servlet-name>AngelLoginAPI</servlet-name>
         <url-pattern>/AngelLoginAPI</url-pattern>
     </servlet-mapping>
 
     <!--**TRIP**-->
     <servlet>
-        <servlet-title>RequestMakeTripAPI</servlet-title>
+        <servlet-name>RequestMakeTripAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.RequestMakeTripAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-title>RequestMakeTripAPI</servlet-title>
+        <servlet-name>RequestMakeTripAPI</servlet-name>
         <url-pattern>/RequestMakeTripAPI</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-title>ReplyMakeTripAPI</servlet-title>
+        <servlet-name>ReplyMakeTripAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.ReplyMakeTripAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-title>ReplyMakeTripAPI</servlet-title>
+        <servlet-name>ReplyMakeTripAPI</servlet-name>
         <url-pattern>/ReplyMakeTripAPI</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-title>GetListRequestMakeTripAPI</servlet-title>
+        <servlet-name>GetListRequestMakeTripAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.GetListRequestMakeTripAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-title>GetListRequestMakeTripAPI</servlet-title>
+        <servlet-name>GetListRequestMakeTripAPI</servlet-name>
         <url-pattern>/GetListRequestMakeTripAPI</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-title>RemoveRequestMakeTripAPI</servlet-title>
+        <servlet-name>RemoveRequestMakeTripAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.RemoveRequestMakeTripAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-title>RemoveRequestMakeTripAPI</servlet-title>
+        <servlet-name>RemoveRequestMakeTripAPI</servlet-name>
         <url-pattern>/RemoveRequestMakeTripAPI</url-pattern>
     </servlet-mapping>
 
     <!--**IMAGE**-->
     <servlet>
-        <servlet-title>UploadImageAPI</servlet-title>
+        <servlet-name>UploadImageAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.UploadImageAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-title>UploadImageAPI</servlet-title>
+        <servlet-name>UploadImageAPI</servlet-name>
         <url-pattern>/UploadImageAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>UploadPopularImageAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.UploadPopularImageAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UploadPopularImageAPI</servlet-name>
+        <url-pattern>/UploadPopularImageAPI</url-pattern>
     </servlet-mapping>
 
     <!--**VERIFIED CERTIFICATE**-->
     <servlet>
-        <servlet-title>RequestVerifyAPI</servlet-title>
+        <servlet-name>RequestVerifyAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.angel.RequestVerifyAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-title>RequestVerifyAPI</servlet-title>
+        <servlet-name>RequestVerifyAPI</servlet-name>
         <url-pattern>/RequestVerifyAPI</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-title>ReplyVerifyAPI</servlet-title>
+        <servlet-name>ReplyVerifyAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.angel.ReplyVerifyAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-title>ReplyVerifyAPI</servlet-title>
+        <servlet-name>ReplyVerifyAPI</servlet-name>
         <url-pattern>/ReplyVerifyAPI</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-title>CreateCertificateAPI</servlet-title>
+        <servlet-name>CreateCertificateAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.angel.CreateCertificateAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-title>CreateCertificateAPI</servlet-title>
+        <servlet-name>CreateCertificateAPI</servlet-name>
         <url-pattern>/CreateCertificateAPI</url-pattern>
     </servlet-mapping>
 
     <servlet>
-        <servlet-title>GetListVerifyRequestAPI</servlet-title>
+        <servlet-name>GetListVerifyRequestAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.angel.GetListVerifyRequestAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-title>GetListVerifyRequestAPI</servlet-title>
+        <servlet-name>GetListVerifyRequestAPI</servlet-name>
         <url-pattern>/GetListVerifyRequestAPI</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-title>GetVerifyRequestDetailAPI</servlet-title>
+        <servlet-name>GetVerifyRequestDetailAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.angel.GetVerifyRequestDetailAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-title>GetVerifyRequestDetailAPI</servlet-title>
+        <servlet-name>GetVerifyRequestDetailAPI</servlet-name>
         <url-pattern>/GetVerifyRequestDetailAPI</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-title>VerifyCertificateAPI</servlet-title>
+        <servlet-name>VerifyCertificateAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.angel.VerifyCertificateAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-title>VerifyCertificateAPI</servlet-title>
+        <servlet-name>VerifyCertificateAPI</servlet-name>
         <url-pattern>/VerifyCertificateAPI</url-pattern>
     </servlet-mapping>
     <!--** ANGEL GROUP**-->
     <servlet>
-        <servlet-title>GetAlphabetAngelGroupsAPI</servlet-title>
+        <servlet-name>GetAlphabetAngelGroupsAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.angel.GetAlphabetAngelGroupsAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-title>GetAlphabetAngelGroupsAPI</servlet-title>
+        <servlet-name>GetAlphabetAngelGroupsAPI</servlet-name>
         <url-pattern>/GetAlphabetAngelGroupsAPI</url-pattern>
     </servlet-mapping>
       <servlet>
-        <servlet-title>AutocompleteGroupSearchAPI</servlet-title>
+        <servlet-name>AutocompleteGroupSearchAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.angel.AutocompleteGroupSearchAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-title>AutocompleteGroupSearchAPI</servlet-title>
+        <servlet-name>AutocompleteGroupSearchAPI</servlet-name>
         <url-pattern>/AutocompleteGroupSearchAPI</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-title>JoinGroupAPI</servlet-title>
+        <servlet-name>JoinGroupAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.angel.JoinGroupAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-title>JoinGroupAPI</servlet-title>
+        <servlet-name>JoinGroupAPI</servlet-name>
         <url-pattern>/JoinGroupAPI</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-title>ExitGroupAPI</servlet-title>
+        <servlet-name>ExitGroupAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.angel.ExitGroupAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-title>ExitGroupAPI</servlet-title>
+        <servlet-name>ExitGroupAPI</servlet-name>
         <url-pattern>/ExitGroupAPI</url-pattern>
     </servlet-mapping>
 
     <!--**SLACK**-->
     <servlet>
-        <servlet-title>GenerateApiDoccumentServlet</servlet-title>
+        <servlet-name>GenerateApiDoccumentServlet</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.servlet.slack.GenerateApiDoccumentServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-title>GenerateApiDoccumentServlet</servlet-title>
+        <servlet-name>GenerateApiDoccumentServlet</servlet-name>
         <url-pattern>/GenerateApiDoccumentServlet</url-pattern>
     </servlet-mapping>
 
     <!--**GCM**-->
     <servlet>
-        <servlet-title>GCMBroadcast</servlet-title>
+        <servlet-name>GCMBroadcast</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.servlet.broadcast.GCMBroadcast</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-title>GCMBroadcast</servlet-title>
+        <servlet-name>GCMBroadcast</servlet-name>
         <url-pattern>/GCMBroadcast</url-pattern>
     </servlet-mapping>
 
