@@ -108,23 +108,23 @@ public class Pairing {
                     if (null != driverPlannedTrip && !driverPlannedTrip.getCreatorId().equals(plannedTrip.getCreatorId())) {
 
                         // get time driver reach a location near passenger
-                        long timeDriveReachNearSrcLocation = plannedTrip.getGoTime() + nearSrcLocation.getEstimatedTime();
+                        //long timeDriveReachNearSrcLocation = plannedTrip.getGoTime() + nearSrcLocation.getEstimatedTime();
 
                         // check this time in acceptable time?
-                        if (DateTimeUtil.timeDistance(timeDriveReachNearSrcLocation, plannedTrip.getGoTime()) <= ACCEPTABLE_TIME) {
-                            //Get this plannedTrip
-                            if (!listDriverPlannedTripResult.contains(driverPlannedTrip)) {
-                                // check helmet
-                                if (plannedTrip.isHasHelmet() || driverPlannedTrip.isHasHelmet())
-                                    listDriverPlannedTripResult.add(driverPlannedTrip);
-                            }
-                        } else {
-                            //TODO: WARNING WHEN REMOVE HERE
-                            // if it expired -> remove from GeoCell to reduce algorithm cost
-                            if (timeDriveReachNearSrcLocation - DateTimeUtil.now() > REMOVEABLE_TIME) {
-                                //TODO REMOVE ALL LOCATION IN GEOCELL
-                            }
-                        }
+//                        if (DateTimeUtil.timeDistance(timeDriveReachNearSrcLocation, plannedTrip.getGoTime()) <= ACCEPTABLE_TIME) {
+//                            //Get this plannedTrip
+//                            if (!listDriverPlannedTripResult.contains(driverPlannedTrip)) {
+//                                // check helmet
+//                                if (plannedTrip.isHasHelmet() || driverPlannedTrip.isHasHelmet())
+//                                    listDriverPlannedTripResult.add(driverPlannedTrip);
+//                            }
+//                        } else {
+//                            //TODO: WARNING WHEN REMOVE HERE
+//                            // if it expired -> remove from GeoCell to reduce algorithm cost
+//                            if (timeDriveReachNearSrcLocation - DateTimeUtil.now() > REMOVEABLE_TIME) {
+//                                //TODO REMOVE ALL LOCATION IN GEOCELL
+//                            }
+//                        }
                     }
 
                 }
@@ -207,25 +207,25 @@ public class Pairing {
 
                                     // check direction , if srcIndex < desIndex in driver Planned Trip -> same direction
 
-                                    if (driverPlannedTripCellCodes.indexOf(srcPassengerCellCode) < driverPlannedTripCellCodes.indexOf(desPassengerCellCode)) {
-
-                                        int indexOfCellNearPassengerSrc = driverPlannedTripCellCodes.indexOf(srcPassengerCellCode);
-                                        LinkedLocation nearPassengerSrcLocation = linkedLocations.get(indexOfCellNearPassengerSrc);
-                                        long timeDriveReachNearSrcLocation = plannedTrip.getGoTime() + nearPassengerSrcLocation.getEstimatedTime();
-                                        // if same direction => check time
-                                        if (DateTimeUtil.timeDistance(timeDriveReachNearSrcLocation, passengerPlannedTrip.getGoTime()) <= ACCEPTABLE_TIME) {
-                                            if (!listPassengerPlannedTripResult.contains(passengerPlannedTrip)) {
-                                                if (plannedTrip.isHasHelmet() || passengerPlannedTrip.isHasHelmet())
-                                                    listPassengerPlannedTripResult.add(passengerPlannedTrip);
-                                            }
-                                        } else {
-                                            //TODO: WARNING WHEN REMOVE HERE
-                                            // if it expired -> remove from GeoCell to reduce algorithm cost
-                                            if (passengerPlannedTrip.getGoTime() - DateTimeUtil.now() > REMOVEABLE_TIME) {
-                                                //TODO REMOVE ALL LOCATION IN GEOCELL
-                                            }
-                                        }
-                                    }
+//                                    if (driverPlannedTripCellCodes.indexOf(srcPassengerCellCode) < driverPlannedTripCellCodes.indexOf(desPassengerCellCode)) {
+//
+//                                        int indexOfCellNearPassengerSrc = driverPlannedTripCellCodes.indexOf(srcPassengerCellCode);
+//                                        LinkedLocation nearPassengerSrcLocation = linkedLocations.get(indexOfCellNearPassengerSrc);
+//                                        long timeDriveReachNearSrcLocation = plannedTrip.getGoTime() + nearPassengerSrcLocation.getEstimatedTime();
+//                                        // if same direction => check time
+//                                        if (DateTimeUtil.timeDistance(timeDriveReachNearSrcLocation, passengerPlannedTrip.getGoTime()) <= ACCEPTABLE_TIME) {
+//                                            if (!listPassengerPlannedTripResult.contains(passengerPlannedTrip)) {
+//                                                if (plannedTrip.isHasHelmet() || passengerPlannedTrip.isHasHelmet())
+//                                                    listPassengerPlannedTripResult.add(passengerPlannedTrip);
+//                                            }
+//                                        } else {
+//                                            //TODO: WARNING WHEN REMOVE HERE
+//                                            // if it expired -> remove from GeoCell to reduce algorithm cost
+//                                            if (passengerPlannedTrip.getGoTime() - DateTimeUtil.now() > REMOVEABLE_TIME) {
+//                                                //TODO REMOVE ALL LOCATION IN GEOCELL
+//                                            }
+//                                        }
+//                                    }
                                 }
                             }
                         }

@@ -17,6 +17,7 @@ import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
 
 /**
  *
@@ -59,7 +60,7 @@ public class PlannedTripDA implements IDA {
             String query = ConfigInfo.PLANNEDTRIP_INSERT_QUERY;
             try (PreparedStatement stmt = cnn.prepareStatement(query)) {
                 stmt.setLong(1, value.getId());
-                stmt.setLong(2, value.getGoTime());
+                stmt.setLong(2,new ArrayList<Long>(value.getTimeTable().values()).get(0));
                 stmt.setLong(3, value.getArriveTime());
                 stmt.setDouble(4, value.getSumDistance());
                 stmt.setLong(5, value.getEstimatedTime());
@@ -78,6 +79,7 @@ public class PlannedTripDA implements IDA {
                 stmt.setBoolean(18, value.isHasHelmet());
                 stmt.setLong(19, value.getCreatedTime());
                 stmt.setBoolean(20, value.isBusy());
+                stmt.setString(21, value.getTitle());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {
@@ -102,7 +104,7 @@ public class PlannedTripDA implements IDA {
             String query = ConfigInfo.PLANNEDTRIP_UPDATE_QUERY;
             try (PreparedStatement stmt = cnn.prepareStatement(query)) {
                 stmt.setLong(1, value.getId());
-                stmt.setLong(2, value.getGoTime());
+                stmt.setLong(2, new ArrayList<Long>(value.getTimeTable().values()).get(0));
                 stmt.setLong(3, value.getArriveTime());
                 stmt.setDouble(4, value.getSumDistance());
                 stmt.setLong(5, value.getEstimatedTime());
@@ -121,7 +123,8 @@ public class PlannedTripDA implements IDA {
                 stmt.setBoolean(18, value.isHasHelmet());
                 stmt.setLong(19, value.getCreatedTime());
                 stmt.setBoolean(20, value.isBusy());
-                stmt.setLong(21, value.getId());
+                stmt.setString(21, value.getTitle());
+                stmt.setLong(22, value.getId());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {

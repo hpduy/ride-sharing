@@ -7,6 +7,7 @@ import com.bikiegang.ridesharing.pojo.Feed;
 import com.bikiegang.ridesharing.pojo.PlannedTrip;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by hpduy17 on 7/8/15.
@@ -35,7 +36,7 @@ public class PlannedTripShortDetailResponse extends TripInFeed {
         this.hasHelmet = that.isHasHelmet();
         this.createdTime = that.getCreatedTime();
         this.ownerDistance = that.getSumDistance();
-        this.goTime = that.getGoTime();
+        this.goTime = new ArrayList<Long>(that.getTimeTable().values()).get(0);
         this.duration = that.getEstimatedTime();
         try {
             this.requested = (database.getSenderRequestsBox().get(senderId).containsKey(that.getId()));

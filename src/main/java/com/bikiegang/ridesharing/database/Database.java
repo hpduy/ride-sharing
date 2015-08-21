@@ -318,8 +318,11 @@ public class Database {
         return userIdRFTripCalendar;
     }
 
-    /*GEOCELL GET-SET*/
+    public void setOrderedPopularLocation(List<Long> orderedPopularLocation) {
+        this.orderedPopularLocation = orderedPopularLocation;
+    }
 
+    /*GEOCELL GET-SET*/
     public GeoCell<Long> getGeoCellDriver() {
         return geoCellDriver;
     }

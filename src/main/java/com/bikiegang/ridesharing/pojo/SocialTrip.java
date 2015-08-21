@@ -112,4 +112,5 @@ public class SocialTrip implements PojoBase {
     public void setCreatedTime(long createdTime) {
         this.createdTime = createdTime;
     }
+
 }

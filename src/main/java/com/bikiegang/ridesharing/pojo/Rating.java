@@ -3,7 +3,8 @@ package com.bikiegang.ridesharing.pojo;
 /**
  * Created by hpduy17 on 8/17/15.
  */
-public class Rating {
+public class Rating implements PojoBase{
+
     private long id;
     private String ratedUserId;
     private String ratingUserId;
@@ -11,7 +12,21 @@ public class Rating {
     private long createdTime;
     private String comment;
     private long tripId;
-   // private String[] hashTag;
+
+    public Rating(long id, String ratedUserId, String ratingUserId, int numberOfStart, long createdTime, String comment, long tripId) {
+        this.id = id;
+        this.ratedUserId = ratedUserId;
+        this.ratingUserId = ratingUserId;
+        this.numberOfStart = numberOfStart;
+        this.createdTime = createdTime;
+        this.comment = comment;
+        this.tripId = tripId;
+    }
+
+    public Rating() {
+    }
+
+    // private String[] hashTag;
     public long getId() {
         return id;
     }
