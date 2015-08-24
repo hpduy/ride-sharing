@@ -44,7 +44,7 @@ public class FakePlannedTrip {
         createRequest.setIsParing(false);// no paring
         createRequest.setPrice(-1);// default price
         createRequest.setHasHelmet(hasHelmet);
-        String response = new PlannedTripController().createPlannedTrip(createRequest);
+        String response = new PlannedTripController().createSingleFuturePlannedTrip(createRequest);
         Parser parser = Parser.JSonToParser(response, CreateSingleFuturePlannedTripResponse.class);
         if (parser.isSuccess()) {
             if (parser.getResult() != null) {
@@ -80,7 +80,7 @@ public class FakePlannedTrip {
         createRequest.setIsParing(false);// no paring
         createRequest.setPrice(-1);// default price
         createRequest.setHasHelmet(hasHelmet);
-        String response = new PlannedTripController().createPlannedTrip(createRequest);
+        String response = new PlannedTripController().createSingleFuturePlannedTrip(createRequest);
         Parser parser = Parser.JSonToParser(response, CreateSingleFuturePlannedTripResponse.class);
         if (parser.isSuccess()) {
             if (parser.getResult() != null) {
@@ -108,7 +108,7 @@ public class FakePlannedTrip {
         createRequest.setIsParing(false);// no paring
         createRequest.setPrice(-1);// default price
         createRequest.setHasHelmet(hasHelmet);
-        String response = new PlannedTripController().createPlannedTrip(createRequest);
+        String response = new PlannedTripController().createSingleFuturePlannedTrip(createRequest);
         Parser parser = Parser.JSonToParser(response, CreateSingleFuturePlannedTripResponse.class);
         if (parser.isSuccess()) {
             if (parser.getResult() != null) {

@@ -21,7 +21,18 @@ public class AngelGroup implements PojoBase {
     public AngelGroup() {
 
     }
-
+    public AngelGroup(long id, LatLng location, List<String> tagName, long createdTime, String address) {
+        this.id = id;
+        this.location = location;
+        this.tagName = tagName;
+        this.createdTime = createdTime;
+        this.address = address;
+        for (String n : tagName) {
+            if (n.length() > this.canonicalName.length()) {
+                this.canonicalName = n;
+            }
+        }
+    }
     public AngelGroup(long id, LatLng location, List<String> tagName, long createdTime, String address, long groupId) {
         this.id = id;
         this.location = location;

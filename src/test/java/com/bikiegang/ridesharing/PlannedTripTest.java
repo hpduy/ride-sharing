@@ -394,7 +394,7 @@ public class PlannedTripTest {
         jsonObject.put("price", 123);
         jsonObject.put("googleRoutingResult", new JSONObject(json).toString());
         CreatePlannedTripRequest request = (CreatePlannedTripRequest) Parser.JSonToObject(jsonObject.toString(), CreatePlannedTripRequest.class);
-        new PlannedTripController().createPlannedTrip(request);
+        new PlannedTripController().createSingleFuturePlannedTrip(request);
         System.out.print(request);
     }
         @Test
