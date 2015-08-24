@@ -33,7 +33,7 @@ public class PopularLocationDao {
             //Step 2: put redis
             result = cache.hset(obj.getClass().getName(), String.valueOf(obj.getId()), JSONUtil.Serialize(obj));
             result &= cache.lpush(obj.getClass().getName() + ":ordered", String.valueOf(obj.getId()));
-
+            
             if (result) {
                 //Step 3: put job gearman
                 short actionType = Const.RideSharing.ActionType.INSERT;

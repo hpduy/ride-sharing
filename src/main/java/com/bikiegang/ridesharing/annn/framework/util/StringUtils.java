@@ -1,5 +1,6 @@
 package com.bikiegang.ridesharing.annn.framework.util;
 
+import com.eaio.stringsearch.BoyerMooreHorspoolRaita;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -31,6 +32,17 @@ public class StringUtils {
 
     public static String removeNonPrintableCharactor(String data) {
         return data.replaceAll("\\p{C}", "");
+    }
+
+    public static boolean Search(String text, String pattern) {
+        int result = 0;
+        BoyerMooreHorspoolRaita agl = new BoyerMooreHorspoolRaita();
+        result = agl.searchString(text.toLowerCase(), pattern.toLowerCase());
+
+        if (result != -1) {
+            return true;
+        }
+        return false;
     }
 
     public static String urlEncode(String url) {
