@@ -9,7 +9,7 @@ import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.controller.PlannedTripController;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.request.CreatePlannedTripRequest;
-import com.bikiegang.ridesharing.pojo.response.CreatePlannedTripResponse;
+import com.bikiegang.ridesharing.pojo.response.CreateSingleFuturePlannedTripResponse;
 import com.bikiegang.ridesharing.utilities.ApiDocumentGenerator;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import org.apache.log4j.Logger;
@@ -22,11 +22,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class CreatePlannedTripAPI extends HttpServlet {
+public class CreateSingleFuturePlannedTripAPI extends HttpServlet {
 
     private Logger logger = LogUtil.getLogger(this.getClass());
     public Class requestClass = CreatePlannedTripRequest.class;
-    public Class responseClass = CreatePlannedTripResponse.class;
+    public Class responseClass = CreateSingleFuturePlannedTripResponse.class;
     public boolean responseIsArray = false;
 
     /**
@@ -52,7 +52,7 @@ public class CreatePlannedTripAPI extends HttpServlet {
             logger.info(jsonData.toString());
             CreatePlannedTripRequest createPlannedTripRequest = (CreatePlannedTripRequest) Parser.JSonToObject(jsonData.toString(), CreatePlannedTripRequest.class);
             PlannedTripController controller = new PlannedTripController();
-            String result = controller.createPlannedTrip(createPlannedTripRequest);
+            String result = controller.createSingleFuturePlannedTrip(createPlannedTripRequest);
             logger.info(result);
             out.print(result);
 

@@ -11,7 +11,7 @@ import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.PlannedTrip;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.CreatePlannedTripRequest;
-import com.bikiegang.ridesharing.pojo.response.CreatePlannedTripResponse;
+import com.bikiegang.ridesharing.pojo.response.CreateSingleFuturePlannedTripResponse;
 import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import org.apache.commons.lang.math.RandomUtils;
 import org.json.JSONObject;
@@ -45,10 +45,10 @@ public class FakePlannedTrip {
         createRequest.setPrice(-1);// default price
         createRequest.setHasHelmet(hasHelmet);
         String response = new PlannedTripController().createPlannedTrip(createRequest);
-        Parser parser = Parser.JSonToParser(response, CreatePlannedTripResponse.class);
+        Parser parser = Parser.JSonToParser(response, CreateSingleFuturePlannedTripResponse.class);
         if (parser.isSuccess()) {
             if (parser.getResult() != null) {
-                CreatePlannedTripResponse createPlannedTripResponse = (CreatePlannedTripResponse) parser.getResult();
+                CreateSingleFuturePlannedTripResponse createPlannedTripResponse = (CreateSingleFuturePlannedTripResponse) parser.getResult();
                 return createPlannedTripResponse.getYourPlannedTrip().getPlannedTrip().getId();
             } else {
                 return -1;
@@ -81,10 +81,10 @@ public class FakePlannedTrip {
         createRequest.setPrice(-1);// default price
         createRequest.setHasHelmet(hasHelmet);
         String response = new PlannedTripController().createPlannedTrip(createRequest);
-        Parser parser = Parser.JSonToParser(response, CreatePlannedTripResponse.class);
+        Parser parser = Parser.JSonToParser(response, CreateSingleFuturePlannedTripResponse.class);
         if (parser.isSuccess()) {
             if (parser.getResult() != null) {
-                CreatePlannedTripResponse createPlannedTripResponse = (CreatePlannedTripResponse) parser.getResult();
+                CreateSingleFuturePlannedTripResponse createPlannedTripResponse = (CreateSingleFuturePlannedTripResponse) parser.getResult();
                 return createPlannedTripResponse.getYourPlannedTrip().getPlannedTrip().getId();
             }
 
@@ -109,10 +109,10 @@ public class FakePlannedTrip {
         createRequest.setPrice(-1);// default price
         createRequest.setHasHelmet(hasHelmet);
         String response = new PlannedTripController().createPlannedTrip(createRequest);
-        Parser parser = Parser.JSonToParser(response, CreatePlannedTripResponse.class);
+        Parser parser = Parser.JSonToParser(response, CreateSingleFuturePlannedTripResponse.class);
         if (parser.isSuccess()) {
             if (parser.getResult() != null) {
-                CreatePlannedTripResponse createPlannedTripResponse = (CreatePlannedTripResponse) parser.getResult();
+                CreateSingleFuturePlannedTripResponse createPlannedTripResponse = (CreateSingleFuturePlannedTripResponse) parser.getResult();
                 return createPlannedTripResponse.getYourPlannedTrip().getPlannedTrip().getId();
             }
 

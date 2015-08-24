@@ -8,6 +8,7 @@ import com.bikiegang.ridesharing.pojo.request.GetAngelActiveCodesRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.AngelForgetPasswordRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.AngelLoginRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.AngelRegisterRequest;
+import com.bikiegang.ridesharing.pojo.request.angel.JoinGroupRequest;
 import com.bikiegang.ridesharing.pojo.response.GetAngelActiveCodesResponse;
 import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
@@ -79,6 +80,10 @@ public class AngelController {
         user.setPassword(registerRequest.getPassword());
         user.setStatus(User.ANGEL);
         if (dao.insert(user)) {
+            JoinGroupRequest request = new JoinGroupRequest();
+            request.setGroupId(registerRequest.getGroupId());
+            request.setUserId(user.getId());
+            new AngelGroupMemberController().joinGroup(request);
             return Parser.ObjectToJSon(true,MessageMappingUtil.Successfully, user.getId());
         }
         return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);

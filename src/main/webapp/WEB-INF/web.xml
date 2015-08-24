@@ -23,7 +23,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>CreatePlannedTripAPI</servlet-name>
-        <servlet-class>com.bikiegang.ridesharing.api.CreatePlannedTripAPI</servlet-class>
+        <servlet-class>com.bikiegang.ridesharing.api.CreateSingleFuturePlannedTripAPI</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>CreatePlannedTripAPI</servlet-name>

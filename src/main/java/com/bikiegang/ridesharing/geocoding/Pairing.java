@@ -22,39 +22,39 @@ public class Pairing {
     * */
 
     // with the plannedTrip is exits
-    public HashMap<Integer, List<PlannedTrip>> pair(PlannedTrip plannedTrip) throws Exception {
+    public HashMap<Integer, List<PlannedTrip>> pair(PlannedTrip plannedTrip, long epochDay) throws Exception {
         HashMap<Integer, List<PlannedTrip>> paringResult = new HashMap<>();
         switch (plannedTrip.getRole()) {
             case User.PASSENGER:
-                paringResult.put(User.DRIVER, getDriversCompatible(plannedTrip));
+                paringResult.put(User.DRIVER, getDriversCompatible(plannedTrip, epochDay));
                 break;
             case User.DRIVER:
-                paringResult.put(User.PASSENGER, getPassengersCompatible(plannedTrip));
+                paringResult.put(User.PASSENGER, getPassengersCompatible(plannedTrip, epochDay));
                 break;
             default:
-                paringResult.put(User.DRIVER, getDriversCompatible(plannedTrip));
-                paringResult.put(User.PASSENGER, getPassengersCompatible(plannedTrip));
+                paringResult.put(User.DRIVER, getDriversCompatible(plannedTrip, epochDay));
+                paringResult.put(User.PASSENGER, getPassengersCompatible(plannedTrip, epochDay));
                 break;
         }
         return paringResult;
     }
 
     // with the fake plannedTrip
-    public HashMap<Integer, List<PlannedTrip>> pair(PlannedTrip plannedTrip, List<LinkedLocation> linkedLocations) throws Exception {
+    public HashMap<Integer, List<PlannedTrip>> pair(PlannedTrip plannedTrip, long epochDay, List<LinkedLocation> linkedLocations) throws Exception {
         HashMap<Integer, List<PlannedTrip>> paringResult = new HashMap<>();
         if (linkedLocations != null && linkedLocations.size() >= 2) {
             LinkedLocation src = linkedLocations.get(0);
             LinkedLocation des = linkedLocations.get(linkedLocations.size() - 1);
             switch (plannedTrip.getRole()) {
                 case User.PASSENGER:
-                    paringResult.put(User.DRIVER, getDriversCompatible(plannedTrip, src, des));
+                    paringResult.put(User.DRIVER, getDriversCompatible(plannedTrip, epochDay, src, des));
                     break;
                 case User.DRIVER:
-                    paringResult.put(User.PASSENGER, getPassengersCompatible(plannedTrip, linkedLocations));
+                    paringResult.put(User.PASSENGER, getPassengersCompatible(plannedTrip, epochDay, linkedLocations));
                     break;
                 default:
-                    paringResult.put(User.DRIVER, getDriversCompatible(plannedTrip, src, des));
-                    paringResult.put(User.PASSENGER, getPassengersCompatible(plannedTrip, linkedLocations));
+                    paringResult.put(User.DRIVER, getDriversCompatible(plannedTrip, epochDay, src, des));
+                    paringResult.put(User.PASSENGER, getPassengersCompatible(plannedTrip, epochDay, linkedLocations));
                     break;
             }
         }
@@ -64,16 +64,16 @@ public class Pairing {
     /*
     * DRIVER ------------------------------------------------------------
     * */
-    private List<PlannedTrip> getDriversCompatible(PlannedTrip plannedTrip) throws Exception {
+    private List<PlannedTrip> getDriversCompatible(PlannedTrip plannedTrip, long epochDay) throws Exception {
         List<Long> locationIds = database.getPlannedTripIdRFLinkedLocations().get(plannedTrip.getId());
         if (null == locationIds || locationIds.size() < 2)
             throw new Exception("List location is null or less than 2 location");
         LinkedLocation src = database.getLinkedLocationHashMap().get(locationIds.get(0));
         LinkedLocation des = database.getLinkedLocationHashMap().get(locationIds.get(locationIds.size() - 1));
-        return getDriversCompatible(plannedTrip, src, des);
+        return getDriversCompatible(plannedTrip, epochDay, src, des);
     }
 
-    private List<PlannedTrip> getDriversCompatible(PlannedTrip plannedTrip, LinkedLocation src, LinkedLocation des) throws Exception {
+    private List<PlannedTrip> getDriversCompatible(PlannedTrip plannedTrip, long epochDay, LinkedLocation src, LinkedLocation des) throws Exception {
         List<PlannedTrip> listDriverPlannedTripResult = new ArrayList<>();
         // you are passenger -> get start and end location of passenger
         GeoCell<Long> geoCell = database.getGeoCellDriver();
@@ -89,7 +89,7 @@ public class Pairing {
 
         //TODO START TO PARE
 
-        for (long  srcId : srcNeighborList) {
+        for (long srcId : srcNeighborList) {
 
             // parse to long
             LinkedLocation nearSrcLocation = database.getLinkedLocationHashMap().get(srcId);
@@ -105,26 +105,27 @@ public class Pairing {
                     PlannedTrip driverPlannedTrip = database.getPlannedTripHashMap().get(nearSrcLocation.getRefId());
 
                     // plannedTrip is not null and not own by passenger
-                    if (null != driverPlannedTrip && !driverPlannedTrip.getCreatorId().equals(plannedTrip.getCreatorId())) {
-
+                    if (null != driverPlannedTrip && !driverPlannedTrip.getCreatorId().equals(plannedTrip.getCreatorId()) && driverPlannedTrip.getTimeTable().containsKey(epochDay)) {
+                        long plannedTripGoTime = plannedTrip.getTimeTable().get(epochDay);
+                        long driverTripGoTime = driverPlannedTrip.getTimeTable().get(epochDay);
                         // get time driver reach a location near passenger
-                        //long timeDriveReachNearSrcLocation = plannedTrip.getGoTime() + nearSrcLocation.getEstimatedTime();
+                        long timeDriveReachNearSrcLocation = driverTripGoTime + nearSrcLocation.getEstimatedTime();
 
                         // check this time in acceptable time?
-//                        if (DateTimeUtil.timeDistance(timeDriveReachNearSrcLocation, plannedTrip.getGoTime()) <= ACCEPTABLE_TIME) {
-//                            //Get this plannedTrip
-//                            if (!listDriverPlannedTripResult.contains(driverPlannedTrip)) {
-//                                // check helmet
-//                                if (plannedTrip.isHasHelmet() || driverPlannedTrip.isHasHelmet())
-//                                    listDriverPlannedTripResult.add(driverPlannedTrip);
-//                            }
-//                        } else {
-//                            //TODO: WARNING WHEN REMOVE HERE
-//                            // if it expired -> remove from GeoCell to reduce algorithm cost
-//                            if (timeDriveReachNearSrcLocation - DateTimeUtil.now() > REMOVEABLE_TIME) {
-//                                //TODO REMOVE ALL LOCATION IN GEOCELL
-//                            }
-//                        }
+                        if (DateTimeUtil.timeDistance(timeDriveReachNearSrcLocation, plannedTripGoTime) <= ACCEPTABLE_TIME) {
+                            //Get this plannedTrip
+                            if (!listDriverPlannedTripResult.contains(driverPlannedTrip)) {
+                                // check helmet
+                                if (plannedTrip.isHasHelmet() || driverPlannedTrip.isHasHelmet())
+                                    listDriverPlannedTripResult.add(driverPlannedTrip);
+                            }
+                        } else {
+                            //TODO: WARNING WHEN REMOVE HERE
+                            // if it expired -> remove from GeoCell to reduce algorithm cost
+                            if (timeDriveReachNearSrcLocation - DateTimeUtil.now() > REMOVEABLE_TIME) {
+                                //TODO REMOVE ALL LOCATION IN GEOCELL
+                            }
+                        }
                     }
 
                 }
@@ -147,7 +148,7 @@ public class Pairing {
      * 4/If yes, check index of cell code near src and cell code near des in list cell code of driver to check direction
      */
 
-    private List<PlannedTrip> getPassengersCompatible(PlannedTrip plannedTrip, List<LinkedLocation> linkedLocations) throws Exception {
+    private List<PlannedTrip> getPassengersCompatible(PlannedTrip plannedTrip, long epochDay, List<LinkedLocation> linkedLocations) throws Exception {
         List<PlannedTrip> listPassengerPlannedTripResult = new ArrayList<>();
         GeoCell<Long> geoCellPassenger = database.getGeoCellPassenger();
         // get list cell code of driver plannedTrip
@@ -207,25 +208,28 @@ public class Pairing {
 
                                     // check direction , if srcIndex < desIndex in driver Planned Trip -> same direction
 
-//                                    if (driverPlannedTripCellCodes.indexOf(srcPassengerCellCode) < driverPlannedTripCellCodes.indexOf(desPassengerCellCode)) {
-//
-//                                        int indexOfCellNearPassengerSrc = driverPlannedTripCellCodes.indexOf(srcPassengerCellCode);
-//                                        LinkedLocation nearPassengerSrcLocation = linkedLocations.get(indexOfCellNearPassengerSrc);
-//                                        long timeDriveReachNearSrcLocation = plannedTrip.getGoTime() + nearPassengerSrcLocation.getEstimatedTime();
-//                                        // if same direction => check time
-//                                        if (DateTimeUtil.timeDistance(timeDriveReachNearSrcLocation, passengerPlannedTrip.getGoTime()) <= ACCEPTABLE_TIME) {
-//                                            if (!listPassengerPlannedTripResult.contains(passengerPlannedTrip)) {
-//                                                if (plannedTrip.isHasHelmet() || passengerPlannedTrip.isHasHelmet())
-//                                                    listPassengerPlannedTripResult.add(passengerPlannedTrip);
-//                                            }
-//                                        } else {
-//                                            //TODO: WARNING WHEN REMOVE HERE
-//                                            // if it expired -> remove from GeoCell to reduce algorithm cost
-//                                            if (passengerPlannedTrip.getGoTime() - DateTimeUtil.now() > REMOVEABLE_TIME) {
-//                                                //TODO REMOVE ALL LOCATION IN GEOCELL
-//                                            }
-//                                        }
-//                                    }
+                                    if (driverPlannedTripCellCodes.indexOf(srcPassengerCellCode) < driverPlannedTripCellCodes.indexOf(desPassengerCellCode)) {
+                                        if (passengerPlannedTrip.getTimeTable().containsKey(epochDay)) {
+                                            long passengerGoTime = passengerPlannedTrip.getTimeTable().get(epochDay);
+                                            long plannedTripGoTime = plannedTrip.getTimeTable().get(epochDay);
+                                            int indexOfCellNearPassengerSrc = driverPlannedTripCellCodes.indexOf(srcPassengerCellCode);
+                                            LinkedLocation nearPassengerSrcLocation = linkedLocations.get(indexOfCellNearPassengerSrc);
+                                            long timeDriveReachNearSrcLocation = plannedTripGoTime + nearPassengerSrcLocation.getEstimatedTime();
+                                            // if same direction => check time
+                                            if (DateTimeUtil.timeDistance(timeDriveReachNearSrcLocation, passengerGoTime) <= ACCEPTABLE_TIME) {
+                                                if (!listPassengerPlannedTripResult.contains(passengerPlannedTrip)) {
+                                                    if (plannedTrip.isHasHelmet() || passengerPlannedTrip.isHasHelmet())
+                                                        listPassengerPlannedTripResult.add(passengerPlannedTrip);
+                                                }
+                                            } else {
+                                                //TODO: WARNING WHEN REMOVE HERE
+                                                // if it expired -> remove from GeoCell to reduce algorithm cost
+                                                if (passengerGoTime - DateTimeUtil.now() > REMOVEABLE_TIME) {
+                                                    //TODO REMOVE ALL LOCATION IN GEOCELL
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -241,7 +245,7 @@ public class Pairing {
         return listPassengerPlannedTripResult;
     }
 
-    private List<PlannedTrip> getPassengersCompatible(PlannedTrip plannedTrip) throws Exception {
+    private List<PlannedTrip> getPassengersCompatible(PlannedTrip plannedTrip, long epochDay) throws Exception {
         List<Long> driverPlannedTripLinkedLocationIds = database.getPlannedTripIdRFLinkedLocations().get(plannedTrip.getId());
         List<LinkedLocation> linkedLocations = new ArrayList<>();
         for (long llId : driverPlannedTripLinkedLocationIds) {
@@ -250,6 +254,6 @@ public class Pairing {
                 linkedLocations.add(location);
             }
         }
-        return getPassengersCompatible(plannedTrip, linkedLocations);
+        return getPassengersCompatible(plannedTrip, epochDay, linkedLocations);
     }
 }

@@ -9,7 +9,7 @@ import com.bikiegang.ridesharing.pojo.PlannedTrip;
 import com.bikiegang.ridesharing.pojo.RequestMakeTrip;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.*;
-import com.bikiegang.ridesharing.pojo.response.CreatePlannedTripResponse;
+import com.bikiegang.ridesharing.pojo.response.CreateSingleFuturePlannedTripResponse;
 import com.bikiegang.ridesharing.pojo.response.GetListRequestMakeTripDetailResponse;
 import com.bikiegang.ridesharing.pojo.response.Notification.ObjectNoti;
 import com.bikiegang.ridesharing.pojo.response.Notification.ReplyMakeTripNoti;
@@ -76,10 +76,10 @@ public class RequestMakeTripController {
             createRequest.setGoogleRoutingResult(passengerPlannedTrip.getRawRoutingResult().toString());
             createRequest.setIsParing(false);// no paring
             createRequest.setPrice(-1);// default price
-            String response = new PlannedTripController().createPlannedTrip(createRequest);
-            Parser parser = Parser.JSonToParser(response, CreatePlannedTripResponse.class);
+            String response = new PlannedTripController().createSingleFuturePlannedTrip(createRequest);
+            Parser parser = Parser.JSonToParser(response, CreateSingleFuturePlannedTripResponse.class);
             if (parser.isSuccess()) {
-                CreatePlannedTripResponse createPlannedTripResponse = (CreatePlannedTripResponse) parser.getResult();
+                CreateSingleFuturePlannedTripResponse createPlannedTripResponse = (CreateSingleFuturePlannedTripResponse) parser.getResult();
                 driverPlannedTripId = createPlannedTripResponse.getYourPlannedTrip().getPlannedTrip().getId();
             } else {
                 return Parser.ObjectToJSon(false, parser.getMessageCode(), parser.getMessage());
@@ -96,10 +96,10 @@ public class RequestMakeTripController {
             createRequest.setGoogleRoutingResult(request.getGoogleRoutingResult());
             createRequest.setIsParing(false);// no paring
             createRequest.setPrice(-1);// default price
-            String response = new PlannedTripController().createPlannedTrip(createRequest);
-            Parser parser = Parser.JSonToParser(response, CreatePlannedTripResponse.class);
+            String response = new PlannedTripController().createSingleFuturePlannedTrip(createRequest);
+            Parser parser = Parser.JSonToParser(response, CreateSingleFuturePlannedTripResponse.class);
             if (parser.isSuccess()) {
-                CreatePlannedTripResponse createPlannedTripResponse = (CreatePlannedTripResponse) parser.getResult();
+                CreateSingleFuturePlannedTripResponse createPlannedTripResponse = (CreateSingleFuturePlannedTripResponse) parser.getResult();
                 passengerPlannedTripId = createPlannedTripResponse.getYourPlannedTrip().getPlannedTrip().getId();
             } else {
                 return Parser.ObjectToJSon(false, parser.getMessageCode(), parser.getMessage());

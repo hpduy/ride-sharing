@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class AngelRegisterRequest {
     private String email;
     private String password;
+    private long groupId;
     private String activeCode;
 
     public String getEmail() {
@@ -33,5 +34,13 @@ public class AngelRegisterRequest {
 
     public void setActiveCode(String activeCode) {
         this.activeCode = activeCode;
+    }
+
+    public long getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(long groupId) {
+        this.groupId = groupId;
     }
 }

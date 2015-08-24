@@ -5,14 +5,14 @@ import com.bikiegang.ridesharing.pojo.User;
 /**
  * Created by hpduy17 on 7/8/15.
  */
-public class UserDetailWithPlannedTripDetailResponse {
+public class UserAndPlannedTripDetailResponse {
     private UserDetailResponse user;
     private PlannedTripDetailResponse plannedTrip;
 
-    public UserDetailWithPlannedTripDetailResponse() {
+    public UserAndPlannedTripDetailResponse() {
     }
 
-    public UserDetailWithPlannedTripDetailResponse(User user, PlannedTripDetailResponse plannedTrip) {
+    public UserAndPlannedTripDetailResponse(User user, PlannedTripDetailResponse plannedTrip) {
         this.user = new UserDetailResponse(user);
         this.plannedTrip = plannedTrip;
     }

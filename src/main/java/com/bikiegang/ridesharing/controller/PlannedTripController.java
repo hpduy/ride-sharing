@@ -11,10 +11,7 @@ import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.LinkedLocation;
 import com.bikiegang.ridesharing.pojo.PlannedTrip;
 import com.bikiegang.ridesharing.pojo.User;
-import com.bikiegang.ridesharing.pojo.request.AutoSearchParingRequest;
-import com.bikiegang.ridesharing.pojo.request.CreatePlannedTripRequest;
-import com.bikiegang.ridesharing.pojo.request.GetPlannedTripDetailRequest;
-import com.bikiegang.ridesharing.pojo.request.GetUsersAroundFromMeRequest;
+import com.bikiegang.ridesharing.pojo.request.*;
 import com.bikiegang.ridesharing.pojo.response.*;
 import com.bikiegang.ridesharing.pojo.static_object.TripPattern;
 import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
@@ -51,7 +48,6 @@ public class PlannedTripController {
         return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, plannedTripDetailResponse);
     }
 
-
     public String autoSearchParing(AutoSearchParingRequest request) throws Exception {
 
         AutoSearchParingResponse response = new AutoSearchParingResponse();
@@ -67,14 +63,14 @@ public class PlannedTripController {
         fakePlannedTrip.setRole(0);
         fakePlannedTrip.setCreatorId(request.getCreatorId());
         fakePlannedTrip.setCreatedTime(DateTimeUtil.now());
+        long epochDay;
         if (request.getGoTime() > DateTimeUtil.now()) {
             fakePlannedTrip.setType(PlannedTrip.SINGLE_FUTURE);
-            long epochDay = request.getGoTime() / DateTimeUtil.SECONDS_PER_DAY;
+            epochDay = request.getGoTime() / DateTimeUtil.SECONDS_PER_DAY;
             fakePlannedTrip.getTimeTable().put(epochDay, request.getGoTime());
         } else {
             fakePlannedTrip.setType(PlannedTrip.INSTANT);
-
-            long epochDay = DateTimeUtil.now() / DateTimeUtil.SECONDS_PER_DAY;
+            epochDay = DateTimeUtil.now() / DateTimeUtil.SECONDS_PER_DAY;
             fakePlannedTrip.getTimeTable().put(epochDay, DateTimeUtil.now());
         }
         fakePlannedTrip.setHasHelmet(request.isHasHelmet());
@@ -86,29 +82,29 @@ public class PlannedTripController {
         }
         //TODO end fake
         if (fakeLocation != null) {
-            HashMap<Integer, List<PlannedTrip>> plannedTrips = new Pairing().pair(fakePlannedTrip, fakeLocation);
+            HashMap<Integer, List<PlannedTrip>> plannedTrips = new Pairing().pair(fakePlannedTrip, epochDay, fakeLocation);
             List<PlannedTrip> plannedTripList = new ArrayList<>();
             for (int key : plannedTrips.keySet()) {
                 plannedTripList.addAll(plannedTrips.get(key));
             }
             sortPlannedTripByDistance(fakePlannedTrip.getStartLocation(), plannedTripList);
-            List<UserDetailWithPlannedTripDetailResponse> details = new ArrayList<>();
+            List<UserAndPlannedTripDetailResponse> details = new ArrayList<>();
             for (PlannedTrip r : plannedTripList) {
                 User creator = database.getUserHashMap().get(r.getCreatorId());
                 if (null != creator) {
                     PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(r, request.getCreatorId(), r.getRawRoutingResult());
-                    UserDetailWithPlannedTripDetailResponse userPlannedTripDetail = new UserDetailWithPlannedTripDetailResponse(creator, plannedTripDetailResponse);
+                    UserAndPlannedTripDetailResponse userPlannedTripDetail = new UserAndPlannedTripDetailResponse(creator, plannedTripDetailResponse);
                     details.add(userPlannedTripDetail);
                 }
             }
-            response.setUsers(details.toArray(new UserDetailWithPlannedTripDetailResponse[details.size()]));
+            response.setUsers(details.toArray(new UserAndPlannedTripDetailResponse[details.size()]));
         }
         return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, response);
     }
 
-    public String createPlannedTrip(CreatePlannedTripRequest request) throws Exception {
-        CreatePlannedTripResponse response = new CreatePlannedTripResponse();
-        UserDetailWithPlannedTripDetailResponse[] plannedTrips = null;
+    public String createInstantFuturePlannedTrip(CreatePlannedTripRequest request) throws Exception {
+        CreateSingleFuturePlannedTripResponse response = new CreateSingleFuturePlannedTripResponse();
+        UserAndPlannedTripDetailResponse[] plannedTrips = null;
         if (null == request.getCreatorId() || request.getCreatorId().equals("")) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'creatorId'");
         }
@@ -118,15 +114,10 @@ public class PlannedTripController {
         PlannedTrip plannedTrip = new PlannedTrip();
         plannedTrip.setId(IdGenerator.getPlannedTripId());
         plannedTrip.setRole(request.getRole());
-        if (request.getGoTime() > DateTimeUtil.now()) {
-            plannedTrip.setType(PlannedTrip.SINGLE_FUTURE);
-            long epochDay = request.getGoTime() / DateTimeUtil.SECONDS_PER_DAY;
-            plannedTrip.getTimeTable().put(epochDay, request.getGoTime());
-        } else {
-            plannedTrip.setType(PlannedTrip.INSTANT);
-            long epochDay = DateTimeUtil.now() / DateTimeUtil.SECONDS_PER_DAY;
-            plannedTrip.getTimeTable().put(epochDay, DateTimeUtil.now());
-        }
+        long epochDay;
+        plannedTrip.setType(PlannedTrip.INSTANT);
+        epochDay = DateTimeUtil.now() / DateTimeUtil.SECONDS_PER_DAY;
+        plannedTrip.getTimeTable().put(epochDay, DateTimeUtil.now());
         plannedTrip.setCreatorId(request.getCreatorId());
         plannedTrip.setRawRoutingResult(new JSONObject(request.getGoogleRoutingResult()));
         plannedTrip.setHasHelmet(request.isHasHelmet());
@@ -155,9 +146,81 @@ public class PlannedTripController {
                     controller.insertLinkLocation(location, plannedTrip.getRole());
                 }
             }
-            UserDetailWithPlannedTripDetailResponse yourPlannedTripDetail = getUserAndPlannedTripDetailFromObject(plannedTrip);
+            UserAndPlannedTripDetailResponse yourPlannedTripDetail = getUserAndPlannedTripDetailFromObject(plannedTrip);
             if (request.isParing()) {
-                HashMap<Integer, List<PlannedTrip>> paringResults = new Pairing().pair(plannedTrip);
+                HashMap<Integer, List<PlannedTrip>> paringResults = new Pairing().pair(plannedTrip, epochDay);
+                List<PlannedTrip> result;
+                if (plannedTrip.getRole() == User.PASSENGER) {
+                    result = paringResults.get(User.DRIVER);
+                } else {
+                    result = paringResults.get(User.PASSENGER);
+                }
+                //TODO: Send requestMakeTrip to your partner
+                for (PlannedTrip p : result) {
+                    RequestMakeTripRequest rqmt = new RequestMakeTripRequest();
+                    rqmt.setSenderId(request.getCreatorId());
+                    rqmt.setReceiverId(p.getCreatorId());
+                    rqmt.setSenderPlannedTripId(plannedTrip.getId());
+                    rqmt.setReceiverPlannedTripId(p.getId());
+                    if (plannedTrip.getRole() == User.PASSENGER)
+                        rqmt.setPrice(p.getOwnerPrice() * plannedTrip.getSumDistance());
+                    try {
+                        new RequestMakeTripController().sendRequestMakeTrip(rqmt);
+                    }catch (Exception ignored){}
+                }
+            }
+            return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully,yourPlannedTripDetail);
+        }
+        return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
+    }
+
+    public String createSingleFuturePlannedTrip(CreatePlannedTripRequest request) throws Exception {
+        CreateSingleFuturePlannedTripResponse response = new CreateSingleFuturePlannedTripResponse();
+        UserAndPlannedTripDetailResponse[] plannedTrips = null;
+        if (null == request.getCreatorId() || request.getCreatorId().equals("")) {
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'creatorId'");
+        }
+        if (null == request.getGoogleRoutingResult() || request.getGoogleRoutingResult().equals("")) {
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'googleRoutingResult'");
+        }
+        PlannedTrip plannedTrip = new PlannedTrip();
+        plannedTrip.setId(IdGenerator.getPlannedTripId());
+        plannedTrip.setRole(request.getRole());
+        long epochDay;
+        plannedTrip.setType(PlannedTrip.SINGLE_FUTURE);
+        epochDay = request.getGoTime() / DateTimeUtil.SECONDS_PER_DAY;
+        plannedTrip.getTimeTable().put(epochDay, request.getGoTime());
+        plannedTrip.setCreatorId(request.getCreatorId());
+        plannedTrip.setRawRoutingResult(new JSONObject(request.getGoogleRoutingResult()));
+        plannedTrip.setHasHelmet(request.isHasHelmet());
+        plannedTrip.setCreatedTime(DateTimeUtil.now());
+        //fetch data
+        List<LinkedLocation> locations = new FetchingDataFromGoogleRouting().fetch(plannedTrip);
+        //TODO fake trip
+        if (Database.databaseStatus == Database.TESTING && !isCreatingFake) {
+            isCreatingFake = true;
+            new FakePlannedTrip().fakePlannedTrip(plannedTrip);
+        }
+        //TODO end fake
+
+        // check price
+        if (request.getPrice() < 0) {
+            plannedTrip.setOwnerPrice(DEFAULT_PRICE);
+        } else {
+            plannedTrip.setOwnerPrice(request.getPrice() / plannedTrip.getSumDistance() != Double.POSITIVE_INFINITY
+                    ? request.getPrice() / plannedTrip.getSumDistance() : PlannedTrip.DEFAULT_PRICE_1M);
+        }
+        if (dao.insert(plannedTrip) || Database.databaseStatus == Database.TESTING) {
+            if (null != locations) {
+                LinkedLocationController controller = new LinkedLocationController();
+                for (LinkedLocation location : locations) {
+                    location.setId(IdGenerator.getLinkedLocationId());
+                    controller.insertLinkLocation(location, plannedTrip.getRole());
+                }
+            }
+            UserAndPlannedTripDetailResponse yourPlannedTripDetail = getUserAndPlannedTripDetailFromObject(plannedTrip);
+            if (request.isParing()) {
+                HashMap<Integer, List<PlannedTrip>> paringResults = new Pairing().pair(plannedTrip, epochDay);
                 List<PlannedTrip> result;
                 if (plannedTrip.getRole() == User.PASSENGER) {
                     result = paringResults.get(User.DRIVER);
@@ -168,7 +231,7 @@ public class PlannedTripController {
             }
             response.setYourPlannedTrip(yourPlannedTripDetail);
             if (plannedTrips == null) {
-                plannedTrips = new UserDetailWithPlannedTripDetailResponse[0];
+                plannedTrips = new UserAndPlannedTripDetailResponse[0];
             }
             response.setPairedPlannedTripsResult(plannedTrips);
             return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, response);
@@ -177,8 +240,8 @@ public class PlannedTripController {
     }
 
     public String createRecurrentPlannedTrip(CreatePlannedTripRequest request) throws Exception {
-        CreatePlannedTripResponse response = new CreatePlannedTripResponse();
-        UserDetailWithPlannedTripDetailResponse[] plannedTrips = null;
+        CreateRecurrentPlannedTripResponse response = new CreateRecurrentPlannedTripResponse();
+        List<UserAndPlannedTripDetailByDayResponse> plannedTripsByDay = new ArrayList<>();
         if (null == request.getCreatorId() || request.getCreatorId().equals("")) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'creatorId'");
         }
@@ -186,6 +249,7 @@ public class PlannedTripController {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'googleRoutingResult'");
         }
         long groupId = IdGenerator.getGroupPlannedTripId();
+
         for (TripPattern pattern : request.getPatterns()) {
             PlannedTrip plannedTrip = new PlannedTrip();
             plannedTrip.setId(IdGenerator.getPlannedTripId());
@@ -219,22 +283,31 @@ public class PlannedTripController {
                         controller.insertLinkLocation(location, plannedTrip.getRole());
                     }
                 }
-                UserDetailWithPlannedTripDetailResponse yourPlannedTripDetail = getUserAndPlannedTripDetailFromObject(plannedTrip);
+                UserAndPlannedTripDetailResponse yourPlannedTripDetail = getUserAndPlannedTripDetailFromObject(plannedTrip);
                 if (request.isParing()) {
-                    HashMap<Integer, List<PlannedTrip>> paringResults = new Pairing().pair(plannedTrip);
-                    List<PlannedTrip> result;
-                    if (plannedTrip.getRole() == User.PASSENGER) {
-                        result = paringResults.get(User.DRIVER);
-                    } else {
-                        result = paringResults.get(User.PASSENGER);
+                    long endP = new DateTimeUtil().now() / DateTimeUtil.SECONDS_PER_DAY + 7;
+                    for (long epd : plannedTrip.getTimeTable().keySet()) {
+                        UserAndPlannedTripDetailByDayResponse plannedTripDetailByDayResponse = new UserAndPlannedTripDetailByDayResponse();
+                        if (epd > endP)
+                            break;
+                        UserAndPlannedTripDetailResponse[] plannedTrips = null;
+                        HashMap<Integer, List<PlannedTrip>> paringResults = new Pairing().pair(plannedTrip, epd);
+                        List<PlannedTrip> result;
+                        if (plannedTrip.getRole() == User.PASSENGER) {
+                            result = paringResults.get(User.DRIVER);
+                        } else {
+                            result = paringResults.get(User.PASSENGER);
+                        }
+                        plannedTrips = getListUserAndPlannedTripDetailFromObject(result, request.getCreatorId());
+                        if (plannedTrips != null) {
+                            plannedTripDetailByDayResponse.setEpochDay(epd);
+                            plannedTripDetailByDayResponse.setPairedPlannedTripsResult(plannedTrips);
+                            plannedTripsByDay.add(plannedTripDetailByDayResponse);
+                        }
                     }
-                    plannedTrips = getListUserAndPlannedTripDetailFromObject(result, request.getCreatorId());
                 }
                 response.setYourPlannedTrip(yourPlannedTripDetail);
-                if (plannedTrips == null) {
-                    plannedTrips = new UserDetailWithPlannedTripDetailResponse[0];
-                }
-                response.setPairedPlannedTripsResult(plannedTrips);
+                response.setPairedPlannedTripsByDayResult(plannedTripsByDay.toArray(new UserAndPlannedTripDetailByDayResponse[plannedTripsByDay.size()]));
             } else {
                 return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
             }
@@ -255,16 +328,16 @@ public class PlannedTripController {
         List<Long> plannedTripsIds = database.getGeoCellStartLocation().getIdsInFrame(center, request.getRadius());
         List<PlannedTrip> plannedTrips = getPlannedTripsFromPlannedTripIds(plannedTripsIds);
         sortPlannedTripByDistance(center, plannedTrips);
-        List<UserDetailWithPlannedTripDetailResponse> details = new ArrayList<>();
+        List<UserAndPlannedTripDetailResponse> details = new ArrayList<>();
         for (PlannedTrip r : plannedTrips) {
             User creator = database.getUserHashMap().get(r.getCreatorId());
             if (null != creator) {
                 PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(r, request.getUserId(), r.getRawRoutingResult());
-                UserDetailWithPlannedTripDetailResponse userPlannedTripDetail = new UserDetailWithPlannedTripDetailResponse(creator, plannedTripDetailResponse);
+                UserAndPlannedTripDetailResponse userPlannedTripDetail = new UserAndPlannedTripDetailResponse(creator, plannedTripDetailResponse);
                 details.add(userPlannedTripDetail);
             }
         }
-        response.setUsers(details.toArray(new UserDetailWithPlannedTripDetailResponse[details.size()]));
+        response.setUsers(details.toArray(new UserAndPlannedTripDetailResponse[details.size()]));
         return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, response);
     }
 
@@ -286,24 +359,24 @@ public class PlannedTripController {
     }
 
 
-    public UserDetailWithPlannedTripDetailResponse[] getListUserAndPlannedTripDetailFromObject(List<PlannedTrip> plannedTrips, String senderId) throws IOException {
-        UserDetailWithPlannedTripDetailResponse[] userDetailWithPlannedTripDetailResponses = new UserDetailWithPlannedTripDetailResponse[plannedTrips.size()];
+    public UserAndPlannedTripDetailResponse[] getListUserAndPlannedTripDetailFromObject(List<PlannedTrip> plannedTrips, String senderId) throws IOException {
+        UserAndPlannedTripDetailResponse[] userAndPlannedTripDetailResponses = new UserAndPlannedTripDetailResponse[plannedTrips.size()];
         for (int i = 0; i < plannedTrips.size(); i++) {
             PlannedTrip r = plannedTrips.get(i);
             User creator = database.getUserHashMap().get(r.getCreatorId());
             if (null != creator) {
                 PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(r, senderId, r.getRawRoutingResult());
-                UserDetailWithPlannedTripDetailResponse userPlannedTripDetail = new UserDetailWithPlannedTripDetailResponse(creator, plannedTripDetailResponse);
-                userDetailWithPlannedTripDetailResponses[i] = userPlannedTripDetail;
+                UserAndPlannedTripDetailResponse userPlannedTripDetail = new UserAndPlannedTripDetailResponse(creator, plannedTripDetailResponse);
+                userAndPlannedTripDetailResponses[i] = userPlannedTripDetail;
             }
         }
-        return userDetailWithPlannedTripDetailResponses;
+        return userAndPlannedTripDetailResponses;
     }
 
-    public UserDetailWithPlannedTripDetailResponse getUserAndPlannedTripDetailFromObject(PlannedTrip plannedTrip) throws IOException {
+    public UserAndPlannedTripDetailResponse getUserAndPlannedTripDetailFromObject(PlannedTrip plannedTrip) throws IOException {
         User creator = database.getUserHashMap().get(plannedTrip.getCreatorId());
         PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(plannedTrip, "this is my trip", plannedTrip.getRawRoutingResult());
-        UserDetailWithPlannedTripDetailResponse userPlannedTripDetail = new UserDetailWithPlannedTripDetailResponse(creator, plannedTripDetailResponse);
+        UserAndPlannedTripDetailResponse userPlannedTripDetail = new UserAndPlannedTripDetailResponse(creator, plannedTripDetailResponse);
         return userPlannedTripDetail;
     }
 
