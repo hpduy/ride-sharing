@@ -104,4 +104,13 @@ public class AngelGroup implements PojoBase {
     public void setAddress(String address) {
         this.address = address;
     }
+
+    public long getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(long groupId) {
+        this.groupId = groupId;
+    }
+    
 }
