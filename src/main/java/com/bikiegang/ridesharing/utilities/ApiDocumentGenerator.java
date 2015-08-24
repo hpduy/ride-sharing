@@ -49,7 +49,9 @@ public class ApiDocumentGenerator {
                     "GetAlphabetAngelGroupsAPI # (Angel App) Get list of angel's group which sorted by alphabet\n" +
                     "GetAngelActiveCodesAPI # (Arch Angel App) Get active code for user register angel account\n" +
                     "VerifyCertificateAPI # Verify a user's certificate\n" +
-                    "CreatePlannedTripAPI # Create your planned trips\n" +
+                    "CreateInstantPlannedTripAPI # Create your instant planned trips\n" +
+                    "CreateSingleFuturePlannedTripAPI # Create your future planned trips\n" +
+                    "CreateRecurrentPlannedTripAPI # Create your recurrent planned trips\n" +
                     "GetPartnerLocationAPI # Get your partner current location to observe where he is\n" +
                     "CreateCertificateAPI # Create your certificate"
 

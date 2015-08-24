@@ -12,8 +12,9 @@ import com.bikiegang.ridesharing.pojo.request.angel.AddGroupRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.AutocompleteSearchGroupRequest;
 import com.bikiegang.ridesharing.pojo.response.angel.AngelGroupDetailResponse;
 import com.bikiegang.ridesharing.pojo.static_object.University;
-import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
+import com.bikiegang.ridesharing.search.SearchAngelGroup;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
+import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ public class AngelGroupController {
         tagNames.add(request.getTagName());
         AngelGroup angelGroup = new AngelGroup(IdGenerator.getAngelGroupId(), new LatLng(request.getLat(), request.getLng()), tagNames, DateTimeUtil.now(),request.getAddress());
         if (dao.insert(angelGroup)) {
-            //TODO what is response? waiting designer
+            //TODO what is a response? waiting designer
             return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
         }
         return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
@@ -108,11 +109,13 @@ public class AngelGroupController {
         if (null == request.getUserId() || request.getUserId().equals("")) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found,"'userId'");
         }
-        List<AngelGroup> groups = new ArrayList<>(database.getAngelGroupHashMap().values());
-        // TODO call text search module from ann
+        List<Long> searchResult = SearchAngelGroup.getInstance().Search(request.getKeyword());
         List<AngelGroupDetailResponse> responses = new ArrayList<>();
-        for(AngelGroup group : groups){
-            responses.add(new AngelGroupDetailResponse(group,request.getUserId()));
+        for(long groupId : searchResult){
+            AngelGroup group = database.getAngelGroupHashMap().get(groupId);
+            if(group != null) {
+                responses.add(new AngelGroupDetailResponse(group, request.getUserId()));
+            }
         }
         return Parser.ObjectToJSon(true,MessageMappingUtil.Successfully, responses);
     }

@@ -203,7 +203,7 @@ public class FakeUser {
         new FakeRequestMakeTrip().FakeRequestVerify(user, 5);
     }
 
-    public static void createAngel() throws JsonProcessingException {
+    public static void createAngel() throws JsonProcessingException, InterruptedException {
         User user = new FakeUser().fakeUser(2, 1, false);
         user.setId("angel");
         user.setStatus(User.ANGEL);

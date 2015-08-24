@@ -1,17 +1,23 @@
 package com.bikiegang.ridesharing.utilities.FakeGroup;
 
+import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.controller.RequestVerifyController;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.CertificateDetail;
 import com.bikiegang.ridesharing.pojo.User;
+import com.bikiegang.ridesharing.pojo.request.angel.GetRequestDetailRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.RequestVerifyRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.apache.log4j.Logger;
 
 /**
  * Created by hpduy17 on 8/5/15.
  */
 public class FakeRequestVerify {
-    public void FakeRequestVerify(User angel, int numberOfRequest) throws JsonProcessingException {
+    Logger logger = LogUtil.getLogger(this.getClass());
+
+    public void FakeRequestVerify(User angel, int numberOfRequest) throws JsonProcessingException, InterruptedException {
+        Thread.sleep(15*1000);
         Database database = Database.getInstance();
         for (int i = 0; i < numberOfRequest; i++) {
             RequestVerifyRequest requestVerifyRequest = new RequestVerifyRequest();
@@ -32,6 +38,13 @@ public class FakeRequestVerify {
             String result = new RequestVerifyController().sendVerificationRequest(requestVerifyRequest);
             System.out.println("Fake verify request :::: " + result);
             System.out.println("----------------------------");
+
+        }
+
+        for( long veId: database.getRequestVerifyHashMap().keySet()){
+            GetRequestDetailRequest request = new GetRequestDetailRequest();
+            request.setRequestId(veId);
+            logger.info(new RequestVerifyController().getRequestDetail(request));
         }
     }
 }

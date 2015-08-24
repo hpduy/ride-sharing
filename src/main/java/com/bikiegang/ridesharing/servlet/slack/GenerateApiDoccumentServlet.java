@@ -62,8 +62,8 @@ public class GenerateApiDoccumentServlet extends HttpServlet {
                         break;
                     case "list_name":
                         for (ApiDocument doc : ApiDocumentGenerator.apiDocs.values()) {
-                            docString += "API Name:" + doc.getName() + "\n";
-                            docString += "API Description:" + doc.getApiDescription() + "\n";
+                            docString += "\b" + doc.getName() + "\n";
+                            docString += "\t\"" + doc.getApiDescription() + "\n\"";
                             docString += "-------------------------------------------\n";
                         }
                         break;
