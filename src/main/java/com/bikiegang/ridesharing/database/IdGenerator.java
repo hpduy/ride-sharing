@@ -100,6 +100,7 @@ public class IdGenerator {
         while (idSet.contains(angelGroupMemberId));
         return angelGroupMemberId;
     }
+
     public static synchronized long getPopularLocationId() {
         Set<Long> idSet = database.getPopularLocationHashMap().keySet();
         long popularLocationId;
@@ -119,6 +120,7 @@ public class IdGenerator {
         while (idSet.contains(feedId));
         return feedId;
     }
+
     public static synchronized long getRatingId() {
         Set<Long> idSet = database.getRatingHashMap().keySet();
         long ratingId;
@@ -127,7 +129,9 @@ public class IdGenerator {
         }
         while (idSet.contains(ratingId));
         return ratingId;
-    }public static synchronized long getSocialTripId() {
+    }
+
+    public static synchronized long getSocialTripId() {
         Set<Long> idSet = database.getSocialTripHashMap().keySet();
         long socialTripId;
         do {
@@ -135,7 +139,10 @@ public class IdGenerator {
         }
         while (idSet.contains(socialTripId));
         return socialTripId;
-    }public static synchronized long getSocialTripAttendanceId() {
+
+    }
+
+    public static synchronized long getSocialTripAttendanceId() {
         Set<Long> idSet = database.getSocialTripAttendanceHashMap().keySet();
         long socialTripAttendance;
         do {
@@ -143,5 +150,15 @@ public class IdGenerator {
         }
         while (idSet.contains(socialTripAttendance));
         return socialTripAttendance;
+    }
+
+    public static synchronized long getGroupAngelGroupId() {
+        Set<Long> idSet = database.getGroupIdRFAngelGroups().keySet();
+        long groupAngelGroupId;
+        do {
+            groupAngelGroupId = RandomUtils.nextLong();
+        }
+        while (idSet.contains(groupAngelGroupId));
+        return groupAngelGroupId;
     }
 }

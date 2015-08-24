@@ -5,10 +5,10 @@
  */
 package com.bikiegang.ridesharing.search;
 
-import com.bikiegang.ridesharing.annn.framework.util.ConvertUtils;
 import com.bikiegang.ridesharing.annn.framework.util.StringUtils;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.AngelGroup;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,7 +44,6 @@ public class SearchAngelGroup {
                 result.add(value.getId());
             }
         }
-
         return result;
     }
 }

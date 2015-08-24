@@ -90,7 +90,10 @@ public class Database {
      * LINKED LOCATION
      */
     private HashMap<Long, List<Long>> plannedTripIdRFLinkedLocations = new HashMap<>(); //<plannedTripId,<LinkedLocationId>>
-
+    /**
+     * ANGEL GROUP
+     */
+    private HashMap<Long, HashSet<Long>> groupIdRFAngelGroups = new HashMap<>(); // <groupId,<AngelGroupId>>
     /**
      * ANGEL GROUP MEMBER
      */
@@ -320,6 +323,10 @@ public class Database {
 
     public void setOrderedPopularLocation(List<Long> orderedPopularLocation) {
         this.orderedPopularLocation = orderedPopularLocation;
+    }
+
+    public HashMap<Long, HashSet<Long>> getGroupIdRFAngelGroups() {
+        return groupIdRFAngelGroups;
     }
 
     /*GEOCELL GET-SET*/

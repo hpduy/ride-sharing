@@ -15,18 +15,20 @@ public class AngelGroup implements PojoBase {
     private List<String> tagName = new ArrayList<>();
     private String canonicalName = "";
     private String address = "";
+    private long groupId;
     private long createdTime = DateTimeUtil.now();
 
     public AngelGroup() {
 
     }
 
-    public AngelGroup(long id, LatLng location, List<String> tagName, long createdTime, String address) {
+    public AngelGroup(long id, LatLng location, List<String> tagName, long createdTime, String address, long groupId) {
         this.id = id;
         this.location = location;
         this.tagName = tagName;
         this.createdTime = createdTime;
         this.address = address;
+        this.groupId = groupId;
         for (String n : tagName) {
             if (n.length() > this.canonicalName.length()) {
                 this.canonicalName = n;
@@ -41,7 +43,7 @@ public class AngelGroup implements PojoBase {
         this.createdTime = that.createdTime;
         this.canonicalName = that.canonicalName;
         this.address = that.address;
-
+        this.groupId = that.groupId;
     }
 
     public long getId() {
