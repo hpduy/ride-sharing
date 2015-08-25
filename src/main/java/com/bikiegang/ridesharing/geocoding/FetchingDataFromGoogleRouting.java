@@ -113,7 +113,7 @@ public class FetchingDataFromGoogleRouting {
                 int endIdx = cellcodes.indexOf(cellCodeEnd);
                 if (endIdx > 0 && startIdx >= 0 && timeForCellCodes[endIdx] == 0) {
                     timeForCellCodes[endIdx] = timeForCellCodes[startIdx] + step.getDuration().getValue();
-                }
+                } 
                 // recursive
                 if (step.getSteps() != null && step.getSteps().length > 0) {
                     loadTimeRecursive(step.getSteps(), timeForCellCodes, cellcodes);

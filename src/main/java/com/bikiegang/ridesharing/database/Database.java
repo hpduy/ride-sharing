@@ -113,7 +113,6 @@ public class Database {
      */
 
     //TODO: do later
-
     /**
      * TRIP CALENDAR
      */
