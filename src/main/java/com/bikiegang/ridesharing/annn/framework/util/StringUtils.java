@@ -35,7 +35,7 @@ public class StringUtils {
     }
 
     public static boolean Search(String text, String pattern) {
-        int result = 0;
+        int result = -1;
         BoyerMooreHorspoolRaita agl = new BoyerMooreHorspoolRaita();
         result = agl.searchString(text.toLowerCase(), pattern.toLowerCase());
 
