@@ -28,7 +28,10 @@ public class FeedController {
         feed.setId(IdGenerator.getFeedId());
         feed.setRefId(refId);
         feed.setType(type);
-        return dao.insert(feed);
+        if(dao.insert(feed)){
+
+        }
+        return false;
     }
 
     public String getFeeds(GetFeedsRequest request) throws IOException {

@@ -1,7 +1,6 @@
 package com.bikiegang.ridesharing.pojo.response;
 
 import com.bikiegang.ridesharing.pojo.PlannedTrip;
-import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -14,9 +13,9 @@ public class PlannedTripDetailResponse extends PlannedTripShortDetailResponse {
     public PlannedTripDetailResponse() {
     }
 
-    public PlannedTripDetailResponse(PlannedTrip that, String senderId, JSONObject googleRoutingResult) throws IOException {
+    public PlannedTripDetailResponse(PlannedTrip that, String senderId) throws IOException {
         super(that, senderId);
-        this.googleRoutingResult = googleRoutingResult.toString();
+        this.googleRoutingResult = that.getRawRoutingResult().toString();
     }
 
     public String getGoogleRoutingResult() {

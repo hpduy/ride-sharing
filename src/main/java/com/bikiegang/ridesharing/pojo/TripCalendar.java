@@ -3,10 +3,7 @@ package com.bikiegang.ridesharing.pojo;
 import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by hpduy17 on 8/20/15.
@@ -29,14 +26,13 @@ public class TripCalendar {
         this.createdTime = createdTime;
         this.geoCellGrid = geoCellGrid;
     }
+
     public TripCalendar(TripCalendar that) {
         this.id = that.id;
         this.creatorId = that.creatorId;
         this.createdTime = that.createdTime;
         this.geoCellGrid = that.geoCellGrid;
     }
-
-
 
 
     public void putToCell(long time, Long id) {
@@ -109,6 +105,15 @@ public class TripCalendar {
         return new ArrayList<>(ids);
     }
 
+    public HashMap<Long, List<Long>> getIdsByDayInFrame(long startDay, long endDay) {
+        HashMap<Long, List<Long>> ids = new HashMap<>();
+        List<Long> cellIds = getCellIds(startDay, endDay);
+        for (Long cellId : cellIds) {
+            ids.put(cellId, getIdsInCell(cellId));
+        }
+        return ids;
+    }
+
     public List<Long> getIdsInFrame(long startDay, int duration) {
         HashSet<Long> ids = new HashSet<>();
         List<Long> cellIds = getCellIds(startDay, startDay + duration);
@@ -119,6 +124,14 @@ public class TripCalendar {
     }
 
     public List<Long> getIdsInCell(long cellId) {
+        List<Long> temp = geoCellGrid.get(cellId);
+        if (temp != null)
+            return temp;
+        return new ArrayList<>();
+    }
+
+    public List<Long> getIdsInCellByTime(long time) {
+        long cellId = time / CELL_LEN;
         List<Long> temp = geoCellGrid.get(cellId);
         if (temp != null)
             return temp;
