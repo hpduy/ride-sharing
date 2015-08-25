@@ -102,7 +102,7 @@ public class PlannedTripController {
         return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, response);
     }
 
-    public String createInstantFuturePlannedTrip(CreatePlannedTripRequest request) throws Exception {
+    public String createInstantPlannedTrip(CreatePlannedTripRequest request) throws Exception {
         CreateSingleFuturePlannedTripResponse response = new CreateSingleFuturePlannedTripResponse();
         UserAndPlannedTripDetailResponse[] plannedTrips = null;
         if (null == request.getCreatorId() || request.getCreatorId().equals("")) {

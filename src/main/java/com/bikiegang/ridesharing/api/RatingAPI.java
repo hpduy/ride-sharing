@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package com.bikiegang.ridesharing.api;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
-import com.bikiegang.ridesharing.controller.PlannedTripController;
+import com.bikiegang.ridesharing.controller.RatingController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.request.CreatePlannedTripRequest;
-import com.bikiegang.ridesharing.pojo.response.UserAndPlannedTripDetailResponse;
+import com.bikiegang.ridesharing.pojo.request.RatingRequest;
 import com.bikiegang.ridesharing.utilities.ApiDocumentGenerator;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import org.apache.log4j.Logger;
@@ -22,40 +22,40 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class CreateInstantPlannedTripAPI extends HttpServlet {
 
+public class RatingAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
-    public Class requestClass = CreatePlannedTripRequest.class;
-    public Class responseClass = UserAndPlannedTripDetailResponse.class;
+    public Class requestClass = RatingRequest.class;
+    public Class responseClass = null;
     public boolean responseIsArray = false;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
-     * @param request raw request
+     * @param request  raw request
      * @param response raw response
      * @throws ServletException if a raw-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            StringBuilder jsonData = new StringBuilder();
+            StringBuffer jsonData = new StringBuffer();
             String line;
             BufferedReader reader = request.getReader();
             while ((line = reader.readLine()) != null) {
                 jsonData.append(line);
             }
             logger.info(jsonData.toString());
-            CreatePlannedTripRequest createPlannedTripRequest = (CreatePlannedTripRequest) Parser.JSonToObject(jsonData.toString(), CreatePlannedTripRequest.class);
-            PlannedTripController controller = new PlannedTripController();
-            String result = controller.createInstantPlannedTrip(createPlannedTripRequest);
+            RatingRequest ratingRequest = (RatingRequest) Parser.JSonToObject(jsonData.toString(), RatingRequest.class);
+            RatingController controller = new RatingController();
+            String result = controller.rating(ratingRequest);
             logger.info(result);
             out.print(result);
-
         } catch (Exception ex) {
             ex.printStackTrace();
             logger.error(ex.getStackTrace());
@@ -64,13 +64,14 @@ public class CreateInstantPlannedTripAPI extends HttpServlet {
     }
 
     // <editor-fold default state="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request raw request
+     * @param request  raw request
      * @param response raw response
      * @throws ServletException if a raw-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -82,10 +83,10 @@ public class CreateInstantPlannedTripAPI extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request raw request
+     * @param request  raw request
      * @param response raw response
      * @throws ServletException if a raw-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

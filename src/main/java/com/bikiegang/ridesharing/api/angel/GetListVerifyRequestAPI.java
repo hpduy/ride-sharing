@@ -10,7 +10,7 @@ import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.controller.RequestVerifyController;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.request.angel.GetListRequestVerifyRequest;
-import com.bikiegang.ridesharing.pojo.response.angel.RequestVerifySortDetailResponse;
+import com.bikiegang.ridesharing.pojo.response.angel.GetListRequestVerifyResponse;
 import com.bikiegang.ridesharing.utilities.ApiDocumentGenerator;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import org.apache.log4j.Logger;
@@ -27,7 +27,7 @@ import java.io.PrintWriter;
 public class GetListVerifyRequestAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
     public Class requestClass = GetListRequestVerifyRequest.class;
-    public Class responseClass = RequestVerifySortDetailResponse.class;
+    public Class responseClass = GetListRequestVerifyResponse.class;
     public boolean responseIsArray = true;
 
     /**

@@ -1,5 +1,7 @@
 package com.bikiegang.ridesharing.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * Created by hpduy17 on 6/24/15.
  */
@@ -19,6 +21,14 @@ public class Trip implements PojoBase {
     private long driverPlannedTripId;
     private long passengerPlannedTripId;
     private String tripTrailPolyLine = "";
+    private int tripStatus;
+    @JsonIgnore
+    public static final int UNFINISHED_TRIP = 0;
+    @JsonIgnore
+    public static final int FINISHED_TRIP_WITH_OUT_RATING = 1;
+    @JsonIgnore
+    public static final int COMPLETED_TRIP = 2;
+
 
     public Trip() {
     }
@@ -167,5 +177,13 @@ public class Trip implements PojoBase {
 
     public void setTripTrailPolyLine(String tripTrailPolyLine) {
         this.tripTrailPolyLine = tripTrailPolyLine;
+    }
+
+    public int getTripStatus() {
+        return tripStatus;
+    }
+
+    public void setTripStatus(int tripStatus) {
+        this.tripStatus = tripStatus;
     }
 }

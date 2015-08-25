@@ -29,25 +29,27 @@ public class AngelGroupMemberController {
         if (null == request.getUserId() || request.getUserId().equals("")) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
         }
-        if (request.getGroupId() <= 0) {
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found,"'groupId'");
+        if (request.getGroupIds() == null) {
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'groupIds'");
         }
-        if (database.getUserAndGroupRFAngelGroupMember().containsKey(combineKey(request.getUserId(), request.getGroupId()))) {
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_has_been_used,"'groupId'");
+        for (long id : request.getGroupIds()) {
+            if (database.getUserAndGroupRFAngelGroupMember().containsKey(combineKey(request.getUserId(), id))) {
+                AngelGroupMember groupMember = new AngelGroupMember(IdGenerator.getAngelGroupMemberId(), id, request.getUserId(), DateTimeUtil.now());
+                if (!dao.insert(groupMember)) {
+                    return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
+
+                }
+            }
         }
-        AngelGroupMember groupMember = new AngelGroupMember(IdGenerator.getAngelGroupMemberId(), request.getGroupId(), request.getUserId(), DateTimeUtil.now());
-        if (dao.insert(groupMember)) {
-            return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
-        }
-        return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
     }
 
     public String exitGroup(ExitGroupRequest request) throws JsonProcessingException {
         if (null == request.getUserId() || request.getUserId().equals("")) {
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found,"'userId'");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
         }
         if (request.getGroupId() <= 0) {
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid,"'groupId'");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'groupId'");
         }
         if (!database.getUserAndGroupRFAngelGroupMember().containsKey(combineKey(request.getUserId(), request.getGroupId()))) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Fail);
@@ -57,10 +59,10 @@ public class AngelGroupMemberController {
         if (dao.delete(groupMember)) {
             return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
         }
-        return Parser.ObjectToJSon(false,MessageMappingUtil.Interactive_with_database_fail);
+        return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
     }
 
-    public boolean changeGroup(String userId, long oldGroupId, long newGroupId){
+    public boolean changeGroup(String userId, long oldGroupId, long newGroupId) {
         if (!database.getUserAndGroupRFAngelGroupMember().containsKey(combineKey(userId, oldGroupId))) {
             return false;
         }
@@ -68,22 +70,24 @@ public class AngelGroupMemberController {
         AngelGroupMember groupMember = new AngelGroupMember(database.getAngelGroupMemberHashMap().get(angelGroupMemberId));
         groupMember.setGroupId(newGroupId);
         groupMember.setCreatedTime(DateTimeUtil.now());
-        if(dao.update(groupMember)){
+        if (dao.update(groupMember)) {
             try {
                 database.getUserAndGroupRFAngelGroupMember().remove(combineKey(userId, oldGroupId));
                 database.getUserIdRFAngelGroups().get(userId).remove(oldGroupId);
                 database.getAngelGroupIdRFUsers().get(oldGroupId).remove(userId);
-            }catch (Exception ignored){}
+            } catch (Exception ignored) {
+            }
             return true;
         }
         return false;
     }
+
     public boolean changeGroup(long oldGroupId, long newGroupId) {
         if (database.getAngelGroupIdRFUsers().containsKey(oldGroupId) && database.getAngelGroupIdRFUsers().containsKey(newGroupId)) {
             List<String> userIds = new ArrayList<>(database.getAngelGroupIdRFUsers().get(oldGroupId));
             boolean flag = false;
-            for(String userId : userIds){
-                flag = flag && changeGroup(userId,oldGroupId,newGroupId);
+            for (String userId : userIds) {
+                flag = flag && changeGroup(userId, oldGroupId, newGroupId);
             }
             return flag;
         }

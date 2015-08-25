@@ -12,6 +12,24 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
     <!-- API -->
+    <!--**FEED**-->
+    <servlet>
+        <servlet-name>GetNewFeedAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.GetNewFeedAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetNewFeedAPI</servlet-name>
+        <url-pattern>/GetNewFeedAPI</url-pattern>
+    </servlet-mapping>
+    <!--**SOCIAL TRIP**-->
+    <servlet>
+        <servlet-name>CreateSocialTripAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.CreateSocialTripAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CreateSocialTripAPI</servlet-name>
+        <url-pattern>/CreateSocialTripAPI</url-pattern>
+    </servlet-mapping>
     <!--**PLANNED TRIP**-->
     <servlet>
         <servlet-name>AutoParingWhenSearchAPI</servlet-name>
@@ -22,12 +40,28 @@
         <url-pattern>/AutoParingWhenSearchAPI</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>CreatePlannedTripAPI</servlet-name>
+        <servlet-name>CreateSingleFuturePlannedTripAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.CreateSingleFuturePlannedTripAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>CreatePlannedTripAPI</servlet-name>
-        <url-pattern>/CreatePlannedTripAPI</url-pattern>
+        <servlet-name>CreateSingleFuturePlannedTripAPI</servlet-name>
+        <url-pattern>/CreateSingleFuturePlannedTripAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>CreateInstantPlannedTripAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.CreateInstantPlannedTripAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CreateInstantPlannedTripAPI</servlet-name>
+        <url-pattern>/CreateInstantPlannedTripAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>CreateRecurrentPlannedTripAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.CreateRecurrentPlannedTripAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CreateRecurrentPlannedTripAPI</servlet-name>
+        <url-pattern>/CreateRecurrentPlannedTripAPI</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>GetPlannedTripDetailAPI</servlet-name>
@@ -45,7 +79,32 @@
         <servlet-name>UpdateCurrentLocationWithPlannedTripAPI</servlet-name>
         <url-pattern>/UpdateCurrentLocationWithPlannedTripAPI</url-pattern>
     </servlet-mapping>
-
+    <!--**TRIP**-->
+    <servlet>
+        <servlet-name>EndTripAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.EndTripAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EndTripAPI</servlet-name>
+        <url-pattern>/EndTripAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>StartTripAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.StartTripAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>StartTripAPI</servlet-name>
+        <url-pattern>/StartTripAPI</url-pattern>
+    </servlet-mapping>
+    <!--**RATING**-->
+    <servlet>
+        <servlet-name>RatingAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.RatingAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RatingAPI</servlet-name>
+        <url-pattern>/RatingAPI</url-pattern>
+    </servlet-mapping>
     <!--**USER**-->
     <servlet>
         <servlet-name>LoginAPI</servlet-name>
