@@ -141,7 +141,6 @@ public class ConfigInfo {
                 + "WHERE `id` = ?;";
         PLANNEDTRIP_INSERT_QUERY = "INSERT INTO `ridesharing_db`.`PlannedTrip`\n"
                 + "(`id`,\n"
-                + "`goTime`,\n"
                 + "`arriveTime`,\n"
                 + "`sumDistance`,\n"
                 + "`estimatedTime`,\n"
@@ -153,17 +152,17 @@ public class ConfigInfo {
                 + "`type`,\n"
                 + "`plannedTripTrailPolyLine`,\n"
                 + "`rawRoutingResult`, `groupId`, `startLocation`, `endLocation`,\n"
-                + "`polyLine`, `hasHelmet`, `createdTime`, `isBusy`, `title`)\n"
+                + "`polyLine`, `hasHelmet`, `createdTime`, `isBusy`, `title`, `endDay`,\n"
+                + "`timeTable`)\n"
                 + "VALUES\n"
-                + "(?,?,?,?,"
+                + "(?,?,?,"
                 + "?,?,?,?,?,"
                 + "?,?,?,?,?,"
                 + "?,?,?,?,"
-                + "?,?,?);";
+                + "?,?,?,?,?);";
         PLANNEDTRIP_UPDATE_QUERY = "UPDATE `ridesharing_db`.`PlannedTrip`\n"
                 + "SET\n"
                 + "`id` = ?,\n"
-                + "`goTime` = ?,\n"
                 + "`arriveTime` = ?,\n"
                 + "`sumDistance` = ?,\n"
                 + "`estimatedTime` = ?,\n"
@@ -182,7 +181,9 @@ public class ConfigInfo {
                 + "`hasHelmet` = ?,\n"
                 + "`createdTime` = ?\n,"
                 + "`isBusy` = ?,\n"
-                + "`title` = ?\n"
+                + "`title` = ?,\n"
+                + "`endDay` = ?,\n"
+                + "`timeTable` = ?\n"
                 + "WHERE `id` = ?;";
         PLANNEDTRIP_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`PlannedTrip`\n"
                 + "WHERE `id` = ?;";
@@ -329,9 +330,9 @@ public class ConfigInfo {
                 + "`tagName`,\n"
                 + "`canonicalName`,\n"
                 + "`address`,\n"
-                + "`createdTime`)\n"
+                + "`createdTime`, `groupId`)\n"
                 + "VALUES\n"
-                + "(?,?,?,?,?,?);";
+                + "(?,?,?,?,?,?,?);";
         ANGEL_GROUP_UPDATE_QUERY = "UPDATE `ridesharing_db`.`AngelGroup`\n"
                 + "SET\n"
                 + "`id` = ?,\n"
@@ -339,7 +340,7 @@ public class ConfigInfo {
                 + "`tagName` = ?,\n"
                 + "`canonicalName` = ?,\n"
                 + "`address` = ?,\n"
-                + "`createdTime` = ?\n"
+                + "`createdTime` = ?, `groupId` = ?\n"
                 + "WHERE `id` = ?;";
         ANGEL_GROUP_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`AngelGroup`\n"
                 + "WHERE `id` = ?;";

@@ -64,6 +64,7 @@ public class AngelGroupDA implements IDA {
                 stmt.setString(4, value.getCanonicalName());
                 stmt.setString(5, value.getAddress());
                 stmt.setLong(6, value.getCreatedTime());
+                stmt.setLong(7, value.getGroupId());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {
@@ -93,7 +94,8 @@ public class AngelGroupDA implements IDA {
                 stmt.setString(4, value.getCanonicalName());
                 stmt.setString(5, value.getAddress());
                 stmt.setLong(6, value.getCreatedTime());
-                stmt.setLong(7, value.getId());
+                stmt.setLong(7, value.getGroupId());
+                stmt.setLong(8, value.getId());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {

@@ -132,7 +132,7 @@ public class Database {
     public void restore() {
         RideSharingCA rideSharingCA = RideSharingCA.getInstance(ConfigInfo.REDIS_SERVER);
         //restore
-        assert (rideSharingCA.RestoreDatabase());
+        rideSharingCA.RestoreDatabase();
     }
 
     public void backup() {
