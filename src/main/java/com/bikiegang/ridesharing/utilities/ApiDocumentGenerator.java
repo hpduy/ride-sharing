@@ -53,6 +53,8 @@ public class ApiDocumentGenerator {
                     "CreateSingleFuturePlannedTripAPI # Create your future planned trips\n" +
                     "CreateRecurrentPlannedTripAPI # Create your recurrent planned trips\n" +
                     "GetPartnerLocationAPI # Get your partner current location to observe where he is\n" +
+                    "GetNewFeedAPI # Get user's new feed \n" +
+                    "CreateSocial # Create you free trip (social trip) \n" +
                     "CreateCertificateAPI # Create your certificate"
 
     ;

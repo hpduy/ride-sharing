@@ -10,10 +10,11 @@ import com.bikiegang.ridesharing.pojo.request.angel.AngelLoginRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.AngelRegisterRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.JoinGroupRequest;
 import com.bikiegang.ridesharing.pojo.response.GetAngelActiveCodesResponse;
-import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
+import com.bikiegang.ridesharing.pojo.response.UserDetailResponse;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import com.bikiegang.ridesharing.utilities.SendMailUtil;
 import com.bikiegang.ridesharing.utilities.StringProcessUtil;
+import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.lang.RandomStringUtils;
 
@@ -78,13 +79,18 @@ public class AngelController {
         user.setId("e_" + registerRequest.getEmail());
         user.setEmail(registerRequest.getEmail());
         user.setPassword(registerRequest.getPassword());
+        user.setFirstName(registerRequest.getFirstName());
+        user.setLastName(registerRequest.getLastName());
+        user.setPhone(registerRequest.getPhone());
         user.setStatus(User.ANGEL);
         if (dao.insert(user)) {
             JoinGroupRequest request = new JoinGroupRequest();
-            request.setGroupId(registerRequest.getGroupId());
+            long[] ids = new long[1];
+            ids[0] = registerRequest.getGroupId();
+            request.setGroupIds(ids);
             request.setUserId(user.getId());
             new AngelGroupMemberController().joinGroup(request);
-            return Parser.ObjectToJSon(true,MessageMappingUtil.Successfully, user.getId());
+            return Parser.ObjectToJSon(true,MessageMappingUtil.Successfully, new UserDetailResponse(user));
         }
         return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
     }
@@ -107,7 +113,7 @@ public class AngelController {
         if (!user.getPassword().equals(loginRequest.getPassword())) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid,"Password");
         }
-        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, user.getId());
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new UserDetailResponse(user));
     }
 
     public String forgetPassword(AngelForgetPasswordRequest request) throws JsonProcessingException, UnsupportedEncodingException {

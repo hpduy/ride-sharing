@@ -11,6 +11,7 @@ import com.bikiegang.ridesharing.pojo.request.MergeGroupRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.AddGroupRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.AutocompleteSearchGroupRequest;
 import com.bikiegang.ridesharing.pojo.response.angel.AngelGroupDetailResponse;
+import com.bikiegang.ridesharing.pojo.response.angel.GetAlphabetAngelGroupsResponse;
 import com.bikiegang.ridesharing.pojo.static_object.University;
 import com.bikiegang.ridesharing.search.SearchAngelGroup;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
@@ -117,7 +118,7 @@ public class AngelGroupController {
                 responses.add(new AngelGroupDetailResponse(group, request.getUserId()));
             }
         }
-        return Parser.ObjectToJSon(true,MessageMappingUtil.Successfully, responses);
+        return Parser.ObjectToJSon(true,MessageMappingUtil.Successfully, new GetAlphabetAngelGroupsResponse(responses));
     }
 
 

@@ -12,6 +12,7 @@ import com.bikiegang.ridesharing.pojo.request.angel.ReplyVerifyRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.RequestVerifyRequest;
 import com.bikiegang.ridesharing.pojo.response.Notification.ObjectNoti;
 import com.bikiegang.ridesharing.pojo.response.Notification.ReplyVerifyNoti;
+import com.bikiegang.ridesharing.pojo.response.angel.GetListRequestVerifyResponse;
 import com.bikiegang.ridesharing.pojo.response.angel.RequestVerifyDetailResponse;
 import com.bikiegang.ridesharing.pojo.response.angel.RequestVerifySortDetailResponse;
 import com.bikiegang.ridesharing.utilities.BroadcastCenterUtil;
@@ -123,7 +124,7 @@ public class RequestVerifyController {
                 }
             }
         }
-        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, responses);
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new GetListRequestVerifyResponse(responses));
     }
 
     public String getRequestDetail(GetRequestDetailRequest request) throws JsonProcessingException {

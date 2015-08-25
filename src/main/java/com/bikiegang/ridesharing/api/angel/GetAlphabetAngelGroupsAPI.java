@@ -9,8 +9,8 @@ package com.bikiegang.ridesharing.api.angel;
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.controller.AngelGroupController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.AngelGroup;
 import com.bikiegang.ridesharing.pojo.request.GetInformationUsingUserIdRequest;
+import com.bikiegang.ridesharing.pojo.response.angel.GetAlphabetAngelGroupsResponse;
 import com.bikiegang.ridesharing.utilities.ApiDocumentGenerator;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import org.apache.log4j.Logger;
@@ -27,8 +27,8 @@ import java.io.PrintWriter;
 public class GetAlphabetAngelGroupsAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
     public Class requestClass = GetInformationUsingUserIdRequest.class;
-    public Class responseClass = AngelGroup.class;
-    public boolean responseIsArray = true;
+    public Class responseClass = GetAlphabetAngelGroupsResponse.class;
+    public boolean responseIsArray = false;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
