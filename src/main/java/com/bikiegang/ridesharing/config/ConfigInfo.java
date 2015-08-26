@@ -66,6 +66,9 @@ public class ConfigInfo {
     public static String SOCIALTRIP_GROUP_INSERT_QUERY;
     public static String SOCIALTRIP_GROUP_UPDATE_QUERY;
     public static String SOCIALTRIP_GROUP_DELETE_QUERY;
+    public static String TRIPCALENDAR_INSERT_QUERY;
+    public static String TRIPCALENDAR_UPDATE_QUERY;
+    public static String TRIPCALENDAR_DELETE_QUERY;
 
     static {
         RIDESHARING_DB = "ridesharing_db";
@@ -194,16 +197,16 @@ public class ConfigInfo {
                 + "`passengerId`,\n"
                 + "`realDistance`,\n"
                 + "`endTime`,\n"
-                + "`pricePaid`,\n"
+                + "`farePaid`,\n"
                 + "`sensitiveLocationId`,\n"
                 + "`breakReason`,\n"
                 + "`breakTrip`,\n"
                 + "`dangerTrip`,\n"
                 + "`driverPlannedTripId`,\n"
                 + "`passengerPlannedTripId`,\n"
-                + "`tripTrailPolyLine`)\n"
+                + "`tripTrailPolyLine`, `tripStatus`)\n"
                 + "VALUES\n"
-                + "(?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                + "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
         TRIP_UPDATE_QUERY = "UPDATE `ridesharing_db`.`Trip`\n"
                 + "SET\n"
                 + "`id` = ?,\n"
@@ -212,14 +215,14 @@ public class ConfigInfo {
                 + "`passengerId` = ?,\n"
                 + "`realDistance` = ?,\n"
                 + "`endTime` = ?,\n"
-                + "`pricePaid` = ?,\n"
+                + "`farePaid` = ?,\n"
                 + "`sensitiveLocationId` = ?,\n"
                 + "`breakReason` = ?,\n"
                 + "`breakTrip` = ?,\n"
                 + "`dangerTrip` = ?,\n"
                 + "`driverPlannedTripId` = ?,\n"
                 + "`passengerPlannedTripId` = ?,\n"
-                + "`tripTrailPolyLine` = ?\n"
+                + "`tripTrailPolyLine` = ?, `tripStatus` = ?\n"
                 + "WHERE `id` = ?;";
         TRIP_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`Trip`\n"
                 + "WHERE `id` = ?;";
@@ -464,6 +467,23 @@ public class ConfigInfo {
                 + "`createdTime` = ?\n"
                 + "WHERE `id` = ?;";
         SOCIALTRIP_GROUP_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`SocialTrip`\n"
+                + "WHERE `id` = ?;";
+
+        TRIPCALENDAR_INSERT_QUERY = "INSERT INTO `ridesharing_db`.`TripCalendar`\n"
+                + "(`id`,\n"
+                + "`creatorId`,\n"
+                + "`createdTime`,\n"
+                + "`geoCellGrid`)\n"
+                + "VALUES\n"
+                + "(?,?,?,?);";
+        TRIPCALENDAR_UPDATE_QUERY = "UPDATE `ridesharing_db`.`TripCalendar`\n"
+                + "SET\n"
+                + "`id` = ?,\n"
+                + "`creatorId` = ?,\n"
+                + "`createdTime` = ?,\n"
+                + "`geoCellGrid` = ?\n"
+                + "WHERE `id` = ?;";
+        TRIPCALENDAR_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`TripCalendar`\n"
                 + "WHERE `id` = ?;";
     }
 

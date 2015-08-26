@@ -8,6 +8,7 @@ package com.bikiegang.ridesharing.da;
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.annn.framework.dbconn.ClientManager;
 import com.bikiegang.ridesharing.annn.framework.dbconn.ManagerIF;
+import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
 import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.pojo.PojoBase;
 import com.bikiegang.ridesharing.pojo.Trip;
@@ -64,13 +65,14 @@ public class TripDA implements IDA {
                 stmt.setDouble(5, value.getRealDistance());
                 stmt.setLong(6, value.getEndTime());
                 stmt.setDouble(7, value.getFarePaid());
-                stmt.setLong(8, 0);// change to LatLng
+                stmt.setString(8, JSONUtil.Serialize(value.getSensitiveLocationId()));// change to LatLng
                 stmt.setString(9, value.getBreakReason());
                 stmt.setBoolean(10, value.isSmoothBreak());
                 stmt.setBoolean(11, value.isDangerTrip());
                 stmt.setLong(12, value.getDriverPlannedTripId());
                 stmt.setLong(13, value.getPassengerPlannedTripId());
                 stmt.setString(14, value.getTripTrailPolyLine());
+                stmt.setInt(15, value.getTripStatus());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {
@@ -101,14 +103,15 @@ public class TripDA implements IDA {
                 stmt.setDouble(5, value.getRealDistance());
                 stmt.setLong(6, value.getEndTime());
                 stmt.setDouble(7, value.getFarePaid());
-                stmt.setLong(8, 0); // change to LatLng
+                stmt.setString(8, JSONUtil.Serialize(value.getSensitiveLocationId()));// change to LatLng
                 stmt.setString(9, value.getBreakReason());
                 stmt.setBoolean(10, value.isSmoothBreak());
                 stmt.setBoolean(11, value.isDangerTrip());
                 stmt.setLong(12, value.getDriverPlannedTripId());
                 stmt.setLong(13, value.getPassengerPlannedTripId());
                 stmt.setString(14, value.getTripTrailPolyLine());
-                stmt.setLong(15, value.getId());
+                stmt.setInt(15, value.getTripStatus());
+                stmt.setLong(16, value.getId());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {

@@ -138,4 +138,38 @@ public class TripCalendar {
         return new ArrayList<>();
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(String creatorId) {
+        this.creatorId = creatorId;
+    }
+
+    public long getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(long createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    public Hashtable<Long, List<Long>> getGeoCellGrid() {
+        return geoCellGrid;
+    }
+
+    public void setGeoCellGrid(Hashtable<Long, List<Long>> geoCellGrid) {
+        this.geoCellGrid = geoCellGrid;
+    }
+
+    
+    
 }
