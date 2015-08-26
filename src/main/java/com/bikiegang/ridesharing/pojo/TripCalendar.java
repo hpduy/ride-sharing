@@ -8,7 +8,7 @@ import java.util.*;
 /**
  * Created by hpduy17 on 8/20/15.
  */
-public class TripCalendar {
+public class TripCalendar implements PojoBase{
     private long id;
     private String creatorId = "";
     private long createdTime;

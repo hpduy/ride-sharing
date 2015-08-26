@@ -22,6 +22,7 @@ import com.bikiegang.ridesharing.da.RequestMakeTripDA;
 import com.bikiegang.ridesharing.da.RequestVerifyDA;
 import com.bikiegang.ridesharing.da.SocialTripAttendanceDA;
 import com.bikiegang.ridesharing.da.SocialTripDA;
+import com.bikiegang.ridesharing.da.TripCalendarDA;
 import com.bikiegang.ridesharing.da.TripDA;
 import com.bikiegang.ridesharing.da.UserDA;
 import com.bikiegang.ridesharing.da.VerifiedCertificateDA;
@@ -39,6 +40,7 @@ import com.bikiegang.ridesharing.pojo.RequestVerify;
 import com.bikiegang.ridesharing.pojo.SocialTrip;
 import com.bikiegang.ridesharing.pojo.SocialTripAttendance;
 import com.bikiegang.ridesharing.pojo.Trip;
+import com.bikiegang.ridesharing.pojo.TripCalendar;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.VerifiedCertificate;
 import java.util.concurrent.atomic.AtomicLong;
@@ -130,6 +132,10 @@ public class RideSharingWorkerProcess extends AbstractGearmanFunction {
                 case "com.bikiegang.ridesharing.pojo.SocialTripAttendance":
                     _value = JSONUtil.DeSerialize(job.Data, SocialTripAttendance.class);
                     _rideSharingDA = new SocialTripAttendanceDA();
+                    break;
+                case "com.bikiegang.ridesharing.pojo.TripCalendar":
+                    _value = JSONUtil.DeSerialize(job.Data, TripCalendar.class);
+                    _rideSharingDA = new TripCalendarDA();
                     break;
             }
             chk = _rideSharingDA.DoAction(_value, job.ActionType);

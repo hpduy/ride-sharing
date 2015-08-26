@@ -5,7 +5,6 @@
  */
 package com.bikiegang.ridesharing.utilities;
 
-
 import com.bikiegang.ridesharing.pojo.AngelGroup;
 import com.bikiegang.ridesharing.pojo.AngelGroupMember;
 import com.bikiegang.ridesharing.pojo.Broadcast;
@@ -21,16 +20,16 @@ import com.bikiegang.ridesharing.pojo.RequestVerify;
 import com.bikiegang.ridesharing.pojo.SocialTrip;
 import com.bikiegang.ridesharing.pojo.SocialTripAttendance;
 import com.bikiegang.ridesharing.pojo.Trip;
+import com.bikiegang.ridesharing.pojo.TripCalendar;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.VerifiedCertificate;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 /**
@@ -48,6 +47,13 @@ public class TestUtils {
         return result;
     }
 
+    public static TripCalendar CreateTripCalendar() {
+        TripCalendar result = new TripCalendar(RandomUtils.nextLong(), RandomStringUtils.randomAlphanumeric(30),
+                RandomUtils.nextLong(), new Hashtable<Long, List<Long>>());
+
+        return result;
+    }
+
     public static PopularLocation CreatePopularLocation() {
         PopularLocation result = new PopularLocation(new LatLng(RandomUtils.nextDouble(),
                 RandomUtils.nextDouble(),
@@ -55,7 +61,7 @@ public class TestUtils {
                 RandomUtils.nextLong(),
                 RandomStringUtils.randomAlphanumeric(30),
                 RandomStringUtils.randomAlphanumeric(30),
-                new HashSet<String>(),RandomStringUtils.randomAlphanumeric(30));
+                new HashSet<String>(), RandomStringUtils.randomAlphanumeric(30));
         return result;
     }
 
