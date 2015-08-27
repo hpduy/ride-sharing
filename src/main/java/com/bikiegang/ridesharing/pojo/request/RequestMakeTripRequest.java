@@ -1,5 +1,6 @@
 package com.bikiegang.ridesharing.pojo.request;
 
+import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -7,8 +8,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RequestMakeTripRequest {
-    private String senderId = "";
-    private String receiverId = "";
+
+    private String senderId;
+    private String receiverId ;
     private long senderPlannedTripId;
     private long receiverPlannedTripId;
     private double price;
@@ -46,7 +48,6 @@ public class RequestMakeTripRequest {
         this.senderPlannedTripId = senderPlannedTripId;
     }
 
-
     public String getGoogleRoutingResult() {
         return googleRoutingResult;
     }
@@ -62,5 +63,22 @@ public class RequestMakeTripRequest {
     public void setPrice(double price) {
         this.price = price;
     }
-}
 
+    public RequestMakeTripRequest() {
+    }
+
+    public RequestMakeTripRequest(String senderId, String receiverId, long senderPlannedTripId, long receiverPlannedTripId, double price, String googleRoutingResult) {
+        this.senderId = senderId;
+        this.receiverId = receiverId;
+        this.senderPlannedTripId = senderPlannedTripId;
+        this.receiverPlannedTripId = receiverPlannedTripId;
+        this.price = price;
+        this.googleRoutingResult = googleRoutingResult;
+    }
+
+  
+    @Override
+    public String toString() {
+        return JSONUtil.Serialize(this);
+    }
+}

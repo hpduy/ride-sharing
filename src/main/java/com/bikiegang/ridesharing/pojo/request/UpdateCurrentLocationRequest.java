@@ -1,5 +1,6 @@
 package com.bikiegang.ridesharing.pojo.request;
 
+import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -7,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UpdateCurrentLocationRequest {
+
     protected double lat;
     protected double lng;
     protected String userId;
@@ -33,5 +35,19 @@ public class UpdateCurrentLocationRequest {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public UpdateCurrentLocationRequest() {
+    }
+
+    public UpdateCurrentLocationRequest(double lat, double lng, String userId) {
+        this.lat = lat;
+        this.lng = lng;
+        this.userId = userId;
+    }
+
+    @Override
+    public String toString() {
+        return JSONUtil.Serialize(this);
     }
 }

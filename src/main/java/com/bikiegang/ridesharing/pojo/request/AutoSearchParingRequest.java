@@ -1,5 +1,6 @@
 package com.bikiegang.ridesharing.pojo.request;
 
+import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -7,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AutoSearchParingRequest {
+
     private String creatorId;
     private long goTime;
     private String googleRoutingResult;
@@ -42,5 +44,20 @@ public class AutoSearchParingRequest {
 
     public void setHasHelmet(boolean hasHelmet) {
         this.hasHelmet = hasHelmet;
+    }
+
+    public AutoSearchParingRequest() {
+    }
+
+    public AutoSearchParingRequest(String creatorId, long goTime, String googleRoutingResult, boolean hasHelmet) {
+        this.creatorId = creatorId;
+        this.goTime = goTime;
+        this.googleRoutingResult = googleRoutingResult;
+        this.hasHelmet = hasHelmet;
+    }
+
+    @Override
+    public String toString() {
+        return JSONUtil.Serialize(this);
     }
 }

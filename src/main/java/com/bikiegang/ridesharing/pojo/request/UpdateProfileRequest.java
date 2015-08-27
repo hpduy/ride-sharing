@@ -1,5 +1,6 @@
 package com.bikiegang.ridesharing.pojo.request;
 
+import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -96,5 +97,23 @@ public class UpdateProfileRequest {
 
     public void setPrivacy(int privacy) {
         this.privacy = privacy;
+    }
+
+    public UpdateProfileRequest() {
+    }
+
+    public UpdateProfileRequest(String id, String selfIntro, String firstName, String lastName, String profilePictureLink, String phone, String birthDay, String career) {
+        this.id = id;
+        this.selfIntro = selfIntro;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.profilePictureLink = profilePictureLink;
+        this.phone = phone;
+        this.birthDay = birthDay;
+        this.career = career;
+    }
+     @Override
+    public String toString() {
+        return JSONUtil.Serialize(this);
     }
 }

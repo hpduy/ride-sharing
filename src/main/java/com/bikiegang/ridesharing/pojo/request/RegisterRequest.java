@@ -1,5 +1,6 @@
 package com.bikiegang.ridesharing.pojo.request;
 
+import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -8,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RegisterRequest {
+
     private String email;
     private String password;
     private String facebookId;
@@ -144,5 +146,30 @@ public class RegisterRequest {
 
     public void setSelfIntro(String selfIntro) {
         this.selfIntro = selfIntro;
+    }
+
+    public RegisterRequest() {
+    }
+
+    public RegisterRequest(String email, String password, String facebookId, String googleId, String twitterId, String linkedInId, String selfIntro, String firstName, String lastName, String profilePictureLink, String phone, String birthDay, int gender, int type) {
+        this.email = email;
+        this.password = password;
+        this.facebookId = facebookId;
+        this.googleId = googleId;
+        this.twitterId = twitterId;
+        this.linkedInId = linkedInId;
+        this.selfIntro = selfIntro;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.profilePictureLink = profilePictureLink;
+        this.phone = phone;
+        this.birthDay = birthDay;
+        this.gender = gender;
+        this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return JSONUtil.Serialize(this);
     }
 }

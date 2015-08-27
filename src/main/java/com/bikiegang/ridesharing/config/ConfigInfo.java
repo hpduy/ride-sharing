@@ -69,6 +69,9 @@ public class ConfigInfo {
     public static String TRIPCALENDAR_INSERT_QUERY;
     public static String TRIPCALENDAR_UPDATE_QUERY;
     public static String TRIPCALENDAR_DELETE_QUERY;
+    public static String ROUTE_DELETE_QUERY;
+    public static String ROUTE_UPDATE_QUERY;
+    public static String ROUTE_INSERT_QUERY;
 
     static {
         RIDESHARING_DB = "ridesharing_db";
@@ -96,11 +99,10 @@ public class ConfigInfo {
                 + "`estimatedTime`,\n"
                 + "`index`,\n"
                 + "`refId`,\n"
-                + "`refType`,\n"
                 + "`lat`,\n"
                 + "`lng`)\n"
                 + "VALUES\n"
-                + "(?,?,?,?,?,?,?,?);";
+                + "(?,?,?,?,?,?,?);";
 
         LINKEDLOCATION_UPDATE_QUERY = "UPDATE `ridesharing_db`.`LinkedLocation`\n"
                 + "SET\n"
@@ -109,7 +111,6 @@ public class ConfigInfo {
                 + "`estimatedTime` = ?,\n"
                 + "`index` = ?,\n"
                 + "`refId` = ?,\n"
-                + "`refType` = ?,\n"
                 + "`lat` = ?,\n"
                 + "`lng` = ?\n"
                 + "WHERE `id` = ?;";
@@ -145,48 +146,36 @@ public class ConfigInfo {
         PLANNEDTRIP_INSERT_QUERY = "INSERT INTO `ridesharing_db`.`PlannedTrip`\n"
                 + "(`id`,\n"
                 + "`arriveTime`,\n"
-                + "`sumDistance`,\n"
-                + "`estimatedTime`,\n"
-                + "`estimatedPrice`,\n"
+                + "`departureTime`,\n"
                 + "`ownerPrice`,\n"
-                + "`estimatedFuel`,\n"
+                + "`estimatedPrice`,\n"
                 + "`creatorId`,\n"
                 + "`role`,\n"
                 + "`type`,\n"
                 + "`plannedTripTrailPolyLine`,\n"
-                + "`rawRoutingResult`, `groupId`, `startLocation`, `endLocation`,\n"
-                + "`polyLine`, `hasHelmet`, `createdTime`, `isBusy`, `title`, `endDay`,\n"
-                + "`timeTable`)\n"
+                + "`timePatternId`,\n"
+                + "`hasHelmet`,\n"
+                + "`requestId`,\n"
+                + "`routeId`)\n"
                 + "VALUES\n"
-                + "(?,?,?,"
+                + "(?,?,?,?,?,"
                 + "?,?,?,?,?,"
-                + "?,?,?,?,?,"
-                + "?,?,?,?,"
-                + "?,?,?,?,?);";
+                + "?,?,?);";
         PLANNEDTRIP_UPDATE_QUERY = "UPDATE `ridesharing_db`.`PlannedTrip`\n"
                 + "SET\n"
                 + "`id` = ?,\n"
                 + "`arriveTime` = ?,\n"
-                + "`sumDistance` = ?,\n"
-                + "`estimatedTime` = ?,\n"
-                + "`estimatedPrice` = ?,\n"
+                + "`departureTime` = ?,\n"
                 + "`ownerPrice` = ?,\n"
-                + "`estimatedFuel` = ?,\n"
+                + "`estimatedPrice` = ?,\n"
                 + "`creatorId` = ?,\n"
                 + "`role` = ?,\n"
                 + "`type` = ?,\n"
                 + "`plannedTripTrailPolyLine` = ?,\n"
-                + "`rawRoutingResult` = ?,\n"
-                + "`groupId` = ?,\n"
-                + "`startLocation` = ?,\n"
-                + "`endLocation` = ?,\n"
-                + "`polyLine` = ?,\n"
+                + "`timePatternId` = ?,\n"
                 + "`hasHelmet` = ?,\n"
-                + "`createdTime` = ?\n,"
-                + "`isBusy` = ?,\n"
-                + "`title` = ?,\n"
-                + "`endDay` = ?,\n"
-                + "`timeTable` = ?\n"
+                + "`requestId` = ?,\n"
+                + "`routeId` = ?\n"
                 + "WHERE `id` = ?;";
         PLANNEDTRIP_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`PlannedTrip`\n"
                 + "WHERE `id` = ?;";
@@ -367,14 +356,14 @@ public class ConfigInfo {
         FEED_GROUP_INSERT_QUERY = "INSERT INTO `ridesharing_db`.`Feed`\n"
                 + "(`id`,\n"
                 + "`type`,\n"
-                + "`refId`)\n"
+                + "`refId`, `createdTime`)\n"
                 + "VALUES\n"
-                + "(?,?,?);";
+                + "(?,?,?,?);";
         FEED_GROUP_UPDATE_QUERY = "UPDATE `ridesharing_db`.`Feed`\n"
                 + "SET\n"
                 + "`id` = ?,\n"
                 + "`type` = ?,\n"
-                + "`refId` = ?\n"
+                + "`refId` = ?, `createdTime` = ?\n"
                 + "WHERE `id` = ?;";
         FEED_GROUP_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`Feed`\n"
                 + "WHERE `id` = ?;";
@@ -484,6 +473,41 @@ public class ConfigInfo {
                 + "`geoCellGrid` = ?\n"
                 + "WHERE `id` = ?;";
         TRIPCALENDAR_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`TripCalendar`\n"
+                + "WHERE `id` = ?;";
+
+        ROUTE_INSERT_QUERY = "INSERT INTO `ridesharing_db`.`Route`\n"
+                + "(`id`,\n"
+                + "`rawRoutingResult`,\n"
+                + "`estimatedFuel`,\n"
+                + "`estimatedTime`,\n"
+                + "`startLocation`,\n"
+                + "`waypoints`,\n"
+                + "`endLocation`,\n"
+                + "`overViewPolyLine`,\n"
+                + "`createdTime`,\n"
+                + "`sumDistance`,\n"
+                + "`creatorId`,\n"
+                + "`title`)\n"
+                + "VALUES\n"
+                + "(?,?,?,?,?,"
+                + "?,?,?,?,?,"
+                + "?,?);";
+        ROUTE_UPDATE_QUERY = "UPDATE `ridesharing_db`.`Route`\n"
+                + "SET\n"
+                + "`id` = ?,\n"
+                + "`rawRoutingResult` = ?,\n"
+                + "`estimatedFuel` = ?,\n"
+                + "`estimatedTime` = ?,\n"
+                + "`startLocation` = ?,\n"
+                + "`waypoints` = ?,\n"
+                + "`endLocation` = ?,\n"
+                + "`overViewPolyLine` = ?,\n"
+                + "`createdTime` = ?,\n"
+                + "`sumDistance` = ?,\n"
+                + "`creatorId` = ?,\n"
+                + "`title` = ?\n"
+                + "WHERE `id` = ?;";
+        ROUTE_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`Route`\n"
                 + "WHERE `id` = ?;";
     }
 

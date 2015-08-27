@@ -1,5 +1,6 @@
 package com.bikiegang.ridesharing.pojo.request;
 
+import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -7,9 +8,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UpdateCurrentLocationWithPlannedTripRequest {
+
     private String currentPolyLine;
     private String userId;
     private long plannedTripId;
+
     public String getCurrentPolyLine() {
         return currentPolyLine;
     }
@@ -32,5 +35,19 @@ public class UpdateCurrentLocationWithPlannedTripRequest {
 
     public void setPlannedTripId(long plannedTripId) {
         this.plannedTripId = plannedTripId;
+    }
+
+    public UpdateCurrentLocationWithPlannedTripRequest() {
+    }
+
+    public UpdateCurrentLocationWithPlannedTripRequest(String currentPolyLine, String userId, long plannedTripId) {
+        this.currentPolyLine = currentPolyLine;
+        this.userId = userId;
+        this.plannedTripId = plannedTripId;
+    }
+
+    @Override
+    public String toString() {
+        return JSONUtil.Serialize(this);
     }
 }

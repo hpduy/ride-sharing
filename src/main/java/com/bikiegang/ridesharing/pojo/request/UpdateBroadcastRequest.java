@@ -1,5 +1,6 @@
 package com.bikiegang.ridesharing.pojo.request;
 
+import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -8,8 +9,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UpdateBroadcastRequest {
-    private String userId = "";
-    private String deviceId = "";
+
+    private String userId;
+    private String deviceId;
     private String regId;
     private int os;
     private int type;
@@ -57,5 +59,21 @@ public class UpdateBroadcastRequest {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public UpdateBroadcastRequest() {
+    }
+
+    public UpdateBroadcastRequest(String userId, String deviceId, String regId, int os, int type) {
+        this.userId = userId;
+        this.deviceId = deviceId;
+        this.regId = regId;
+        this.os = os;
+        this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return JSONUtil.Serialize(this);
     }
 }

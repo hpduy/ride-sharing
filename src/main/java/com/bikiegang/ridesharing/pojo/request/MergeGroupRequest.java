@@ -1,5 +1,6 @@
 package com.bikiegang.ridesharing.pojo.request;
 
+import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -7,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MergeGroupRequest {
+
     private long firstGroupId;
     private long secondGroupId;
 
@@ -24,5 +26,18 @@ public class MergeGroupRequest {
 
     public void setSecondGroupId(long secondGroupId) {
         this.secondGroupId = secondGroupId;
+    }
+
+    public MergeGroupRequest() {
+    }
+
+    public MergeGroupRequest(long firstGroupId, long secondGroupId) {
+        this.firstGroupId = firstGroupId;
+        this.secondGroupId = secondGroupId;
+    }
+
+    @Override
+    public String toString() {
+        return JSONUtil.Serialize(this);
     }
 }

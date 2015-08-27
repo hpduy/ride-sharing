@@ -46,7 +46,7 @@ public class Database {
     private HashMap<Long, Rating> ratingHashMap = new LinkedHashMap<>();
     private HashMap<Long, SocialTripAttendance> socialTripAttendanceHashMap = new LinkedHashMap<>();
     private HashMap<Long, TripCalendar> tripCalendarHashMap = new LinkedHashMap<>();
-    private HashMap<Long,Route> routeHashMap = new HashMap<>();
+    private HashMap<Long, Route> routeHashMap = new HashMap<>();
     //REFERENCE
     /**
      * USER
@@ -67,7 +67,8 @@ public class Database {
     private HashMap<String, HashSet<Long>> userIdRFPlanedTrips = new HashMap<>(); // <userId,<plannedTripId>>
     private HashMap<Integer, HashSet<Long>> roleRFPlannedTrips = new HashMap<>(); // <role,<plannedTripId>>
     private HashMap<Long, HashSet<Long>> groupIdRFPlannedTrips = new HashMap<>(); // <groupId,<plannedTripId>>
-    private HashMap<Long,HashMap<Long,Long>> routeRFPlannedTripsByDay = new HashMap<>();// <routeId,<epochday, plannedTrip>
+    private HashMap<Long, HashMap<Long, Long>> routeRFPlannedTripsByDay = new HashMap<>();// <routeId,<epochday, plannedTrip>
+
     /**
      * TRIP
      */
@@ -122,7 +123,6 @@ public class Database {
      * ROUTE
      */
 
-    private HashMap<Long, HashSet<Long>> routeIdRFPlannedTrip = new HashMap<>(); // <routeId,<plannedTripId>>
     /**
      * GEOCELL
      */
@@ -336,10 +336,6 @@ public class Database {
 
     public HashMap<Long, HashSet<Long>> getGroupIdRFAngelGroups() {
         return groupIdRFAngelGroups;
-    }
-
-    public HashMap<Long, HashSet<Long>> getRouteIdRFPlannedTrip() {
-        return routeIdRFPlannedTrip;
     }
 
     public HashMap<Long, HashMap<Long, Long>> getRouteRFPlannedTripsByDay() {

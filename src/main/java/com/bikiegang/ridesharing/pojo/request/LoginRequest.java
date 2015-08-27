@@ -1,5 +1,6 @@
 package com.bikiegang.ridesharing.pojo.request;
 
+import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -8,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LoginRequest {
-    private String userId = "";
-    private String password = "";
+    private String userId;
+    private String password ;
     private int type;
     //final field
     @JsonIgnore
@@ -46,4 +47,20 @@ public class LoginRequest {
     public void setType(int type) {
         this.type = type;
     }
+
+    public LoginRequest() {
+    }
+
+    public LoginRequest(String userId, String password, int type) {
+        this.userId = userId;
+        this.password = password;
+        this.type = type;
+    }
+
+        @Override
+    public String toString() {
+        return JSONUtil.Serialize(this);
+    }
+
+    
 }

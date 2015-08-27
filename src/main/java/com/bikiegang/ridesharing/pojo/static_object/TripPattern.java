@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TripPattern {
+
     private long startDay;
     private long endDay;
     private int dayOfWeek;
@@ -34,4 +35,5 @@ public class TripPattern {
     public void setDayOfWeek(int dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
     }
+
 }
