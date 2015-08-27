@@ -1,5 +1,6 @@
 package com.bikiegang.ridesharing.pojo.request;
 
+import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -7,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AddPopularLocationRequest {
+
     private String userId;
     private double lat;
     private double lng;
@@ -61,4 +63,22 @@ public class AddPopularLocationRequest {
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
+
+    public AddPopularLocationRequest() {
+    }
+
+    public AddPopularLocationRequest(String userId, double lat, double lng, String name, String address, String imagePath) {
+        this.userId = userId;
+        this.lat = lat;
+        this.lng = lng;
+        this.name = name;
+        this.address = address;
+        this.imagePath = imagePath;
+    }
+
+    @Override
+    public String toString() {
+        return JSONUtil.Serialize(this);
+    }
+
 }

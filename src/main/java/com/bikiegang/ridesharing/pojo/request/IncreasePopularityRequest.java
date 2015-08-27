@@ -1,5 +1,6 @@
 package com.bikiegang.ridesharing.pojo.request;
 
+import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -24,5 +25,18 @@ public class IncreasePopularityRequest {
 
     public void setPopularLocationId(long popularLocationId) {
         this.popularLocationId = popularLocationId;
+    }
+
+    public IncreasePopularityRequest() {
+    }
+
+    public IncreasePopularityRequest(String userId, long popularLocationId) {
+        this.userId = userId;
+        this.popularLocationId = popularLocationId;
+    }
+    
+    @Override
+    public String toString() {
+        return JSONUtil.Serialize(this);
     }
 }

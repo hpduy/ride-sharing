@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TripPattern {
+
     private long startDay;
     private long endDay;
     private long timeDistance;
@@ -34,4 +35,14 @@ public class TripPattern {
     public void setTimeDistance(long timeDistance) {
         this.timeDistance = timeDistance;
     }
+
+    public TripPattern() {
+    }
+
+    public TripPattern(long startDay, long endDay, long timeDistance) {
+        this.startDay = startDay;
+        this.endDay = endDay;
+        this.timeDistance = timeDistance;
+    }
+
 }

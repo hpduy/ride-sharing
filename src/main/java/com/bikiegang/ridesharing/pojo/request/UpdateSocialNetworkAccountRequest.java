@@ -1,5 +1,6 @@
 package com.bikiegang.ridesharing.pojo.request;
 
+import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -8,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UpdateSocialNetworkAccountRequest {
+
     private String userId;
     private String socialNetworkId;
     private int type;
@@ -42,5 +44,19 @@ public class UpdateSocialNetworkAccountRequest {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public UpdateSocialNetworkAccountRequest() {
+    }
+
+    public UpdateSocialNetworkAccountRequest(String userId, String socialNetworkId, int type) {
+        this.userId = userId;
+        this.socialNetworkId = socialNetworkId;
+        this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return JSONUtil.Serialize(this);
     }
 }

@@ -1,5 +1,6 @@
 package com.bikiegang.ridesharing.pojo.request;
 
+import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -7,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GetAngelActiveCodesRequest {
+
     private int numberOfCode;
 
     public int getNumberOfCode() {
@@ -15,5 +17,17 @@ public class GetAngelActiveCodesRequest {
 
     public void setNumberOfCode(int numberOfCode) {
         this.numberOfCode = numberOfCode;
+    }
+
+    public GetAngelActiveCodesRequest() {
+    }
+
+    public GetAngelActiveCodesRequest(int numberOfCode) {
+        this.numberOfCode = numberOfCode;
+    }
+
+    @Override
+    public String toString() {
+        return JSONUtil.Serialize(this);
     }
 }

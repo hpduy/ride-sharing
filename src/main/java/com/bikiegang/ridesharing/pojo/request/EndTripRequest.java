@@ -1,5 +1,6 @@
 package com.bikiegang.ridesharing.pojo.request;
 
+import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
 import com.bikiegang.ridesharing.pojo.LatLng;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -8,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class EndTripRequest {
+
     private long tripId;
     private LatLng endLocation;
     private String tripTrailPolyLine;
@@ -34,5 +36,19 @@ public class EndTripRequest {
 
     public void setTripTrailPolyLine(String tripTrailPolyLine) {
         this.tripTrailPolyLine = tripTrailPolyLine;
+    }
+
+    public EndTripRequest() {
+    }
+
+    public EndTripRequest(long tripId, LatLng endLocation, String tripTrailPolyLine) {
+        this.tripId = tripId;
+        this.endLocation = endLocation;
+        this.tripTrailPolyLine = tripTrailPolyLine;
+    }
+
+    @Override
+    public String toString() {
+        return JSONUtil.Serialize(this);
     }
 }

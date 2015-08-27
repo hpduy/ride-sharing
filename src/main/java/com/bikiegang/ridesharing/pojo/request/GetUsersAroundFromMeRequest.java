@@ -1,5 +1,6 @@
 package com.bikiegang.ridesharing.pojo.request;
 
+import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -42,4 +43,19 @@ public class GetUsersAroundFromMeRequest {
     public void setUserId(String userId) {
         this.userId = userId;
     }
+
+    public GetUsersAroundFromMeRequest() {
+    }
+
+    public GetUsersAroundFromMeRequest(double centerLat, double centerLng, double radius, String userId) {
+        this.centerLat = centerLat;
+        this.centerLng = centerLng;
+        this.radius = radius;
+        this.userId = userId;
+    }
+     @Override
+    public String toString() {
+        return JSONUtil.Serialize(this);
+    }
+       
 }

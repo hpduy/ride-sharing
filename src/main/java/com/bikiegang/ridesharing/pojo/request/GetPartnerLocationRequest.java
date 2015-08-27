@@ -1,5 +1,6 @@
 package com.bikiegang.ridesharing.pojo.request;
 
+import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -16,5 +17,17 @@ public class GetPartnerLocationRequest extends UpdateCurrentLocationRequest {
 
     public void setPartnerId(String partnerId) {
         this.partnerId = partnerId;
+    }
+
+    public GetPartnerLocationRequest() {
+    }
+
+    public GetPartnerLocationRequest(String partnerId) {
+        this.partnerId = partnerId;
+    }
+
+    @Override
+    public String toString() {
+        return JSONUtil.Serialize(this);
     }
 }

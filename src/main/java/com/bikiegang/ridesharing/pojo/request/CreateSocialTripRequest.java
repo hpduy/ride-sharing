@@ -1,5 +1,6 @@
 package com.bikiegang.ridesharing.pojo.request;
 
+import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -7,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CreateSocialTripRequest {
+
     private String userId;
     private double lat;
     private double lng;
@@ -87,5 +89,24 @@ public class CreateSocialTripRequest {
 
     public void setRole(int role) {
         this.role = role;
+    }
+
+    public CreateSocialTripRequest() {
+    }
+
+    public CreateSocialTripRequest(String userId, double lat, double lng, String feeling, int feelingIcon, String wantToGo, int wantToGoIcon, int role) {
+        this.userId = userId;
+        this.lat = lat;
+        this.lng = lng;
+        this.feeling = feeling;
+        this.feelingIcon = feelingIcon;
+        this.wantToGo = wantToGo;
+        this.wantToGoIcon = wantToGoIcon;
+        this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return JSONUtil.Serialize(this);
     }
 }
