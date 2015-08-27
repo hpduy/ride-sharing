@@ -229,6 +229,14 @@
         <servlet-name>AngelLoginAPI</servlet-name>
         <url-pattern>/AngelLoginAPI</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>CheckEmailExistAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.angel.CheckEmailExistAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CheckEmailExistAPI</servlet-name>
+        <url-pattern>/CheckEmailExistAPI</url-pattern>
+    </servlet-mapping>
 
     <!--**TRIP**-->
     <servlet>

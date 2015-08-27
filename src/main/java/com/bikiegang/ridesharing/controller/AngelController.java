@@ -53,7 +53,12 @@ public class AngelController {
         }
         return codes;
     }
-
+    public String checkEmailExist(AngelLoginRequest request) throws JsonProcessingException {
+        if (database.getEmailRFUserId().keySet().contains(request.getEmail())) {
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_has_been_used,"'email'");
+        }
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
+    }
     public synchronized String register(AngelRegisterRequest registerRequest) throws JsonProcessingException {
         if (null == registerRequest.getEmail() || registerRequest.getEmail().equals("")) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'email'");
@@ -65,7 +70,7 @@ public class AngelController {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found,"'activeCode'");
         }
         if (database.getEmailRFUserId().keySet().contains(registerRequest.getEmail())) {
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_has_been_used,"'email' has been used");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_has_been_used,"'email'");
         }
         if (!angelCodeHashMap.keySet().contains(registerRequest.getActiveCode())) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid_or_used,"'activeCode'");
@@ -85,7 +90,7 @@ public class AngelController {
         user.setStatus(User.ANGEL);
         if (dao.insert(user)) {
             JoinGroupRequest request = new JoinGroupRequest();
-            long[] ids = new long[1];
+            Long[] ids = new Long[1];
             ids[0] = registerRequest.getGroupId();
             request.setGroupIds(ids);
             request.setUserId(user.getId());

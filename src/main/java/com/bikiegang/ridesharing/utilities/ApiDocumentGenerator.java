@@ -82,6 +82,7 @@ public class ApiDocumentGenerator {
             Class responseClass = (Class<?>) cls.getField("responseClass").get(api);
             boolean responseIsArray = cls.getField("responseIsArray").getBoolean(api);
             ApiDocument apiDocument = new ApiDocument(apiName, requestClass, responseClass, apiDescription, responseIsArray);
+            System.out.println(apiName);
             apiDocument.generate();
             apiDocs.put(apiDocument.getName(), apiDocument);
         }
