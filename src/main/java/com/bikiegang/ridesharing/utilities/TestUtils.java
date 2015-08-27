@@ -4,14 +4,30 @@
  * and open the template in the editor.
  */
 package com.bikiegang.ridesharing.utilities;
-
-
-import com.bikiegang.ridesharing.pojo.*;
+import com.bikiegang.ridesharing.pojo.AngelGroup;
+import com.bikiegang.ridesharing.pojo.AngelGroupMember;
+import com.bikiegang.ridesharing.pojo.Broadcast;
+import com.bikiegang.ridesharing.pojo.CertificateDetail;
+import com.bikiegang.ridesharing.pojo.Feed;
+import com.bikiegang.ridesharing.pojo.LatLng;
+import com.bikiegang.ridesharing.pojo.LinkedLocation;
+import com.bikiegang.ridesharing.pojo.RequestMakeTrip;
+import com.bikiegang.ridesharing.pojo.PlannedTrip;
+import com.bikiegang.ridesharing.pojo.PopularLocation;
+import com.bikiegang.ridesharing.pojo.Rating;
+import com.bikiegang.ridesharing.pojo.RequestVerify;
+import com.bikiegang.ridesharing.pojo.SocialTrip;
+import com.bikiegang.ridesharing.pojo.SocialTripAttendance;
+import com.bikiegang.ridesharing.pojo.Trip;
+import com.bikiegang.ridesharing.pojo.TripCalendar;
+import com.bikiegang.ridesharing.pojo.User;
+import com.bikiegang.ridesharing.pojo.VerifiedCertificate;
+import java.util.HashSet;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.List;
 
 /**
@@ -30,6 +46,13 @@ public class TestUtils {
         return result;
     }
 
+    public static TripCalendar CreateTripCalendar() {
+        TripCalendar result = new TripCalendar(RandomUtils.nextLong(), RandomStringUtils.randomAlphanumeric(30),
+                RandomUtils.nextLong(), new Hashtable<Long, List<Long>>());
+
+        return result;
+    }
+
     public static PopularLocation CreatePopularLocation() {
         PopularLocation result = new PopularLocation(new LatLng(RandomUtils.nextDouble(),
                 RandomUtils.nextDouble(),
@@ -37,7 +60,7 @@ public class TestUtils {
                 RandomUtils.nextLong(),
                 RandomStringUtils.randomAlphanumeric(30),
                 RandomStringUtils.randomAlphanumeric(30),
-                new HashSet<String>(),RandomStringUtils.randomAlphanumeric(30));
+                new HashSet<String>(), RandomStringUtils.randomAlphanumeric(30));
         return result;
     }
 

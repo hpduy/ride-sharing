@@ -9,6 +9,7 @@ import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.AngelGroup;
 import com.bikiegang.ridesharing.utilities.Const;
+import java.util.HashSet;
 import org.apache.log4j.Logger;
 
 /**
@@ -28,8 +29,19 @@ public class AngelGroupDao {
             }
             //put hashmap
             database.getAngelGroupHashMap().put(obj.getId(), obj);
+            //groupIdRFAngelGroups = new HashMap<>(); // <groupId,<AngelGroupId>>
+            HashSet<Long> angelGroupIds = database.getGroupIdRFAngelGroups().get(obj.getGroupId());
+            if (angelGroupIds == null) {
+                angelGroupIds = new HashSet<>();
+                database.getGroupIdRFAngelGroups().put(obj.getGroupId(), angelGroupIds);
+            }
+            angelGroupIds.add(obj.getId());
+
             //Step 2: put redis
             result = cache.hset(obj.getClass().getName(), String.valueOf(obj.getId()), JSONUtil.Serialize(obj));
+            result &= cache.hset(obj.getClass().getName() + ":angelgroup", String.valueOf(obj.getGroupId()),
+                    JSONUtil.Serialize(angelGroupIds));
+
             if (result) {
                 //Step 3: put job gearman
                 short actionType = Const.RideSharing.ActionType.INSERT;
@@ -57,9 +69,18 @@ public class AngelGroupDao {
         try {
             //remove in hashmap
             database.getAngelGroupHashMap().remove(obj.getId());
+            //groupIdRFAngelGroups = new HashMap<>(); // <groupId,<AngelGroupId>>
+            HashSet<Long> angelGroupIds = database.getGroupIdRFAngelGroups().get(obj.getGroupId());
+            if (angelGroupIds == null) {
+                angelGroupIds = new HashSet<>();
+                database.getGroupIdRFAngelGroups().put(obj.getGroupId(), angelGroupIds);
+            }
+            angelGroupIds.remove((Long) obj.getId());
+
             //Step 2: remove redis
             result = cache.hdel(obj.getClass().getName(), String.valueOf(obj.getId()));
-
+            result &= cache.hset(obj.getClass().getName() + ":angelgroup", String.valueOf(obj.getGroupId()),
+                    JSONUtil.Serialize(angelGroupIds));
             if (result) {
                 //Step 3: put job gearman
                 short actionType = Const.RideSharing.ActionType.DELETE;

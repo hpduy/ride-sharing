@@ -13,7 +13,7 @@ import com.bikiegang.ridesharing.annn.framework.dbconn.ClientManager;
 import com.bikiegang.ridesharing.annn.framework.dbconn.ManagerIF;
 import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
 import com.bikiegang.ridesharing.annn.framework.util.StringUtils;
-import com.bikiegang.ridesharing.pojo.AngelGroup;
+import com.bikiegang.ridesharing.pojo.TripCalendar;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import org.apache.log4j.Logger;
@@ -34,13 +34,13 @@ public class TripCalendarDA implements IDA {
 
         switch (actionType) {
             case Const.RideSharing.ActionType.INSERT:
-                result = Insert((AngelGroup) value);
+                result = Insert((TripCalendar) value);
                 break;
             case Const.RideSharing.ActionType.UPDATE:
-                result = Update((AngelGroup) value);
+                result = Update((TripCalendar) value);
                 break;
             case Const.RideSharing.ActionType.DELETE:
-                result = Delete((AngelGroup) value);
+                result = Delete((TripCalendar) value);
                 break;
         }
 
@@ -49,22 +49,19 @@ public class TripCalendarDA implements IDA {
 
     Logger logger = LogUtil.getLogger(this.getClass());
 
-    boolean Insert(AngelGroup value) {
+    boolean Insert(TripCalendar value) {
 
         boolean result = false;
         ManagerIF cm = ClientManager.getInstance(ConfigInfo.RIDESHARING_DB);
 
         Connection cnn = cm.borrowClient();
         try {
-            String query = ConfigInfo.ANGEL_GROUP_INSERT_QUERY;
+            String query = ConfigInfo.TRIPCALENDAR_INSERT_QUERY;
             try (PreparedStatement stmt = cnn.prepareStatement(query)) {
                 stmt.setLong(1, value.getId());
-                stmt.setString(2, JSONUtil.Serialize(value.getLocation()));
-                stmt.setString(3, StringUtils.join(value.getTagName(), ","));
-                stmt.setString(4, value.getCanonicalName());
-                stmt.setString(5, value.getAddress());
-                stmt.setLong(6, value.getCreatedTime());
-                stmt.setLong(7, value.getGroupId());
+                stmt.setString(2, value.getCreatorId());
+                stmt.setLong(3, value.getCreatedTime());
+                stmt.setString(4, JSONUtil.Serialize(value.getGeoCellGrid()));
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {
@@ -79,23 +76,20 @@ public class TripCalendarDA implements IDA {
         return result;
     }
 
-    boolean Update(AngelGroup value) {
+    boolean Update(TripCalendar value) {
 
         boolean result = false;
         ManagerIF cm = ClientManager.getInstance(ConfigInfo.RIDESHARING_DB);
 
         Connection cnn = cm.borrowClient();
         try {
-            String query = ConfigInfo.ANGEL_GROUP_UPDATE_QUERY;
+            String query = ConfigInfo.TRIPCALENDAR_UPDATE_QUERY;
             try (PreparedStatement stmt = cnn.prepareStatement(query)) {
                 stmt.setLong(1, value.getId());
-                stmt.setString(2, JSONUtil.Serialize(value.getLocation()));
-                stmt.setString(3, StringUtils.join(value.getTagName(), ","));
-                stmt.setString(4, value.getCanonicalName());
-                stmt.setString(5, value.getAddress());
-                stmt.setLong(6, value.getCreatedTime());
-                stmt.setLong(7, value.getGroupId());
-                stmt.setLong(8, value.getId());
+                stmt.setString(2, value.getCreatorId());
+                stmt.setLong(3, value.getCreatedTime());
+                stmt.setString(4, JSONUtil.Serialize(value.getGeoCellGrid()));
+                stmt.setLong(5, value.getId());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {
@@ -110,14 +104,14 @@ public class TripCalendarDA implements IDA {
         return result;
     }
 
-    boolean Delete(AngelGroup value) {
+    boolean Delete(TripCalendar value) {
 
         boolean result = false;
         ManagerIF cm = ClientManager.getInstance(ConfigInfo.RIDESHARING_DB);
 
         Connection cnn = cm.borrowClient();
         try {
-            String query = ConfigInfo.ANGEL_GROUP_DELETE_QUERY;
+            String query = ConfigInfo.TRIPCALENDAR_DELETE_QUERY;
             try (PreparedStatement stmt = cnn.prepareStatement(query)) {
                 stmt.setLong(1, value.getId());
 

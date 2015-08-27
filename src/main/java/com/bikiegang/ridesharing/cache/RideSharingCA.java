@@ -152,6 +152,36 @@ public class RideSharingCA {
     //<editor-fold defaultstate="collapsed" desc="Restore function">
     Database database = Database.getInstance();
 
+    public boolean RestoreTripCalendar() {
+        boolean result = false;
+        try {
+            database.getTripCalendarHashMap().clear();
+            Map<String, String> hgetAll = hgetAll(TripCalendar.class.getName());
+            for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+
+                database.getTripCalendarHashMap().put(ConvertUtils.toLong(key),
+                        (TripCalendar) JSONUtil.DeSerialize(value, TripCalendar.class));
+            }
+
+            hgetAll = hgetAll(TripCalendar.class.getName() + ":user");
+            for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+
+                database.getUserIdRFTripCalendar().put(key,
+                        ConvertUtils.toLong(value));
+            }
+
+            result = true;
+        } catch (Exception ex) {
+            _logger.error(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
     public boolean RestoreAngelGroup() {
         boolean result = false;
         try {
@@ -163,6 +193,16 @@ public class RideSharingCA {
 
                 database.getAngelGroupHashMap().put(ConvertUtils.toLong(key),
                         (AngelGroup) JSONUtil.DeSerialize(value, AngelGroup.class));
+            }
+
+            hgetAll = hgetAll(AngelGroup.class.getName() + ":angelgroup");
+            for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+
+                database.getGroupIdRFAngelGroups().put(ConvertUtils.toLong(key),
+                        (HashSet<Long>) JSONUtil.DeSerialize(value, new TypeToken<HashSet<Long>>() {
+                        }.getType()));
             }
             result = true;
         } catch (Exception ex) {
@@ -662,13 +702,12 @@ public class RideSharingCA {
         result &= RestoreRequestVerify();
         result &= RestoreAngelGroup();
         result &= RestoreAngelMemberGroup();
-
         result &= RestoreFeed();
         result &= RestorePopularLocation();
         result &= RestoreRating();
         result &= RestoreSocialTrip();
         result &= RestoreSocialTripAttendance();
-
+        result &= RestoreTripCalendar();
         return result;
     }
 

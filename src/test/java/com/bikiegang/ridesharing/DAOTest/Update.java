@@ -6,8 +6,8 @@
 package com.bikiegang.ridesharing.DAOTest;
 
 import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
-import com.bikiegang.ridesharing.dao.PlannedTripDao;
-import com.bikiegang.ridesharing.pojo.PlannedTrip;
+import com.bikiegang.ridesharing.dao.TripDao;
+import com.bikiegang.ridesharing.pojo.Trip;
 import com.bikiegang.ridesharing.utilities.TestUtils;
 
 /**
@@ -17,10 +17,10 @@ import com.bikiegang.ridesharing.utilities.TestUtils;
 public class Update {
 
     public static void main(String[] args) {
-        PlannedTrip _value = null;
-        _value = TestUtils.CreatePlannedTrip();
-        _value.setId(9077942408972006062l);
-        PlannedTripDao dao = new PlannedTripDao();
+        Trip _value = null;
+        _value = TestUtils.CreateTrip();
+        _value.setId(5774371840931170285l);
+        TripDao dao = new TripDao();
         boolean DoAction = dao.update(_value);
         System.out.println(DoAction);
         System.out.println(JSONUtil.Serialize(_value));

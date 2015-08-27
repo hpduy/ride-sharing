@@ -8,7 +8,7 @@ import java.util.*;
 /**
  * Created by hpduy17 on 8/20/15.
  */
-public class TripCalendar {
+public class TripCalendar implements PojoBase{
     private long id;
     private String creatorId = "";
     private long createdTime;
@@ -161,4 +161,14 @@ public class TripCalendar {
     public void setCreatedTime(long createdTime) {
         this.createdTime = createdTime;
     }
+
+    public Hashtable<Long, List<Long>> getGeoCellGrid() {
+        return geoCellGrid;
+    }
+
+    public void setGeoCellGrid(Hashtable<Long, List<Long>> geoCellGrid) {
+        this.geoCellGrid = geoCellGrid;
+    }
+
+
 }
