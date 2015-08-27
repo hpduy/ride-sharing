@@ -161,4 +161,23 @@ public class IdGenerator {
         while (idSet.contains(groupAngelGroupId));
         return groupAngelGroupId;
     }
+
+    public static synchronized long getTripCalendarId() {
+        Set<Long> idSet = database.getTripCalendarHashMap().keySet();
+        long tripCalendarId;
+        do {
+            tripCalendarId = RandomUtils.nextLong();
+        }
+        while (idSet.contains(tripCalendarId));
+        return tripCalendarId;
+    }
+    public static synchronized long getRouteId() {
+        Set<Long> idSet = database.getRouteHashMap().keySet();
+        long id;
+        do {
+            id = RandomUtils.nextLong();
+        }
+        while (idSet.contains(id));
+        return id;
+    }
 }

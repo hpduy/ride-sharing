@@ -1,5 +1,6 @@
 package com.bikiegang.ridesharing.pojo.request;
 
+import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.static_object.TripPattern;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -18,6 +19,7 @@ public class CreatePlannedTripRequest {
     private int typeOfTrip;
     private String title;
     private TripPattern[] patterns;
+    private LatLng[] waypoints;
 
     public String getCreatorId() {
         return creatorId;
@@ -97,5 +99,13 @@ public class CreatePlannedTripRequest {
 
     public void setPatterns(TripPattern[] patterns) {
         this.patterns = patterns;
+    }
+
+    public LatLng[] getWaypoints() {
+        return waypoints;
+    }
+
+    public void setWaypoints(LatLng[] waypoints) {
+        this.waypoints = waypoints;
     }
 }

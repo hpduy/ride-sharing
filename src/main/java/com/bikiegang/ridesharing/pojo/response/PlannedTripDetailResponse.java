@@ -1,6 +1,8 @@
 package com.bikiegang.ridesharing.pojo.response;
 
+import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.PlannedTrip;
+import com.bikiegang.ridesharing.pojo.Route;
 
 import java.io.IOException;
 
@@ -15,7 +17,8 @@ public class PlannedTripDetailResponse extends PlannedTripShortDetailResponse {
 
     public PlannedTripDetailResponse(PlannedTrip that, String senderId) throws IOException {
         super(that, senderId);
-        this.googleRoutingResult = that.getRawRoutingResult().toString();
+        Route route  = Database.getInstance().getRouteHashMap().get(that.getRouteId());
+        this.googleRoutingResult = route.getRawRoutingResult().toString();
     }
 
     public String getGoogleRoutingResult() {

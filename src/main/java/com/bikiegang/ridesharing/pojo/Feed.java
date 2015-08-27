@@ -10,6 +10,7 @@ public class Feed implements PojoBase {
     private long id;
     private int type;
     private long refId;
+    private long createdTime;
 
     @JsonIgnore
     public static final int PLANNED_TRIP = 1;
@@ -19,10 +20,11 @@ public class Feed implements PojoBase {
     public Feed() {
     }
 
-    public Feed(long id, int type, long refId) {
+    public Feed(long id, int type, long refId, long createdTime) {
         this.id = id;
         this.type = type;
         this.refId = refId;
+        this.createdTime = createdTime;
     }
 
     public long getId() {
@@ -47,5 +49,13 @@ public class Feed implements PojoBase {
 
     public void setRefId(long refId) {
         this.refId = refId;
+    }
+
+    public long getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(long createdTime) {
+        this.createdTime = createdTime;
     }
 }

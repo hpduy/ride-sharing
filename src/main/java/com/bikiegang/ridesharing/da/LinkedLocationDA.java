@@ -6,15 +6,16 @@
 package com.bikiegang.ridesharing.da;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
+import com.bikiegang.ridesharing.annn.framework.dbconn.ClientManager;
+import com.bikiegang.ridesharing.annn.framework.dbconn.ManagerIF;
 import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.pojo.LinkedLocation;
 import com.bikiegang.ridesharing.pojo.PojoBase;
 import com.bikiegang.ridesharing.utilities.Const;
-import com.bikiegang.ridesharing.annn.framework.dbconn.ClientManager;
-import com.bikiegang.ridesharing.annn.framework.dbconn.ManagerIF;
+import org.apache.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import org.apache.log4j.Logger;
 
 /**
  *
@@ -56,14 +57,14 @@ public class LinkedLocationDA implements IDA {
         try {
             String query = ConfigInfo.LINKEDLOCATION_INSERT_QUERY;
             try (PreparedStatement stmt = cnn.prepareStatement(query)) {
-                stmt.setLong(1, value.getId());
-                stmt.setLong(2, value.getTime());
-                stmt.setLong(3, value.getEstimatedTime());
-                stmt.setInt(4, value.getIndex());
-                stmt.setLong(5, value.getRefId());
-                stmt.setInt(6, value.getRefType());
-                stmt.setDouble(7, value.getLat());
-                stmt.setDouble(8, value.getLng());
+//                stmt.setLong(1, value.getId());
+//                stmt.setLong(2, value.getTime());
+//                stmt.setLong(3, value.getEstimatedTime());
+//                stmt.setInt(4, value.getIndex());
+//                stmt.setLong(5, value.getRefId());
+//                stmt.setInt(6, value.getRefType());
+//                stmt.setDouble(7, value.getLat());
+//                stmt.setDouble(8, value.getLng());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {
@@ -87,15 +88,15 @@ public class LinkedLocationDA implements IDA {
         try {
             String query = ConfigInfo.LINKEDLOCATION_UPDATE_QUERY;
             try (PreparedStatement stmt = cnn.prepareStatement(query)) {
-                stmt.setLong(1, value.getId());
-                stmt.setLong(2, value.getTime());
-                stmt.setLong(3, value.getEstimatedTime());
-                stmt.setInt(4, value.getIndex());
-                stmt.setLong(5, value.getRefId());
-                stmt.setInt(6, value.getRefType());
-                stmt.setDouble(7, value.getLat());
-                stmt.setDouble(8, value.getLng());
-                stmt.setLong(9, value.getId());
+//                stmt.setLong(1, value.getId());
+//                stmt.setLong(2, value.getTime());
+//                stmt.setLong(3, value.getEstimatedTime());
+//                stmt.setInt(4, value.getIndex());
+//                stmt.setLong(5, value.getRefId());
+//                stmt.setInt(6, value.getRefType());
+//                stmt.setDouble(7, value.getLat());
+//                stmt.setDouble(8, value.getLng());
+//                stmt.setLong(9, value.getId());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {

@@ -46,6 +46,7 @@ public class Database {
     private HashMap<Long, Rating> ratingHashMap = new LinkedHashMap<>();
     private HashMap<Long, SocialTripAttendance> socialTripAttendanceHashMap = new LinkedHashMap<>();
     private HashMap<Long, TripCalendar> tripCalendarHashMap = new LinkedHashMap<>();
+    private HashMap<Long,Route> routeHashMap = new HashMap<>();
     //REFERENCE
     /**
      * USER
@@ -66,6 +67,7 @@ public class Database {
     private HashMap<String, HashSet<Long>> userIdRFPlanedTrips = new HashMap<>(); // <userId,<plannedTripId>>
     private HashMap<Integer, HashSet<Long>> roleRFPlannedTrips = new HashMap<>(); // <role,<plannedTripId>>
     private HashMap<Long, HashSet<Long>> groupIdRFPlannedTrips = new HashMap<>(); // <groupId,<plannedTripId>>
+    private HashMap<Long,HashMap<Long,Long>> routeRFPlannedTripsByDay = new HashMap<>();// <routeId,<epochday, plannedTrip>
     /**
      * TRIP
      */
@@ -89,7 +91,7 @@ public class Database {
     /**
      * LINKED LOCATION
      */
-    private HashMap<Long, List<Long>> plannedTripIdRFLinkedLocations = new HashMap<>(); //<plannedTripId,<LinkedLocationId>>
+    private HashMap<Long, List<Long>> plannedTripIdRFLinkedLocations = new HashMap<>(); //<routeId,<LinkedLocationId>>
     /**
      * ANGEL GROUP
      */
@@ -111,17 +113,21 @@ public class Database {
     /**
      * SOCIAL ATTENDANCE
      */
-
     //TODO: do later
     /**
      * TRIP CALENDAR
      */
     private HashMap<String, Long> userIdRFTripCalendar = new HashMap<>();// <userId,tripCalendarId>
     /**
+     * ROUTE
+     */
+
+    private HashMap<Long, HashSet<Long>> routeIdRFPlannedTrip = new HashMap<>(); // <routeId,<plannedTripId>>
+    /**
      * GEOCELL
      */
-    private GeoCell<Long> geoCellDriver = new GeoCell<>(GeoCell.CELL_LEN_OF_PLANNED_TRIP); // for plannedTrip
-    private GeoCell<Long> geoCellPassenger = new GeoCell<>(GeoCell.CELL_LEN_OF_PLANNED_TRIP);// for plannedTrip
+    private GeoCell<Long> geoCellDriver = new GeoCell<>(GeoCell.CELL_LEN_OF_PLANNED_TRIP); // for route
+    private GeoCell<Long> geoCellPassenger = new GeoCell<>(GeoCell.CELL_LEN_OF_PLANNED_TRIP);// for route
     private GeoCell<String> geoCellCurrentLocation = new GeoCell<>(GeoCell.CELL_LEN_OF_PT_START_LOCATION);
     private GeoCell<Long> geoCellStartLocation = new GeoCell<>(GeoCell.CELL_LEN_OF_PT_START_LOCATION);
     private GeoCell<Long> geoCellAngelGroup = new GeoCell<>(GeoCell.CELL_LEN_OF_ANGEL_GROUP);
@@ -209,6 +215,10 @@ public class Database {
 
     public HashMap<Long, TripCalendar> getTripCalendarHashMap() {
         return tripCalendarHashMap;
+    }
+
+    public HashMap<Long, Route> getRouteHashMap() {
+        return routeHashMap;
     }
 
     /*REFERENCE GET-SET*/
@@ -326,6 +336,14 @@ public class Database {
 
     public HashMap<Long, HashSet<Long>> getGroupIdRFAngelGroups() {
         return groupIdRFAngelGroups;
+    }
+
+    public HashMap<Long, HashSet<Long>> getRouteIdRFPlannedTrip() {
+        return routeIdRFPlannedTrip;
+    }
+
+    public HashMap<Long, HashMap<Long, Long>> getRouteRFPlannedTripsByDay() {
+        return routeRFPlannedTripsByDay;
     }
 
     /*GEOCELL GET-SET*/

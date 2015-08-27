@@ -2,10 +2,7 @@ package com.bikiegang.ridesharing.utilities.daytime;
 
 import com.bikiegang.ridesharing.geocoding.TimezoneMapper;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.TimeZone;
+import java.util.*;
 
 /**
  * Created by hpduy17 on 6/17/15.
@@ -67,11 +64,19 @@ public class DateTimeUtil {
         return date % SECONDS_PER_DAY;
     }
 
-    public List<Long> getTimePattern(long startDay, long timeDistance, long endDay){
+    public List<Long> getTimePattern(long startDay, int dayOfWeek, long endDay) {
         List<Long> timePattern = new ArrayList<>();
-        while(startDay <= endDay){
+        for (; startDay <= endDay; startDay += DAYS) {
+            Calendar calendar = new GregorianCalendar();
+            calendar.setTime(new Date(startDay * 1000));
+            int dOw = calendar.get(Calendar.DAY_OF_WEEK);
+            if (dOw == dayOfWeek) {
+                break;
+            }
+        }
+        while (startDay <= endDay) {
             timePattern.add(startDay);
-            timeDistance += timeDistance;
+            startDay += WEEKS;
         }
         return timePattern;
     }

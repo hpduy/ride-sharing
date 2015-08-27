@@ -5,9 +5,9 @@ import com.bikiegang.ridesharing.geocoding.FetchingDataFromGoogleRouting;
 import com.bikiegang.ridesharing.geocoding.GoogleRoutingObject.GoogleRoute;
 import com.bikiegang.ridesharing.pojo.Feed;
 import com.bikiegang.ridesharing.pojo.PlannedTrip;
+import com.bikiegang.ridesharing.pojo.Route;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Created by hpduy17 on 7/8/15.
@@ -29,15 +29,16 @@ public class PlannedTripShortDetailResponse extends TripInFeed {
 
     public PlannedTripShortDetailResponse(PlannedTrip that, String senderId) throws IOException {
         Database database = Database.getInstance();
-        GoogleRoute googleRoute = new FetchingDataFromGoogleRouting().getRouteFromRoutingResult(that);
+        Route route  = Database.getInstance().getRouteHashMap().get(that.getRouteId());
+        GoogleRoute googleRoute = new FetchingDataFromGoogleRouting().getRouteFromRoutingResult(route);
         this.id = that.getId();
         this.role = that.getRole();
         this.unitPrice = that.getOwnerPrice();
         this.hasHelmet = that.isHasHelmet();
-        this.createdTime = that.getCreatedTime();
-        this.ownerDistance = that.getSumDistance();
-        this.goTime = new ArrayList<Long>(that.getTimeTable().values()).get(0);
-        this.duration = that.getEstimatedTime();
+        this.createdTime = route.getCreatedTime();
+        this.ownerDistance = route.getSumDistance();
+        this.goTime = that.getDepartureTime();
+        this.duration = route.getEstimatedTime();
         try {
             this.requested = (database.getSenderRequestsBox().get(senderId).containsKey(that.getId()));
         } catch (Exception ignored) {

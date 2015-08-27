@@ -5,10 +5,13 @@ import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.database.IdGenerator;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.Feed;
+import com.bikiegang.ridesharing.pojo.PlannedTrip;
+import com.bikiegang.ridesharing.pojo.SocialTrip;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.GetFeedsRequest;
 import com.bikiegang.ridesharing.pojo.response.*;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
+import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,14 +25,24 @@ public class FeedController {
     private Database database = Database.getInstance();
 
     public boolean postNewFeed(long refId, int type) {
+        return postNewFeed(refId, type, DateTimeUtil.now());
+    }
+
+    public boolean postNewFeed(long refId, int type, long epochTime) {
         if (refId <= 0 || (type != Feed.PLANNED_TRIP && type != Feed.SOCIAL_TRIP))
             return false;
         Feed feed = new Feed();
         feed.setId(IdGenerator.getFeedId());
         feed.setRefId(refId);
         feed.setType(type);
-        if(dao.insert(feed)){
-
+        feed.setCreatedTime(epochTime);
+        if (dao.insert(feed)) {
+            if (type == Feed.PLANNED_TRIP) {
+                PlannedTrip plannedTrip = database.getPlannedTripHashMap().get(refId);
+            } else {
+                SocialTrip socialTrip = database.getSocialTripHashMap().get(refId);
+            }
+            return true;
         }
         return false;
     }
@@ -41,21 +54,37 @@ public class FeedController {
         if (request.getNumberOfFeed() <= 0) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'numberOfFeed'");
         }
-        if (request.getStartIdx() < 0 || request.getStartIdx() >= database.getFeedHashMap().size()) {
+        if (request.getStartIdx() <= 0 || request.getStartIdx() >= database.getFeedHashMap().size()) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'startIdx'");
         }
         int fromIdx = 0;
         int toIdx = 0;
+        // to index process
+
         switch (request.getGetWay()) {
             case GetFeedsRequest.NEW_FEED:
-                fromIdx = request.getStartIdx();
-                toIdx = database.getFeedHashMap().size();
+                for(toIdx = database.getFeedHashMap().size()-1; toIdx >= 0 ; toIdx--){
+                    if(new ArrayList<>(database.getFeedHashMap().values()).get(toIdx).getCreatedTime() < DateTimeUtil.now()){
+                        break;
+                    }
+                }
+                if(toIdx > request.getStartIdx()) {
+                    fromIdx = request.getStartIdx();
+                    if (fromIdx <= 0 && toIdx - request.getNumberOfFeed() > 0) {
+                        fromIdx = toIdx - request.getNumberOfFeed();
+                    }
+                }
                 break;
             case GetFeedsRequest.HISTORY_FEED:
+                for(toIdx = request.getStartIdx(); toIdx >= 0 ; toIdx--){
+                    if(new ArrayList<>(database.getFeedHashMap().values()).get(toIdx).getCreatedTime() < DateTimeUtil.now()){
+                        break;
+                    }
+                }
                 fromIdx = request.getStartIdx() - request.getNumberOfFeed();
                 if (fromIdx < 0)
                     fromIdx = 0;
-                toIdx = request.getStartIdx();
+
                 break;
             default:
                 return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'getWay'");
@@ -89,6 +118,30 @@ public class FeedController {
         }
         GetFeedsResponse feedsResponse = new GetFeedsResponse();
         feedsResponse.setFeeds(responses.toArray(new FeedResponse[responses.size()]));
-        return Parser.FeedsToJSon(true,MessageMappingUtil.Successfully,feedsResponse);
+        return Parser.FeedsToJSon(true, MessageMappingUtil.Successfully, feedsResponse);
+    }
+
+    public FeedResponse[] convertPlannedTripsToFeeds(PlannedTrip[] plannedTrips) throws IOException {
+        List<FeedResponse> responses = new ArrayList<>();
+        for (PlannedTrip plannedTrip : plannedTrips) {
+            FeedResponse response = new FeedResponse();
+            ExPartnerInfoResponse partnerInfoResponse = null;
+            UserShortDetailResponse userShortDetailResponse = null;
+            User user = database.getUserHashMap().get(plannedTrip.getCreatorId());
+            if (user != null) {
+                userShortDetailResponse = new UserShortDetailResponse(user);
+                partnerInfoResponse = new UserController().getExPartners(user.getId());
+                response.setPartnerInfo(partnerInfoResponse);
+                response.setUserDetail(userShortDetailResponse);
+                response.setTripDetail(new PlannedTripShortDetailResponse(plannedTrip, user.getId()));
+                responses.add(response);
+            }
+
+        }
+        return responses.toArray(new FeedResponse[responses.size()]);
+    }
+
+    public FeedResponse[] convertPlannedTripsToFeeds(List<PlannedTrip> plannedTrips) throws IOException {
+        return convertPlannedTripsToFeeds(plannedTrips.toArray(new PlannedTrip[plannedTrips.size()]));
     }
 }

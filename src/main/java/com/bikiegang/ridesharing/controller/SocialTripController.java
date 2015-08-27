@@ -4,6 +4,7 @@ import com.bikiegang.ridesharing.dao.SocialTripDao;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.database.IdGenerator;
 import com.bikiegang.ridesharing.parsing.Parser;
+import com.bikiegang.ridesharing.pojo.Feed;
 import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.SocialTrip;
 import com.bikiegang.ridesharing.pojo.request.CreateSocialTripRequest;
@@ -42,6 +43,7 @@ public class SocialTripController {
         socialTrip.setWantToGoIcon(request.getWantToGoIcon());
         socialTrip.setLocation( new LatLng(request.getLat(), request.getLng()));
         if(dao.insert(socialTrip)){
+            new FeedController().postNewFeed(socialTrip.getId(), Feed.SOCIAL_TRIP);
             return Parser.ObjectToJSon(true,MessageMappingUtil.Successfully);
         }
         return Parser.ObjectToJSon(false,MessageMappingUtil.Interactive_with_database_fail);

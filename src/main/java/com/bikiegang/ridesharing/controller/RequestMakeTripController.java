@@ -73,7 +73,9 @@ public class RequestMakeTripController {
             createRequest.setCreatorId(request.getSenderId());
             createRequest.setGoTime(DateTimeUtil.now());
             createRequest.setRole(senderRole);
-            createRequest.setGoogleRoutingResult(passengerPlannedTrip.getRawRoutingResult().toString());
+            try {
+                createRequest.setGoogleRoutingResult(database.getRouteHashMap().get(passengerPlannedTrip.getRouteId()).getRawRoutingResult().toString());
+            }catch (Exception ignored){}
             createRequest.setIsParing(false);// no paring
             createRequest.setPrice(-1);// default price
             String response = new PlannedTripController().createSingleFuturePlannedTrip(createRequest);
@@ -152,7 +154,7 @@ public class RequestMakeTripController {
                 senderPlannedTrip = database.getPlannedTripHashMap().get(requestMakeTrip.getDriverPlannedTripId());
             else
                 senderPlannedTrip = database.getPlannedTripHashMap().get(requestMakeTrip.getPassengerPlannedTripId());
-            if (senderPlannedTrip.isBusy()) {
+            if (senderPlannedTrip.getRequestId() > 0 && database.getRequestMakeTripHashMap().containsKey(senderPlannedTrip.getRequestId())) {
                 requestMakeTrip.setStatus(RequestMakeTrip.DENY);
                 dao.update(requestMakeTrip);
                 return Parser.ObjectToJSon(false, MessageMappingUtil.User_is_busy);
@@ -172,8 +174,8 @@ public class RequestMakeTripController {
                 // Change user's status
                 PlannedTrip driverPlannedTrip = database.getPlannedTripHashMap().get(requestMakeTrip.getDriverPlannedTripId());
                 PlannedTrip passengerPlannedTrip = database.getPlannedTripHashMap().get(requestMakeTrip.getPassengerPlannedTripId());
-                driverPlannedTrip.setIsBusy(true);
-                passengerPlannedTrip.setIsBusy(true);
+                driverPlannedTrip.setRequestId(requestMakeTrip.getId());
+                passengerPlannedTrip.setRequestId(requestMakeTrip.getId());
                 // Deny all request similar of other user in receiver box
                 long plannedTripId = requestMakeTrip.getSenderRole() == User.DRIVER ? requestMakeTrip.getPassengerPlannedTripId() : requestMakeTrip.getDriverPlannedTripId();
                 denyRequest(request.getReplierId(), plannedTripId);

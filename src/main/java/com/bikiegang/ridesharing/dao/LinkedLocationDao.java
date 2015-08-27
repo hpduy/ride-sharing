@@ -42,7 +42,6 @@ public class LinkedLocationDao {
             }
             linkedLocationIds.add(obj.getId());
             // more (put to geocell)
-            if (obj.getRefType() == LinkedLocation.IN_PLANNED_TRIP) {
                 PlannedTrip pt = database.getPlannedTripHashMap().get(obj.getRefId());
                 GeoCell<Long> geoCell = null;
                 if (pt.getRole() == User.DRIVER) {
@@ -54,7 +53,7 @@ public class LinkedLocationDao {
                 if (null != geoCell) {
                     geoCell.putToCell(obj, obj.getId());
                 }
-            }
+
             //Step 2: put redis
             result = cache.hset(obj.getClass().getName(),
                     String.valueOf(obj.getId()), JSONUtil.Serialize(obj));
@@ -95,7 +94,6 @@ public class LinkedLocationDao {
                 return false;
             }
             // remove from geo cell
-            if (obj.getRefType() == LinkedLocation.IN_PLANNED_TRIP) {
                 PlannedTrip pt = database.getPlannedTripHashMap().get(obj.getRefId());
                 GeoCell<Long> geoCell = null;
                 if (pt.getRole() == User.DRIVER) {
@@ -107,7 +105,7 @@ public class LinkedLocationDao {
                 if (null != geoCell) {
                     geoCell.removeFromCell(obj, obj.getId());
                 }
-            }
+
             //Step 1: put in hashmap
             database.getLinkedLocationHashMap().remove(obj.getId());
             //plannedTripIdRFLinkedLocations = new HashMap<>(); //<plannedTripId,<LinkedLocationId>>
@@ -158,7 +156,6 @@ public class LinkedLocationDao {
             if (tmp != null) {
                 LinkedLocation older = new LinkedLocation(tmp);
                 // more (put to geocell)
-                if (obj.getRefType() == LinkedLocation.IN_PLANNED_TRIP) {
                     PlannedTrip pt = database.getPlannedTripHashMap().get(obj.getRefId());
                     GeoCell<Long> geoCell = null;
                     if (pt.getRole() == User.DRIVER) {
@@ -171,7 +168,7 @@ public class LinkedLocationDao {
                         geoCell.removeFromCell(older, older.getId());
                         geoCell.putToCell(obj, obj.getId());
                     }
-                }
+
             }
             //Step 1: put in hashmap
             database.getLinkedLocationHashMap().put(obj.getId(), obj);

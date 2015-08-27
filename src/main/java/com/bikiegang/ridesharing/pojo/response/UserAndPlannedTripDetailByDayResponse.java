@@ -5,12 +5,14 @@ package com.bikiegang.ridesharing.pojo.response;
  */
 public class UserAndPlannedTripDetailByDayResponse {
     private long epochDay;
+    private UserAndPlannedTripDetailResponse yourPlannedTrip;
     private UserAndPlannedTripDetailResponse[] pairedPlannedTripsResult;
 
     public UserAndPlannedTripDetailByDayResponse() {
     }
 
-    public UserAndPlannedTripDetailByDayResponse(long epochDay, UserAndPlannedTripDetailResponse[] pairedPlannedTripsResult) {
+    public UserAndPlannedTripDetailByDayResponse(long epochDay,UserAndPlannedTripDetailResponse yourPlannedTrip, UserAndPlannedTripDetailResponse[] pairedPlannedTripsResult) {
+        this.yourPlannedTrip = yourPlannedTrip;
         this.epochDay = epochDay;
         this.pairedPlannedTripsResult = pairedPlannedTripsResult;
     }
@@ -29,5 +31,13 @@ public class UserAndPlannedTripDetailByDayResponse {
 
     public void setPairedPlannedTripsResult(UserAndPlannedTripDetailResponse[] pairedPlannedTripsResult) {
         this.pairedPlannedTripsResult = pairedPlannedTripsResult;
+    }
+
+    public UserAndPlannedTripDetailResponse getYourPlannedTrip() {
+        return yourPlannedTrip;
+    }
+
+    public void setYourPlannedTrip(UserAndPlannedTripDetailResponse yourPlannedTrip) {
+        this.yourPlannedTrip = yourPlannedTrip;
     }
 }

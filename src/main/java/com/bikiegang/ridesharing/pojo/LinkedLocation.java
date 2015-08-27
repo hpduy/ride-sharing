@@ -1,7 +1,5 @@
 package com.bikiegang.ridesharing.pojo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 /**
  * Created by hpduy17 on 6/22/15.
  */
@@ -9,28 +7,19 @@ public class LinkedLocation extends LatLng implements PojoBase {
     private long id;
     private long estimatedTime; // duration from first location
     private int index;
-    private long refId; // routeId or tripId
-    private int refType;
-    //final field
-
-    @JsonIgnore
-    public static final int FREE = 0;
-    @JsonIgnore
-    public static final int IN_PLANNED_TRIP = 1;
-    @JsonIgnore
-    public static final int IN_TRIP = 2;
+    private long refId; // routeId
 
     public LinkedLocation() {
+
     }
 
 
-    public LinkedLocation(double lat, double lng, long time, long id, long estimatedTime, int index, long refId, int refType) {
+    public LinkedLocation(double lat, double lng, long time, long id, long estimatedTime, int index, long refId) {
         super(lat, lng, time);
         this.id = id;
         this.estimatedTime = estimatedTime;
         this.index = index;
         this.refId = refId;
-        this.refType = refType;
     }
     public LinkedLocation(LinkedLocation that) {
         super(that.lat, that.lng, that.time);
@@ -38,7 +27,6 @@ public class LinkedLocation extends LatLng implements PojoBase {
         this.estimatedTime = that.estimatedTime;
         this.index = that.index;
         this.refId = that.refId;
-        this.refType = that.refType;
     }
 
     public int getIndex() {
@@ -49,21 +37,6 @@ public class LinkedLocation extends LatLng implements PojoBase {
         this.index = index;
     }
 
-    public long getRefId() {
-        return refId;
-    }
-
-    public void setRefId(long refId) {
-        this.refId = refId;
-    }
-
-    public int getRefType() {
-        return refType;
-    }
-
-    public void setRefType(int refType) {
-        this.refType = refType;
-    }
 
     public long getId() {
         return id;
@@ -79,5 +52,13 @@ public class LinkedLocation extends LatLng implements PojoBase {
 
     public void setEstimatedTime(long estimatedTime) {
         this.estimatedTime = estimatedTime;
+    }
+
+    public long getRefId() {
+        return refId;
+    }
+
+    public void setRefId(long refId) {
+        this.refId = refId;
     }
 }

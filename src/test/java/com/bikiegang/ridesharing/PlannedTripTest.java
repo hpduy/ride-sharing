@@ -1,11 +1,8 @@
 package com.bikiegang.ridesharing;
 
 import com.bikiegang.ridesharing.controller.PlannedTripController;
-import com.bikiegang.ridesharing.geocoding.FetchingDataFromGoogleRouting;
 import com.bikiegang.ridesharing.geocoding.PolyLineProcess;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.LinkedLocation;
-import com.bikiegang.ridesharing.pojo.PlannedTrip;
 import com.bikiegang.ridesharing.pojo.request.CreatePlannedTripRequest;
 import com.bikiegang.ridesharing.utilities.Path;
 import org.json.JSONObject;
@@ -13,7 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Created by hpduy17 on 7/15/15.
@@ -368,16 +364,16 @@ public class PlannedTripTest {
 
     @Test
     public void routeTest() throws IOException {
-        Path.buildRoot();
-        PlannedTrip route = new PlannedTrip();
-        route.setRawRoutingResult(new JSONObject(json));
-        FetchingDataFromGoogleRouting fetcher = new FetchingDataFromGoogleRouting();
-        List<LinkedLocation> locationList = fetcher.fetch(route);
-        if (locationList != null) {
-            for (LinkedLocation location : locationList) {
-                System.out.println("(" + location.getLat() + "," + location.getLng() + ") :: index:" + location.getIndex() + " -- time:" + location.getEstimatedTime());
-            }
-        }
+//        Path.buildRoot();
+//        PlannedTrip route = new PlannedTrip();
+//        route.setRawRoutingResult(new JSONObject(json));
+//        FetchingDataFromGoogleRouting fetcher = new FetchingDataFromGoogleRouting();
+//        List<LinkedLocation> locationList = fetcher.fetch(route);
+//        if (locationList != null) {
+//            for (LinkedLocation location : locationList) {
+//                System.out.println("(" + location.getLat() + "," + location.getLng() + ") :: index:" + location.getIndex() + " -- time:" + location.getEstimatedTime());
+//            }
+//        }
     }
 
     @Before
