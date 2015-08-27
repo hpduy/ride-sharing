@@ -9,6 +9,8 @@ import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.PlannedTrip;
 import com.bikiegang.ridesharing.utilities.Const;
+import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
+import java.util.HashMap;
 import org.apache.log4j.Logger;
 
 import java.util.HashSet;
@@ -54,6 +56,13 @@ public class PlannedTripDao {
             }
             setRfGroup.add(obj.getId());
 
+            //routeRFPlannedTripsByDay = new HashMap<>();// <routeId,<epochday, plannedTrip>
+            HashMap<Long, Long> plannedTripIds = database.getRouteRFPlannedTripsByDay().get(obj.getRouteId());
+            if (plannedTripIds == null) {
+                plannedTripIds = new HashMap<>();
+                database.getRouteRFPlannedTripsByDay().put(obj.getRouteId(), plannedTripIds);
+            }
+            plannedTripIds.put(obj.getDepartureTime() / DateTimeUtil.SECONDS_PER_DAY, obj.getId());
             // put start location into geocell
             // database.getGeoCellStartLocation().putToCell(obj.getStartLocation(), obj.getId()); => move to Route dao
             //Step 2: put redis
@@ -65,7 +74,8 @@ public class PlannedTripDao {
                     JSONUtil.Serialize(setRfRole));
             result &= cache.hset(obj.getClass().getName() + ":group", String.valueOf(obj.getGroupId()),
                     JSONUtil.Serialize(setRfGroup));
-
+            result &= cache.hset(obj.getClass().getName() + ":route", String.valueOf(obj.getRouteId()),
+                    JSONUtil.Serialize(plannedTripIds));
             if (result) {
                 //Step 3: put job gearman
                 short actionType = Const.RideSharing.ActionType.INSERT;
@@ -123,9 +133,16 @@ public class PlannedTripDao {
                 database.getGroupIdRFPlannedTrips().put(obj.getGroupId(), setRfGroup);
             }
             setRfGroup.remove((Long) obj.getId());
+            //routeRFPlannedTripsByDay = new HashMap<>();// <routeId,<epochday, plannedTrip>
+            HashMap<Long, Long> plannedTripIds = database.getRouteRFPlannedTripsByDay().get(obj.getRouteId());
+            if (plannedTripIds == null) {
+                plannedTripIds = new HashMap<>();
+                database.getRouteRFPlannedTripsByDay().put(obj.getRouteId(), plannedTripIds);
+            }
+            plannedTripIds.remove(obj.getDepartureTime() / DateTimeUtil.SECONDS_PER_DAY);
             // remove from cell
             // put start location into geocell
-         //   database.getGeoCellStartLocation().removeFromCell(obj.getStartLocation(), obj.getId()); => move to Route DAO
+            //   database.getGeoCellStartLocation().removeFromCell(obj.getStartLocation(), obj.getId()); => move to Route DAO
             //Step 2: put redis
             result = cache.hdel(obj.getClass().getName(),
                     String.valueOf(obj.getId()));
@@ -135,7 +152,8 @@ public class PlannedTripDao {
                     String.valueOf(obj.getCreatorId()), JSONUtil.Serialize(setRfRole));
             result &= cache.hset(obj.getClass().getName() + ":group", String.valueOf(obj.getGroupId()),
                     JSONUtil.Serialize(setRfGroup));
-
+            result &= cache.hset(obj.getClass().getName() + ":route", String.valueOf(obj.getRouteId()),
+                    JSONUtil.Serialize(plannedTripIds));
             if (result) {
                 //Step 3: put job gearman
                 short actionType = Const.RideSharing.ActionType.DELETE;

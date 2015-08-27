@@ -20,6 +20,7 @@ import com.bikiegang.ridesharing.da.PopularLocationDA;
 import com.bikiegang.ridesharing.da.RatingDA;
 import com.bikiegang.ridesharing.da.RequestMakeTripDA;
 import com.bikiegang.ridesharing.da.RequestVerifyDA;
+import com.bikiegang.ridesharing.da.RouteDA;
 import com.bikiegang.ridesharing.da.SocialTripAttendanceDA;
 import com.bikiegang.ridesharing.da.SocialTripDA;
 import com.bikiegang.ridesharing.da.TripCalendarDA;
@@ -37,6 +38,7 @@ import com.bikiegang.ridesharing.pojo.PopularLocation;
 import com.bikiegang.ridesharing.pojo.Rating;
 import com.bikiegang.ridesharing.pojo.RequestMakeTrip;
 import com.bikiegang.ridesharing.pojo.RequestVerify;
+import com.bikiegang.ridesharing.pojo.Route;
 import com.bikiegang.ridesharing.pojo.SocialTrip;
 import com.bikiegang.ridesharing.pojo.SocialTripAttendance;
 import com.bikiegang.ridesharing.pojo.Trip;
@@ -136,6 +138,10 @@ public class RideSharingWorkerProcess extends AbstractGearmanFunction {
                 case "com.bikiegang.ridesharing.pojo.TripCalendar":
                     _value = JSONUtil.DeSerialize(job.Data, TripCalendar.class);
                     _rideSharingDA = new TripCalendarDA();
+                    break;
+                case "com.bikiegang.ridesharing.pojo.Route":
+                    _value = JSONUtil.DeSerialize(job.Data, Route.class);
+                    _rideSharingDA = new RouteDA();
                     break;
             }
             chk = _rideSharingDA.DoAction(_value, job.ActionType);

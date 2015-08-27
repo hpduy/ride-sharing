@@ -110,4 +110,20 @@ public class CreatePlannedTripRequest {
     public void setWaypoints(LatLng[] waypoints) {
         this.waypoints = waypoints;
     }
+
+    public CreatePlannedTripRequest() {
+    }
+
+    public CreatePlannedTripRequest(String creatorId, int role, long goTime, String googleRoutingResult, boolean hasHelmet, int typeOfTrip, String title, TripPattern[] patterns, LatLng[] waypoints) {
+        this.creatorId = creatorId;
+        this.role = role;
+        this.goTime = goTime;
+        this.googleRoutingResult = googleRoutingResult;
+        this.hasHelmet = hasHelmet;
+        this.typeOfTrip = typeOfTrip;
+        this.title = title;
+        this.patterns = patterns;
+        this.waypoints = waypoints;
+    }
+
 }

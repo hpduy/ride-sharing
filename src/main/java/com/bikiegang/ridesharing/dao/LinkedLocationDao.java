@@ -34,7 +34,7 @@ public class LinkedLocationDao {
             }
             //Step 1: put in hashmap
             database.getLinkedLocationHashMap().put(obj.getId(), obj);
-            //plannedTripIdRFLinkedLocations = new HashMap<>(); //<plannedTripId,<LinkedLocationId>>
+            //plannedTripIdRFLinkedLocations = new HashMap<>(); //<routeId,<LinkedLocationId>>
             List<Long> linkedLocationIds = database.getPlannedTripIdRFLinkedLocations().get(obj.getRefId());
             if (linkedLocationIds == null) {
                 linkedLocationIds = new ArrayList<>();
@@ -108,7 +108,7 @@ public class LinkedLocationDao {
 
             //Step 1: put in hashmap
             database.getLinkedLocationHashMap().remove(obj.getId());
-            //plannedTripIdRFLinkedLocations = new HashMap<>(); //<plannedTripId,<LinkedLocationId>>
+            //plannedTripIdRFLinkedLocations = new HashMap<>(); //<routeId,<LinkedLocationId>>
             List<Long> linkedLocationIds = database.getPlannedTripIdRFLinkedLocations().get(obj.getRefId());
             if (linkedLocationIds == null) {
                 linkedLocationIds = new ArrayList<>();

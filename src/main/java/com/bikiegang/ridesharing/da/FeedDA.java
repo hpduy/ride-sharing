@@ -59,6 +59,7 @@ public class FeedDA implements IDA {
                 stmt.setLong(1, value.getId());
                 stmt.setInt(2, value.getType());
                 stmt.setLong(3, value.getRefId());
+                stmt.setLong(4, value.getCreatedTime());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {
@@ -85,7 +86,8 @@ public class FeedDA implements IDA {
                 stmt.setLong(1, value.getId());
                 stmt.setInt(2, value.getType());
                 stmt.setLong(3, value.getRefId());
-                stmt.setLong(4, value.getId());
+                stmt.setLong(4, value.getCreatedTime());
+                stmt.setLong(5, value.getId());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {

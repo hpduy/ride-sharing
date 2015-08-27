@@ -106,25 +106,18 @@ public class TestAPIUtils {
 
     public static CreatePlannedTripRequest CreateCreatePlannedTripRequest() {
 
-        TripPattern item1 = new TripPattern(RandomUtils.nextLong(),
-                RandomUtils.nextLong(),
-                RandomUtils.nextLong());
-        TripPattern item2 = new TripPattern(RandomUtils.nextLong(),
-                RandomUtils.nextLong(),
-                RandomUtils.nextLong());
-        TripPattern item3 = new TripPattern(RandomUtils.nextLong(),
-                RandomUtils.nextLong(),
-                RandomUtils.nextLong());
-        TripPattern[] arr = new TripPattern[]{item1, item2, item3};
-        CreatePlannedTripRequest result = new CreatePlannedTripRequest(
-                RandomStringUtils.randomAlphanumeric(30),
-                RandomUtils.nextInt(), RandomUtils.nextLong(),
-                RandomStringUtils.randomAlphanumeric(30),
-                true,
-                RandomUtils.nextInt(),
-                RandomStringUtils.randomAlphanumeric(30),
-                arr);
-        return result;
+//        TripPattern item1 = new TripPattern(RandomUtils.nextLong(),
+//                RandomUtils.nextLong(),
+//                RandomUtils.nextLong());
+//        TripPattern item2 = new TripPattern(RandomUtils.nextLong(),
+//                RandomUtils.nextLong(),
+//                RandomUtils.nextLong());
+//        TripPattern item3 = new TripPattern(RandomUtils.nextLong(),
+//                RandomUtils.nextLong(),
+//                RandomUtils.nextLong());
+//        TripPattern[] arr = new TripPattern[]{item1, item2, item3};
+//        CreatePlannedTripRequest result = new CreatePlannedTripRequest(RandomStringUtils.randomAlphanumeric(30), role, goTime, null, true, typeOfTrip, null, arr, waypoints);
+        return null;
     }
 
     public static GetPartnerLocationRequest CreateGetPartnerLocationRequest() {

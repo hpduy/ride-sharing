@@ -5,7 +5,7 @@ import org.json.JSONObject;
 /**
  * Created by hpduy17 on 8/26/15.
  */
-public class Route {
+public class Route implements PojoBase{
     private long id;
     private JSONObject rawRoutingResult = new JSONObject();
     private double estimatedFuel;
