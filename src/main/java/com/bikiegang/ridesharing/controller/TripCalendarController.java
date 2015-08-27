@@ -1,6 +1,8 @@
 package com.bikiegang.ridesharing.controller;
 
+import com.bikiegang.ridesharing.dao.TripCalendarDao;
 import com.bikiegang.ridesharing.database.Database;
+import com.bikiegang.ridesharing.database.IdGenerator;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.Feed;
 import com.bikiegang.ridesharing.pojo.PlannedTrip;
@@ -10,6 +12,7 @@ import com.bikiegang.ridesharing.pojo.response.GetTripByCalendarResponse;
 import com.bikiegang.ridesharing.pojo.response.PlannedTripByDayResponse;
 import com.bikiegang.ridesharing.pojo.response.PlannedTripDetailResponse;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
+import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.ArrayList;
@@ -20,7 +23,24 @@ import java.util.List;
  * Created by hpduy17 on 8/25/15.
  */
 public class TripCalendarController {
+    private TripCalendarDao dao = new TripCalendarDao();
     private Database database = Database.getInstance();
+
+    public boolean putToCalendar(long time, long feedId, String userId) {
+        TripCalendar calendar = null;
+        if (database.getUserIdRFTripCalendar().containsKey(userId)) {
+            calendar = database.getTripCalendarHashMap().get(database.getUserIdRFTripCalendar().get(userId));
+            calendar.putToCell(time, feedId);
+            return dao.update(calendar);
+        } else {
+            calendar = new TripCalendar();
+            calendar.setId(IdGenerator.getTripCalendarId());
+            calendar.setCreatorId(userId);
+            calendar.setCreatedTime(DateTimeUtil.now());
+            calendar.putToCell(time, feedId);
+            return dao.insert(calendar);
+        }
+    }
 
     public String getListTripInCalendar(GetTripByCalendarRequest request) throws JsonProcessingException {
         if (null == request.getUserId() || request.getUserId().equals("")) {

@@ -170,6 +170,5 @@ public class TripCalendar implements PojoBase{
         this.geoCellGrid = geoCellGrid;
     }
 
-    
-    
+
 }

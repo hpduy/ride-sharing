@@ -2,9 +2,6 @@ package com.bikiegang.ridesharing.pojo;
 
 import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.json.JSONObject;
-
-import java.util.Hashtable;
 
 /**
  * Created by hpduy17 on 6/24/15.
@@ -12,28 +9,19 @@ import java.util.Hashtable;
 public class PlannedTrip implements PojoBase {
     private long id;
     private long arriveTime;
-    private double sumDistance;
-    private long estimatedTime; // duration from first location
-    private double estimatedPrice; // use when role is passenger
+    private long departureTime;
     private double ownerPrice;
-    private double estimatedFuel;
+    private double estimatedPrice; // use when role is passenger
     private String creatorId = "";
     private int role; // user role
     private int type;
     private String plannedTripTrailPolyLine = "";
-    private JSONObject rawRoutingResult = new JSONObject();
-    private long groupId;
-    private LatLng startLocation = new LatLng();
-    private LatLng endLocation = new LatLng();
-    private String polyLine = "";
+    private long timePatternId; // Day of week
     private boolean hasHelmet;
-    private long createdTime;
-    private boolean isBusy;
-    private String title = "";
-    private long endDay;
-    private Hashtable<Long,Long> timeTable = new Hashtable<>(); // <epochDay,epochTime>
+    private long requestId;
+    private long routeId;
     /**
-     * ROUTE TYPE
+     * PLANNED TRIP TYPE
      */
     @JsonIgnore
     public static final int INSTANT = 0;
@@ -56,40 +44,32 @@ public class PlannedTrip implements PojoBase {
     public PlannedTrip() {
     }
 
-    public PlannedTrip(long id, long goTime, long arriveTime, double sumDistance, int type, String creatorId, int role, double ownerPrice, String plannedTripTrailPolyLine, JSONObject rawRoutingResult, long groupId) {
+    public PlannedTrip(long id, long arriveTime, int type, String creatorId, int role, double ownerPrice, String plannedTripTrailPolyLine, long timePatternId) {
         this.id = id;
         this.arriveTime = arriveTime;
-        this.sumDistance = sumDistance;
         this.type = type;
         this.role = role;
         this.creatorId = creatorId == null ? "" : creatorId;
         this.ownerPrice = ownerPrice;
         this.plannedTripTrailPolyLine = plannedTripTrailPolyLine;
-        this.rawRoutingResult = rawRoutingResult;
-        this.groupId = groupId;
+        this.timePatternId = timePatternId;
     }
 
     public PlannedTrip(PlannedTrip that) {
         this.id = that.id;
         this.arriveTime = that.arriveTime;
-        this.sumDistance = that.sumDistance;
-        this.estimatedTime = that.estimatedTime;
+        this.departureTime = that.departureTime;
+        this.ownerPrice = that.ownerPrice;
         this.estimatedPrice = that.estimatedPrice;
-        this.estimatedFuel = that.estimatedFuel;
-        this.creatorId = that.creatorId == null ? "" : that.creatorId;
+        this.creatorId = that.creatorId;
         this.role = that.role;
         this.type = that.type;
-        this.ownerPrice = that.ownerPrice;
         this.plannedTripTrailPolyLine = that.plannedTripTrailPolyLine;
-        this.rawRoutingResult = that.rawRoutingResult;
-        this.groupId = that.groupId;
-        this.startLocation = that.startLocation;
-        this.endLocation = that.endLocation;
-        this.polyLine = that.polyLine;
+        this.timePatternId = that.timePatternId;
         this.hasHelmet = that.hasHelmet;
-        this.createdTime = that.createdTime;
+        this.requestId = that.requestId;
+        this.routeId = that.routeId;
     }
-
 
     public long getArriveTime() {
         return arriveTime;
@@ -107,21 +87,6 @@ public class PlannedTrip implements PojoBase {
         this.id = id;
     }
 
-    public double getSumDistance() {
-        return sumDistance;
-    }
-
-    public void setSumDistance(double sumDistance) {
-        this.sumDistance = sumDistance;
-    }
-
-    public long getEstimatedTime() {
-        return estimatedTime;
-    }
-
-    public void setEstimatedTime(long estimatedTime) {
-        this.estimatedTime = estimatedTime;
-    }
 
     public double getEstimatedPrice() {
         return estimatedPrice;
@@ -129,14 +94,6 @@ public class PlannedTrip implements PojoBase {
 
     public void setEstimatedPrice(double estimatedPrice) {
         this.estimatedPrice = estimatedPrice;
-    }
-
-    public double getEstimatedFuel() {
-        return estimatedFuel;
-    }
-
-    public void setEstimatedFuel(double estimatedFuel) {
-        this.estimatedFuel = estimatedFuel;
     }
 
     public String getCreatorId() {
@@ -179,44 +136,12 @@ public class PlannedTrip implements PojoBase {
         this.plannedTripTrailPolyLine = plannedTripTrailPolyLine;
     }
 
-    public JSONObject getRawRoutingResult() {
-        return rawRoutingResult;
-    }
-
-    public void setRawRoutingResult(JSONObject rawRoutingResult) {
-        this.rawRoutingResult = rawRoutingResult;
-    }
-
     public long getGroupId() {
-        return groupId;
+        return timePatternId;
     }
 
     public void setGroupId(long groupId) {
-        this.groupId = groupId;
-    }
-
-    public LatLng getStartLocation() {
-        return startLocation;
-    }
-
-    public void setStartLocation(LatLng startLocation) {
-        this.startLocation = startLocation;
-    }
-
-    public LatLng getEndLocation() {
-        return endLocation;
-    }
-
-    public void setEndLocation(LatLng endLocation) {
-        this.endLocation = endLocation;
-    }
-
-    public String getPolyLine() {
-        return polyLine;
-    }
-
-    public void setPolyLine(String polyLine) {
-        this.polyLine = polyLine;
+        this.timePatternId = groupId;
     }
 
     public boolean isHasHelmet() {
@@ -227,53 +152,35 @@ public class PlannedTrip implements PojoBase {
         this.hasHelmet = hasHelmet;
     }
 
-    public long getCreatedTime() {
-        return createdTime;
+    public long getRequestId() {
+        return requestId;
     }
 
-    public void setCreatedTime(long createdTime) {
-        this.createdTime = createdTime;
+    public void setRequestId(long requestId) {
+        this.requestId = requestId;
     }
 
-    public boolean isBusy() {
-        return isBusy;
+    public long getDepartureTime() {
+        return departureTime;
     }
 
-    public void setIsBusy(boolean isBusy) {
-        this.isBusy = isBusy;
+    public void setDepartureTime(long departureTime) {
+        this.departureTime = departureTime;
     }
 
-    public String getTitle() {
-        return title;
+    public long getTimePatternId() {
+        return timePatternId;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setTimePatternId(long timePatternId) {
+        this.timePatternId = timePatternId;
     }
 
-    public long getEndDay() {
-        return endDay;
+    public long getRouteId() {
+        return routeId;
     }
 
-    public void setEndDay(long endDay) {
-        this.endDay = endDay;
-    }
-
-    public Hashtable<Long, Long> getTimeTable() {
-        return timeTable;
-    }
-
-    public void setTimeTable(Hashtable<Long, Long> timeTable) {
-        this.timeTable = timeTable;
+    public void setRouteId(long routeId) {
+        this.routeId = routeId;
     }
 }
-/**
- * CHANGE LOG
- * <p/>
- * 29/7/2015
- * them field createdTime
- * them field isBusy
- * <p/>
- * 17.8.2015
- * them field title
- */

@@ -10,7 +10,7 @@ public class TripPattern {
 
     private long startDay;
     private long endDay;
-    private long timeDistance;
+    private int dayOfWeek;
 
     public long getStartDay() {
         return startDay;
@@ -28,12 +28,12 @@ public class TripPattern {
         this.endDay = endDay;
     }
 
-    public long getTimeDistance() {
-        return timeDistance;
+    public int getDayOfWeek() {
+        return dayOfWeek;
     }
 
-    public void setTimeDistance(long timeDistance) {
-        this.timeDistance = timeDistance;
+    public void setDayOfWeek(int dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
     }
 
     public TripPattern() {

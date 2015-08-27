@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package com.bikiegang.ridesharing.utilities;
-
 import com.bikiegang.ridesharing.pojo.AngelGroup;
 import com.bikiegang.ridesharing.pojo.AngelGroupMember;
 import com.bikiegang.ridesharing.pojo.Broadcast;
@@ -26,7 +25,6 @@ import com.bikiegang.ridesharing.pojo.VerifiedCertificate;
 import java.util.HashSet;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.math.RandomUtils;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -42,6 +40,7 @@ public class TestUtils {
         Feed result = new Feed(
                 RandomUtils.nextLong(),
                 RandomUtils.nextInt(),
+                RandomUtils.nextLong(),
                 RandomUtils.nextLong());
 
         return result;
@@ -129,8 +128,7 @@ public class TestUtils {
                 RandomUtils.nextLong(),
                 RandomUtils.nextLong(),
                 RandomUtils.nextInt(),
-                RandomUtils.nextLong(),
-                RandomUtils.nextInt());
+                RandomUtils.nextLong());
 
         return result;
     }
@@ -152,14 +150,11 @@ public class TestUtils {
     public static PlannedTrip CreatePlannedTrip() {
         PlannedTrip result = new PlannedTrip(RandomUtils.nextLong(),
                 RandomUtils.nextLong(),
-                RandomUtils.nextLong(),
-                RandomUtils.nextDouble(),
                 RandomUtils.nextInt(),
                 RandomStringUtils.randomAlphabetic(20),
                 RandomUtils.nextInt(),
                 RandomUtils.nextDouble(),
                 RandomStringUtils.randomAlphabetic(20),
-                new JSONObject(),
                 RandomUtils.nextLong());
         return result;
     }

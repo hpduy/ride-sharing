@@ -10,7 +10,7 @@ import com.bikiegang.ridesharing.geocoding.GoogleRoutingObject.Step;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.LinkedLocation;
-import com.bikiegang.ridesharing.pojo.PlannedTrip;
+import com.bikiegang.ridesharing.pojo.Route;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -24,38 +24,38 @@ public class FetchingDataFromGoogleRouting {
     Logger logger = LogUtil.getLogger(this.getClass());
     Database database = Database.getInstance();
 
-    public List<LinkedLocation> fetch(PlannedTrip plannedTrip) throws IOException {
-        if (null == plannedTrip.getRawRoutingResult() || plannedTrip.getRawRoutingResult().length() <= 0) {
-            if (null == plannedTrip)
+    public List<LinkedLocation> fetch(Route route) throws IOException {
+        if (null == route.getRawRoutingResult() || route.getRawRoutingResult().length() <= 0) {
+            if (null == route)
                 logger.info("Planned Trip is null");
             else
                 logger.info("JSONObject is null or empty");
             return null;
         }
-        if (plannedTrip.getId() <= 0) {
+        if (route.getId() <= 0) {
             logger.info("Planned Trip missing id --> auto set plannedTripId");
-            plannedTrip.setId(IdGenerator.getPlannedTripId());
+            route.setId(IdGenerator.getPlannedTripId());
         }
-        RoutingResult routingResult = (RoutingResult) Parser.JSonToObject(plannedTrip.getRawRoutingResult().toString(), RoutingResult.class);
+        RoutingResult routingResult = (RoutingResult) Parser.JSonToObject(route.getRawRoutingResult().toString(), RoutingResult.class);
         //update plannedTrip info
         if(routingResult.getRoutes().length > 0) {
             GoogleRoute googleRoute = routingResult.getRoutes()[0];
-            plannedTrip.setSumDistance(googleRoute.getLegs()[0].getDistance().getValue());
+            route.setSumDistance(googleRoute.getLegs()[0].getDistance().getValue());
             // create linkLocation
-            List<LinkedLocation> locations = getLocations(googleRoute, plannedTrip.getId());
-            plannedTrip.setEstimatedTime(locations.get(locations.size() - 1).getEstimatedTime());
-            if(plannedTrip.getEstimatedTime() <= 0)
-                plannedTrip.setEstimatedTime(googleRoute.getLegs()[0].getDuration().getValue());
-            plannedTrip.setStartLocation(googleRoute.getLegs()[0].getStart_location());
-            plannedTrip.setEndLocation(googleRoute.getLegs()[0].getEnd_location());
-            plannedTrip.setPolyLine(googleRoute.getOverview_polyline().getPoints());
+            List<LinkedLocation> locations = getLocations(googleRoute, route.getId());
+            route.setEstimatedTime(locations.get(locations.size() - 1).getEstimatedTime());
+            if(route.getEstimatedTime() <= 0)
+                route.setEstimatedTime(googleRoute.getLegs()[0].getDuration().getValue());
+            route.setStartLocation(googleRoute.getLegs()[0].getStart_location());
+            route.setEndLocation(googleRoute.getLegs()[0].getEnd_location());
+            route.setOverViewPolyLine(googleRoute.getOverview_polyline().getPoints());
             return locations;
         }
         return null;
     }
 
 
-    private List<LinkedLocation> getLocations(GoogleRoute googleRoute, long plannedTripId) {
+    private List<LinkedLocation> getLocations(GoogleRoute googleRoute, long routeId) {
         // decode polyline
         GeoCell<Long> geoCell = new GeoCell<>(GeoCell.CELL_LEN_OF_PLANNED_TRIP);
         List<LatLng> latLngs = PolyLineProcess.decodePoly(googleRoute.getOverview_polyline().getPoints());
@@ -92,12 +92,12 @@ public class FetchingDataFromGoogleRouting {
         }
         // create link locations
         List<LinkedLocation> locations = new ArrayList<>();
-        for (int i = 0; i < cellcodes.size(); i++) {
-            String cellcode = cellcodes.get(i);
-            LatLng center = geoCell.getLatLngCenterFromCellCode(cellcode);
-            LinkedLocation location = new LinkedLocation(center.getLat(), center.getLng(), center.getTime(), 0, timeForCellCodes[i], i, plannedTripId, LinkedLocation.IN_PLANNED_TRIP);
-            locations.add(location);
-        }
+//        for (int i = 0; i < cellcodes.size(); i++) {
+//            String cellcode = cellcodes.get(i);
+//            LatLng center = geoCell.getLatLngCenterFromCellCode(cellcode);
+//            LinkedLocation location = new LinkedLocation(center.getLat(), center.getLng(), center.getTime(), 0, timeForCellCodes[i], i, routeId, LinkedLocation.IN_PLANNED_TRIP);
+//            locations.add(location);
+//        }
         return locations;
 
     }
@@ -126,36 +126,36 @@ public class FetchingDataFromGoogleRouting {
 
     // GET BOUND
 
-    public Bound getBoundFromRoutingResult(PlannedTrip plannedTrip) throws IOException {
-        if (null == plannedTrip.getRawRoutingResult() || plannedTrip.getRawRoutingResult().length() <= 0) {
-            if (null == plannedTrip)
+    public Bound getBoundFromRoutingResult(Route route) throws IOException {
+        if (null == route.getRawRoutingResult() || route.getRawRoutingResult().length() <= 0) {
+            if (null == route)
                 logger.info("Planned Trip is null");
             else
                 logger.info("JSONObject is null or empty");
             return null;
         }
-        if (plannedTrip.getId() <= 0) {
+        if (route.getId() <= 0) {
             logger.info("Planned Trip missing id --> auto set plannedTripId");
-            plannedTrip.setId(IdGenerator.getPlannedTripId());
+            route.setId(IdGenerator.getPlannedTripId());
         }
-        RoutingResult routingResult = (RoutingResult) Parser.JSonToObject(plannedTrip.getRawRoutingResult().toString(), RoutingResult.class);
+        RoutingResult routingResult = (RoutingResult) Parser.JSonToObject(route.getRawRoutingResult().toString(), RoutingResult.class);
         GoogleRoute googleRoute = routingResult.getRoutes()[0];
         return googleRoute.getBounds();
     }
 
-    public GoogleRoute getRouteFromRoutingResult(PlannedTrip plannedTrip) throws IOException {
-        if (null == plannedTrip.getRawRoutingResult() || plannedTrip.getRawRoutingResult().length() <= 0) {
-            if (null == plannedTrip)
+    public GoogleRoute getRouteFromRoutingResult(Route route) throws IOException {
+        if (null == route.getRawRoutingResult() || route.getRawRoutingResult().length() <= 0) {
+            if (null == route)
                 logger.info("plannedTrip is null");
             else
                 logger.info("JSONObject is null or empty");
             return null;
         }
-        if (plannedTrip.getId() <= 0) {
+        if (route.getId() <= 0) {
             logger.info("Planned Trip missing id --> auto set plannedTripId");
-            plannedTrip.setId(IdGenerator.getPlannedTripId());
+            route.setId(IdGenerator.getPlannedTripId());
         }
-        RoutingResult routingResult = (RoutingResult) Parser.JSonToObject(plannedTrip.getRawRoutingResult().toString(), RoutingResult.class);
+        RoutingResult routingResult = (RoutingResult) Parser.JSonToObject(route.getRawRoutingResult().toString(), RoutingResult.class);
         GoogleRoute googleRoute = routingResult.getRoutes()[0];
         return googleRoute;
     }

@@ -15,14 +15,9 @@ import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.geocoding.GeoCell;
 import com.bikiegang.ridesharing.pojo.*;
 import com.google.gson.reflect.TypeToken;
-import java.util.ArrayList;
-import java.util.Arrays;
 import org.apache.log4j.Logger;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author root
@@ -152,6 +147,7 @@ public class RideSharingCA {
         }
         return lrange;
     }
+
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Restore function">
     Database database = Database.getInstance();
@@ -308,19 +304,18 @@ public class RideSharingCA {
                 LinkedLocation obj = (LinkedLocation) JSONUtil.DeSerialize(value, LinkedLocation.class);
                 database.getLinkedLocationHashMap().put(ConvertUtils.toLong(key), obj);
                 // more (put to geocell)
-                if (obj.getRefType() == LinkedLocation.IN_PLANNED_TRIP) {
-                    PlannedTrip pt = database.getPlannedTripHashMap().get(obj.getRefId());
-                    GeoCell geoCell = null;
-                    if (pt.getRole() == User.DRIVER) {
-                        geoCell = database.getGeoCellDriver();
-                    }
-                    if (pt.getRole() == User.PASSENGER) {
-                        geoCell = database.getGeoCellPassenger();
-                    }
-                    if (null != geoCell) {
-                        geoCell.putToCell(obj, obj.getId());
-                    }
+                PlannedTrip pt = database.getPlannedTripHashMap().get(obj.getRefId());
+                GeoCell geoCell = null;
+                if (pt.getRole() == User.DRIVER) {
+                    geoCell = database.getGeoCellDriver();
                 }
+                if (pt.getRole() == User.PASSENGER) {
+                    geoCell = database.getGeoCellPassenger();
+                }
+                if (null != geoCell) {
+                    geoCell.putToCell(obj, obj.getId());
+                }
+
             }
 
             //plannedTrip => linklocation
@@ -396,7 +391,7 @@ public class RideSharingCA {
                 String value = entrySet.getValue();
                 PlannedTrip obj = (PlannedTrip) JSONUtil.DeSerialize(value, PlannedTrip.class);
                 database.getPlannedTripHashMap().put(ConvertUtils.toLong(key), obj);
-                database.getGeoCellStartLocation().putToCell(obj.getStartLocation(), obj.getId());
+                //database.getGeoCellStartLocation().putToCell(obj.getStartLocation(), obj.getId()); -> move to Route dao
             }
 
             //User=>plannedtrip

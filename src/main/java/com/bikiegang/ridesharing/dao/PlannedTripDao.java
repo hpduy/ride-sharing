@@ -7,7 +7,6 @@ import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
 import com.bikiegang.ridesharing.cache.RideSharingCA;
 import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.database.Database;
-import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.PlannedTrip;
 import com.bikiegang.ridesharing.utilities.Const;
 import org.apache.log4j.Logger;
@@ -56,7 +55,7 @@ public class PlannedTripDao {
             setRfGroup.add(obj.getId());
 
             // put start location into geocell
-            database.getGeoCellStartLocation().putToCell(obj.getStartLocation(), obj.getId());
+            // database.getGeoCellStartLocation().putToCell(obj.getStartLocation(), obj.getId()); => move to Route dao
             //Step 2: put redis
             result = cache.hset(obj.getClass().getName(), String.valueOf(obj.getId()),
                     JSONUtil.Serialize(obj));
@@ -126,7 +125,7 @@ public class PlannedTripDao {
             setRfGroup.remove((Long) obj.getId());
             // remove from cell
             // put start location into geocell
-            database.getGeoCellStartLocation().removeFromCell(obj.getStartLocation(), obj.getId());
+         //   database.getGeoCellStartLocation().removeFromCell(obj.getStartLocation(), obj.getId()); => move to Route DAO
             //Step 2: put redis
             result = cache.hdel(obj.getClass().getName(),
                     String.valueOf(obj.getId()));
@@ -169,11 +168,11 @@ public class PlannedTripDao {
             }
             //update geocell
             PlannedTrip tmp = database.getPlannedTripHashMap().get(obj.getId());
-            if (tmp != null) {
-                LatLng tmpStartLocation = tmp.getStartLocation();
-                LatLng oldStartLocation = new LatLng(tmpStartLocation);
-                database.getGeoCellStartLocation().updateInCell(oldStartLocation, obj.getStartLocation(), obj.getId());
-            }
+//            if (tmp != null) {
+//                LatLng tmpStartLocation = tmp.getStartLocation();
+//                LatLng oldStartLocation = new LatLng(tmpStartLocation);
+//                database.getGeoCellStartLocation().updateInCell(oldStartLocation, obj.getStartLocation(), obj.getId());
+//            } ---> move to Route Dao
             //Step 1: put in hashmap
             database.getPlannedTripHashMap().put(obj.getId(), obj);
             //Step 2: put redis
