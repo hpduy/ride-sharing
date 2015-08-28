@@ -41,6 +41,7 @@ public class StartupListener implements ServletContextListener, HttpSessionListe
             Database.getInstance().restore();
             if(Database.databaseStatus ==  Database.TESTING) {
                 FakeUser.createAngel();
+                FakeUser.createTester();
                 new AngelGroupController();
                 System.out.println(Database.getInstance().getAngelGroupHashMap().size());
             }

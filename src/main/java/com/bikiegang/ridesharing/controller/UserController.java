@@ -467,6 +467,8 @@ public class UserController {
             user.setProfilePictureLink(request.getProfilePictureLink());
         if (null != request.getPhone())
             user.setPhone(request.getPhone());
+        if (null != request.getJob())
+            user.setJob(request.getJob());
         if (null != request.getFirstName())
             user.setFirstName(request.getFirstName());
         if (null != request.getLastName())

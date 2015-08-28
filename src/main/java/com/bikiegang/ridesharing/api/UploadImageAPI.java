@@ -26,7 +26,7 @@ import java.io.PrintWriter;
 public class UploadImageAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
     public Class requestClass = null;
-    public Class responseClass = null;
+    public Class responseClass = UploadImageResponse.class;
     public boolean responseIsArray = false;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

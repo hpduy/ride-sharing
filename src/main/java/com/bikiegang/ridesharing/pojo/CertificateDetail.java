@@ -1,10 +1,12 @@
 package com.bikiegang.ridesharing.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * Created by hpduy17 on 7/22/15.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CertificateDetail {
 
     protected String idNumber = "";
@@ -26,6 +28,7 @@ public class CertificateDetail {
     public static final int DRIVER_LICENSE = 5;
 
     public CertificateDetail() {
+
     }
 
     public CertificateDetail( String idNumber, String address, String regoDay, String expiryDay, String[] image, int type) {

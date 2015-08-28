@@ -18,10 +18,7 @@ import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by hpduy17 on 7/27/15.
@@ -31,29 +28,31 @@ public class AngelGroupController {
     private Database database = Database.getInstance();
 
     public AngelGroupController() {
-        if(database.getAngelGroupHashMap().isEmpty()){
+        if (database.getAngelGroupHashMap().isEmpty()) {
             University.loadData();
-            for(University u : University.universities){
+            for (University u : University.universities) {
                 List<String> tagNames = new ArrayList<>();
-                tagNames.add(u.getName());
-                AngelGroup angelGroup = new AngelGroup(IdGenerator.getAngelGroupId(), u.getLocation(),tagNames,DateTimeUtil.now(),u.getAddress());
-                try{
+                for (int i = 0; i < 6; i++)
+                    tagNames.add(u.getName());
+                AngelGroup angelGroup = new AngelGroup(IdGenerator.getAngelGroupId(), u.getLocation(), tagNames, DateTimeUtil.now(), u.getAddress());
+                try {
                     dao.insert(angelGroup);
-                }catch (Exception ignored){}
+                } catch (Exception ignored) {
+                }
             }
         }
     }
 
     public String addGroup(AddGroupRequest request) throws JsonProcessingException {
         if (null == request.getTagName() || request.getTagName().equals("")) {
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found,"'tagName'");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'tagName'");
         }
         if (request.getLat() <= 0 && request.getLng() <= 0) {
-            return Parser.ObjectToJSon(false,MessageMappingUtil.Element_is_invalid, "'lat' and 'lng'");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'lat' and 'lng'");
         }
         List<String> tagNames = new ArrayList<>();
         tagNames.add(request.getTagName());
-        AngelGroup angelGroup = new AngelGroup(IdGenerator.getAngelGroupId(), new LatLng(request.getLat(), request.getLng()), tagNames, DateTimeUtil.now(),request.getAddress());
+        AngelGroup angelGroup = new AngelGroup(IdGenerator.getAngelGroupId(), new LatLng(request.getLat(), request.getLng()), tagNames, DateTimeUtil.now(), request.getAddress());
         if (dao.insert(angelGroup)) {
             //TODO what is a response? waiting designer
             return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
@@ -63,10 +62,10 @@ public class AngelGroupController {
 
     public String mergeGroup(MergeGroupRequest request) throws JsonProcessingException {
         if (request.getFirstGroupId() <= 0) {
-            return Parser.ObjectToJSon(false,MessageMappingUtil.Element_is_invalid, "'firstGroupId'");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'firstGroupId'");
         }
         if (request.getSecondGroupId() <= 0) {
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found,"'secondGroupId'");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'secondGroupId'");
         }
         AngelGroup firstGroup = database.getAngelGroupHashMap().get(request.getFirstGroupId());
         if (null == firstGroup) {
@@ -100,25 +99,25 @@ public class AngelGroupController {
             }
         });
         List<AngelGroupDetailResponse> responses = new ArrayList<>();
-        for(AngelGroup group : groups){
-            responses.add(new AngelGroupDetailResponse(group,request.getUserId()));
+        for (AngelGroup group : groups) {
+            responses.add(new AngelGroupDetailResponse(group, request.getUserId()));
         }
-        return Parser.ObjectToJSon(true,MessageMappingUtil.Successfully, new GetAlphabetAngelGroupsResponse(responses));
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new GetAlphabetAngelGroupsResponse(responses));
     }
 
     public String autoCompleteSearchGroup(AutocompleteSearchGroupRequest request) throws JsonProcessingException {
         if (null == request.getUserId() || request.getUserId().equals("")) {
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found,"'userId'");
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
         }
         List<Long> searchResult = SearchAngelGroup.getInstance().Search(request.getKeyword());
         List<AngelGroupDetailResponse> responses = new ArrayList<>();
-        for(long groupId : searchResult){
+        for (long groupId : searchResult) {
             AngelGroup group = database.getAngelGroupHashMap().get(groupId);
-            if(group != null) {
+            if (group != null) {
                 responses.add(new AngelGroupDetailResponse(group, request.getUserId()));
             }
         }
-        return Parser.ObjectToJSon(true,MessageMappingUtil.Successfully, new GetAlphabetAngelGroupsResponse(responses));
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new GetAlphabetAngelGroupsResponse(responses));
     }
 
 

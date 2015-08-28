@@ -15,7 +15,7 @@ public class UpdateProfileRequest {
     private String profilePictureLink;
     private String phone ;
     private String birthDay;
-    private String career;
+    private String job;
     private int gender = -1;
     private int privacy = -1;
 
@@ -75,12 +75,12 @@ public class UpdateProfileRequest {
         this.birthDay = birthDay;
     }
 
-    public String getCareer() {
-        return career;
+    public String getJob() {
+        return job;
     }
 
-    public void setCareer(String career) {
-        this.career = career;
+    public void setJob(String job) {
+        this.job = job;
     }
 
     public int getGender() {
@@ -102,7 +102,7 @@ public class UpdateProfileRequest {
     public UpdateProfileRequest() {
     }
 
-    public UpdateProfileRequest(String id, String selfIntro, String firstName, String lastName, String profilePictureLink, String phone, String birthDay, String career) {
+    public UpdateProfileRequest(String id, String selfIntro, String firstName, String lastName, String profilePictureLink, String phone, String birthDay, String job) {
         this.id = id;
         this.selfIntro = selfIntro;
         this.firstName = firstName;
@@ -110,7 +110,7 @@ public class UpdateProfileRequest {
         this.profilePictureLink = profilePictureLink;
         this.phone = phone;
         this.birthDay = birthDay;
-        this.career = career;
+        this.job = job;
     }
      @Override
     public String toString() {
