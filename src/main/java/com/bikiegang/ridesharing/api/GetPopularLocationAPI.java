@@ -7,10 +7,9 @@
 package com.bikiegang.ridesharing.api;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
-import com.bikiegang.ridesharing.controller.PlannedTripController;
+import com.bikiegang.ridesharing.controller.PopularLocationController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.request.GetUsersAroundFromMeRequest;
-import com.bikiegang.ridesharing.pojo.response.GetFeedsResponse;
+import com.bikiegang.ridesharing.pojo.response.GetPopularLocationResponse;
 import com.bikiegang.ridesharing.utilities.ApiDocumentGenerator;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import org.apache.log4j.Logger;
@@ -19,16 +18,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class GetPlannedTripsAroundFromMeAPI extends HttpServlet {
+public class GetPopularLocationAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
-    public Class requestClass = GetUsersAroundFromMeRequest.class;
-    public Class responseClass = GetFeedsResponse.class;
-    public boolean responseIsArray = true;
+    public Class requestClass = null;
+    public Class responseClass = GetPopularLocationResponse.class;
+    public boolean responseIsArray = false;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,21 +43,14 @@ public class GetPlannedTripsAroundFromMeAPI extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            StringBuffer jsonData = new StringBuffer();
-            String line;
-            BufferedReader reader = request.getReader();
-            while ((line = reader.readLine()) != null) {
-                jsonData.append(line);
-            }
-            logger.info(jsonData.toString());
-            GetUsersAroundFromMeRequest getUsersAroundFromMeRequest = (GetUsersAroundFromMeRequest) Parser.JSonToObject(jsonData.toString(), GetUsersAroundFromMeRequest.class);
-            PlannedTripController controller = new PlannedTripController();
-            String result = controller.getPlannedTripsAroundFromMe(getUsersAroundFromMeRequest);
+
+            PopularLocationController controller = new PopularLocationController();
+            String result = controller.getPopularLocationList();
             logger.info(result);
             out.print(result);
         } catch (Exception ex) {
             ex.printStackTrace();
-            logger.error(ex.getMessage());
+            logger.error(ex.getStackTrace());
             out.print(Parser.ObjectToJSon(false, MessageMappingUtil.System_Exception, ex.getMessage()));
         }
     }

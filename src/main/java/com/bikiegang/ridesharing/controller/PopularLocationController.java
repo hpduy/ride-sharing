@@ -7,9 +7,12 @@ import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.PopularLocation;
 import com.bikiegang.ridesharing.pojo.request.AddPopularLocationRequest;
 import com.bikiegang.ridesharing.pojo.request.IncreasePopularityRequest;
+import com.bikiegang.ridesharing.pojo.response.GetPopularLocationResponse;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
+
+import java.util.ArrayList;
 
 /**
  * Created by hpduy17 on 6/29/15.
@@ -81,7 +84,7 @@ public class PopularLocationController {
     }
 
     public String getPopularLocationList() throws JsonProcessingException {
-        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, database.getPopularLocationHashMap().values());
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new GetPopularLocationResponse(new ArrayList<>(database.getPopularLocationHashMap().values())));
     }
 
 

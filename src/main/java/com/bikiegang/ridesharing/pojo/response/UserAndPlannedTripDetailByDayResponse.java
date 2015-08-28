@@ -5,13 +5,13 @@ package com.bikiegang.ridesharing.pojo.response;
  */
 public class UserAndPlannedTripDetailByDayResponse {
     private long epochDay;
-    private UserAndPlannedTripDetailResponse yourPlannedTrip;
-    private UserAndPlannedTripDetailResponse[] pairedPlannedTripsResult;
+    private FeedResponse yourPlannedTrip;
+    private FeedResponse[] pairedPlannedTripsResult;
 
     public UserAndPlannedTripDetailByDayResponse() {
     }
 
-    public UserAndPlannedTripDetailByDayResponse(long epochDay,UserAndPlannedTripDetailResponse yourPlannedTrip, UserAndPlannedTripDetailResponse[] pairedPlannedTripsResult) {
+    public UserAndPlannedTripDetailByDayResponse(long epochDay,FeedResponse yourPlannedTrip, FeedResponse[] pairedPlannedTripsResult) {
         this.yourPlannedTrip = yourPlannedTrip;
         this.epochDay = epochDay;
         this.pairedPlannedTripsResult = pairedPlannedTripsResult;
@@ -25,19 +25,19 @@ public class UserAndPlannedTripDetailByDayResponse {
         this.epochDay = epochDay;
     }
 
-    public UserAndPlannedTripDetailResponse[] getPairedPlannedTripsResult() {
-        return pairedPlannedTripsResult;
-    }
-
-    public void setPairedPlannedTripsResult(UserAndPlannedTripDetailResponse[] pairedPlannedTripsResult) {
-        this.pairedPlannedTripsResult = pairedPlannedTripsResult;
-    }
-
-    public UserAndPlannedTripDetailResponse getYourPlannedTrip() {
+    public FeedResponse getYourPlannedTrip() {
         return yourPlannedTrip;
     }
 
-    public void setYourPlannedTrip(UserAndPlannedTripDetailResponse yourPlannedTrip) {
+    public void setYourPlannedTrip(FeedResponse yourPlannedTrip) {
         this.yourPlannedTrip = yourPlannedTrip;
+    }
+
+    public FeedResponse[] getPairedPlannedTripsResult() {
+        return pairedPlannedTripsResult;
+    }
+
+    public void setPairedPlannedTripsResult(FeedResponse[] pairedPlannedTripsResult) {
+        this.pairedPlannedTripsResult = pairedPlannedTripsResult;
     }
 }

@@ -79,6 +79,15 @@
         <servlet-name>UpdateCurrentLocationWithPlannedTripAPI</servlet-name>
         <url-pattern>/UpdateCurrentLocationWithPlannedTripAPI</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>PairingPlannedTripAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.PairingPlannedTripAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PairingPlannedTripAPI</servlet-name>
+        <url-pattern>/PairingPlannedTripAPI</url-pattern>
+    </servlet-mapping>
     <!--**TRIP**-->
     <servlet>
         <servlet-name>EndTripAPI</servlet-name>
@@ -339,6 +348,15 @@
     <servlet-mapping>
         <servlet-name>VerifyCertificateAPI</servlet-name>
         <url-pattern>/VerifyCertificateAPI</url-pattern>
+    </servlet-mapping>
+    <!--** POPULAR LOCATION**-->
+    <servlet>
+        <servlet-name>GetPopularLocationAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.GetPopularLocationAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetPopularLocationAPI</servlet-name>
+        <url-pattern>/GetPopularLocationAPI</url-pattern>
     </servlet-mapping>
     <!--** ANGEL GROUP**-->
     <servlet>

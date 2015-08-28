@@ -18,8 +18,8 @@ public class FakeRequestMakeTrip {
             requestMakeTripRequest.setSenderId(user.getId());
             requestMakeTripRequest.setReceiverId(tester.getId());
             requestMakeTripRequest.setPrice(20000);
-            requestMakeTripRequest.setSenderPlannedTripId(new FakePlannedTrip().fakePlannedTrip(tester.getId(),true, User.PASSENGER));
-            requestMakeTripRequest.setReceiverPlannedTripId(new FakePlannedTrip().fakePlannedTrip(user.getId(),true, User.DRIVER));
+//            requestMakeTripRequest.setSenderPlannedTripId(new FakePlannedTrip().fakePlannedTrip(tester.getId(),true, User.PASSENGER));
+//            requestMakeTripRequest.setReceiverPlannedTripId(new FakePlannedTrip().fakePlannedTrip(user.getId(),true, User.DRIVER));
             String result = new RequestMakeTripController().sendRequestMakeTrip(requestMakeTripRequest);
             System.out.print("Fake make trip request :::: " + result);
         }

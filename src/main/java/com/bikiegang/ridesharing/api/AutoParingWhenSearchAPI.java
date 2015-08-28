@@ -9,7 +9,7 @@ import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.controller.PlannedTripController;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.request.AutoSearchParingRequest;
-import com.bikiegang.ridesharing.pojo.response.AutoSearchParingResponse;
+import com.bikiegang.ridesharing.pojo.response.GetFeedsResponse;
 import com.bikiegang.ridesharing.utilities.ApiDocumentGenerator;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import org.apache.log4j.Logger;
@@ -26,7 +26,7 @@ public class AutoParingWhenSearchAPI extends HttpServlet {
 
     private Logger logger = LogUtil.getLogger(this.getClass());
     public Class requestClass = AutoSearchParingRequest.class;
-    public Class responseClass = AutoSearchParingResponse.class;
+    public Class responseClass = GetFeedsResponse.class;
     public boolean responseIsArray = false;
 
     /**

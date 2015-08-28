@@ -4,25 +4,25 @@ package com.bikiegang.ridesharing.pojo.response;
  * Created by hpduy17 on 7/8/15.
  */
 public class CreateSingleFuturePlannedTripResponse {
-    UserAndPlannedTripDetailResponse yourPlannedTrip;
-    UserAndPlannedTripDetailResponse[] pairedPlannedTripsResult;
+    FeedResponse yourPlannedTrip;
+    FeedResponse[] pairedPlannedTripsResult;
 
     public CreateSingleFuturePlannedTripResponse() {
     }
 
-    public UserAndPlannedTripDetailResponse getYourPlannedTrip() {
+    public FeedResponse getYourPlannedTrip() {
         return yourPlannedTrip;
     }
 
-    public void setYourPlannedTrip(UserAndPlannedTripDetailResponse yourPlannedTrip) {
+    public void setYourPlannedTrip(FeedResponse yourPlannedTrip) {
         this.yourPlannedTrip = yourPlannedTrip;
     }
 
-    public UserAndPlannedTripDetailResponse[] getPairedPlannedTripsResult() {
+    public FeedResponse[] getPairedPlannedTripsResult() {
         return pairedPlannedTripsResult;
     }
 
-    public void setPairedPlannedTripsResult(UserAndPlannedTripDetailResponse[] pairedPlannedTripsResult) {
+    public void setPairedPlannedTripsResult(FeedResponse[] pairedPlannedTripsResult) {
         this.pairedPlannedTripsResult = pairedPlannedTripsResult;
     }
 }

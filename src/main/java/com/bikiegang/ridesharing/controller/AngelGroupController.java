@@ -103,7 +103,7 @@ public class AngelGroupController {
         for(AngelGroup group : groups){
             responses.add(new AngelGroupDetailResponse(group,request.getUserId()));
         }
-        return Parser.ObjectToJSon(true,MessageMappingUtil.Successfully, responses);
+        return Parser.ObjectToJSon(true,MessageMappingUtil.Successfully, new GetAlphabetAngelGroupsResponse(responses));
     }
 
     public String autoCompleteSearchGroup(AutocompleteSearchGroupRequest request) throws JsonProcessingException {

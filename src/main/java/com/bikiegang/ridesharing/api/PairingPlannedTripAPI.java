@@ -8,10 +8,9 @@ package com.bikiegang.ridesharing.api;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.controller.PlannedTripController;
-import com.bikiegang.ridesharing.controller.RatingController;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.request.GetPlannedTripDetailRequest;
-import com.bikiegang.ridesharing.pojo.request.RatingRequest;
+import com.bikiegang.ridesharing.pojo.response.CreateSingleFuturePlannedTripResponse;
 import com.bikiegang.ridesharing.utilities.ApiDocumentGenerator;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import org.apache.log4j.Logger;
@@ -28,7 +27,7 @@ import java.io.PrintWriter;
 public class PairingPlannedTripAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
     public Class requestClass = GetPlannedTripDetailRequest.class;
-    public Class responseClass = null;
+    public Class responseClass = CreateSingleFuturePlannedTripResponse.class;
     public boolean responseIsArray = false;
 
     /**
@@ -53,9 +52,9 @@ public class PairingPlannedTripAPI extends HttpServlet {
                 jsonData.append(line);
             }
             logger.info(jsonData.toString());
-            GetPlannedTripDetailRequest getPlannedTripDetailRequest = (GetPlannedTripDetailRequest) Parser.JSonToObject(jsonData.toString(), GetPlannedTripDetailRequest.class);
+            GetPlannedTripDetailRequest pairingRequest = (GetPlannedTripDetailRequest) Parser.JSonToObject(jsonData.toString(), GetPlannedTripDetailRequest.class);
             PlannedTripController controller = new PlannedTripController();
-            String result = controller.rating(ratingRequest);
+            String result = controller.paringPlannedTrip(pairingRequest);
             logger.info(result);
             out.print(result);
         } catch (Exception ex) {

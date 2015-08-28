@@ -69,20 +69,22 @@ public class RequestMakeTripController {
             if (passengerPlannedTrip == null) {
                 return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "Receiver's PlannedTrip");
             }
-            CreatePlannedTripRequest createRequest = new CreatePlannedTripRequest();
-            createRequest.setCreatorId(request.getSenderId());
-            createRequest.setGoTime(DateTimeUtil.now());
-            createRequest.setRole(senderRole);
+            PlannedTripInfoRequest ptR = new PlannedTripInfoRequest();
+            ptR.setCreatorId(request.getSenderId());
+            ptR.setGoTime(DateTimeUtil.now());
+            ptR.setRole(senderRole);
+
             try {
-                createRequest.setGoogleRoutingResult(database.getRouteHashMap().get(passengerPlannedTrip.getRouteId()).getRawRoutingResult().toString());
+                ptR.setGoogleRoutingResult(database.getRouteHashMap().get(passengerPlannedTrip.getRouteId()).getRawRoutingResult().toString());
             }catch (Exception ignored){}
-            createRequest.setIsParing(false);// no paring
-            createRequest.setPrice(-1);// default price
+            ptR.setIsParing(false);// no paring
+            ptR.setPrice(-1);// default price
+            CreatePlannedTripRequest createRequest = new CreatePlannedTripRequest(ptR);
             String response = new PlannedTripController().createSingleFuturePlannedTrip(createRequest);
             Parser parser = Parser.JSonToParser(response, CreateSingleFuturePlannedTripResponse.class);
             if (parser.isSuccess()) {
                 CreateSingleFuturePlannedTripResponse createPlannedTripResponse = (CreateSingleFuturePlannedTripResponse) parser.getResult();
-                driverPlannedTripId = createPlannedTripResponse.getYourPlannedTrip().getPlannedTrip().getId();
+                driverPlannedTripId = createPlannedTripResponse.getYourPlannedTrip().getTripDetail().getId();
             } else {
                 return Parser.ObjectToJSon(false, parser.getMessageCode(), parser.getMessage());
             }
@@ -91,18 +93,20 @@ public class RequestMakeTripController {
         //case 3: sender is passenger -> create route from google routing result
         else {
             driverPlannedTripId = request.getReceiverPlannedTripId();
-            CreatePlannedTripRequest createRequest = new CreatePlannedTripRequest();
-            createRequest.setCreatorId(request.getSenderId());
-            createRequest.setGoTime(DateTimeUtil.now());
-            createRequest.setRole(senderRole);
-            createRequest.setGoogleRoutingResult(request.getGoogleRoutingResult());
-            createRequest.setIsParing(false);// no paring
-            createRequest.setPrice(-1);// default price
+
+            PlannedTripInfoRequest ptR = new PlannedTripInfoRequest();
+            ptR.setCreatorId(request.getSenderId());
+            ptR.setGoTime(DateTimeUtil.now());
+            ptR.setRole(senderRole);
+            ptR.setGoogleRoutingResult(request.getGoogleRoutingResult());
+            ptR.setIsParing(false);// no paring
+            ptR.setPrice(-1);// default price
+            CreatePlannedTripRequest createRequest = new CreatePlannedTripRequest(ptR);
             String response = new PlannedTripController().createSingleFuturePlannedTrip(createRequest);
             Parser parser = Parser.JSonToParser(response, CreateSingleFuturePlannedTripResponse.class);
             if (parser.isSuccess()) {
                 CreateSingleFuturePlannedTripResponse createPlannedTripResponse = (CreateSingleFuturePlannedTripResponse) parser.getResult();
-                passengerPlannedTripId = createPlannedTripResponse.getYourPlannedTrip().getPlannedTrip().getId();
+                passengerPlannedTripId = createPlannedTripResponse.getYourPlannedTrip().getTripDetail().getId();
             } else {
                 return Parser.ObjectToJSon(false, parser.getMessageCode(), parser.getMessage());
             }

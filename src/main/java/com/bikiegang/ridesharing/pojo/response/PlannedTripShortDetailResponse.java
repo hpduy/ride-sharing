@@ -5,7 +5,9 @@ import com.bikiegang.ridesharing.geocoding.FetchingDataFromGoogleRouting;
 import com.bikiegang.ridesharing.geocoding.GoogleRoutingObject.GoogleRoute;
 import com.bikiegang.ridesharing.pojo.Feed;
 import com.bikiegang.ridesharing.pojo.PlannedTrip;
+import com.bikiegang.ridesharing.pojo.RequestMakeTrip;
 import com.bikiegang.ridesharing.pojo.Route;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.IOException;
 
@@ -24,6 +26,14 @@ public class PlannedTripShortDetailResponse extends TripInFeed {
     private long duration;
     private boolean requested;
     private int typeOfTrip;
+    private int status;
+    @JsonIgnore
+    public static final int NON_REQUEST = 0;
+    @JsonIgnore
+    public static final int REQUESTED = 1;
+    @JsonIgnore
+    public static final int READY_GO = 1;
+
     public PlannedTripShortDetailResponse() {
     }
 
@@ -39,6 +49,15 @@ public class PlannedTripShortDetailResponse extends TripInFeed {
         this.ownerDistance = route.getSumDistance();
         this.goTime = that.getDepartureTime();
         this.duration = route.getEstimatedTime();
+        if (that.getRequestId() <= 0 || null == database.getRequestMakeTripHashMap().get(that.getRequestId())){
+            this.status = NON_REQUEST;
+        }else {
+            if(database.getRequestMakeTripHashMap().get(that.getRequestId()).getStatus() == RequestMakeTrip.ACCEPT){
+                this.status = READY_GO;
+            }else if(requested){
+                this.status = REQUESTED;
+            }
+        }
         try {
             this.requested = (database.getSenderRequestsBox().get(senderId).containsKey(that.getId()));
         } catch (Exception ignored) {
@@ -160,5 +179,13 @@ public class PlannedTripShortDetailResponse extends TripInFeed {
 
     public void setTypeOfTrip(int typeOfTrip) {
         this.typeOfTrip = typeOfTrip;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }
