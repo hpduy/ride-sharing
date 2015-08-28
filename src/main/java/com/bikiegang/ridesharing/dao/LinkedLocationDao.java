@@ -10,6 +10,7 @@ import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.geocoding.GeoCell;
 import com.bikiegang.ridesharing.pojo.LinkedLocation;
 import com.bikiegang.ridesharing.pojo.PlannedTrip;
+import com.bikiegang.ridesharing.pojo.Route;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.utilities.Const;
 import org.apache.log4j.Logger;
@@ -42,17 +43,17 @@ public class LinkedLocationDao {
             }
             linkedLocationIds.add(obj.getId());
             // more (put to geocell)
-                PlannedTrip pt = database.getPlannedTripHashMap().get(obj.getRefId());
-                GeoCell<Long> geoCell = null;
-                if (pt.getRole() == User.DRIVER) {
-                    geoCell = database.getGeoCellDriver();
-                }
-                if (pt.getRole() == User.PASSENGER) {
-                    geoCell = database.getGeoCellPassenger();
-                }
-                if (null != geoCell) {
-                    geoCell.putToCell(obj, obj.getId());
-                }
+            Route pt = database.getRouteHashMap().get(obj.getRefId());
+            GeoCell<Long> geoCell = null;
+            if (pt.getRole() == User.DRIVER) {
+                geoCell = database.getGeoCellDriver();
+            }
+            if (pt.getRole() == User.PASSENGER) {
+                geoCell = database.getGeoCellPassenger();
+            }
+            if (null != geoCell) {
+                geoCell.putToCell(obj, obj.getId());
+            }
 
             //Step 2: put redis
             result = cache.hset(obj.getClass().getName(),
@@ -94,17 +95,17 @@ public class LinkedLocationDao {
                 return false;
             }
             // remove from geo cell
-                PlannedTrip pt = database.getPlannedTripHashMap().get(obj.getRefId());
-                GeoCell<Long> geoCell = null;
-                if (pt.getRole() == User.DRIVER) {
-                    geoCell = database.getGeoCellDriver();
-                }
-                if (pt.getRole() == User.PASSENGER) {
-                    geoCell = database.getGeoCellPassenger();
-                }
-                if (null != geoCell) {
-                    geoCell.removeFromCell(obj, obj.getId());
-                }
+            PlannedTrip pt = database.getPlannedTripHashMap().get(obj.getRefId());
+            GeoCell<Long> geoCell = null;
+            if (pt.getRole() == User.DRIVER) {
+                geoCell = database.getGeoCellDriver();
+            }
+            if (pt.getRole() == User.PASSENGER) {
+                geoCell = database.getGeoCellPassenger();
+            }
+            if (null != geoCell) {
+                geoCell.removeFromCell(obj, obj.getId());
+            }
 
             //Step 1: put in hashmap
             database.getLinkedLocationHashMap().remove(obj.getId());
@@ -156,18 +157,18 @@ public class LinkedLocationDao {
             if (tmp != null) {
                 LinkedLocation older = new LinkedLocation(tmp);
                 // more (put to geocell)
-                    PlannedTrip pt = database.getPlannedTripHashMap().get(obj.getRefId());
-                    GeoCell<Long> geoCell = null;
-                    if (pt.getRole() == User.DRIVER) {
-                        geoCell = database.getGeoCellDriver();
-                    }
-                    if (pt.getRole() == User.PASSENGER) {
-                        geoCell = database.getGeoCellPassenger();
-                    }
-                    if (null != geoCell) {
-                        geoCell.removeFromCell(older, older.getId());
-                        geoCell.putToCell(obj, obj.getId());
-                    }
+                PlannedTrip pt = database.getPlannedTripHashMap().get(obj.getRefId());
+                GeoCell<Long> geoCell = null;
+                if (pt.getRole() == User.DRIVER) {
+                    geoCell = database.getGeoCellDriver();
+                }
+                if (pt.getRole() == User.PASSENGER) {
+                    geoCell = database.getGeoCellPassenger();
+                }
+                if (null != geoCell) {
+                    geoCell.removeFromCell(older, older.getId());
+                    geoCell.putToCell(obj, obj.getId());
+                }
 
             }
             //Step 1: put in hashmap

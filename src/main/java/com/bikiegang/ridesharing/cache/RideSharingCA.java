@@ -152,6 +152,27 @@ public class RideSharingCA {
     //<editor-fold defaultstate="collapsed" desc="Restore function">
     Database database = Database.getInstance();
 
+    public boolean RestoreRoute() {
+        boolean result = false;
+        try {
+            database.getRouteHashMap().clear();
+            Map<String, String> hgetAll = hgetAll(Route.class.getName());
+            for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+
+                database.getRouteHashMap().put(ConvertUtils.toLong(key),
+                        (Route) JSONUtil.DeSerialize(value, Route.class));
+            }
+
+            result = true;
+        } catch (Exception ex) {
+            _logger.error(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
     public boolean RestoreTripCalendar() {
         boolean result = false;
         try {
@@ -384,6 +405,7 @@ public class RideSharingCA {
             database.getUserIdRFPlanedTrips().clear();
             database.getRoleRFPlannedTrips().clear();
             database.getGroupIdRFPlannedTrips().clear();
+            database.getRouteRFPlannedTripsByDay().clear();
 
             Map<String, String> hgetAll = hgetAll(PlannedTrip.class.getName());
             for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
@@ -420,6 +442,16 @@ public class RideSharingCA {
 
                 database.getGroupIdRFPlannedTrips().put(ConvertUtils.toLong(key), (HashSet<Long>) JSONUtil.DeSerialize(value, new TypeToken<HashSet<Long>>() {
                 }.getType()));
+            }
+
+            Map<String, String> plannedTripIds = hgetAll(PlannedTrip.class.getName() + ":route");
+            for (Map.Entry<String, String> entrySet : plannedTripIds.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+
+                database.getRouteRFPlannedTripsByDay().put(ConvertUtils.toLong(key), (HashMap<Long, Long>) JSONUtil.DeSerialize(value,
+                        new TypeToken<HashMap<Long, Long>>() {
+                        }.getType()));
             }
             result = true;
         } catch (Exception ex) {
@@ -708,6 +740,7 @@ public class RideSharingCA {
         result &= RestoreSocialTrip();
         result &= RestoreSocialTripAttendance();
         result &= RestoreTripCalendar();
+        result &= RestoreRoute();
         return result;
     }
 
