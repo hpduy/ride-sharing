@@ -487,11 +487,11 @@ public class ConfigInfo {
                 + "`createdTime`,\n"
                 + "`sumDistance`,\n"
                 + "`creatorId`,\n"
-                + "`title`)\n"
+                + "`title`, `role`)\n"
                 + "VALUES\n"
                 + "(?,?,?,?,?,"
                 + "?,?,?,?,?,"
-                + "?,?);";
+                + "?,?,?);";
         ROUTE_UPDATE_QUERY = "UPDATE `ridesharing_db`.`Route`\n"
                 + "SET\n"
                 + "`id` = ?,\n"
@@ -505,7 +505,7 @@ public class ConfigInfo {
                 + "`createdTime` = ?,\n"
                 + "`sumDistance` = ?,\n"
                 + "`creatorId` = ?,\n"
-                + "`title` = ?\n"
+                + "`title` = ?, `role` = ?\n"
                 + "WHERE `id` = ?;";
         ROUTE_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`Route`\n"
                 + "WHERE `id` = ?;";

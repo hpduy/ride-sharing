@@ -5,7 +5,8 @@ import org.json.JSONObject;
 /**
  * Created by hpduy17 on 8/26/15.
  */
-public class Route implements PojoBase{
+public class Route implements PojoBase {
+
     private long id;
     private JSONObject rawRoutingResult = new JSONObject();
     private double estimatedFuel;
@@ -18,6 +19,7 @@ public class Route implements PojoBase{
     private double sumDistance;
     private String creatorId = "";
     private String title = "";
+    private int role;
 
     public Route() {
     }
@@ -147,4 +149,13 @@ public class Route implements PojoBase{
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public int getRole() {
+        return role;
+    }
+
+    public void setRole(int role) {
+        this.role = role;
+    }
+
 }
