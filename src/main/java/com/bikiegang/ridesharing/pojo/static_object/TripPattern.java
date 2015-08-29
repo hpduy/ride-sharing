@@ -36,4 +36,13 @@ public class TripPattern {
         this.dayOfWeek = dayOfWeek;
     }
 
+    public TripPattern() {
+    }
+
+    public TripPattern(long startDay, long endDay, int dayOfWeek) {
+        this.startDay = startDay;
+        this.endDay = endDay;
+        this.dayOfWeek = dayOfWeek;
+    }
+
 }
