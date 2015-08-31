@@ -92,12 +92,12 @@ public class FetchingDataFromGoogleRouting {
         }
         // create link locations
         List<LinkedLocation> locations = new ArrayList<>();
-//        for (int i = 0; i < cellcodes.size(); i++) {
-//            String cellcode = cellcodes.get(i);
-//            LatLng center = geoCell.getLatLngCenterFromCellCode(cellcode);
-//            LinkedLocation location = new LinkedLocation(center.getLat(), center.getLng(), center.getTime(), 0, timeForCellCodes[i], i, routeId, LinkedLocation.IN_PLANNED_TRIP);
-//            locations.add(location);
-//        }
+        for (int i = 0; i < cellcodes.size(); i++) {
+            String cellcode = cellcodes.get(i);
+            LatLng center = geoCell.getLatLngCenterFromCellCode(cellcode);
+            LinkedLocation location = new LinkedLocation(center.getLat(), center.getLng(), center.getTime(), 0, timeForCellCodes[i], i, routeId);
+            locations.add(location);
+        }
         return locations;
 
     }

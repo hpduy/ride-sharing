@@ -1,5 +1,6 @@
 package com.bikiegang.ridesharing.pojo.request;
 
+import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.static_object.TripPattern;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -11,13 +12,13 @@ public class CreatePlannedTripRequest {
 
     private PlannedTripInfoRequest plannedTrip;
     private TripPattern[] patterns;
-
+comm
     public CreatePlannedTripRequest(PlannedTripInfoRequest plannedTrip, TripPattern[] patterns) {
         this.plannedTrip = plannedTrip;
         this.patterns = patterns;
     }
 
-    public CreatePlannedTripRequest() {
+    public CreatePlannedTripRequest(String alphanumeric, int nextInt, long l, String randomAlphanumeric, boolean b, int i, String s, TripPattern[] patterns, LatLng[] waypoints) {
     }
 
     public CreatePlannedTripRequest(PlannedTripInfoRequest plannedTrip) {
