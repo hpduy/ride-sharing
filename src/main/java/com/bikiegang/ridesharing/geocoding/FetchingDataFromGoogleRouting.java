@@ -21,15 +21,17 @@ import java.util.List;
  * Created by hpduy17 on 7/14/15.
  */
 public class FetchingDataFromGoogleRouting {
+
     Logger logger = LogUtil.getLogger(this.getClass());
     Database database = Database.getInstance();
 
     public List<LinkedLocation> fetch(Route route) throws IOException {
         if (null == route.getRawRoutingResult() || route.getRawRoutingResult().length() <= 0) {
-            if (null == route)
+            if (null == route) {
                 logger.info("Planned Trip is null");
-            else
+            } else {
                 logger.info("JSONObject is null or empty");
+            }
             return null;
         }
         if (route.getId() <= 0) {
@@ -38,14 +40,15 @@ public class FetchingDataFromGoogleRouting {
         }
         RoutingResult routingResult = (RoutingResult) Parser.JSonToObject(route.getRawRoutingResult().toString(), RoutingResult.class);
         //update plannedTrip info
-        if(routingResult.getRoutes().length > 0) {
+        if (routingResult.getRoutes().length > 0) {
             GoogleRoute googleRoute = routingResult.getRoutes()[0];
             route.setSumDistance(googleRoute.getLegs()[0].getDistance().getValue());
             // create linkLocation
             List<LinkedLocation> locations = getLocations(googleRoute, route.getId());
             route.setEstimatedTime(locations.get(locations.size() - 1).getEstimatedTime());
-            if(route.getEstimatedTime() <= 0)
+            if (route.getEstimatedTime() <= 0) {
                 route.setEstimatedTime(googleRoute.getLegs()[0].getDuration().getValue());
+            }
             route.setStartLocation(googleRoute.getLegs()[0].getStart_location());
             route.setEndLocation(googleRoute.getLegs()[0].getEnd_location());
             route.setOverViewPolyLine(googleRoute.getOverview_polyline().getPoints());
@@ -53,7 +56,6 @@ public class FetchingDataFromGoogleRouting {
         }
         return null;
     }
-
 
     private List<LinkedLocation> getLocations(GoogleRoute googleRoute, long routeId) {
         // decode polyline
@@ -63,15 +65,15 @@ public class FetchingDataFromGoogleRouting {
         long[] timeForCellCodes = new long[cellcodes.size()];
         Step[] steps = googleRoute.getLegs()[0].getSteps();
         //set end time
-        timeForCellCodes[cellcodes.size()-1] = googleRoute.getLegs()[0].getDuration().getValue();
+        timeForCellCodes[cellcodes.size() - 1] = googleRoute.getLegs()[0].getDuration().getValue();
         // set time for other point
         loadTimeRecursive(steps, timeForCellCodes, cellcodes);
         // recalculate time: for time = 0 or weird time
-        for (int i = 0; i < timeForCellCodes.length - 1; ) {
-            for (int j = i + 1; j < timeForCellCodes.length; ) {
+        for (int i = 0; i < timeForCellCodes.length - 1;) {
+            for (int j = i + 1; j < timeForCellCodes.length;) {
                 if (timeForCellCodes[j] <= timeForCellCodes[i]) {
-                    if (j == timeForCellCodes.length -1) { // case time of the last < time member
-                        timeForCellCodes[j] = timeForCellCodes[i] + (j-i)* ((timeForCellCodes[i] - timeForCellCodes[0])/(i+1));
+                    if (j == timeForCellCodes.length - 1) { // case time of the last < time member
+                        timeForCellCodes[j] = timeForCellCodes[i] + (j - i) * ((timeForCellCodes[i] - timeForCellCodes[0]) / (i + 1));
                     }
                     j++;
 
@@ -113,7 +115,7 @@ public class FetchingDataFromGoogleRouting {
                 int endIdx = cellcodes.indexOf(cellCodeEnd);
                 if (endIdx > 0 && startIdx >= 0 && timeForCellCodes[endIdx] == 0) {
                     timeForCellCodes[endIdx] = timeForCellCodes[startIdx] + step.getDuration().getValue();
-                } 
+                }
                 // recursive
                 if (step.getSteps() != null && step.getSteps().length > 0) {
                     loadTimeRecursive(step.getSteps(), timeForCellCodes, cellcodes);
@@ -125,13 +127,13 @@ public class FetchingDataFromGoogleRouting {
     }
 
     // GET BOUND
-
     public Bound getBoundFromRoutingResult(Route route) throws IOException {
         if (null == route.getRawRoutingResult() || route.getRawRoutingResult().length() <= 0) {
-            if (null == route)
+            if (null == route) {
                 logger.info("Planned Trip is null");
-            else
+            } else {
                 logger.info("JSONObject is null or empty");
+            }
             return null;
         }
         if (route.getId() <= 0) {
@@ -145,10 +147,11 @@ public class FetchingDataFromGoogleRouting {
 
     public GoogleRoute getRouteFromRoutingResult(Route route) throws IOException {
         if (null == route.getRawRoutingResult() || route.getRawRoutingResult().length() <= 0) {
-            if (null == route)
+            if (null == route) {
                 logger.info("plannedTrip is null");
-            else
+            } else {
                 logger.info("JSONObject is null or empty");
+            }
             return null;
         }
         if (route.getId() <= 0) {
