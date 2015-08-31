@@ -12,7 +12,7 @@ public class CreatePlannedTripRequest {
 
     private PlannedTripInfoRequest plannedTrip;
     private TripPattern[] patterns;
-comm
+
     public CreatePlannedTripRequest(PlannedTripInfoRequest plannedTrip, TripPattern[] patterns) {
         this.plannedTrip = plannedTrip;
         this.patterns = patterns;
