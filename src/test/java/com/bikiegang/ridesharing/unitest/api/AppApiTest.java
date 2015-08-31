@@ -7,6 +7,7 @@ package com.bikiegang.ridesharing.unitest.api;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
+import com.bikiegang.ridesharing.pojo.request.CreatePlannedTripRequest;
 import com.bikiegang.ridesharing.utilities.ApiUtils;
 import com.bikiegang.ridesharing.utilities.TestAPIUtils;
 import java.io.BufferedReader;
@@ -42,7 +43,7 @@ public class AppApiTest {
                         ""));
         input.getAPI().add(
                 new APIObject.APIData("CreateInstantPlannedTripAPI",
-                        JSONUtil.Serialize(TestAPIUtils.CreateIncreasePopularityRequest()),
+                        JSONUtil.Serialize(TestAPIUtils.CreateCreatePlannedTripRequest()),
                         ""));
         input.getAPI().add(
                 new APIObject.APIData("CreateRecurrentPlannedTripAPI",
@@ -155,13 +156,14 @@ public class AppApiTest {
                         "")
         );
 
-        String Serialize = JSONUtil.Serialize(input);
-        System.out.println(Serialize);
-        LOG.info(Serialize);
-
+//        String Serialize = JSONUtil.Serialize(input);
+//        System.out.println(Serialize);
+//        LOG.info(Serialize);
         List<APIObject.APIData> apis = input.getAPI();
         for (APIObject.APIData item : apis) {
+            System.out.println(item.name);
             String post = ApiUtils.getInstance().getPost("http://103.20.148.111:8080/RideSharing/" + item.getName(), item.getData());
+            System.out.println(item.data);
             System.out.println(post);
         }
 
@@ -173,11 +175,9 @@ public class AppApiTest {
     public static String ReadFile() {
         String result = "";
         BufferedReader br = null;
-
         try {
 
             String sCurrentLine;
-
             br = new BufferedReader(new FileReader(INPUT_API_DATA));
             StringBuilder strB = new StringBuilder();
             while ((sCurrentLine = br.readLine()) != null) {

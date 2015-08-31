@@ -37,24 +37,28 @@ public class ApiUtils {
     private final org.apache.log4j.Logger LOG = LogUtil.getLogger(this.getClass());
 
     public String getPost(String url, String data) {
+        StringBuffer strBuff = new StringBuffer();
         try {
+
             HttpClient client = new DefaultHttpClient();
             HttpPost post = new HttpPost(url);
             String line = "";
-            StringEntity input = new StringEntity(data);
+            StringEntity input = new StringEntity(data, "UTF-8");
             post.setEntity(input);
             HttpResponse respe = client.execute(post);
             BufferedReader rd = new BufferedReader(new InputStreamReader(respe.getEntity().getContent()));
             while ((line = rd.readLine()) != null) {
-                out.println(line);
+                strBuff.append(line);
             }
         } catch (IOException | IllegalStateException ex) {
             LOG.error(ex.getMessage(), ex);
         }
-        return null;
+        return strBuff.toString();
     }
 
     public String getGet(String url, String data) {
+        StringBuffer strBuff = new StringBuffer();
+
         try {
             HttpClient client = new DefaultHttpClient();
             HttpGet post = new HttpGet(url);
@@ -62,11 +66,12 @@ public class ApiUtils {
             HttpResponse respe = client.execute(post);
             BufferedReader rd = new BufferedReader(new InputStreamReader(respe.getEntity().getContent()));
             while ((line = rd.readLine()) != null) {
-                out.println(line);
+                strBuff.append(line);
+
             }
         } catch (IOException | IllegalStateException ex) {
             LOG.error(ex.getMessage(), ex);
         }
-        return null;
+        return strBuff.toString();
     }
 }
