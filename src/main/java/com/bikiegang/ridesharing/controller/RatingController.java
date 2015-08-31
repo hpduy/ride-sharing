@@ -34,7 +34,7 @@ public class RatingController {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'tripId'");
         }
 
-        if (request.getNumberOfStart() <= 0) {
+        if (request.getNumberOfStar() <= 0) {
             Trip trip = database.getTripHashMap().get(request.getTripId());
             if (trip != null) {
                 trip.setTripStatus(Trip.COMPLETED_TRIP);
@@ -48,7 +48,7 @@ public class RatingController {
         rating.setCreatedTime(DateTimeUtil.now());
         rating.setRatedUserId(request.getRatedUserId());
         rating.setRatingUserId(request.getRatingUserId());
-        rating.setNumberOfStart(request.getNumberOfStart());
+        rating.setNumberOfStart(request.getNumberOfStar());
         rating.setTripId(request.getTripId());
         if (dao.insert(rating)) {
             Trip trip = database.getTripHashMap().get(rating.getTripId());

@@ -57,37 +57,30 @@ public class FeedController {
         int fromIdx = 0;
         int toIdx = 0;
         // to index process
-
-        switch (request.getGetWay()) {
-            case GetFeedsRequest.NEW_FEED:
-                for (toIdx = database.getFeedHashMap().size() - 1; toIdx >= 0; toIdx--) {
-                    if (new ArrayList<>(database.getFeedHashMap().values()).get(toIdx).getCreatedTime() < DateTimeUtil.now()) {
-                        break;
-                    }
-                }
-                if (toIdx > request.getStartIdx()) {
-                    if (request.getStartIdx() < 0) {
-                        fromIdx = toIdx - request.getNumberOfFeed();
-                        if (fromIdx < 0)
-                            fromIdx = 0;
-                    } else {
-                        fromIdx = request.getStartIdx();
-                    }
-                }
+        List<Feed> feedList = new ArrayList<>(database.getFeedHashMap().values());
+        List<Long> feedId = new ArrayList<>(database.getFeedHashMap().keySet());
+        for (toIdx = database.getFeedHashMap().size() - 1; toIdx >= 0; toIdx--) {
+            if (feedList.get(toIdx).getCreatedTime() < DateTimeUtil.now()) {
                 break;
-            case GetFeedsRequest.HISTORY_FEED:
-                for (toIdx = request.getStartIdx(); toIdx >= 0; toIdx--) {
-                    if (new ArrayList<>(database.getFeedHashMap().values()).get(toIdx).getCreatedTime() < DateTimeUtil.now()) {
-                        break;
-                    }
-                }
-                fromIdx = request.getStartIdx() - request.getNumberOfFeed();
-                if (fromIdx < 0)
-                    fromIdx = 0;
-
-                break;
-            default:
-                return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'getWay'");
+            }
+        }
+        if (!feedId.contains(request.getStartId())) {
+            fromIdx = toIdx - request.getNumberOfFeed();
+        } else {
+            switch (request.getGetWay()) {
+                case GetFeedsRequest.NEW_FEED:
+                    fromIdx = feedId.indexOf(request.getStartId());
+                    break;
+                case GetFeedsRequest.HISTORY_FEED:
+                    toIdx = feedId.indexOf(request.getStartId());
+                    fromIdx = toIdx - request.getNumberOfFeed();
+                    break;
+                default:
+                    return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'getWay'");
+            }
+        }
+        if (fromIdx < 0) {
+            fromIdx = 0;
         }
         List<Feed> feeds = new ArrayList<>(database.getFeedHashMap().values()).subList(fromIdx, toIdx);
         List<FeedResponse> responses = new ArrayList<>();

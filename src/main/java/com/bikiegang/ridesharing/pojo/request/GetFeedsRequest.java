@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GetFeedsRequest extends GetUsersAroundFromMeRequest {
 
-    private int startIdx;
+    private long startId;
     private int numberOfFeed;
     private int getWay;
     @JsonIgnore
@@ -18,12 +18,12 @@ public class GetFeedsRequest extends GetUsersAroundFromMeRequest {
     @JsonIgnore
     public static final int HISTORY_FEED = 1;
 
-    public int getStartIdx() {
-        return startIdx;
+    public long getStartId() {
+        return startId;
     }
 
-    public void setStartIdx(int startIdx) {
-        this.startIdx = startIdx;
+    public void setStartId(long startId) {
+        this.startId = startId;
     }
 
     public int getNumberOfFeed() {
@@ -45,8 +45,8 @@ public class GetFeedsRequest extends GetUsersAroundFromMeRequest {
     public GetFeedsRequest() {
     }
 
-    public GetFeedsRequest(int startIdx, int numberOfFeed, int getWay) {
-        this.startIdx = startIdx;
+    public GetFeedsRequest(int startId, int numberOfFeed, int getWay) {
+        this.startId = startId;
         this.numberOfFeed = numberOfFeed;
         this.getWay = getWay;
     }

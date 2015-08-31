@@ -11,7 +11,7 @@ public class RatingRequest {
 
     private String ratedUserId;
     private String ratingUserId;
-    private int numberOfStart;
+    private int numberOfStar;
     private String comment;
     private long tripId;
 
@@ -31,12 +31,12 @@ public class RatingRequest {
         this.ratingUserId = ratingUserId;
     }
 
-    public int getNumberOfStart() {
-        return numberOfStart;
+    public int getNumberOfStar() {
+        return numberOfStar;
     }
 
-    public void setNumberOfStart(int numberOfStart) {
-        this.numberOfStart = numberOfStart;
+    public void setNumberOfStar(int numberOfStar) {
+        this.numberOfStar = numberOfStar;
     }
 
     public String getComment() {
@@ -58,10 +58,10 @@ public class RatingRequest {
     public RatingRequest() {
     }
 
-    public RatingRequest(String ratedUserId, String ratingUserId, int numberOfStart, String comment, long tripId) {
+    public RatingRequest(String ratedUserId, String ratingUserId, int numberOfStar, String comment, long tripId) {
         this.ratedUserId = ratedUserId;
         this.ratingUserId = ratingUserId;
-        this.numberOfStart = numberOfStart;
+        this.numberOfStar = numberOfStar;
         this.comment = comment;
         this.tripId = tripId;
     }
