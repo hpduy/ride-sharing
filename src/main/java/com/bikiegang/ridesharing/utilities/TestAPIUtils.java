@@ -5,6 +5,7 @@
  */
 package com.bikiegang.ridesharing.utilities;
 
+import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.request.AddPopularLocationRequest;
 import com.bikiegang.ridesharing.pojo.request.AutoSearchParingRequest;
 import com.bikiegang.ridesharing.pojo.request.CreatePlannedTripRequest;
@@ -12,18 +13,21 @@ import com.bikiegang.ridesharing.pojo.request.CreateSocialTripRequest;
 import com.bikiegang.ridesharing.pojo.request.EndTripRequest;
 import com.bikiegang.ridesharing.pojo.request.GetAngelActiveCodesRequest;
 import com.bikiegang.ridesharing.pojo.request.GetFeedsRequest;
+import com.bikiegang.ridesharing.pojo.request.GetInformationUsingUserIdRequest;
 import com.bikiegang.ridesharing.pojo.request.GetListRequestMakeTripRequest;
 import com.bikiegang.ridesharing.pojo.request.GetPartnerLocationRequest;
 import com.bikiegang.ridesharing.pojo.request.GetPlannedTripDetailRequest;
 import com.bikiegang.ridesharing.pojo.request.GetTripByCalendarRequest;
 import com.bikiegang.ridesharing.pojo.request.GetUsersAroundFromMeRequest;
 import com.bikiegang.ridesharing.pojo.request.IncreasePopularityRequest;
+import com.bikiegang.ridesharing.pojo.request.LoginRequest;
 import com.bikiegang.ridesharing.pojo.request.MergeGroupRequest;
 import com.bikiegang.ridesharing.pojo.request.RatingRequest;
 import com.bikiegang.ridesharing.pojo.request.RegisterRequest;
 import com.bikiegang.ridesharing.pojo.request.RemoveRequestMakeTripRequest;
 import com.bikiegang.ridesharing.pojo.request.ReplyMakeTripRequest;
 import com.bikiegang.ridesharing.pojo.request.RequestMakeTripRequest;
+import com.bikiegang.ridesharing.pojo.request.StartTripRequest;
 import com.bikiegang.ridesharing.pojo.request.UpdateBroadcastRequest;
 import com.bikiegang.ridesharing.pojo.request.UpdateCurrentLocationRequest;
 import com.bikiegang.ridesharing.pojo.request.UpdateCurrentLocationWithPlannedTripRequest;
@@ -59,13 +63,16 @@ public class TestAPIUtils {
     }
 
     public static IncreasePopularityRequest CreateIncreasePopularityRequest() {
-        IncreasePopularityRequest result = new IncreasePopularityRequest(RandomStringUtils.randomAlphanumeric(30), RandomUtils.nextLong());
+        IncreasePopularityRequest result = new IncreasePopularityRequest(
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomUtils.nextLong());
 
         return result;
     }
 
     public static RequestMakeTripRequest CreateRequestMakeTripRequest() {
-        RequestMakeTripRequest result = new RequestMakeTripRequest(RandomStringUtils.randomAlphanumeric(30),
+        RequestMakeTripRequest result = new RequestMakeTripRequest(
+                RandomStringUtils.randomAlphanumeric(30),
                 RandomStringUtils.randomAlphanumeric(30),
                 RandomUtils.nextLong(),
                 RandomUtils.nextLong(),
@@ -76,7 +83,8 @@ public class TestAPIUtils {
     }
 
     public static AutoSearchParingRequest CreateAutoSearchParingRequest() {
-        AutoSearchParingRequest result = new AutoSearchParingRequest(RandomStringUtils.randomAlphanumeric(30),
+        AutoSearchParingRequest result = new AutoSearchParingRequest(
+                RandomStringUtils.randomAlphanumeric(30),
                 RandomUtils.nextLong(),
                 RandomStringUtils.randomAlphanumeric(30),
                 true);
@@ -84,12 +92,15 @@ public class TestAPIUtils {
     }
 
     public static GetListRequestMakeTripRequest CreateGetListRequestMakeTripRequest() {
-        GetListRequestMakeTripRequest result = new GetListRequestMakeTripRequest(RandomStringUtils.randomAlphanumeric(30));
+        GetListRequestMakeTripRequest result = new GetListRequestMakeTripRequest(
+                RandomStringUtils.randomAlphanumeric(30));
         return result;
     }
 
     public static MergeGroupRequest CreateMergeGroupRequest() {
-        MergeGroupRequest result = new MergeGroupRequest(RandomUtils.nextLong(), RandomUtils.nextLong());
+        MergeGroupRequest result = new MergeGroupRequest(
+                RandomUtils.nextLong(),
+                RandomUtils.nextLong());
 
         return result;
     }
@@ -105,78 +116,199 @@ public class TestAPIUtils {
     }
 
     public static CreatePlannedTripRequest CreateCreatePlannedTripRequest() {
-
-//        TripPattern item1 = new TripPattern(RandomUtils.nextLong(),
-//                RandomUtils.nextLong(),
-//                RandomUtils.nextLong());
-//        TripPattern item2 = new TripPattern(RandomUtils.nextLong(),
-//                RandomUtils.nextLong(),
-//                RandomUtils.nextLong());
-//        TripPattern item3 = new TripPattern(RandomUtils.nextLong(),
-//                RandomUtils.nextLong(),
-//                RandomUtils.nextLong());
-//        TripPattern[] arr = new TripPattern[]{item1, item2, item3};
-//        CreatePlannedTripRequest result = new CreatePlannedTripRequest(RandomStringUtils.randomAlphanumeric(30), role, goTime, null, true, typeOfTrip, null, arr, waypoints);
-        return null;
-    }
-
-    public static GetPartnerLocationRequest CreateGetPartnerLocationRequest() {
-        return null;
-    }
-
-    public static RatingRequest CreateRatingRequest() {
-        return null;
-    }
-
-    public static UpdateCurrentLocationRequest CreateUpdateCurrentLocationRequest() {
-        return null;
-    }
-
-    public static CreateSocialTripRequest CreateCreateSocialTripRequest() {
-        return null;
+        TripPattern item1 = new TripPattern(
+                RandomUtils.nextLong(),
+                RandomUtils.nextLong(),
+                RandomUtils.nextInt());
+        TripPattern item2 = new TripPattern(
+                RandomUtils.nextLong(),
+                RandomUtils.nextLong(),
+                RandomUtils.nextInt());
+        TripPattern item3 = new TripPattern(
+                RandomUtils.nextLong(),
+                RandomUtils.nextLong(),
+                RandomUtils.nextInt());
+        TripPattern[] patterns = new TripPattern[]{item1, item2, item3};
+        LatLng[] waypoints = new LatLng[]{
+            new LatLng(RandomUtils.nextDouble(),
+            RandomUtils.nextDouble()),
+            new LatLng(RandomUtils.nextDouble(),
+            RandomUtils.nextDouble()),
+            new LatLng(RandomUtils.nextDouble(),
+            RandomUtils.nextDouble())
+        };
+        CreatePlannedTripRequest result = new CreatePlannedTripRequest(
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomUtils.nextInt(),
+                RandomUtils.nextLong(),
+                RandomStringUtils.randomAlphanumeric(30),
+                true,
+                RandomUtils.nextInt(),
+                RandomStringUtils.randomAlphanumeric(30),
+                patterns, waypoints
+        );
+        return result;
     }
 
     public static GetPlannedTripDetailRequest CreateGetPlannedTripDetailRequest() {
-        return null;
+        GetPlannedTripDetailRequest result = new GetPlannedTripDetailRequest(
+                RandomUtils.nextLong(),
+                RandomStringUtils.randomAlphanumeric(30));
+
+        return result;
+    }
+
+    public static GetPartnerLocationRequest CreateGetPartnerLocationRequest() {
+        GetPartnerLocationRequest result = new GetPartnerLocationRequest(RandomStringUtils.randomAlphabetic(10));
+        return result;
+    }
+
+    public static CreateSocialTripRequest CreateCreateSocialTripRequest() {
+        CreateSocialTripRequest result = new CreateSocialTripRequest(
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomUtils.nextDouble(),
+                RandomUtils.nextDouble(),
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomUtils.nextInt(),
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomUtils.nextInt(),
+                RandomUtils.nextInt());
+        return result;
     }
 
     public static RegisterRequest CreateRegisterRequest() {
-        return null;
+        RegisterRequest result = new RegisterRequest(
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomUtils.nextInt(),
+                RandomUtils.nextInt());
+        return result;
     }
 
     public static UpdateCurrentLocationWithPlannedTripRequest CreateUpdateCurrentLocationWithPlannedTripRequest() {
-        return null;
+
+        UpdateCurrentLocationWithPlannedTripRequest result = new UpdateCurrentLocationWithPlannedTripRequest(
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomUtils.nextLong());
+        return result;
     }
 
     public static EndTripRequest CreateEndTripRequest() {
-        return null;
+        EndTripRequest result = new EndTripRequest(
+                RandomUtils.nextLong(),
+                new LatLng(
+                        RandomUtils.nextDouble(),
+                        RandomUtils.nextDouble()),
+                RandomStringUtils.randomAlphanumeric(30));
+        return result;
     }
 
     public static GetTripByCalendarRequest CreateGetTripByCalendarRequest() {
-        return null;
+        GetTripByCalendarRequest reuslt = new GetTripByCalendarRequest(
+                RandomUtils.nextLong(),
+                RandomUtils.nextLong(),
+                RandomStringUtils.randomAlphanumeric(30));
+        return reuslt;
     }
 
     public static RemoveRequestMakeTripRequest CreateRemoveRequestMakeTripRequest() {
-        return null;
+        RemoveRequestMakeTripRequest result = new RemoveRequestMakeTripRequest(
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomUtils.nextLong());
+        return result;
     }
 
     public static UpdateProfileRequest CreateUpdateProfileRequest() {
-        return null;
+        UpdateProfileRequest result = new UpdateProfileRequest(
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomStringUtils.randomAlphanumeric(30));
+        return result;
     }
 
     public static GetAngelActiveCodesRequest CreateGetAngelActiveCodesRequest() {
-        return null;
+        GetAngelActiveCodesRequest result = new GetAngelActiveCodesRequest(
+                RandomUtils.nextInt());
+        return result;
     }
 
     public static GetUsersAroundFromMeRequest CreateGetUsersAroundFromMeRequest() {
-        return null;
+        GetUsersAroundFromMeRequest result = new GetFeedsRequest(
+                RandomUtils.nextInt(),
+                RandomUtils.nextInt(),
+                RandomUtils.nextInt());
+        return result;
     }
 
     public static ReplyMakeTripRequest CreateReplyMakeTripRequest() {
-        return null;
+        ReplyMakeTripRequest result = new ReplyMakeTripRequest(
+                RandomUtils.nextLong(),
+                RandomUtils.nextInt(),
+                RandomStringUtils.randomAlphanumeric(30));
+        return result;
     }
 
     public static UpdateSocialNetworkAccountRequest CreateUpdateSocialNetworkAccountRequest() {
-        return null;
+        UpdateSocialNetworkAccountRequest result = new UpdateSocialNetworkAccountRequest(
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomUtils.nextInt());
+        return result;
     }
+
+    public static GetInformationUsingUserIdRequest CreateGetInformationUsingUserIdRequest() {
+        GetInformationUsingUserIdRequest result = new GetInformationUsingUserIdRequest(
+                RandomStringUtils.randomAlphanumeric(30));
+        return result;
+    }
+
+    public static LoginRequest CreateLoginRequest() {
+        LoginRequest result = new LoginRequest(
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomUtils.nextInt());
+        return result;
+    }
+
+    public static RatingRequest CreateRatingRequest() {
+        RatingRequest result = new RatingRequest(
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomUtils.nextInt(),
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomUtils.nextLong());
+        return result;
+    }
+
+    public static StartTripRequest CreateStartTripRequest() {
+        StartTripRequest result = new StartTripRequest(
+                RandomStringUtils.randomAlphanumeric(30),
+                RandomUtils.nextLong());
+        return result;
+    }
+
+    public static UpdateCurrentLocationRequest CreateUpdateCurrentLocationRequest() {
+        UpdateCurrentLocationRequest result = new UpdateCurrentLocationRequest(
+                RandomUtils.nextDouble(),
+                RandomUtils.nextDouble(),
+                RandomStringUtils.randomAlphanumeric(30));
+        return result;
+    }
+
 }

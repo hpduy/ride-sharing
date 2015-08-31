@@ -1,0 +1,10 @@
+{
+"api":
+[
+{
+"name":"AddPopularLocationAPI",
+"data": "{\"userId\":\"gBSRyhyU57kMos6nZUj8em8PntzJm9\",\"lat\":0.4221575925331089,\"lng\":0.3865311941547557,\"name\":\"oVKeeCwxGRRmkNMM9qF89iRJMu5mtO\",\"address\":\"6uMsKbWBtGOmjH0DFydznSdVpvyxl4\",\"imagePath\":\"XVYdQE2WTu6vSJ6hkngGZfL6SCdHTZ\"}",
+"outcome":""
+}
+]
+}
