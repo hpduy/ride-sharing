@@ -1,4 +1,5 @@
 package com.bikiegang.ridesharing.utilities;
+
 import com.bikiegang.ridesharing.pojo.static_object.DefaultSetting;
 import org.jetbrains.annotations.NotNull;
 
@@ -112,6 +113,15 @@ public class StringProcessUtil {
         return result.toString();
     }
 
+    public static String getFirstChar(String source) {
+        String[] words = source.split(" ");
+        String result = "";
+        for (String w : words) {
+            result += w.charAt(0);
+        }
+        return result;
+    }
+
     /*Join an array of strings by delimeter*/
     public static String join(String[] strings, String delimeter) {
         String s = "";
@@ -161,45 +171,39 @@ public class StringProcessUtil {
             0x01, 0x02, 0x03, 0x05, 0x07, 0x0B, 0x0D, 0x11
     };
 
-    public String EncryptText(String RawText)
-    {
+    public String EncryptText(String RawText) {
         String EncText = "";
         byte[] keyArray = new byte[24];
         byte[] temporaryKey;
         String key = DefaultSetting.md5Key;
         byte[] toEncryptArray = null;
 
-        try
-        {
+        try {
 
-            toEncryptArray =  RawText.getBytes("UTF-8");
+            toEncryptArray = RawText.getBytes("UTF-8");
             MessageDigest m = MessageDigest.getInstance("MD5");
             temporaryKey = m.digest(key.getBytes("UTF-8"));
 
-            if(temporaryKey.length < 24) // DESede require 24 byte length key
+            if (temporaryKey.length < 24) // DESede require 24 byte length key
             {
                 int index = 0;
-                for(int i=temporaryKey.length;i< 24;i++)
-                {
-                    keyArray[i] =  temporaryKey[index];
+                for (int i = temporaryKey.length; i < 24; i++) {
+                    keyArray[i] = temporaryKey[index];
                 }
             }
 
             Cipher c = Cipher.getInstance("DESede/CBC/PKCS5Padding");
             c.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(keyArray, "DESede"), new IvParameterSpec(sharedvector));
             byte[] encrypted = c.doFinal(toEncryptArray);
-            EncText = Base64.encodeToString(encrypted,Base64.DEFAULT);
+            EncText = Base64.encodeToString(encrypted, Base64.DEFAULT);
 
-        }
-        catch(NoSuchAlgorithmException | UnsupportedEncodingException | NoSuchPaddingException | InvalidKeyException | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException NoEx)
-        {
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException | NoSuchPaddingException | InvalidKeyException | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException NoEx) {
         }
 
         return EncText;
     }
 
-    public String DecryptText(String EncText)
-    {
+    public String DecryptText(String EncText) {
 
         String RawText = "";
         byte[] keyArray = new byte[24];
@@ -207,29 +211,25 @@ public class StringProcessUtil {
         String key = DefaultSetting.md5Key;
         byte[] toEncryptArray = null;
 
-        try
-        {
+        try {
             MessageDigest m = MessageDigest.getInstance("MD5");
             temporaryKey = m.digest(key.getBytes("UTF-8"));
 
-            if(temporaryKey.length < 24) // DESede require 24 byte length key
+            if (temporaryKey.length < 24) // DESede require 24 byte length key
             {
                 int index = 0;
-                for(int i=temporaryKey.length;i< 24;i++)
-                {
-                    keyArray[i] =  temporaryKey[index];
+                for (int i = temporaryKey.length; i < 24; i++) {
+                    keyArray[i] = temporaryKey[index];
                 }
             }
 
             Cipher c = Cipher.getInstance("DESede/CBC/PKCS5Padding");
             c.init(Cipher.DECRYPT_MODE, new SecretKeySpec(keyArray, "DESede"), new IvParameterSpec(sharedvector));
-            byte[] decrypted = c.doFinal(Base64.decode(EncText,Base64.DEFAULT));
+            byte[] decrypted = c.doFinal(Base64.decode(EncText, Base64.DEFAULT));
 
 
             RawText = new String(decrypted, "UTF-8");
-        }
-        catch(NoSuchAlgorithmException | UnsupportedEncodingException | NoSuchPaddingException | InvalidKeyException | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException NoEx)
-        {
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException | NoSuchPaddingException | InvalidKeyException | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException NoEx) {
         }
 
         return RawText;

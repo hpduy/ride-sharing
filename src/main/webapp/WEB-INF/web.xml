@@ -32,6 +32,14 @@
     </servlet-mapping>
     <!--**PLANNED TRIP**-->
     <servlet>
+        <servlet-name>GetListTripByCalendarAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.GetListTripByCalendarAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetListTripByCalendarAPI</servlet-name>
+        <url-pattern>/GetListTripByCalendarAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
         <servlet-name>AutoParingWhenSearchAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.AutoParingWhenSearchAPI</servlet-class>
     </servlet>
@@ -70,6 +78,14 @@
     <servlet-mapping>
         <servlet-name>GetPlannedTripDetailAPI</servlet-name>
         <url-pattern>/GetPlannedTripDetailAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>GetComingSoonTripAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.GetComingSoonTripAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetComingSoonTripAPI</servlet-name>
+        <url-pattern>/GetComingSoonTripAPI</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>UpdateCurrentLocationWithPlannedTripAPI</servlet-name>
@@ -164,6 +180,14 @@
         <url-pattern>/GetUsersDetailWithPlannedTripsAPI</url-pattern>
     </servlet-mapping>
     <servlet>
+        <servlet-name>GetUsersDetailAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.GetUsersDetailAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetUsersDetailAPI</servlet-name>
+        <url-pattern>/GetUsersDetailAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
         <servlet-name>UpdateUserProfileAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.UpdateUserProfileAPI</servlet-class>
     </servlet>
@@ -197,6 +221,14 @@
     <servlet-mapping>
         <servlet-name>GetAngelsAroundFromMeAPI</servlet-name>
         <url-pattern>/GetAngelsAroundFromMeAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>GetAngelInGroups</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.angel.GetAngelInGroups</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetAngelInGroups</servlet-name>
+        <url-pattern>/GetAngelInGroups</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>GetAngelActiveCodesAPI</servlet-name>
@@ -248,6 +280,14 @@
     </servlet-mapping>
 
     <!--**TRIP**-->
+    <servlet>
+        <servlet-name>GetListRequestMakeTripOfMeAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.GetListRequestMakeTripOfMeAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetListRequestMakeTripOfMeAPI</servlet-name>
+        <url-pattern>/GetListRequestMakeTripOfMeAPI</url-pattern>
+    </servlet-mapping>
     <servlet>
         <servlet-name>RequestMakeTripAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.RequestMakeTripAPI</servlet-class>
@@ -357,6 +397,14 @@
     <servlet-mapping>
         <servlet-name>GetPopularLocationAPI</servlet-name>
         <url-pattern>/GetPopularLocationAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>AddPopularLocationAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.AddPopularLocationAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddPopularLocationAPI</servlet-name>
+        <url-pattern>/AddPopularLocationAPI</url-pattern>
     </servlet-mapping>
     <!--** ANGEL GROUP**-->
     <servlet>

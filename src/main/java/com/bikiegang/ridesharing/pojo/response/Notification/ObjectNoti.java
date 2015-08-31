@@ -18,6 +18,10 @@ public class ObjectNoti {
     public static final int REQUEST_VERIFY = 3;
     @JsonIgnore
     public static final int REPLY_VERIFY = 4;
+    @JsonIgnore
+    public static final int REQUEST_PHONE_NUMBER = 5;
+    @JsonIgnore
+    public static final int REPLY_PHONE_NUMBER = 6;
 
     public ObjectNoti(int action) {
         this.action = action;

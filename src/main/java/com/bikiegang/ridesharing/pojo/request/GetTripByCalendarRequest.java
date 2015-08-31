@@ -2,7 +2,6 @@ package com.bikiegang.ridesharing.pojo.request;
 
 import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import java.util.logging.Logger;
 
 /**
  * Created by hpduy17 on 8/25/15.
@@ -11,7 +10,7 @@ import java.util.logging.Logger;
 public class GetTripByCalendarRequest {
 
     private long startTime;
-    private long endTIme;
+    private long endTime;
     private String userId;
 
     public long getStartTime() {
@@ -22,12 +21,12 @@ public class GetTripByCalendarRequest {
         this.startTime = startTime;
     }
 
-    public long getEndTIme() {
-        return endTIme;
+    public long getEndTime() {
+        return endTime;
     }
 
-    public void setEndTIme(long endTIme) {
-        this.endTIme = endTIme;
+    public void setEndTime(long endTime) {
+        this.endTime = endTime;
     }
 
     public String getUserId() {
@@ -41,9 +40,9 @@ public class GetTripByCalendarRequest {
     public GetTripByCalendarRequest() {
     }
 
-    public GetTripByCalendarRequest(long startTime, long endTIme, String userId) {
+    public GetTripByCalendarRequest(long startTime, long endTime, String userId) {
         this.startTime = startTime;
-        this.endTIme = endTIme;
+        this.endTime = endTime;
         this.userId = userId;
     }
 

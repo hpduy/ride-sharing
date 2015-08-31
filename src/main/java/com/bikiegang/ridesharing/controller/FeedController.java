@@ -54,30 +54,30 @@ public class FeedController {
         if (request.getNumberOfFeed() <= 0) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'numberOfFeed'");
         }
-        if (request.getStartIdx() <= 0 || request.getStartIdx() >= database.getFeedHashMap().size()) {
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'startIdx'");
-        }
         int fromIdx = 0;
         int toIdx = 0;
         // to index process
 
         switch (request.getGetWay()) {
             case GetFeedsRequest.NEW_FEED:
-                for(toIdx = database.getFeedHashMap().size()-1; toIdx >= 0 ; toIdx--){
-                    if(new ArrayList<>(database.getFeedHashMap().values()).get(toIdx).getCreatedTime() < DateTimeUtil.now()){
+                for (toIdx = database.getFeedHashMap().size() - 1; toIdx >= 0; toIdx--) {
+                    if (new ArrayList<>(database.getFeedHashMap().values()).get(toIdx).getCreatedTime() < DateTimeUtil.now()) {
                         break;
                     }
                 }
-                if(toIdx > request.getStartIdx()) {
-                    fromIdx = request.getStartIdx();
-                    if (fromIdx <= 0 && toIdx - request.getNumberOfFeed() > 0) {
+                if (toIdx > request.getStartIdx()) {
+                    if (request.getStartIdx() < 0) {
                         fromIdx = toIdx - request.getNumberOfFeed();
+                        if (fromIdx < 0)
+                            fromIdx = 0;
+                    } else {
+                        fromIdx = request.getStartIdx();
                     }
                 }
                 break;
             case GetFeedsRequest.HISTORY_FEED:
-                for(toIdx = request.getStartIdx(); toIdx >= 0 ; toIdx--){
-                    if(new ArrayList<>(database.getFeedHashMap().values()).get(toIdx).getCreatedTime() < DateTimeUtil.now()){
+                for (toIdx = request.getStartIdx(); toIdx >= 0; toIdx--) {
+                    if (new ArrayList<>(database.getFeedHashMap().values()).get(toIdx).getCreatedTime() < DateTimeUtil.now()) {
                         break;
                     }
                 }
@@ -140,18 +140,19 @@ public class FeedController {
         }
         return responses.toArray(new FeedResponse[responses.size()]);
     }
+
     public FeedResponse convertPlannedTripToFeed(PlannedTrip plannedTrip, String requesterId) throws IOException {
-            FeedResponse response = new FeedResponse();
-            ExPartnerInfoResponse partnerInfoResponse = null;
-            UserShortDetailResponse userShortDetailResponse = null;
-            User user = database.getUserHashMap().get(plannedTrip.getCreatorId());
-            if (user != null) {
-                userShortDetailResponse = new UserShortDetailResponse(user);
-                partnerInfoResponse = new UserController().getExPartners(user.getId());
-                response.setPartnerInfo(partnerInfoResponse);
-                response.setUserDetail(userShortDetailResponse);
-                response.setTripDetail(new PlannedTripShortDetailResponse(plannedTrip, requesterId));
-            }
+        FeedResponse response = new FeedResponse();
+        ExPartnerInfoResponse partnerInfoResponse = null;
+        UserShortDetailResponse userShortDetailResponse = null;
+        User user = database.getUserHashMap().get(plannedTrip.getCreatorId());
+        if (user != null) {
+            userShortDetailResponse = new UserShortDetailResponse(user);
+            partnerInfoResponse = new UserController().getExPartners(user.getId());
+            response.setPartnerInfo(partnerInfoResponse);
+            response.setUserDetail(userShortDetailResponse);
+            response.setTripDetail(new PlannedTripShortDetailResponse(plannedTrip, requesterId));
+        }
         return response;
     }
 

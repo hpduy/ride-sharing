@@ -10,14 +10,12 @@ import com.bikiegang.ridesharing.pojo.PlannedTrip;
 import com.bikiegang.ridesharing.pojo.Trip;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.*;
-import com.bikiegang.ridesharing.pojo.response.ExPartnerInfoResponse;
-import com.bikiegang.ridesharing.pojo.response.UserDetailWithPlannedTripResponse;
-import com.bikiegang.ridesharing.pojo.response.UserResponse;
-import com.bikiegang.ridesharing.pojo.response.UserShortDetailResponse;
-import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
+import com.bikiegang.ridesharing.pojo.response.*;
+import com.bikiegang.ridesharing.pojo.response.angel.GetAngelInGroupsResponse;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import com.bikiegang.ridesharing.utilities.Path;
 import com.bikiegang.ridesharing.utilities.StringProcessUtil;
+import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.io.IOException;
@@ -338,7 +336,7 @@ public class UserController {
         return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, response);
     }
 
-    public String getUsersAroundFromMe(GetUsersAroundFromMeRequest request, boolean filterByAngel) throws JsonProcessingException {
+    public String getAngelsAroundFromMe(GetUsersAroundFromMeRequest request, boolean filterByAngel) throws JsonProcessingException {
 
         if (request.getCenterLat() == 0 && request.getCenterLng() == 0) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'lat' and 'lng'");
@@ -356,7 +354,7 @@ public class UserController {
                 userDetails.add(detail);
             }
         }
-        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, userDetails);
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new GetAngelInGroupsResponse(userDetails));
     }
 
     public List<User> getUsersFromUserIds(List<String> ids) {
@@ -605,5 +603,40 @@ public class UserController {
         response.setPartnerPictureLinks(userPictureLinks.toArray(new String[userPictureLinks.size()]));
         return response;
 
+    }
+
+    public String getUserDetail(GetInformationUsingUserIdRequest request) throws JsonProcessingException {
+        if (null == request.getUserId() || request.getUserId().equals("")) {
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
+        }
+        User user = database.getUserHashMap().get(request.getUserId());
+        if (user == null) {
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User");
+        }
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new GetUserDetailResponse(user));
+    }
+
+    public String requestPhoneNumber(RequestPhoneNumberRequest request) throws JsonProcessingException {
+        if (null == request.getSenderId() || request.getSenderId().equals("")) {
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'senderId'");
+        }
+        User sender = database.getUserHashMap().get(request.getSenderId());
+        if (sender == null) {
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "Sender");
+        } if (null == request.getReceiverId() || request.getReceiverId().equals("")) {
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'receiverId'");
+        }
+        User receiver = database.getUserHashMap().get(request.getReceiverId());
+        if (receiver == null) {
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "Receiver");
+        }
+        //push notification
+//        RequestMakeTripNoti noti = new RequestMakeTripNoti(requestMakeTrip);
+//        new BroadcastCenterUtil().pushNotification(NotificationParser.ObjectToJSon(ObjectNoti.REQUEST_MAKE_TRIP, noti), requestMakeTrip.getReceiverId(), BroadcastCenterUtil.CLOUD_BIKE_SENDER_ID);
+//        // return request
+//        RequestMakeTripResponse requestMakeTripResponse = new RequestMakeTripResponse();
+//        requestMakeTripResponse.setRequestId(requestMakeTrip.getId());
+
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
     }
 }

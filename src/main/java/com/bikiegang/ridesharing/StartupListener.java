@@ -35,13 +35,15 @@ public class StartupListener implements ServletContextListener, HttpSessionListe
          You can initialize servlet context related data here.
          */
         try {
-                 Thread.sleep(15*1000);
+            Thread.sleep(15 * 1000);
             Path.setServerAddress(InetAddress.getLocalHost().getHostAddress());
             Path.buildRoot();
             Database.getInstance().restore();
+
             if(Database.databaseStatus ==  Database.TESTING) {
                 FakeUser.createAngel();
                 FakeUser.createTester();
+                Database.getInstance().getAngelGroupHashMap().clear();
                 new AngelGroupController();
                 System.out.println(Database.getInstance().getAngelGroupHashMap().size());
             }

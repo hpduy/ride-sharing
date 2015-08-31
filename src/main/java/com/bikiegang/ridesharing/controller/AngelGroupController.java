@@ -15,10 +15,15 @@ import com.bikiegang.ridesharing.pojo.response.angel.GetAlphabetAngelGroupsRespo
 import com.bikiegang.ridesharing.pojo.static_object.University;
 import com.bikiegang.ridesharing.search.SearchAngelGroup;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
+import com.bikiegang.ridesharing.utilities.StringProcessUtil;
 import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.apache.commons.lang.math.RandomUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Created by hpduy17 on 7/27/15.
@@ -28,12 +33,25 @@ public class AngelGroupController {
     private Database database = Database.getInstance();
 
     public AngelGroupController() {
+
         if (database.getAngelGroupHashMap().isEmpty()) {
             University.loadData();
             for (University u : University.universities) {
                 List<String> tagNames = new ArrayList<>();
-                for (int i = 0; i < 6; i++)
-                    tagNames.add(u.getName());
+                for(int i =0 ; i < 6; i ++) {
+                    int begin = RandomUtils.nextInt() % u.getName().length()/2;
+                    int end = begin + 5;
+                    if (end > u.getName().length()) {
+                        end = u.getName().length();
+                    }
+                    tagNames.add(u.getName().substring(begin, end));
+                }
+                String temp = StringProcessUtil.getFirstChar(u.getName());
+                tagNames.add(temp.toLowerCase());
+                tagNames.add(temp);
+                tagNames.add(temp.toUpperCase());
+                tagNames.add(u.getName());
+
                 AngelGroup angelGroup = new AngelGroup(IdGenerator.getAngelGroupId(), u.getLocation(), tagNames, DateTimeUtil.now(), u.getAddress());
                 try {
                     dao.insert(angelGroup);

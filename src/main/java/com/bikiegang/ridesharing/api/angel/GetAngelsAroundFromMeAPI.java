@@ -11,7 +11,7 @@ import com.bikiegang.ridesharing.controller.UserController;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.request.GetUsersAroundFromMeRequest;
-import com.bikiegang.ridesharing.pojo.response.UserShortDetailResponse;
+import com.bikiegang.ridesharing.pojo.response.angel.GetAngelInGroupsResponse;
 import com.bikiegang.ridesharing.utilities.ApiDocumentGenerator;
 import com.bikiegang.ridesharing.utilities.FakeGroup.FakeUser;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
@@ -29,8 +29,8 @@ import java.io.PrintWriter;
 public class GetAngelsAroundFromMeAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
     public Class requestClass = GetUsersAroundFromMeRequest.class;
-    public Class responseClass = UserShortDetailResponse.class;
-    public boolean responseIsArray = true;
+    public Class responseClass = GetAngelInGroupsResponse.class;
+    public boolean responseIsArray = false;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -56,7 +56,7 @@ public class GetAngelsAroundFromMeAPI extends HttpServlet {
             logger.info(jsonData.toString());
             GetUsersAroundFromMeRequest getUsersAroundFromMeRequest = (GetUsersAroundFromMeRequest) Parser.JSonToObject(jsonData.toString(), GetUsersAroundFromMeRequest.class);
             UserController controller = new UserController();
-            String result = controller.getUsersAroundFromMe(getUsersAroundFromMeRequest,true);
+            String result = controller.getAngelsAroundFromMe(getUsersAroundFromMeRequest, true);
             //TODO fake
             if(Database.databaseStatus == Database.TESTING){
                 result = new FakeUser().getUsersAroundFromMeFake(getUsersAroundFromMeRequest);

@@ -14,7 +14,7 @@ public class UserShortDetailResponse {
     private String birthDay;
     private int verifyStatus;
     private String job;
-
+    private int privacy;
     public UserShortDetailResponse() {
     }
 
@@ -27,6 +27,7 @@ public class UserShortDetailResponse {
             this.job = user.getJob();
             this.birthDay = user.getBirthDay();
             this.verifyStatus = user.getStatus();
+            this.privacy = user.getPrivacy();
         }
     }
 
@@ -84,5 +85,13 @@ public class UserShortDetailResponse {
 
     public void setVerifyStatus(int verifyStatus) {
         this.verifyStatus = verifyStatus;
+    }
+
+    public int getPrivacy() {
+        return privacy;
+    }
+
+    public void setPrivacy(int privacy) {
+        this.privacy = privacy;
     }
 }

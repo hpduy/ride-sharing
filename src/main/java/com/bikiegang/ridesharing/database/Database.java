@@ -120,8 +120,10 @@ public class Database {
      */
     private HashMap<String, Long> userIdRFTripCalendar = new HashMap<>();// <userId,tripCalendarId>
     /**
-     * ROUTE
+     * RATING
      */
+    private HashMap<String,HashSet<Long>> UserIdRFRatings = new HashMap<>();// <userId(ratedUserId),<ratingIds>>
+
 
     /**
      * GEOCELL
@@ -340,6 +342,10 @@ public class Database {
 
     public HashMap<Long, HashMap<Long, Long>> getRouteRFPlannedTripsByDay() {
         return routeRFPlannedTripsByDay;
+    }
+
+    public HashMap<String, HashSet<Long>> getUserIdRFRatings() {
+        return UserIdRFRatings;
     }
 
     /*GEOCELL GET-SET*/

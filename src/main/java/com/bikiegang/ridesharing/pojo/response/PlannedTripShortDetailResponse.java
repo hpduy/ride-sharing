@@ -3,10 +3,7 @@ package com.bikiegang.ridesharing.pojo.response;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.geocoding.FetchingDataFromGoogleRouting;
 import com.bikiegang.ridesharing.geocoding.GoogleRoutingObject.GoogleRoute;
-import com.bikiegang.ridesharing.pojo.Feed;
-import com.bikiegang.ridesharing.pojo.PlannedTrip;
-import com.bikiegang.ridesharing.pojo.RequestMakeTrip;
-import com.bikiegang.ridesharing.pojo.Route;
+import com.bikiegang.ridesharing.pojo.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.IOException;
@@ -32,7 +29,7 @@ public class PlannedTripShortDetailResponse extends TripInFeed {
     @JsonIgnore
     public static final int REQUESTED = 1;
     @JsonIgnore
-    public static final int READY_GO = 1;
+    public static final int READY_GO = 2;
 
     public PlannedTripShortDetailResponse() {
     }

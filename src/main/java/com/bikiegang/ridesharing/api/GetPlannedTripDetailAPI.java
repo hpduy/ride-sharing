@@ -10,7 +10,7 @@ import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.controller.PlannedTripController;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.request.GetPlannedTripDetailRequest;
-import com.bikiegang.ridesharing.pojo.response.PlannedTripDetailResponse;
+import com.bikiegang.ridesharing.pojo.response.FeedResponse;
 import com.bikiegang.ridesharing.utilities.ApiDocumentGenerator;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import org.apache.log4j.Logger;
@@ -27,7 +27,7 @@ import java.io.PrintWriter;
 public class GetPlannedTripDetailAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
     public Class requestClass = GetPlannedTripDetailRequest.class;
-    public Class responseClass = PlannedTripDetailResponse.class;
+    public Class responseClass = FeedResponse.class;
     public boolean responseIsArray = false;
 
     /**

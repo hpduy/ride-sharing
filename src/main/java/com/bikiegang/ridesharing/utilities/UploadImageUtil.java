@@ -100,19 +100,15 @@ public class UploadImageUtil {
 
     }
     private String getExtension(final Part part) {
-        final String partHeader = part.getHeader("content-disposition");
-        System.out.println("Part Header = " + partHeader);
-        for (String content : part.getHeader("content-disposition").split(";")) {
-            if (content.trim().startsWith("filename")) {
-                String fileName = content.substring(
-                        content.indexOf('=') + 1).trim().replace("\"", "");
-                if (fileName.contains(".")) {
-                    String[] temp = fileName.split("\\.");
-                    return temp[temp.length-1];
-                }
-                return "";
-            }
+        try {
+            final String type = part.getContentType();
+            String fileName = type.substring(
+                    type.indexOf("/") + 1).trim().replace("\"", "");
+            return fileName;
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
         }
-        return null;
+
     }
 }

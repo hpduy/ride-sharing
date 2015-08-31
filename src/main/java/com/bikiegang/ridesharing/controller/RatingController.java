@@ -12,6 +12,8 @@ import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import java.util.HashSet;
+
 /**
  * Created by hpduy17 on 8/20/15.
  */
@@ -57,6 +59,24 @@ public class RatingController {
             return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
         }
         return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
+    }
+
+    public double getRatingScore(String userId) {
+        HashSet<Long> ratingIds = database.getUserIdRFRatings().get(userId);
+        double sum = 0;
+        int count = 0;
+        if(ratingIds != null) {
+            for (long id : ratingIds) {
+                Rating rating = database.getRatingHashMap().get(id);
+                if (null != rating) {
+                    sum += rating.getNumberOfStart();
+                    count++;
+                }
+            }
+            return sum / count;
+        }else {
+            return 0;
+        }
     }
 
 }

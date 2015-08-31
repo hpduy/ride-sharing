@@ -9,6 +9,7 @@ package com.bikiegang.ridesharing.api;
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.controller.UserController;
 import com.bikiegang.ridesharing.parsing.Parser;
+import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.request.GetPartnerLocationRequest;
 import com.bikiegang.ridesharing.pojo.request.UpdateCurrentLocationRequest;
 import com.bikiegang.ridesharing.utilities.ApiDocumentGenerator;
@@ -27,7 +28,7 @@ import java.io.PrintWriter;
 public class GetPartnerLocationAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
     public Class requestClass = UpdateCurrentLocationRequest.class;
-    public Class responseClass = null;
+    public Class responseClass = LatLng.class;
     public boolean responseIsArray = false;
 
     /**

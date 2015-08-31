@@ -9,21 +9,17 @@ import com.bikiegang.ridesharing.pojo.PlannedTrip;
 import com.bikiegang.ridesharing.pojo.RequestMakeTrip;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.*;
-import com.bikiegang.ridesharing.pojo.response.CreateSingleFuturePlannedTripResponse;
-import com.bikiegang.ridesharing.pojo.response.GetListRequestMakeTripDetailResponse;
+import com.bikiegang.ridesharing.pojo.response.*;
 import com.bikiegang.ridesharing.pojo.response.Notification.ObjectNoti;
 import com.bikiegang.ridesharing.pojo.response.Notification.ReplyMakeTripNoti;
 import com.bikiegang.ridesharing.pojo.response.Notification.RequestMakeTripNoti;
-import com.bikiegang.ridesharing.pojo.response.RequestMakeTripDetailResponse;
-import com.bikiegang.ridesharing.pojo.response.RequestMakeTripResponse;
 import com.bikiegang.ridesharing.utilities.BroadcastCenterUtil;
 import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * Created by hpduy17 on 7/1/15.
@@ -76,7 +72,8 @@ public class RequestMakeTripController {
 
             try {
                 ptR.setGoogleRoutingResult(database.getRouteHashMap().get(passengerPlannedTrip.getRouteId()).getRawRoutingResult().toString());
-            }catch (Exception ignored){}
+            } catch (Exception ignored) {
+            }
             ptR.setIsParing(false);// no paring
             ptR.setPrice(-1);// default price
             CreatePlannedTripRequest createRequest = new CreatePlannedTripRequest(ptR);
@@ -256,6 +253,41 @@ public class RequestMakeTripController {
         }
 
         return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new GetListRequestMakeTripDetailResponse(responses.toArray(new RequestMakeTripDetailResponse[responses.size()])));
+
+    }
+
+    public String getListRequestMakeTripOfMe(GetListRequestMakeTripRequest request) throws IOException {
+        if (null == request.getUserId() || request.getUserId().equals("")) {
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
+        }
+        HashMap<Long, Long> requestIdsByPlannedTripId = database.getSenderRequestsBox().get(request.getUserId());
+        List<FeedResponse> responses = new ArrayList<>();
+        List<PlannedTrip> pt = new ArrayList<>();
+        if (requestIdsByPlannedTripId != null) {
+            for (long tId : requestIdsByPlannedTripId.keySet()) {
+                RequestMakeTrip requestMakeTrip = database.getRequestMakeTripHashMap().get(requestIdsByPlannedTripId.get(tId));
+                if (requestMakeTrip != null && requestMakeTrip.getStatus() == RequestMakeTrip.WAITING) {
+                    PlannedTrip plannedTrip = database.getPlannedTripHashMap().get(tId);
+                    if (plannedTrip != null)
+                        pt.add(plannedTrip);
+                }
+            }
+        }
+        Collections.sort(pt, new Comparator<PlannedTrip>() {
+            @Override
+            public int compare(PlannedTrip o1, PlannedTrip o2) {
+                long dis = o2.getDepartureTime() - o1.getDepartureTime();
+                if (dis > 0)
+                    return 1;
+                return -1;
+            }
+        });
+        for (PlannedTrip t : pt) {
+            responses.add(new FeedController().convertPlannedTripToFeed(t, t.getCreatorId()));
+        }
+        GetFeedsResponse response = new GetFeedsResponse();
+        response.setFeeds(responses.toArray(new FeedResponse[responses.size()]));
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, response);
 
     }
 

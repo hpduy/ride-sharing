@@ -43,10 +43,19 @@ public class UploadImageAPI extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         // Create path components to save the file
-        final Part filePart = request.getPart("image");
-        final String fileName = getFileName(filePart);
+
+
         try {
-            UploadImageResponse uploadImageResponse = new UploadImageResponse(new UploadImageUtil().upload(fileName + "_" + new DateTimeUtil().now(), Path.getImagePath(), filePart));
+            int numberImage = Integer.parseInt(request.getParameter("numImg"));
+            String [] imagePath = new String[numberImage];
+            for (int i = 1; i <= numberImage; i++) {
+                if (request.getPart("image" + i) != null) {
+                    Part filePart = request.getPart("image" + i);
+                    String fileName = getFileName(filePart);
+                    imagePath[i-1] = new UploadImageUtil().upload(fileName + "_" + new DateTimeUtil().now(), Path.getImagePath(), filePart);
+                }
+            }
+            UploadImageResponse uploadImageResponse = new UploadImageResponse(imagePath);
             String result = Parser.ObjectToJSon(true, MessageMappingUtil.Successfully ,uploadImageResponse);
             logger.info(result);
             out.print(result);
@@ -60,7 +69,7 @@ public class UploadImageAPI extends HttpServlet {
         final String partHeader = part.getHeader("content-disposition");
         System.out.println("Part Header = " + partHeader);
         for (String content : part.getHeader("content-disposition").split(";")) {
-            if (content.trim().startsWith("filename")) {
+            if (content.trim().startsWith("name")) {
                 return content.substring(
                         content.indexOf('=') + 1).trim().replace("\"", "");
             }

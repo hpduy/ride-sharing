@@ -8,18 +8,18 @@ import java.util.List;
 public class GetAlphabetAngelGroupsResponse {
     AngelGroupDetailResponse[] response;
 
-    public GetAlphabetAngelGroupsResponse(AngelGroupDetailResponse[] groups) {
-        this.response = groups;
+    public GetAlphabetAngelGroupsResponse(AngelGroupDetailResponse[] response) {
+        this.response = response;
     }
-    public GetAlphabetAngelGroupsResponse(List<AngelGroupDetailResponse> groups) {
-        this.response = groups.toArray(new AngelGroupDetailResponse[groups.size()]);
+    public GetAlphabetAngelGroupsResponse(List<AngelGroupDetailResponse> response) {
+        this.response = response.toArray(new AngelGroupDetailResponse[response.size()]);
     }
 
-    public AngelGroupDetailResponse[] getGroups() {
+    public AngelGroupDetailResponse[] getResponse() {
         return response;
     }
 
-    public void setGroups(AngelGroupDetailResponse[] groups) {
-        this.response = groups;
+    public void setResponse(AngelGroupDetailResponse[] response) {
+        this.response = response;
     }
 }

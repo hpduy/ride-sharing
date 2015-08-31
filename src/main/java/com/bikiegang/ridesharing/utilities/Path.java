@@ -14,7 +14,7 @@ public class Path {
     @NotNull
     private static final String dbPathRootWindows = "C:\\cloudbike";
     @NotNull
-    private static final String dbPathRootUNIX = "/cloudbike/";
+    private static final String dbPathRootUNIX = "/cloudbike";
     private static final String serverPort = "8080";
     private static final String appName = "RideSharing";
 

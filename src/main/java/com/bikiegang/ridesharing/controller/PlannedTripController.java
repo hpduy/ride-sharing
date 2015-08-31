@@ -32,6 +32,9 @@ public class PlannedTripController {
      */
 
     public String getPlannedTripDetail(GetPlannedTripDetailRequest request) throws IOException {
+        if (null == request.getUserId() || request.getUserId().equals("")) {
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
+        }
         if (request.getPlannedTripId() <= 0) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'plannedTripId'");
         }
@@ -39,8 +42,7 @@ public class PlannedTripController {
         if (plannedTrip == null) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "Planned Trip");
         }
-        PlannedTripDetailResponse plannedTripDetailResponse = new PlannedTripDetailResponse(plannedTrip, request.getUserId());
-        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, plannedTripDetailResponse);
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new FeedController().convertPlannedTripToFeed(plannedTrip, request.getUserId()));
     }
 
     public String autoSearchParing(AutoSearchParingRequest request) throws Exception {
