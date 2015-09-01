@@ -55,14 +55,6 @@ public class TestAPIUtils {
         return result;
     }
 
-    public static GetFeedsRequest CreateGetFeedsRequest() {
-        GetFeedsRequest result = new GetFeedsRequest(
-                RandomUtils.nextInt(),
-                RandomUtils.nextInt(),
-                RandomUtils.nextInt());
-        return result;
-    }
-
     public static IncreasePopularityRequest CreateIncreasePopularityRequest() {
         IncreasePopularityRequest result = new IncreasePopularityRequest(
                 RandomStringUtils.randomAlphanumeric(30),
@@ -1772,14 +1764,14 @@ public class TestAPIUtils {
 
     public static GetPlannedTripDetailRequest CreateGetPlannedTripDetailRequest() {
         GetPlannedTripDetailRequest result = new GetPlannedTripDetailRequest(
-                RandomUtils.nextLong(),
-                RandomStringUtils.randomAlphanumeric(30));
+                8679130791234345728l,
+                "fake_1162836492699328539");
 
         return result;
     }
 
     public static GetPartnerLocationRequest CreateGetPartnerLocationRequest() {
-        GetPartnerLocationRequest result = new GetPartnerLocationRequest(RandomStringUtils.randomAlphabetic(10));
+        GetPartnerLocationRequest result = new GetPartnerLocationRequest("fake_1162836492699328539", RandomUtils.nextDouble(), RandomUtils.nextDouble(), "fake_1162836492699328539");
         return result;
     }
 
@@ -1796,6 +1788,7 @@ public class TestAPIUtils {
         return result;
     }
 
+    
     public static RegisterRequest CreateRegisterRequest() {
         RegisterRequest result = new RegisterRequest(
                 RandomStringUtils.randomAlphanumeric(30),
@@ -1869,10 +1862,24 @@ public class TestAPIUtils {
     }
 
     public static GetUsersAroundFromMeRequest CreateGetUsersAroundFromMeRequest() {
-        GetUsersAroundFromMeRequest result = new GetFeedsRequest(
+        GetUsersAroundFromMeRequest result = new GetFeedsRequest(RandomUtils.nextLong(),
                 RandomUtils.nextInt(),
                 RandomUtils.nextInt(),
-                RandomUtils.nextInt());
+                RandomUtils.nextDouble(),
+                RandomUtils.nextDouble(),
+                RandomUtils.nextDouble(),
+                "fake_1162836492699328539");
+        return result;
+    }
+
+    public static GetFeedsRequest CreateGetFeedsRequest() {
+        GetFeedsRequest result = new GetFeedsRequest(RandomUtils.nextLong(),
+                RandomUtils.nextInt(),
+                0,
+                RandomUtils.nextDouble(),
+                RandomUtils.nextDouble(),
+                RandomUtils.nextDouble(),
+                "fake_1162836492699328539");
         return result;
     }
 
@@ -1894,15 +1901,15 @@ public class TestAPIUtils {
 
     public static GetInformationUsingUserIdRequest CreateGetInformationUsingUserIdRequest() {
         GetInformationUsingUserIdRequest result = new GetInformationUsingUserIdRequest(
-                "agosFYApwx9TtalJnM7ozUJh7b7Q21");
+                "fake_1162836492699328539");
         return result;
     }
 
     public static LoginRequest CreateLoginRequest() {
         LoginRequest result = new LoginRequest(
-                RandomStringUtils.randomAlphanumeric(30),
-                RandomStringUtils.randomAlphanumeric(30),
-                RandomUtils.nextInt());
+                "fakeUser_1585894254404245109@gmail.com",
+                "password",
+                1);
         return result;
     }
 

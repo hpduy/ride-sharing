@@ -91,13 +91,29 @@ public class AppApiTest {
                         "")
         );
         input.getAPI().add(
-                new APIObject.APIData("GetUsersDetailWithPlannedTripsAPI",
+                new APIObject.APIData("GetPopularLocationAPI",
+                        "",
+                        "")
+        );
+        input.getAPI().add(
+                new APIObject.APIData("GetUsersDetailAPI",
                         JSONUtil.Serialize(TestAPIUtils.CreateGetInformationUsingUserIdRequest()),
                         "")
         );
         input.getAPI().add(
+                new APIObject.APIData("GetUsersDetailWithPlannedTripsAPI",
+                        JSONUtil.Serialize(TestAPIUtils.CreateGetInformationUsingUserIdRequest()),
+                        "")
+        );
+
+        input.getAPI().add(
                 new APIObject.APIData("LoginAPI",
                         JSONUtil.Serialize(TestAPIUtils.CreateLoginRequest()),
+                        "")
+        );
+        input.getAPI().add(
+                new APIObject.APIData("PairingPlannedTripAPI",
+                        JSONUtil.Serialize(TestAPIUtils.CreateGetPlannedTripDetailRequest()),
                         "")
         );
         input.getAPI().add(

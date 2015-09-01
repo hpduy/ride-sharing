@@ -45,6 +45,19 @@ public class GetFeedsRequest extends GetUsersAroundFromMeRequest {
     public GetFeedsRequest() {
     }
 
+    public GetFeedsRequest(long startId, int numberOfFeed, int getWay) {
+        this.startId = startId;
+        this.numberOfFeed = numberOfFeed;
+        this.getWay = getWay;
+    }
+
+    public GetFeedsRequest(long startId, int numberOfFeed, int getWay, double centerLat, double centerLng, double radius, String userId) {
+        super(centerLat, centerLng, radius, userId);
+        this.startId = startId;
+        this.numberOfFeed = numberOfFeed;
+        this.getWay = getWay;
+    }
+
     public GetFeedsRequest(int startId, int numberOfFeed, int getWay) {
         this.startId = startId;
         this.numberOfFeed = numberOfFeed;

@@ -26,6 +26,11 @@ public class GetPartnerLocationRequest extends UpdateCurrentLocationRequest {
         this.partnerId = partnerId;
     }
 
+    public GetPartnerLocationRequest(String partnerId, double lat, double lng, String userId) {
+        super(lat, lng, userId);
+        this.partnerId = partnerId;
+    }
+
     @Override
     public String toString() {
         return JSONUtil.Serialize(this);
