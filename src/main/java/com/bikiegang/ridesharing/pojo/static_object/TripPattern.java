@@ -37,6 +37,7 @@ public class TripPattern {
     }
 
     public TripPattern() {
+
     }
 
     public TripPattern(long startDay, long endDay, int dayOfWeek) {

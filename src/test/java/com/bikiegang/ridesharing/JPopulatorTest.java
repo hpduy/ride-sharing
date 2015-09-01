@@ -19,4 +19,9 @@ public class JPopulatorTest extends TestCase{
         assertEquals(plannedTrip.size(),1000);
 
     }
+
+    public void testFetchingGoogleData() throws Exception {
+
+
+    }
 }

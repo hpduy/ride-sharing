@@ -13,6 +13,9 @@ public class CreatePlannedTripRequest {
     private PlannedTripInfoRequest plannedTrip;
     private TripPattern[] patterns;
 
+    public CreatePlannedTripRequest() {
+    }
+
     public CreatePlannedTripRequest(PlannedTripInfoRequest plannedTrip, TripPattern[] patterns) {
         this.plannedTrip = plannedTrip;
         this.patterns = patterns;
