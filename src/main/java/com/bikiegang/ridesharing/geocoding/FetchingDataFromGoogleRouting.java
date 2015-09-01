@@ -68,6 +68,20 @@ public class FetchingDataFromGoogleRouting {
         timeForCellCodes[cellcodes.size() - 1] = googleRoute.getLegs()[0].getDuration().getValue();
         // set time for other point
         loadTimeRecursive(steps, timeForCellCodes, cellcodes);
+
+        //TODO
+        System.out.println("## Steps ##");
+        for(Step step : steps){
+            System.out.println("s-" + geoCell.getCellCodeFromLatLng(step.getStart_location()) + ";; e-" + geoCell.getCellCodeFromLatLng(step.getEnd_location()) + ";; duration-"+step.getDuration().getValue());
+        }
+
+        System.out.println("## Load time result ##");
+        for(int t = 0 ; t < cellcodes.size(); t++){
+            System.out.print(cellcodes.get(t)+"::"+timeForCellCodes[t]);
+        }
+
+
+        //TODO
         // recalculate time: for time = 0 or weird time
         for (int i = 0; i < timeForCellCodes.length - 1;) {
             for (int j = i + 1; j < timeForCellCodes.length;) {
