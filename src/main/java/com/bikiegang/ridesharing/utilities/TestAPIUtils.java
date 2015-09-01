@@ -1188,16 +1188,16 @@ public class TestAPIUtils {
 
     public static CreatePlannedTripRequest CreateCreatePlannedTripRequest() {
         TripPattern item1 = new TripPattern(
-                RandomUtils.nextLong(),
-                RandomUtils.nextLong(),
+                RandomUtils.nextLong() % 9999999999l,
+                RandomUtils.nextLong() % 9999999999l,
                 RandomUtils.nextInt());
         TripPattern item2 = new TripPattern(
-                RandomUtils.nextLong(),
-                RandomUtils.nextLong(),
+                RandomUtils.nextLong() % 9999999999l,
+                RandomUtils.nextLong() % 9999999999l,
                 RandomUtils.nextInt());
         TripPattern item3 = new TripPattern(
-                RandomUtils.nextLong(),
-                RandomUtils.nextLong(),
+                RandomUtils.nextLong() % 9999999999l,
+                RandomUtils.nextLong() % 9999999999l,
                 RandomUtils.nextInt());
         TripPattern[] patterns = new TripPattern[]{item1, item2, item3};
         LatLng[] waypoints = new LatLng[]{
