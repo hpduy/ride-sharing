@@ -1209,8 +1209,8 @@ public class TestAPIUtils {
             RandomUtils.nextDouble())
         };
         CreatePlannedTripRequest result = new CreatePlannedTripRequest(
-                new PlannedTripInfoRequest(RandomStringUtils.randomAlphanumeric(30),
-                        RandomUtils.nextInt(),
+                new PlannedTripInfoRequest("fake_1162836492699328539",
+                        1,
                         RandomUtils.nextLong(),
                         RandomUtils.nextDouble(),
                         RandomStringUtils.randomAlphanumeric(30),
@@ -1788,7 +1788,6 @@ public class TestAPIUtils {
         return result;
     }
 
-    
     public static RegisterRequest CreateRegisterRequest() {
         RegisterRequest result = new RegisterRequest(
                 RandomStringUtils.randomAlphanumeric(30),

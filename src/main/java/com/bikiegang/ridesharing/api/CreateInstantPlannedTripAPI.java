@@ -57,6 +57,7 @@ public class CreateInstantPlannedTripAPI extends HttpServlet {
             out.print(result);
 
         } catch (Exception ex) {
+
             ex.printStackTrace();
             logger.error(ex.getStackTrace());
             out.print(Parser.ObjectToJSon(false, MessageMappingUtil.System_Exception, ex.getMessage()));
