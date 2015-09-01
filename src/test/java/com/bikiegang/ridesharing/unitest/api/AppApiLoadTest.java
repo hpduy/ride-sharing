@@ -5,29 +5,50 @@
  */
 package com.bikiegang.ridesharing.unitest.api;
 
-import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
+import com.bikiegang.ridesharing.annn.framework.queue.QueueManager;
 import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
-import com.bikiegang.ridesharing.utilities.ApiUtils;
 import com.bikiegang.ridesharing.utilities.TestAPIUtils;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.List;
-import org.junit.Test;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author root
  */
-public class AppApiTest {
+public class AppApiLoadTest {
 
-    @Test
-    public void TestAPI() {
+    private static final QueueManager qm;
 
+    static {
+        qm = QueueManager.getInstance("default");
+        qm.init(64, 100000000);
+        qm.process();
     }
 
     public static void main(String[] args) {
-//        String ReadFile = ReadFile();
+        int i = 1000000;
+        while (i-- >= 0) {
+            APIObject input = CreateObject();
+
+            List<APIObject.APIData> apis = input.getAPI();
+            for (APIObject.APIData item : apis) {
+                qm.put(new PushCommand(item.getName(), item.data));
+            }
+        }
+        while (qm.size() != 0) {
+            System.out.println("Number job pending: " + qm.size());
+            try {
+                Thread.sleep(1 * 1000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(AppApiLoadTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+//        }
+    }
+
+    private static APIObject CreateObject() {
+        //        String ReadFile = ReadFile();
 //        APIObject DeSerialize = JSONUtil.DeSerialize(ReadFile, APIObject.class);
 //        System.out.println(JSONUtil.Serialize(DeSerialize));
 
@@ -104,7 +125,6 @@ public class AppApiTest {
                         JSONUtil.Serialize(TestAPIUtils.CreateGetInformationUsingUserIdRequest()),
                         "")
         );
-
         input.getAPI().add(
                 new APIObject.APIData("LoginAPI",
                         JSONUtil.Serialize(TestAPIUtils.CreateLoginRequest()),
@@ -170,46 +190,7 @@ public class AppApiTest {
                         JSONUtil.Serialize(TestAPIUtils.CreateUpdateSocialNetworkAccountRequest()),
                         "")
         );
-
-//        String Serialize = JSONUtil.Serialize(input);
-//        System.out.println(Serialize);
-//        LOG.info(Serialize);
-        List<APIObject.APIData> apis = input.getAPI();
-        for (APIObject.APIData item : apis) {
-            System.out.println(item.name);
-            String post = ApiUtils.getInstance().getPost("http://103.20.148.111:8080/RideSharing/" + item.getName(), item.getData());
-            System.out.println(item.data);
-            System.out.println(post);
-        }
-
+        return input;
     }
 
-    public static final String INPUT_API_DATA = "data/api.unittest";
-    private static final org.apache.log4j.Logger LOG = LogUtil.getLogger(AppApiTest.class.getName());
-
-    public static String ReadFile() {
-        String result = "";
-        BufferedReader br = null;
-        try {
-
-            String sCurrentLine;
-            br = new BufferedReader(new FileReader(INPUT_API_DATA));
-            StringBuilder strB = new StringBuilder();
-            while ((sCurrentLine = br.readLine()) != null) {
-                strB.append(sCurrentLine);
-            }
-            result = strB.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (br != null) {
-                    br.close();
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-        return result;
-    }
 }
