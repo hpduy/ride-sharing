@@ -1188,16 +1188,16 @@ public class TestAPIUtils {
 
     public static CreatePlannedTripRequest CreateCreatePlannedTripRequest() {
         TripPattern item1 = new TripPattern(
-                RandomUtils.nextLong(),
-                RandomUtils.nextLong(),
+                RandomUtils.nextLong() % 9999999999l,
+                RandomUtils.nextLong() % 9999999999l,
                 RandomUtils.nextInt());
         TripPattern item2 = new TripPattern(
-                RandomUtils.nextLong(),
-                RandomUtils.nextLong(),
+                RandomUtils.nextLong() % 9999999999l,
+                RandomUtils.nextLong() % 9999999999l,
                 RandomUtils.nextInt());
         TripPattern item3 = new TripPattern(
-                RandomUtils.nextLong(),
-                RandomUtils.nextLong(),
+                RandomUtils.nextLong() % 9999999999l,
+                RandomUtils.nextLong() % 9999999999l,
                 RandomUtils.nextInt());
         TripPattern[] patterns = new TripPattern[]{item1, item2, item3};
         LatLng[] waypoints = new LatLng[]{
@@ -1209,8 +1209,8 @@ public class TestAPIUtils {
             RandomUtils.nextDouble())
         };
         CreatePlannedTripRequest result = new CreatePlannedTripRequest(
-                new PlannedTripInfoRequest(RandomStringUtils.randomAlphanumeric(30),
-                        RandomUtils.nextInt(),
+                new PlannedTripInfoRequest("fake_1162836492699328539",
+                        1,
                         RandomUtils.nextLong(),
                         RandomUtils.nextDouble(),
                         RandomStringUtils.randomAlphanumeric(30),
@@ -1788,7 +1788,6 @@ public class TestAPIUtils {
         return result;
     }
 
-    
     public static RegisterRequest CreateRegisterRequest() {
         RegisterRequest result = new RegisterRequest(
                 RandomStringUtils.randomAlphanumeric(30),

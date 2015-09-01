@@ -17,7 +17,9 @@ import java.net.InetAddress;
 import java.nio.charset.Charset;
 
 public class StartupListener implements ServletContextListener, HttpSessionListener, HttpSessionAttributeListener {
+
     Logger logger = LogUtil.getLogger(this.getClass());
+
     // Public constructor is required by servlet spec
     public StartupListener() {
         Charset charset = Charset.defaultCharset();
@@ -40,7 +42,7 @@ public class StartupListener implements ServletContextListener, HttpSessionListe
             Path.buildRoot();
             Database.getInstance().restore();
 
-            if(Database.databaseStatus ==  Database.TESTING) {
+            if (Database.databaseStatus == Database.TESTING) {
                 FakeUser.createAngel();
                 FakeUser.createTester();
                 new AngelGroupController();
