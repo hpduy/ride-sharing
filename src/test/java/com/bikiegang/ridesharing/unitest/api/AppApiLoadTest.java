@@ -22,7 +22,7 @@ public class AppApiLoadTest {
 
     static {
         qm = QueueManager.getInstance("default");
-        qm.init(64, 100000000);
+        qm.init(16, 100000000);
         qm.process();
     }
 

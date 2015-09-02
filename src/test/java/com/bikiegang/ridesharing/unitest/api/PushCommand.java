@@ -6,8 +6,6 @@
 package com.bikiegang.ridesharing.unitest.api;
 
 import com.bikiegang.ridesharing.annn.framework.queue.QueueCommand;
-import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
-import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.utilities.ApiUtils;
 import org.slf4j.LoggerFactory;
 
@@ -30,12 +28,13 @@ public class PushCommand implements QueueCommand {
     @Override
     public void execute() {
         String post = ApiUtils.getInstance().getPost("http://103.20.148.111:8080/RideSharing/" + nameApi, data);
-        Parser DeSerialize = JSONUtil.DeSerialize(post, Parser.class);
-        if (DeSerialize.isSuccess()) {
-            System.out.println("Success|" + nameApi);
-        } else {
-            System.out.println("Error|" + nameApi);
-        }
+//        Parser DeSerialize = JSONUtil.DeSerialize(post, Parser.class);
+//        if (DeSerialize.isSuccess()) {
+//            System.out.println("Success|" + nameApi);
+//        } else {
+//            System.out.println("Error|" + nameApi);
+//        }
+        System.out.println(post);
     }
 
 }

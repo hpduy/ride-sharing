@@ -251,7 +251,7 @@ public class Pairing {
     }
 
     private List<PlannedTrip> getPassengersCompatible(PlannedTrip plannedTrip) throws Exception {
-        List<Long> driverPlannedTripLinkedLocationIds = database.getPlannedTripIdRFLinkedLocations().get(plannedTrip.getId());
+        List<Long> driverPlannedTripLinkedLocationIds = database.getPlannedTripIdRFLinkedLocations().get(plannedTrip.getRouteId());
         List<LinkedLocation> linkedLocations = new ArrayList<>();
         for (long llId : driverPlannedTripLinkedLocationIds) {
             LinkedLocation location = database.getLinkedLocationHashMap().get(llId);

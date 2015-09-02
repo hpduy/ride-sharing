@@ -16,11 +16,11 @@ public class GetListRequestVerifyResponse {
         this.response = requests.toArray(new RequestVerifySortDetailResponse[requests.size()]);
     }
 
-    public RequestVerifySortDetailResponse[] getRequests() {
+    public RequestVerifySortDetailResponse[] getResponse() {
         return response;
     }
 
-    public void setRequests(RequestVerifySortDetailResponse[] requests) {
-        this.response = requests;
+    public void setResponse(RequestVerifySortDetailResponse[] response) {
+        this.response = response;
     }
 }

@@ -68,50 +68,56 @@ public class FetchingDataFromGoogleRouting {
         timeForCellCodes[cellcodes.size() - 1] = googleRoute.getLegs()[0].getDuration().getValue();
         // set time for other point
         loadTimeRecursive(steps, timeForCellCodes, cellcodes);
-
-        //TODO
-        System.out.println("## Steps ##");
-        for(Step step : steps){
-            System.out.println("s-" + geoCell.getCellCodeFromLatLng(step.getStart_location()) + ";; e-" + geoCell.getCellCodeFromLatLng(step.getEnd_location()) + ";; duration-"+step.getDuration().getValue());
-        }
-
-        System.out.println("## Load time result ##");
-        for(int t = 0 ; t < cellcodes.size(); t++){
-            System.out.print(cellcodes.get(t)+"::"+timeForCellCodes[t]);
-        }
+//
+//        //TODO
+//        System.out.println("## Steps ##");
+//        long tempTime = 0;
+//        for (Step step : steps) {
+//            tempTime += step.getDuration().getValue();
+//            System.out.println("s-" + geoCell.getCellCodeFromLatLng(step.getStart_location())
+//                    + ";; e-" + geoCell.getCellCodeFromLatLng(step.getEnd_location())
+//                    + ";; duration-" + tempTime);
+//        }
+//        System.out.println("Summary:" + googleRoute.getLegs()[0].getDuration().getValue());
+//        System.out.println("## Load time result ##");
+//        for (int t = 0; t < cellcodes.size(); t++) {
+//            System.out.println(cellcodes.get(t) + "::" + timeForCellCodes[t]);
+//        }
 
 
         //TODO
         // recalculate time: for time = 0 or weird time
-        for (int i = 0; i < timeForCellCodes.length - 1;) {
-            for (int j = i + 1; j < timeForCellCodes.length;) {
-                if (timeForCellCodes[j] <= timeForCellCodes[i]) {
-                    if (j == timeForCellCodes.length - 1) { // case time of the last < time member
-                        timeForCellCodes[j] = timeForCellCodes[i] + (j - i) * ((timeForCellCodes[i] - timeForCellCodes[0]) / (i + 1));
-                    }
-                    j++;
-
-                } else {
-                    if (j - i > 1) {
-                        long averageDuration = (timeForCellCodes[j] - timeForCellCodes[i]) / (j - i);
-                        while (i < j - 1) {
-                            timeForCellCodes[i + 1] = timeForCellCodes[i] + averageDuration;
-                            i++;
-                        }
-                    } else {
+        boolean flag = false;
+        int i = 0;
+        int j = 1;
+        for (; j < timeForCellCodes.length; j++) {
+            if (timeForCellCodes[j] == 0 || timeForCellCodes[j] < timeForCellCodes[i]) {
+                if (!flag) {
+                    i = j - 1;
+                    flag = true;
+                }
+            } else {
+                if (flag) {
+                    long averageDuration = (timeForCellCodes[j] - timeForCellCodes[i]) / (j - i);
+                    while (i < j - 1) {
+                        timeForCellCodes[i + 1] = timeForCellCodes[i] + averageDuration;
                         i++;
-                        j++;
                     }
                 }
-                i++;
             }
+
         }
+//        System.out.println("## After import time result ##");
+//        for (int t = 0; t < cellcodes.size(); t++) {
+//            System.out.println(cellcodes.get(t) + "::" + timeForCellCodes[t]);
+//        }
         // create link locations
+
         List<LinkedLocation> locations = new ArrayList<>();
-        for (int i = 0; i < cellcodes.size(); i++) {
-            String cellcode = cellcodes.get(i);
+        for (int k = 0; k < cellcodes.size(); k++) {
+            String cellcode = cellcodes.get(k);
             LatLng center = geoCell.getLatLngCenterFromCellCode(cellcode);
-            LinkedLocation location = new LinkedLocation(center.getLat(), center.getLng(), center.getTime(), 0, timeForCellCodes[i], i, routeId);
+            LinkedLocation location = new LinkedLocation(center.getLat(), center.getLng(), center.getTime(), 0, timeForCellCodes[k], k, routeId);
             locations.add(location);
         }
         return locations;
@@ -121,14 +127,17 @@ public class FetchingDataFromGoogleRouting {
     private void loadTimeRecursive(Step[] steps, long[] timeForCellCodes, List<String> cellcodes) {
         try {
             GeoCell<Long> geoCell = new GeoCell<>(GeoCell.CELL_LEN_OF_PLANNED_TRIP);
+            long savedTime = 0;
             for (Step step : steps) {
                 // get time
                 String cellCodeStart = geoCell.getCellCodeFromLatLng(step.getStart_location());
                 String cellCodeEnd = geoCell.getCellCodeFromLatLng(step.getEnd_location());
                 int startIdx = cellcodes.indexOf(cellCodeStart);
                 int endIdx = cellcodes.indexOf(cellCodeEnd);
+                savedTime += step.getDuration().getValue();
                 if (endIdx > 0 && startIdx >= 0 && timeForCellCodes[endIdx] == 0) {
-                    timeForCellCodes[endIdx] = timeForCellCodes[startIdx] + step.getDuration().getValue();
+                    timeForCellCodes[endIdx] = timeForCellCodes[startIdx] + savedTime;
+                    savedTime = 0;
                 }
                 // recursive
                 if (step.getSteps() != null && step.getSteps().length > 0) {
