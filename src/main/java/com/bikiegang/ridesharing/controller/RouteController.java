@@ -28,6 +28,7 @@ public class RouteController {
             route.setCreatorId(creatorId);
             route.setTitle(title);
             route.setWaypoints(waypoint);
+            route.setRole(role);
             //fetch data
             if(dao.insert(route)) {
                 List<LinkedLocation> locations = new FetchingDataFromGoogleRouting().fetch(route);

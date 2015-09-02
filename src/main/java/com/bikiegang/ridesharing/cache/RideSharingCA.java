@@ -724,12 +724,11 @@ public class RideSharingCA {
 
     public boolean RestoreDatabase() {
         boolean result = false;
-        result = RestoreBroadcast();
-        result &= RestoreLinkedLocation();
+        result = RestoreUser();
+        result &= RestoreBroadcast();
         result &= RestoreRequestMakeTrip();
         result &= RestorePlannedTrip();
         result &= RestoreTrip();
-        result &= RestoreUser();
         result &= RestoreVerifiedCertificate();
         result &= RestoreRequestVerify();
         result &= RestoreAngelGroup();
@@ -741,6 +740,7 @@ public class RideSharingCA {
         result &= RestoreSocialTripAttendance();
         result &= RestoreTripCalendar();
         result &= RestoreRoute();
+        result &= RestoreLinkedLocation();
         return result;
     }
 
