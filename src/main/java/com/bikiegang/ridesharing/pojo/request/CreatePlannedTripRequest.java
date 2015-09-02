@@ -21,8 +21,7 @@ public class CreatePlannedTripRequest {
         this.patterns = patterns;
     }
 
-    public CreatePlannedTripRequest(String alphanumeric, int nextInt, long l, String randomAlphanumeric, boolean b, int i, String s, TripPattern[] patterns, LatLng[] waypoints) {
-    }
+  
 
     public CreatePlannedTripRequest(PlannedTripInfoRequest plannedTrip) {
         this.plannedTrip = plannedTrip;
