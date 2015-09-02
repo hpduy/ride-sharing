@@ -210,6 +210,7 @@ public class PlannedTripController {
                     plannedTrip.setGroupId(groupId);
                     plannedTrip.setDepartureTime(tp);
                     plannedTrip.setOwnerPrice(request.getPlannedTrip().getPrice() < DEFAULT_PRICE ? DEFAULT_PRICE : request.getPlannedTrip().getPrice());
+                    plannedTrip.setRouteId(route.getId());
                     if (dao.insert(plannedTrip)) {
                         FeedResponse yourPlannedTripDetail = new FeedController().convertPlannedTripToFeed(plannedTrip, plannedTrip.getCreatorId());
                         if (request.getPlannedTrip().isParing()) {
