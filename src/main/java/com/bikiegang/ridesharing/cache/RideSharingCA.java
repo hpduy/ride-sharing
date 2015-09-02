@@ -325,12 +325,12 @@ public class RideSharingCA {
                 LinkedLocation obj = (LinkedLocation) JSONUtil.DeSerialize(value, LinkedLocation.class);
                 database.getLinkedLocationHashMap().put(ConvertUtils.toLong(key), obj);
                 // more (put to geocell)
-                PlannedTrip pt = database.getPlannedTripHashMap().get(obj.getRefId());
+                Route route = database.getRouteHashMap().get(obj.getRefId());
                 GeoCell geoCell = null;
-                if (pt.getRole() == User.DRIVER) {
+                if (route.getRole() == User.DRIVER) {
                     geoCell = database.getGeoCellDriver();
                 }
-                if (pt.getRole() == User.PASSENGER) {
+                if (route.getRole() == User.PASSENGER) {
                     geoCell = database.getGeoCellPassenger();
                 }
                 if (null != geoCell) {

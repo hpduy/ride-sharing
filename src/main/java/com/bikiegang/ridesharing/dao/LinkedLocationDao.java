@@ -9,7 +9,6 @@ import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.geocoding.GeoCell;
 import com.bikiegang.ridesharing.pojo.LinkedLocation;
-import com.bikiegang.ridesharing.pojo.PlannedTrip;
 import com.bikiegang.ridesharing.pojo.Route;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.utilities.Const;
@@ -95,12 +94,12 @@ public class LinkedLocationDao {
                 return false;
             }
             // remove from geo cell
-            PlannedTrip pt = database.getPlannedTripHashMap().get(obj.getRefId());
+            Route route = database.getRouteHashMap().get(obj.getRefId());
             GeoCell<Long> geoCell = null;
-            if (pt.getRole() == User.DRIVER) {
+            if (route.getRole() == User.DRIVER) {
                 geoCell = database.getGeoCellDriver();
             }
-            if (pt.getRole() == User.PASSENGER) {
+            if (route.getRole() == User.PASSENGER) {
                 geoCell = database.getGeoCellPassenger();
             }
             if (null != geoCell) {
@@ -157,12 +156,12 @@ public class LinkedLocationDao {
             if (tmp != null) {
                 LinkedLocation older = new LinkedLocation(tmp);
                 // more (put to geocell)
-                PlannedTrip pt = database.getPlannedTripHashMap().get(obj.getRefId());
+                Route route = database.getRouteHashMap().get(obj.getRefId());
                 GeoCell<Long> geoCell = null;
-                if (pt.getRole() == User.DRIVER) {
+                if (route.getRole() == User.DRIVER) {
                     geoCell = database.getGeoCellDriver();
                 }
-                if (pt.getRole() == User.PASSENGER) {
+                if (route.getRole() == User.PASSENGER) {
                     geoCell = database.getGeoCellPassenger();
                 }
                 if (null != geoCell) {
