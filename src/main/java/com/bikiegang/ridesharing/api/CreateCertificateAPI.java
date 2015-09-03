@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package com.bikiegang.ridesharing.api.angel;
+package com.bikiegang.ridesharing.api;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.controller.VerifiedCertificateController;

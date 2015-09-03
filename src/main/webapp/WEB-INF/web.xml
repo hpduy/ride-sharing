@@ -132,6 +132,22 @@
     </servlet-mapping>
     <!--**USER**-->
     <servlet>
+        <servlet-name>RequestViewPhoneNumberAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.RequestViewPhoneNumberAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RequestViewPhoneNumberAPI</servlet-name>
+        <url-pattern>/RequestViewPhoneNumberAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>AcceptViewPhoneNumberAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.AcceptViewPhoneNumberAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AcceptViewPhoneNumberAPI</servlet-name>
+        <url-pattern>/AcceptViewPhoneNumberAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
         <servlet-name>LoginAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.LoginAPI</servlet-class>
     </servlet>
@@ -146,6 +162,14 @@
     <servlet-mapping>
         <servlet-name>UpdateBroadcastAPI</servlet-name>
         <url-pattern>/UpdateBroadcastAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>UpdateAngelBroadcastAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.angel.UpdateAngelBroadcastAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UpdateAngelBroadcastAPI</servlet-name>
+        <url-pattern>/UpdateAngelBroadcastAPI</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>UpdateCurrentLocationAPI</servlet-name>
@@ -341,8 +365,16 @@
 
     <!--**VERIFIED CERTIFICATE**-->
     <servlet>
+        <servlet-name>CheckEnoughCertificatesAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.CheckEnoughCertificatesAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CheckEnoughCertificatesAPI</servlet-name>
+        <url-pattern>/CheckEnoughCertificatesAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
         <servlet-name>RequestVerifyAPI</servlet-name>
-        <servlet-class>com.bikiegang.ridesharing.api.angel.RequestVerifyAPI</servlet-class>
+        <servlet-class>com.bikiegang.ridesharing.api.RequestVerifyAPI</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>RequestVerifyAPI</servlet-name>
@@ -358,7 +390,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>CreateCertificateAPI</servlet-name>
-        <servlet-class>com.bikiegang.ridesharing.api.angel.CreateCertificateAPI</servlet-class>
+        <servlet-class>com.bikiegang.ridesharing.api.CreateCertificateAPI</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>CreateCertificateAPI</servlet-name>

@@ -4,12 +4,12 @@
  * and open the template in the editor.
  */
 
-package com.bikiegang.ridesharing.api.angel;
+package com.bikiegang.ridesharing.api;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
-import com.bikiegang.ridesharing.controller.RequestVerifyController;
+import com.bikiegang.ridesharing.controller.UserController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.request.angel.RequestVerifyRequest;
+import com.bikiegang.ridesharing.pojo.request.RequestPhoneNumberRequest;
 import com.bikiegang.ridesharing.utilities.ApiDocumentGenerator;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import org.apache.log4j.Logger;
@@ -23,9 +23,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class RequestVerifyAPI extends HttpServlet {
+public class RequestViewPhoneNumberAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
-    public Class requestClass = RequestVerifyRequest.class;
+    public Class requestClass = RequestPhoneNumberRequest.class;
     public Class responseClass = null;
     public boolean responseIsArray = false;
 
@@ -51,15 +51,15 @@ public class RequestVerifyAPI extends HttpServlet {
                 jsonData.append(line);
             }
             logger.info(jsonData.toString());
-            RequestVerifyRequest requestVerifyRequest = (RequestVerifyRequest) Parser.JSonToObject(jsonData.toString(), RequestVerifyRequest.class);
-            RequestVerifyController controller = new RequestVerifyController();
-            String result = controller.sendVerificationRequest(requestVerifyRequest);
+            RequestPhoneNumberRequest requestPhoneNumberRequest = (RequestPhoneNumberRequest) Parser.JSonToObject(jsonData.toString(), RequestPhoneNumberRequest.class);
+            UserController controller = new UserController();
+            String result = controller.requestPhoneNumber(requestPhoneNumberRequest);
             logger.info(result);
             out.print(result);
         } catch (Exception ex) {
             ex.printStackTrace();
             logger.error(ex.getStackTrace());
-            out.print(Parser.ObjectToJSon(false, MessageMappingUtil.System_Exception,  ex.getMessage()));
+            out.print(Parser.ObjectToJSon(false, MessageMappingUtil.System_Exception, ex.getMessage()));
         }
     }
 

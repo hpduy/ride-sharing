@@ -4,10 +4,7 @@ import com.bikiegang.ridesharing.dao.RequestVerifyDao;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.database.IdGenerator;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.CertificateDetail;
-import com.bikiegang.ridesharing.pojo.RequestVerify;
-import com.bikiegang.ridesharing.pojo.User;
-import com.bikiegang.ridesharing.pojo.VerifiedCertificate;
+import com.bikiegang.ridesharing.pojo.*;
 import com.bikiegang.ridesharing.pojo.request.angel.GetListRequestVerifyRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.GetRequestDetailRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.ReplyVerifyRequest;
@@ -60,16 +57,8 @@ public class RequestVerifyController {
         requestVerify.createSignature();
 
         if (dao.insert(requestVerify)) {
-            //Create certificate
-            System.out.println(request.getUserId());
-            List<CertificateDetail> failCertificates = new VerifiedCertificateController().createCertificate(request.getCertificates(), request.getUserId(), request.getAngelId(), VerifiedCertificate.WAITING);
-            if (!failCertificates.isEmpty()) {
-                return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail, failCertificates);
-            }
-            //TODO push notification
-            new BroadcastCenterUtil().pushNotification(Parser.ObjectToNotification(MessageMappingUtil.Notification_RequestVerify, user), angel.getId());
+            new BroadcastCenterUtil().pushNotification(Parser.ObjectToNotification(MessageMappingUtil.Notification_RequestVerify, user), angel.getId(), Broadcast.ANGEL_APP);
             return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
-
         }
         return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
     }

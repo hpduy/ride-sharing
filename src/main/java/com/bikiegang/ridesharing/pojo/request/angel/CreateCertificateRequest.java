@@ -8,31 +8,22 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CreateCertificateRequest {
-    private long requestId;
-    private String note;
-    CertificateDetail[] certificates;
+    private String userId;
+    CertificateDetail certificate;
 
-    public long getRequestId() {
-        return requestId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setRequestId(long requestId) {
-        this.requestId = requestId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public CertificateDetail[] getCertificates() {
-        return certificates;
+    public CertificateDetail getCertificate() {
+        return certificate;
     }
 
-    public void setCertificates(CertificateDetail[] certificates) {
-        this.certificates = certificates;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
+    public void setCertificate(CertificateDetail certificate) {
+        this.certificate = certificate;
     }
 }

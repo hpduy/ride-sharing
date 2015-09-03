@@ -638,4 +638,26 @@ public class UserController {
         new BroadcastCenterUtil().pushNotification(Parser.ObjectToNotification(MessageMappingUtil.Notification_RequestPhoneNumber, sender), receiver.getId());
         return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
     }
+    public String acceptViewPhoneNumber(RequestPhoneNumberRequest request) throws JsonProcessingException {
+        if (null == request.getSenderId() || request.getSenderId().equals("")) {
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'senderId'");
+        }
+        User sender = database.getUserHashMap().get(request.getSenderId());
+        if (sender == null) {
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "Sender");
+        }
+        if (null == request.getReceiverId() || request.getReceiverId().equals("")) {
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'receiverId'");
+        }
+        User receiver = database.getUserHashMap().get(request.getReceiverId());
+        if (receiver == null) {
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "Receiver");
+        }
+        sender.getPhoneViewer().add(receiver.getId());
+        if(dao.update(sender)) {
+            new BroadcastCenterUtil().pushNotification(Parser.ObjectToNotification(MessageMappingUtil.Notification_AcceptPhoneNumber, sender), receiver.getId());
+            return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
+        }
+        return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
+    }
 }

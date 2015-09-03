@@ -38,7 +38,9 @@ public class MessageMappingUtil {
     public static final int Notification_ReplyMakeTrip_Accept = 503;
     public static final int Notification_ReplyMakeTrip_Deny = 504;
     public static final int Notification_RequestPhoneNumber = 505;
-    public static final int Notification_AlertTripComingUp = 506;
+    public static final int Notification_AcceptPhoneNumber = 506;
+    public static final int Notification_AlertTripComingUp = 507;
+
 
     // other final variable
 

@@ -15,7 +15,7 @@ public class BroadcastController {
     private BroadcastDao dao = new BroadcastDao();
     private Database database = Database.getInstance();
 
-    public String updateBroadcast(UpdateBroadcastRequest request) throws Exception {
+    public String updateBroadcast(UpdateBroadcastRequest request, int broadcastType) throws Exception {
         if (request.getType() <= 0 ||
                 (request.getType() != UpdateBroadcastRequest.DELETE
                         && request.getType() != UpdateBroadcastRequest.UPDATE)) {
@@ -29,14 +29,14 @@ public class BroadcastController {
         }
         switch (request.getType()) {
             case UpdateBroadcastRequest.DELETE:
-                return deleteBroadcast(request);
+                return deleteBroadcast(request,broadcastType);
             case UpdateBroadcastRequest.UPDATE:
-                return insertAndUpdateBroadcast(request);
+                return insertAndUpdateBroadcast(request,broadcastType);
         }
         return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
     }
 
-    private String insertAndUpdateBroadcast(UpdateBroadcastRequest request) throws JsonProcessingException {
+    private String insertAndUpdateBroadcast(UpdateBroadcastRequest request, int broadcastType) throws JsonProcessingException {
         if (null == request.getRegId() || request.getRegId().equals("")) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'regId'");
         }
@@ -46,7 +46,7 @@ public class BroadcastController {
                         && request.getOs() != Broadcast.WINDOW_PHONE)) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'os'");
         }
-        String id = request.getDeviceId() + "#" + request.getUserId();
+        String id = request.getDeviceId() + "#" + request.getUserId() + "#" + broadcastType;
         Broadcast broadcast = new Broadcast();
         broadcast.setId(id);
         broadcast.setDeviceId(request.getDeviceId());
@@ -66,8 +66,8 @@ public class BroadcastController {
         }
     }
 
-    private String deleteBroadcast(UpdateBroadcastRequest request) throws JsonProcessingException {
-        String id = request.getDeviceId() + "#" + request.getUserId();
+    private String deleteBroadcast(UpdateBroadcastRequest request, int broadcastType) throws JsonProcessingException {
+        String id = request.getDeviceId() + "#" + request.getUserId() + "#" + broadcastType;
         Broadcast broadcast = database.getBroadcastHashMap().get(id);
         if (null == broadcast) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "Broadcast");

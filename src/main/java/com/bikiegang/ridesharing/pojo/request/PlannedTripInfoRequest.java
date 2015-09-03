@@ -1,10 +1,12 @@
 package com.bikiegang.ridesharing.pojo.request;
 
 import com.bikiegang.ridesharing.pojo.LatLng;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * Created by hpduy17 on 8/27/15.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PlannedTripInfoRequest {
     private String creatorId;
     private int role;

@@ -7,10 +7,9 @@
 package com.bikiegang.ridesharing.api;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
-import com.bikiegang.ridesharing.controller.BroadcastController;
+import com.bikiegang.ridesharing.controller.VerifiedCertificateController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.Broadcast;
-import com.bikiegang.ridesharing.pojo.request.UpdateBroadcastRequest;
+import com.bikiegang.ridesharing.pojo.request.GetInformationUsingUserIdRequest;
 import com.bikiegang.ridesharing.utilities.ApiDocumentGenerator;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import org.apache.log4j.Logger;
@@ -24,9 +23,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class UpdateBroadcastAPI extends HttpServlet {
+public class CheckEnoughCertificatesAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
-    public Class requestClass = UpdateBroadcastRequest.class;
+    public Class requestClass = GetInformationUsingUserIdRequest.class;
     public Class responseClass = null;
     public boolean responseIsArray = false;
 
@@ -52,10 +51,9 @@ public class UpdateBroadcastAPI extends HttpServlet {
                 jsonData.append(line);
             }
             logger.info(jsonData.toString());
-            UpdateBroadcastRequest updateBroadcastRequest
-                    = (UpdateBroadcastRequest) Parser.JSonToObject(jsonData.toString(), UpdateBroadcastRequest.class);
-            BroadcastController controller = new BroadcastController();
-            String result = controller.updateBroadcast(updateBroadcastRequest, Broadcast.MAIN_APP);
+            GetInformationUsingUserIdRequest getInformationUsingUserIdRequest = (GetInformationUsingUserIdRequest) Parser.JSonToObject(jsonData.toString(), GetInformationUsingUserIdRequest.class);
+            VerifiedCertificateController controller = new VerifiedCertificateController();
+            String result = controller.checkEnoughCertificates(getInformationUsingUserIdRequest);
             logger.info(result);
             out.print(result);
         } catch (Exception ex) {

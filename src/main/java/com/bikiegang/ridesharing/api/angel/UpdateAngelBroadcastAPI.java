@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package com.bikiegang.ridesharing.api;
+package com.bikiegang.ridesharing.api.angel;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.controller.BroadcastController;
@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class UpdateBroadcastAPI extends HttpServlet {
+public class UpdateAngelBroadcastAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
     public Class requestClass = UpdateBroadcastRequest.class;
     public Class responseClass = null;
@@ -55,7 +55,7 @@ public class UpdateBroadcastAPI extends HttpServlet {
             UpdateBroadcastRequest updateBroadcastRequest
                     = (UpdateBroadcastRequest) Parser.JSonToObject(jsonData.toString(), UpdateBroadcastRequest.class);
             BroadcastController controller = new BroadcastController();
-            String result = controller.updateBroadcast(updateBroadcastRequest, Broadcast.MAIN_APP);
+            String result = controller.updateBroadcast(updateBroadcastRequest, Broadcast.ANGEL_APP);
             logger.info(result);
             out.print(result);
         } catch (Exception ex) {
