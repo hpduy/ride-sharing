@@ -80,16 +80,16 @@ public class ConfigInfo {
                 + "`userId`,\n"
                 + "`deviceId`,\n"
                 + "`regId`,\n"
-                + "`os`)\n"
+                + "`os`, `type`)\n"
                 + "VALUES\n"
-                + "(?,?,?,?,?);";
+                + "(?,?,?,?,?,?);";
         BROADCAST_UPDATE_QUERY = "UPDATE `ridesharing_db`.`Broadcast`\n"
                 + "SET\n"
                 + "`id` = ?,\n"
                 + "`userId` = ?,\n"
                 + "`deviceId` = ?,\n"
                 + "`regId` = ?,\n"
-                + "`os` = ?\n"
+                + "`os` = ?, `type` = ?\n"
                 + "WHERE `id` = ?;";
         BROADCAST_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`Broadcast`\n"
                 + "WHERE `id` = ?;";

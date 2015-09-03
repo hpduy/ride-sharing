@@ -61,6 +61,7 @@ public class BroadcastDA implements IDA {
                 stmt.setString(3, value.getDeviceId());
                 stmt.setString(4, value.getRegId());
                 stmt.setInt(5, value.getOs());
+                stmt.setInt(6, value.getType());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {
@@ -89,7 +90,9 @@ public class BroadcastDA implements IDA {
                 stmt.setString(3, value.getDeviceId());
                 stmt.setString(4, value.getRegId());
                 stmt.setInt(5, value.getOs());
-                stmt.setString(6, value.getId());
+                stmt.setInt(6, value.getType());
+                stmt.setString(7, value.getId());
+
                 int row = stmt.executeUpdate();
                 if (row > 0) {
                     result = true;
