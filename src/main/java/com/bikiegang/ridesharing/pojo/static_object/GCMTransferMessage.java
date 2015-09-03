@@ -11,6 +11,7 @@ public class GCMTransferMessage {
     private List<String> userIds = new ArrayList<>();
     private String senderId = "";
     private String collapseKey = "";
+    private int type;
 
     public List<String> getContents() {
         return contents;
@@ -42,5 +43,13 @@ public class GCMTransferMessage {
 
     public void setSenderId(String senderId) {
         this.senderId = senderId;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }

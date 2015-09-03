@@ -134,11 +134,11 @@
 //                plannedTripId = fakePassengerPlannedTrip(rawSrc, route, user.getId(), i % 2 == 0);
 //            }
 //            if (plannedTripId > 0) {
-//                HashSet<Long> ids = Database.getInstance().getUserIdRFPlanedTrips().get(user.getId());
+//                HashSet<Long> ids = Database.getInstance().getUserIdRFPlannedTrips().get(user.getId());
 //                if (ids == null)
 //                    ids = new HashSet<>();
 //                ids.add(plannedTripId);
-//                Database.getInstance().getUserIdRFPlanedTrips().put(user.getId(), ids);
+//                Database.getInstance().getUserIdRFPlannedTrips().put(user.getId(), ids);
 //            }
 //        }
 //    }

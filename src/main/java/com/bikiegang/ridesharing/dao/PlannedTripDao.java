@@ -41,10 +41,10 @@ public class PlannedTripDao {
             setRfRole.add(obj.getId());
 
             // userIdRFPlanedTrips = new HashMap<>(); // <userId,<plannedTripId>>
-            HashSet<Long> setRfUser = database.getUserIdRFPlanedTrips().get(obj.getCreatorId());
+            HashSet<Long> setRfUser = database.getUserIdRFPlannedTrips().get(obj.getCreatorId());
             if (setRfUser == null) {
                 setRfUser = new HashSet<>();
-                database.getUserIdRFPlanedTrips().put(obj.getCreatorId(), setRfUser);
+                database.getUserIdRFPlannedTrips().put(obj.getCreatorId(), setRfUser);
             }
             setRfUser.add(obj.getId());
 
@@ -119,10 +119,10 @@ public class PlannedTripDao {
             setRfRole.remove((Long) obj.getId());
 
             // userIdRFPlanedTrips = new HashMap<>(); // <userId,<plannedTripId>>
-            HashSet<Long> setRfUser = database.getUserIdRFPlanedTrips().get(obj.getCreatorId());
+            HashSet<Long> setRfUser = database.getUserIdRFPlannedTrips().get(obj.getCreatorId());
             if (setRfUser == null) {
                 setRfUser = new HashSet<>();
-                database.getUserIdRFPlanedTrips().put(obj.getCreatorId(), setRfUser);
+                database.getUserIdRFPlannedTrips().put(obj.getCreatorId(), setRfUser);
             }
             setRfUser.remove((Long) obj.getId());
 

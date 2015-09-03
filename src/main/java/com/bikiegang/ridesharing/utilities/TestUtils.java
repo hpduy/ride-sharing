@@ -4,29 +4,12 @@
  * and open the template in the editor.
  */
 package com.bikiegang.ridesharing.utilities;
-import com.bikiegang.ridesharing.pojo.AngelGroup;
-import com.bikiegang.ridesharing.pojo.AngelGroupMember;
-import com.bikiegang.ridesharing.pojo.Broadcast;
-import com.bikiegang.ridesharing.pojo.CertificateDetail;
-import com.bikiegang.ridesharing.pojo.Feed;
-import com.bikiegang.ridesharing.pojo.LatLng;
-import com.bikiegang.ridesharing.pojo.LinkedLocation;
-import com.bikiegang.ridesharing.pojo.RequestMakeTrip;
-import com.bikiegang.ridesharing.pojo.PlannedTrip;
-import com.bikiegang.ridesharing.pojo.PopularLocation;
-import com.bikiegang.ridesharing.pojo.Rating;
-import com.bikiegang.ridesharing.pojo.RequestVerify;
-import com.bikiegang.ridesharing.pojo.SocialTrip;
-import com.bikiegang.ridesharing.pojo.SocialTripAttendance;
-import com.bikiegang.ridesharing.pojo.Trip;
-import com.bikiegang.ridesharing.pojo.TripCalendar;
-import com.bikiegang.ridesharing.pojo.User;
-import com.bikiegang.ridesharing.pojo.VerifiedCertificate;
-import java.util.HashSet;
+import com.bikiegang.ridesharing.pojo.*;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -117,7 +100,8 @@ public class TestUtils {
                 RandomStringUtils.randomAlphabetic(20),
                 RandomStringUtils.randomAlphabetic(20),
                 RandomStringUtils.randomAlphabetic(20),
-                RandomUtils.nextInt());
+                RandomUtils.nextInt(),
+                RandomUtils.nextInt()%2);
         return result;
     }
 

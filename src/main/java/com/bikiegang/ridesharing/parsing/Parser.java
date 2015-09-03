@@ -1,10 +1,12 @@
 package com.bikiegang.ridesharing.parsing;
 
 import com.bikiegang.ridesharing.pojo.Feed;
+import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.response.FeedResponse;
 import com.bikiegang.ridesharing.pojo.response.GetFeedsResponse;
 import com.bikiegang.ridesharing.pojo.response.PlannedTripShortDetailResponse;
 import com.bikiegang.ridesharing.pojo.response.SocialTripResponse;
+import com.bikiegang.ridesharing.pojo.static_object.Notification;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -71,6 +73,15 @@ public class Parser {
         return toJson(new Parser(success, messageCode, result));
     }
 
+    public static String ObjectToNotification(int messageCode, User sender) throws JsonProcessingException {
+        try {
+            Notification notification = new Notification(sender.getFirstName()+sender.getLastName(), sender.getId());
+            return toJson(new Parser(true, messageCode, notification));
+        }catch (Exception ex){
+            throw ex;
+        }
+    }
+
     public static String ObjectToJSon(Object result) throws JsonProcessingException {
         return toJson(result);
     }
@@ -133,4 +144,5 @@ public class Parser {
     public String getMessage() {
         return message;
     }
+
 }

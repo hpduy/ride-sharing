@@ -2,6 +2,7 @@ package com.bikiegang.ridesharing.utilities;
 
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.parsing.Parser;
+import com.bikiegang.ridesharing.pojo.Broadcast;
 import com.bikiegang.ridesharing.pojo.static_object.GCMTransferMessage;
 
 import java.io.BufferedReader;
@@ -19,8 +20,9 @@ import java.util.List;
 public class BroadcastCenterUtil implements Runnable {
     private List<String> contents = new ArrayList<>();
     private List<String> userIds = new ArrayList<>();
-    private String collapseKey = "Cloud Bike Server App";
+    private String collapseKey = "CloudBike";
     private String senderId = CLOUD_BIKE_SENDER_ID;
+    private int type = Broadcast.MAIN_APP;
     private final String urlStringPath = Path.getServerAddress() + "/GCMBroadcast";
 
     //final variable
@@ -30,17 +32,18 @@ public class BroadcastCenterUtil implements Runnable {
     public BroadcastCenterUtil() {
     }
 
-    public BroadcastCenterUtil(List<String> contents, List<String> userIds, String senderId) {
+    public BroadcastCenterUtil(List<String> contents, List<String> userIds, String senderId, int type) {
         this.contents = contents;
         this.userIds = userIds;
         this.senderId = senderId;
+        this.type = type;
     }
 
     @Override
     public void run() {
         try {
             //connect different server;
-            if(Database.databaseStatus != Database.TESTING) {
+            if (Database.databaseStatus != Database.TESTING) {
                 URL url = new URL(urlStringPath);
                 HttpURLConnection myConn = (HttpURLConnection) url.openConnection();
                 myConn.setDoOutput(true); // do output or post
@@ -50,6 +53,7 @@ public class BroadcastCenterUtil implements Runnable {
                 gcmMessage.setContents(contents);
                 gcmMessage.setUserIds(userIds);
                 gcmMessage.setSenderId(senderId);
+                gcmMessage.setType(type);
                 po.println(Parser.ObjectToJSon(gcmMessage));
                 po.close();
                 //read data
@@ -67,27 +71,55 @@ public class BroadcastCenterUtil implements Runnable {
         }
     }
 
-    public void pushNotification(String content, List<String> userIds, String senderId) {
+    public void pushNotification(String content, List<String> userIds, String senderId, int type) {
         List<String> contents = new ArrayList<>();
         for (int i = 0; i < userIds.size(); i++) {
             contents.add(content);
         }
-        Thread pusher = new Thread(new BroadcastCenterUtil(contents, userIds, senderId));
+        Thread pusher = new Thread(new BroadcastCenterUtil(contents, userIds, senderId, type));
         pusher.start();
     }
 
-    public void pushNotification(String content, String userId, String senderId) {
+    public void pushNotification(String content, List<String> userIds, String senderId) {
+       pushNotification(content,userIds,senderId,type);
+    }
+
+    public void pushNotification(String content, List<String> userIds, int type) {
+        List<String> contents = new ArrayList<>();
+        for (int i = 0; i < userIds.size(); i++) {
+            contents.add(content);
+        }
+        Thread pusher = new Thread(new BroadcastCenterUtil(contents, userIds, senderId, type));
+        pusher.start();
+    }
+    public void pushNotification(String content, List<String> userIds) {
+       pushNotification(content,userIds,type);
+    }
+
+    public void pushNotification(String content, String userId, String senderId, int type) {
         List<String> contents = new ArrayList<>();
         List<String> userIds = new ArrayList<>();
         contents.add(content);
         userIds.add(userId);
-        Thread pusher = new Thread(new BroadcastCenterUtil(contents, userIds, senderId));
+        Thread pusher = new Thread(new BroadcastCenterUtil(contents, userIds, senderId, type));
         pusher.start();
+    }
+    public void pushNotification(String content, String userId, String senderId) {
+       pushNotification(content,userId,senderId,type);
     }
 
-    public void pushNotification(List<String> contents, List<String> userIds, String senderId) {
-        Thread pusher = new Thread(new BroadcastCenterUtil(contents, userIds, senderId));
+    public void pushNotification(String content, String userId, int type) {
+        List<String> contents = new ArrayList<>();
+        List<String> userIds = new ArrayList<>();
+        contents.add(content);
+        userIds.add(userId);
+        Thread pusher = new Thread(new BroadcastCenterUtil(contents, userIds, senderId, type));
         pusher.start();
     }
+    public void pushNotification(String content, String userId) {
+       pushNotification(content,userId,type);
+    }
+
+
 
 }

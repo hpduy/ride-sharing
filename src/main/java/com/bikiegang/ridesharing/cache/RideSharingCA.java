@@ -402,7 +402,7 @@ public class RideSharingCA {
         try {
 
             database.getPlannedTripHashMap().clear();
-            database.getUserIdRFPlanedTrips().clear();
+            database.getUserIdRFPlannedTrips().clear();
             database.getRoleRFPlannedTrips().clear();
             database.getGroupIdRFPlannedTrips().clear();
             database.getRouteRFPlannedTripsByDay().clear();
@@ -422,7 +422,7 @@ public class RideSharingCA {
                 String key = entrySet.getKey();
                 String value = entrySet.getValue();
 
-                database.getUserIdRFPlanedTrips().put(key, (HashSet<Long>) JSONUtil.DeSerialize(value, new TypeToken<HashSet<Long>>() {
+                database.getUserIdRFPlannedTrips().put(key, (HashSet<Long>) JSONUtil.DeSerialize(value, new TypeToken<HashSet<Long>>() {
                 }.getType()));
             }
             //Role=>plannedTrip

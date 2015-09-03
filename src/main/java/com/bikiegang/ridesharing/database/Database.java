@@ -64,7 +64,7 @@ public class Database {
     /**
      * PLANNED TRIP
      */
-    private HashMap<String, HashSet<Long>> userIdRFPlanedTrips = new HashMap<>(); // <userId,<plannedTripId>>
+    private HashMap<String, HashSet<Long>> userIdRFPlannedTrips = new HashMap<>(); // <userId,<plannedTripId>>
     private HashMap<Integer, HashSet<Long>> roleRFPlannedTrips = new HashMap<>(); // <role,<plannedTripId>>
     private HashMap<Long, HashSet<Long>> groupIdRFPlannedTrips = new HashMap<>(); // <groupId,<plannedTripId>>
     private HashMap<Long, HashMap<Long, Long>> routeRFPlannedTripsByDay = new HashMap<>();// <routeId,<epochday, plannedTrip>
@@ -264,8 +264,8 @@ public class Database {
         return userIdRFBroadcasts;
     }
 
-    public HashMap<String, HashSet<Long>> getUserIdRFPlanedTrips() {
-        return userIdRFPlanedTrips;
+    public HashMap<String, HashSet<Long>> getUserIdRFPlannedTrips() {
+        return userIdRFPlannedTrips;
     }
 
     public HashMap<String, HashSet<Long>> getDriverIdRFTrips() {

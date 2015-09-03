@@ -3,6 +3,8 @@ package com.bikiegang.ridesharing.pojo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang.RandomStringUtils;
 
+import java.util.HashSet;
+
 /**
  * Created by hpduy17 on 6/24/15.
  */
@@ -28,6 +30,8 @@ public class User implements PojoBase {
     private String selfIntro = "";
     private int privacy;
     private String job = "";
+    @JsonIgnore
+    private HashSet<String> phoneViewer = new HashSet<>();
     // final field & dont print to JSON;
     /**
      * GENDER
@@ -112,6 +116,7 @@ public class User implements PojoBase {
         this.isBusy = that.isBusy;
         this.privacy = that.privacy;
         this.job = that.job;
+        this.phoneViewer = new HashSet<>(that.phoneViewer);
     }
 
     public String getId() {
@@ -272,6 +277,14 @@ public class User implements PojoBase {
 
     public void setJob(String job) {
         this.job = job;
+    }
+
+    public HashSet<String> getPhoneViewer() {
+        return phoneViewer;
+    }
+
+    public void setPhoneViewer(HashSet<String> phoneViewer) {
+        this.phoneViewer = phoneViewer;
     }
 }
 /**

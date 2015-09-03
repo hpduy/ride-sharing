@@ -12,6 +12,7 @@ import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.*;
 import com.bikiegang.ridesharing.pojo.response.*;
 import com.bikiegang.ridesharing.pojo.response.angel.GetAngelInGroupsResponse;
+import com.bikiegang.ridesharing.utilities.BroadcastCenterUtil;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import com.bikiegang.ridesharing.utilities.Path;
 import com.bikiegang.ridesharing.utilities.StringProcessUtil;
@@ -325,8 +326,8 @@ public class UserController {
         }
         //get list route of user
         List<Long> routeIds;
-        if (database.getUserIdRFPlanedTrips().get(user.getId()) != null) {
-            routeIds = new ArrayList<>(database.getUserIdRFPlanedTrips().get(user.getId()));
+        if (database.getUserIdRFPlannedTrips().get(user.getId()) != null) {
+            routeIds = new ArrayList<>(database.getUserIdRFPlannedTrips().get(user.getId()));
 
         } else {
             routeIds = new ArrayList<>(database.getPlannedTripHashMap().keySet());
@@ -605,15 +606,18 @@ public class UserController {
 
     }
 
-    public String getUserDetail(GetInformationUsingUserIdRequest request) throws JsonProcessingException {
+    public String getUserDetail(GetUserDetailRequest request) throws JsonProcessingException {
         if (null == request.getUserId() || request.getUserId().equals("")) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
+        }
+        if (null == request.getViewerId() || request.getViewerId().equals("")) {
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'viewerId'");
         }
         User user = database.getUserHashMap().get(request.getUserId());
         if (user == null) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User");
         }
-        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new GetUserDetailResponse(user));
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new GetUserDetailResponse(user, request.getViewerId()));
     }
 
     public String requestPhoneNumber(RequestPhoneNumberRequest request) throws JsonProcessingException {
@@ -623,20 +627,15 @@ public class UserController {
         User sender = database.getUserHashMap().get(request.getSenderId());
         if (sender == null) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "Sender");
-        } if (null == request.getReceiverId() || request.getReceiverId().equals("")) {
+        }
+        if (null == request.getReceiverId() || request.getReceiverId().equals("")) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'receiverId'");
         }
         User receiver = database.getUserHashMap().get(request.getReceiverId());
         if (receiver == null) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "Receiver");
         }
-        //push notification
-//        RequestMakeTripNoti noti = new RequestMakeTripNoti(requestMakeTrip);
-//        new BroadcastCenterUtil().pushNotification(NotificationParser.ObjectToJSon(ObjectNoti.REQUEST_MAKE_TRIP, noti), requestMakeTrip.getReceiverId(), BroadcastCenterUtil.CLOUD_BIKE_SENDER_ID);
-//        // return request
-//        RequestMakeTripResponse requestMakeTripResponse = new RequestMakeTripResponse();
-//        requestMakeTripResponse.setRequestId(requestMakeTrip.getId());
-
+        new BroadcastCenterUtil().pushNotification(Parser.ObjectToNotification(MessageMappingUtil.Notification_RequestPhoneNumber, sender), receiver.getId());
         return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
     }
 }

@@ -82,12 +82,13 @@ public class GCMBroadcast extends HttpServlet {
             contents = gcmTransferMessage.getContents();
             collapseKey =  gcmTransferMessage.getCollapseKey();
             userIds = gcmTransferMessage.getUserIds();
+            int type  = gcmTransferMessage.getType();
             SENDER_ID = gcmTransferMessage.getSenderId();
             // add all device each user into each android target list
             for (int i = 0; i < userIds.size(); i++) {
                 // get list RegId
                 List<String> regIds = new ArrayList<>();
-                HashSet<String> broadcastIds = database.getUserIdRFBroadcasts().get(userIds.get(i));
+                HashSet<String> broadcastIds = database.getUserIdRFBroadcasts().get(userIds.get(i)+"#"+type);
                 if(null != broadcastIds){
                     for(String id : broadcastIds) {
                         Broadcast broadcast = database.getBroadcastHashMap().get(id);

@@ -5,30 +5,36 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 /**
  * Created by hpduy17 on 6/24/15.
  */
-public class Broadcast implements PojoBase{
+public class Broadcast implements PojoBase {
 
     private String id = ""; // <deviceId#userId>
     private String userId = "";
     private String deviceId = "";
     private String regId;
     private int os;
-//final field
+    private int type;
+    //final field
     @JsonIgnore
     public static final int ANDROID = 1;
     @JsonIgnore
     public static final int IOS = 2;
     @JsonIgnore
     public static final int WINDOW_PHONE = 3;
+    @JsonIgnore
+    public static final int MAIN_APP = 0;
+    @JsonIgnore
+    public static final int ANGEL_APP = 1;
 
     public Broadcast() {
     }
 
-    public Broadcast(String id, String userId, String deviceId, String regId, int os) {
+    public Broadcast(String id, String userId, String deviceId, String regId, int os, int type) {
         this.id = id == null ? "" : id;
         this.userId = userId == null ? "" : userId;
         this.deviceId = deviceId == null ? "" : deviceId;
         this.regId = regId == null ? "" : regId;
         this.os = os;
+        this.type = type;
     }
 
     public Broadcast(Broadcast that) {
@@ -37,6 +43,7 @@ public class Broadcast implements PojoBase{
         this.deviceId = that.deviceId == null ? "" : that.deviceId;
         this.regId = that.regId == null ? "" : that.regId;
         this.os = that.os;
+        this.type = that.type;
     }
 
     public String getId() {

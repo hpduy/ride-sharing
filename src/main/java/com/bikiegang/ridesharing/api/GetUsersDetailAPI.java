@@ -9,7 +9,7 @@ package com.bikiegang.ridesharing.api;
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.controller.UserController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.request.GetInformationUsingUserIdRequest;
+import com.bikiegang.ridesharing.pojo.request.GetUserDetailRequest;
 import com.bikiegang.ridesharing.pojo.response.GetUserDetailResponse;
 import com.bikiegang.ridesharing.utilities.ApiDocumentGenerator;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
@@ -26,7 +26,7 @@ import java.io.PrintWriter;
 
 public class GetUsersDetailAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
-    public Class requestClass = GetInformationUsingUserIdRequest.class;
+    public Class requestClass = GetUserDetailRequest.class;
     public Class responseClass = GetUserDetailResponse.class;
     public boolean responseIsArray = false;
 
@@ -52,7 +52,7 @@ public class GetUsersDetailAPI extends HttpServlet {
                 jsonData.append(line);
             }
             logger.info(jsonData.toString());
-            GetInformationUsingUserIdRequest getUserDetailRequest = (GetInformationUsingUserIdRequest) Parser.JSonToObject(jsonData.toString(), GetInformationUsingUserIdRequest.class);
+            GetUserDetailRequest getUserDetailRequest = (GetUserDetailRequest) Parser.JSonToObject(jsonData.toString(), GetUserDetailRequest.class);
             UserController controller = new UserController();
             String result = controller.getUserDetail(getUserDetailRequest);
             logger.info(result);

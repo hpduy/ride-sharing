@@ -3,16 +3,12 @@ package com.bikiegang.ridesharing.controller;
 import com.bikiegang.ridesharing.dao.RequestMakeTripDao;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.database.IdGenerator;
-import com.bikiegang.ridesharing.parsing.NotificationParser;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.PlannedTrip;
 import com.bikiegang.ridesharing.pojo.RequestMakeTrip;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.*;
 import com.bikiegang.ridesharing.pojo.response.*;
-import com.bikiegang.ridesharing.pojo.response.Notification.ObjectNoti;
-import com.bikiegang.ridesharing.pojo.response.Notification.ReplyMakeTripNoti;
-import com.bikiegang.ridesharing.pojo.response.Notification.RequestMakeTripNoti;
 import com.bikiegang.ridesharing.utilities.BroadcastCenterUtil;
 import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
@@ -37,6 +33,14 @@ public class RequestMakeTripController {
         }
         if (request.getReceiverPlannedTripId() <= 0) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "receiverPlannedTripId");
+        }
+        User sender = database.getUserHashMap().get(request.getSenderId());
+        if (null == sender) {
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "Sender");
+        }
+        User receiver = database.getUserHashMap().get(request.getReceiverId());
+        if (null == receiver) {
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "Receiver");
         }
         // process plannedTrip
         //case 1 : sender's planned trips is created ->
@@ -121,8 +125,7 @@ public class RequestMakeTripController {
         requestMakeTrip.setSenderRole(senderRole);
         if (dao.insert(requestMakeTrip)) {
             //push notification
-            RequestMakeTripNoti noti = new RequestMakeTripNoti(requestMakeTrip);
-            new BroadcastCenterUtil().pushNotification(NotificationParser.ObjectToJSon(ObjectNoti.REQUEST_MAKE_TRIP, noti), requestMakeTrip.getReceiverId(), BroadcastCenterUtil.CLOUD_BIKE_SENDER_ID);
+            new BroadcastCenterUtil().pushNotification(Parser.ObjectToNotification(MessageMappingUtil.Notification_RequestMakeTrip, sender), requestMakeTrip.getReceiverId());
             // return request
             RequestMakeTripResponse requestMakeTripResponse = new RequestMakeTripResponse();
             requestMakeTripResponse.setRequestId(requestMakeTrip.getId());
@@ -148,6 +151,8 @@ public class RequestMakeTripController {
         if (request.getStatus() == RequestMakeTrip.DENY) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Request_has_denied);
         }
+
+
         // check user status
         if (request.getReplierId().equals(requestMakeTrip.getReceiverId())) {
             PlannedTrip senderPlannedTrip;
@@ -169,8 +174,7 @@ public class RequestMakeTripController {
         if (dao.update(requestMakeTrip)) {
             //TODO notification
             // Check status of request make trip
-            ReplyMakeTripNoti noti = new ReplyMakeTripNoti(requestMakeTrip);
-            new BroadcastCenterUtil().pushNotification(NotificationParser.ObjectToJSon(ObjectNoti.REPLY_MAKE_TRIP, noti), requestMakeTrip.getSenderId(), BroadcastCenterUtil.CLOUD_BIKE_SENDER_ID);
+            int action = MessageMappingUtil.Notification_ReplyMakeTrip_Deny;
             if (requestMakeTrip.getStatus() == RequestMakeTrip.ACCEPT) {
                 // Change user's status
                 PlannedTrip driverPlannedTrip = database.getPlannedTripHashMap().get(requestMakeTrip.getDriverPlannedTripId());
@@ -180,8 +184,11 @@ public class RequestMakeTripController {
                 // Deny all request similar of other user in receiver box
                 long plannedTripId = requestMakeTrip.getSenderRole() == User.DRIVER ? requestMakeTrip.getPassengerPlannedTripId() : requestMakeTrip.getDriverPlannedTripId();
                 denyRequest(request.getReplierId(), plannedTripId);
-                //TODO make a trip
+                action = MessageMappingUtil.Notification_ReplyMakeTrip_Accept;
+
             }
+            User senderNoti = database.getUserHashMap().get(requestMakeTrip.getReceiverId());
+            new BroadcastCenterUtil().pushNotification(Parser.ObjectToNotification(action, senderNoti), requestMakeTrip.getSenderId());
             return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
         }
         return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);

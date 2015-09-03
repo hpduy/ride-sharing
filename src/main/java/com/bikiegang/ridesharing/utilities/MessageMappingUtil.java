@@ -30,6 +30,16 @@ public class MessageMappingUtil {
     public static final int User_is_busy = 17;
     public static final int User_and_angel_is_not_same_place_and_time = 18;
 
+
+    // notification
+    public static final int Notification_RequestVerify = 500;
+    public static final int Notification_VerifyCertificate_Success = 501;
+    public static final int Notification_RequestMakeTrip = 502;
+    public static final int Notification_ReplyMakeTrip_Accept = 503;
+    public static final int Notification_ReplyMakeTrip_Deny = 504;
+    public static final int Notification_RequestPhoneNumber = 505;
+    public static final int Notification_AlertTripComingUp = 506;
+
     // other final variable
 
     public static final String English = "en";

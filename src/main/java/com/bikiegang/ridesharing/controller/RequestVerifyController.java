@@ -3,21 +3,21 @@ package com.bikiegang.ridesharing.controller;
 import com.bikiegang.ridesharing.dao.RequestVerifyDao;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.database.IdGenerator;
-import com.bikiegang.ridesharing.parsing.NotificationParser;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.*;
+import com.bikiegang.ridesharing.pojo.CertificateDetail;
+import com.bikiegang.ridesharing.pojo.RequestVerify;
+import com.bikiegang.ridesharing.pojo.User;
+import com.bikiegang.ridesharing.pojo.VerifiedCertificate;
 import com.bikiegang.ridesharing.pojo.request.angel.GetListRequestVerifyRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.GetRequestDetailRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.ReplyVerifyRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.RequestVerifyRequest;
-import com.bikiegang.ridesharing.pojo.response.Notification.ObjectNoti;
-import com.bikiegang.ridesharing.pojo.response.Notification.ReplyVerifyNoti;
 import com.bikiegang.ridesharing.pojo.response.angel.GetListRequestVerifyResponse;
 import com.bikiegang.ridesharing.pojo.response.angel.RequestVerifyDetailResponse;
 import com.bikiegang.ridesharing.pojo.response.angel.RequestVerifySortDetailResponse;
 import com.bikiegang.ridesharing.utilities.BroadcastCenterUtil;
-import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
+import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.ArrayList;
@@ -67,8 +67,7 @@ public class RequestVerifyController {
                 return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail, failCertificates);
             }
             //TODO push notification
-            RequestVerifySortDetailResponse noti = new RequestVerifySortDetailResponse(requestVerify);
-            new BroadcastCenterUtil().pushNotification(NotificationParser.ObjectToJSon(ObjectNoti.REQUEST_VERIFY, noti), angel.getId(), BroadcastCenterUtil.ANGEL_SPECIAL_APP_SENDER_ID);
+            new BroadcastCenterUtil().pushNotification(Parser.ObjectToNotification(MessageMappingUtil.Notification_RequestVerify, user), angel.getId());
             return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
 
         }
@@ -93,10 +92,10 @@ public class RequestVerifyController {
         if (dao.update(requestVerify)) {
             if (requestVerify.getStatus() == RequestVerify.ACCEPT) {
                 User angel = database.getUserHashMap().get(requestVerify.getAngelId());
-                if (null != angel) {
-                    ReplyVerifyNoti noti = new ReplyVerifyNoti(requestVerify, angel, ObjectNoti.REPLY_VERIFY);
-                    new BroadcastCenterUtil().pushNotification(Parser.ObjectToJSon(noti), requestVerify.getUserId(), BroadcastCenterUtil.CLOUD_BIKE_SENDER_ID);
-                }
+//                if (null != angel) {
+//                    ReplyVerifyNoti noti = new ReplyVerifyNoti(requestVerify, angel, ObjectNoti.REPLY_VERIFY);
+//                    new BroadcastCenterUtil().pushNotification(Parser.ObjectToJSon(noti), requestVerify.getUserId(), BroadcastCenterUtil.CLOUD_BIKE_SENDER_ID);
+//                }
             }
             return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
         }
