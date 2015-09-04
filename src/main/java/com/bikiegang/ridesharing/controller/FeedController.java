@@ -56,60 +56,64 @@ public class FeedController {
         }
         int fromIdx = 0;
         int toIdx = 0;
+        List<FeedResponse> responses = new ArrayList<>();
         // to index process
         List<Feed> feedList = new ArrayList<>(database.getFeedHashMap().values());
         List<Long> feedId = new ArrayList<>(database.getFeedHashMap().keySet());
-        for (toIdx = database.getFeedHashMap().size() - 1; toIdx >= 0; toIdx--) {
-            if (feedList.get(toIdx).getCreatedTime() < DateTimeUtil.now()) {
-                break;
-            }
-        }
-        if (!feedId.contains(request.getStartId())) {
-            fromIdx = toIdx - request.getNumberOfFeed();
-        } else {
-            switch (request.getGetWay()) {
-                case GetFeedsRequest.NEW_FEED:
-                    fromIdx = feedId.indexOf(request.getStartId());
+        if (!database.getFeedHashMap().isEmpty()) {
+            for (toIdx = database.getFeedHashMap().size(); toIdx >= 0; toIdx--) {
+                if (feedList.get(toIdx).getCreatedTime() < DateTimeUtil.now()) {
                     break;
-                case GetFeedsRequest.HISTORY_FEED:
-                    toIdx = feedId.indexOf(request.getStartId());
-                    fromIdx = toIdx - request.getNumberOfFeed();
-                    break;
-                default:
-                    return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'getWay'");
-            }
-        }
-        if (fromIdx < 0) {
-            fromIdx = 0;
-        }
-        List<Feed> feeds = new ArrayList<>(database.getFeedHashMap().values()).subList(fromIdx, toIdx);
-        List<FeedResponse> responses = new ArrayList<>();
-        for (Feed feed : feeds) {
-            FeedResponse response = new FeedResponse();
-            TripInFeed tif = null;
-            ExPartnerInfoResponse partnerInfoResponse = null;
-            UserShortDetailResponse userShortDetailResponse = null;
-            try {
-                switch (feed.getType()) {
-                    case Feed.PLANNED_TRIP:
-                        tif = new PlannedTripShortDetailResponse(database.getPlannedTripHashMap().get(feed.getRefId()), request.getUserId());
-                        break;
-                    case Feed.SOCIAL_TRIP:
-                        tif = new SocialTripResponse(database.getSocialTripHashMap().get(feed.getRefId()));
-                        break;
                 }
-                if (tif != null) {
-                    User user = database.getUserHashMap().get(tif.getCreatorId());
-                    if (user != null) {
-                        userShortDetailResponse = new UserShortDetailResponse(user);
-                        partnerInfoResponse = new UserController().getExPartners(user.getId());
-                        response.setPartnerInfo(partnerInfoResponse);
-                        response.setUserDetail(userShortDetailResponse);
-                        response.setTripDetail(tif);
-                        responses.add(response);
+            }
+            if (!feedId.contains(request.getStartId())) {
+                fromIdx = toIdx - request.getNumberOfFeed();
+            } else {
+                switch (request.getGetWay()) {
+                    case GetFeedsRequest.NEW_FEED:
+                        fromIdx = feedId.indexOf(request.getStartId());
+                        break;
+                    case GetFeedsRequest.HISTORY_FEED:
+                        toIdx = feedId.indexOf(request.getStartId());
+                        fromIdx = toIdx - request.getNumberOfFeed();
+                        break;
+                    default:
+                        return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'getWay'");
+                }
+            }
+            if (fromIdx < 0) {
+                fromIdx = 0;
+            }
+            List<Feed> feeds = new ArrayList<>(database.getFeedHashMap().values()).subList(fromIdx, toIdx);
+
+            for (Feed feed : feeds) {
+                FeedResponse response = new FeedResponse();
+                TripInFeed tif = null;
+                ExPartnerInfoResponse partnerInfoResponse = null;
+                UserShortDetailResponse userShortDetailResponse = null;
+                try {
+                    switch (feed.getType()) {
+                        case Feed.PLANNED_TRIP:
+                            tif = new PlannedTripShortDetailResponse(database.getPlannedTripHashMap().get(feed.getRefId()), request.getUserId());
+                            break;
+                        case Feed.SOCIAL_TRIP:
+                            tif = new SocialTripResponse(database.getSocialTripHashMap().get(feed.getRefId()));
+                            break;
                     }
+                    if (tif != null) {
+                        User user = database.getUserHashMap().get(tif.getCreatorId());
+                        if (user != null) {
+                            userShortDetailResponse = new UserShortDetailResponse(user);
+                            partnerInfoResponse = new UserController().getExPartners(user.getId());
+                            response.setPartnerInfo(partnerInfoResponse);
+                            response.setUserDetail(userShortDetailResponse);
+                            response.setTripDetail(tif);
+                            responses.add(response);
+                        }
+                    }
+                } catch (Exception ignored) {
                 }
-            }catch (Exception ignored){}
+            }
         }
         GetFeedsResponse feedsResponse = new GetFeedsResponse();
         feedsResponse.setFeeds(responses.toArray(new FeedResponse[responses.size()]));

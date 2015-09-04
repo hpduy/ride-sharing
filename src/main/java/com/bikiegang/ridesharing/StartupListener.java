@@ -3,7 +3,6 @@ package com.bikiegang.ridesharing;
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.controller.AngelGroupController;
 import com.bikiegang.ridesharing.database.Database;
-import com.bikiegang.ridesharing.pojo.static_object.University;
 import com.bikiegang.ridesharing.utilities.FakeGroup.FakeUser;
 import com.bikiegang.ridesharing.utilities.Path;
 import org.apache.log4j.Logger;
@@ -41,12 +40,12 @@ public class StartupListener implements ServletContextListener, HttpSessionListe
             Path.setServerAddress(InetAddress.getLocalHost().getHostAddress());
             Path.buildRoot();
             Database.getInstance().restore();
-            University.loadData();
             if (Database.databaseStatus == Database.TESTING) {
+                System.out.println("Group size before:"+Database.getInstance().getAngelGroupHashMap().size());
                 FakeUser.createAngel();
                 FakeUser.createTester();
                 new AngelGroupController();
-                System.out.println(Database.getInstance().getAngelGroupHashMap().size());
+                System.out.println("Group size after:"+Database.getInstance().getAngelGroupHashMap().size());
             }
             logger.info("CLOUD BIKE WAKED UP");
         } catch (Exception ex) {
