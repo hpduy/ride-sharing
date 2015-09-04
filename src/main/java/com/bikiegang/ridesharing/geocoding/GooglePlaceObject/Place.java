@@ -98,4 +98,12 @@ public class Place {
     public void setVicinity(String vicinity) {
         this.vicinity = vicinity;
     }
+
+    public Photo[] getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(Photo[] photos) {
+        this.photos = photos;
+    }
 }

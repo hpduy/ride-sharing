@@ -62,7 +62,7 @@ public class FeedController {
         List<Long> feedId = new ArrayList<>(database.getFeedHashMap().keySet());
         if (!database.getFeedHashMap().isEmpty()) {
             for (toIdx = database.getFeedHashMap().size(); toIdx >= 0; toIdx--) {
-                if (feedList.get(toIdx).getCreatedTime() < DateTimeUtil.now()) {
+                if (feedList.get(toIdx - 1).getCreatedTime() < DateTimeUtil.now()) {
                     break;
                 }
             }

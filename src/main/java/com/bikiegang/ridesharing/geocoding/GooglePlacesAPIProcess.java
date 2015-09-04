@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class GooglePlacesAPIProcess extends GoogleQuery {
     private String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%s&radius=%d&types=%s&key=%s&language=%s%s";
-    private final LatLng HCM_Center = new LatLng(10.823099, 106.629664);
+    private final LatLng HCM_Center = new LatLng(10.778686, 106.701383);
     private final int default_radius = 5000;
     private final LatLng[] HCM_LatLngs
             = {new LatLng(10.776513, 106.699677), new LatLng(10.787233, 106.748456), new LatLng(10.770539, 106.772832),
@@ -145,7 +145,7 @@ public class GooglePlacesAPIProcess extends GoogleQuery {
         String url;
         SearchPlaceResult result;
         List<SearchPlaceResult> results = new ArrayList<>();
-        url = buildQueryURL(key[0], HCM_Center, default_radius, type, LANGUAGE_VN, "", false);
+        url = buildQueryURL(key[2], HCM_Center, default_radius, type, LANGUAGE_VN, "", false);
         result = (SearchPlaceResult) Parser.JSonToObject(queryGoogle(url).toString(), SearchPlaceResult.class);
         if (result.getStatus().equals(GoogleQuery.OK)) {
             results.add(result);
@@ -154,10 +154,10 @@ public class GooglePlacesAPIProcess extends GoogleQuery {
             while (nextPageToken != null && !nextPageToken.equals("")) {
                 String nextUrl;
                 SearchPlaceResult nextResult;
-                nextUrl = buildQueryURL(key[0], HCM_Center, default_radius, type, LANGUAGE_VN, nextPageToken, true);
+                nextUrl = buildQueryURL(key[2], HCM_Center, default_radius, type, LANGUAGE_VN, nextPageToken, true);
                 nextResult = (SearchPlaceResult) Parser.JSonToObject(queryGoogle(nextUrl).toString(), SearchPlaceResult.class);
                 if (nextResult.getStatus().equals(GoogleQuery.OVER_QUERY_LIMIT)) {
-                    url = buildQueryURL(key[0], HCM_Center, default_radius, type, LANGUAGE_VN, nextPageToken, true);
+                    url = buildQueryURL(key[2], HCM_Center, default_radius, type, LANGUAGE_VN, nextPageToken, true);
                     nextResult = (SearchPlaceResult) Parser.JSonToObject(queryGoogle(url).toString(), SearchPlaceResult.class);
 
                     if (nextResult.getStatus().equals(GoogleQuery.OVER_QUERY_LIMIT)) {

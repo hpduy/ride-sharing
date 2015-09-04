@@ -13,6 +13,8 @@ import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by hpduy17 on 6/29/15.
@@ -84,7 +86,9 @@ public class PopularLocationController {
     }
 
     public String getPopularLocationList() throws JsonProcessingException {
-        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new GetPopularLocationResponse(new ArrayList<>(database.getPopularLocationHashMap().values())));
+        List<PopularLocation> locations = new ArrayList<>(database.getPopularLocationHashMap().values());
+        Collections.shuffle(locations);
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new GetPopularLocationResponse(locations));
     }
 
 
