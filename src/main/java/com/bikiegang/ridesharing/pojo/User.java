@@ -286,6 +286,7 @@ public class User implements PojoBase {
     public void setPhoneViewer(HashSet<String> phoneViewer) {
         this.phoneViewer = phoneViewer;
     }
+    
 }
 /**
  * Change log
