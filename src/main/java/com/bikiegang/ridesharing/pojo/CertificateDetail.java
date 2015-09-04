@@ -26,12 +26,14 @@ public class CertificateDetail {
     public static final int STUDENT_CARD = 4;
     @JsonIgnore
     public static final int DRIVER_LICENSE = 5;
+    @JsonIgnore
+    public static final int OTHER = 6;
 
     public CertificateDetail() {
 
     }
 
-    public CertificateDetail( String idNumber, String address, String regoDay, String expiryDay, String[] image, int type) {
+    public CertificateDetail(String idNumber, String address, String regoDay, String expiryDay, String[] image, int type) {
         this.idNumber = idNumber;
         this.address = address;
         this.regoDay = regoDay;

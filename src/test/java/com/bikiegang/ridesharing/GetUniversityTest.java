@@ -2,6 +2,7 @@ package com.bikiegang.ridesharing;
 
 import com.bikiegang.ridesharing.geocoding.GooglePlaceObject.Place;
 import com.bikiegang.ridesharing.geocoding.GooglePlaceObject.SearchPlaceResult;
+import com.bikiegang.ridesharing.geocoding.GooglePlacePhotoAPIProcess;
 import com.bikiegang.ridesharing.geocoding.GooglePlacesAPIProcess;
 import org.junit.Test;
 
@@ -36,5 +37,9 @@ public class GetUniversityTest {
         }
         writer.close();
     }
-
+    @Test
+    public void getPhoto() throws IOException {
+        String ref = "CmRdAAAA7Nhh65bPFmWThO4EDbIU_b0j5E39kBG6hlGpMG3SQnSXLMLnmyCNJufq2hGlcJ8gpoZVWEZ-EDZS1o1k6toERGriAtE2htGySDaJFU1mtUnxjDPhBPjK6VnwopDlsawfEhB_KVLdBn8tSUzgwiBTyAJAGhSswCsThTJhEkvQ97ldKhyQeGEn4A";
+        System.out.print(new GooglePlacePhotoAPIProcess().getPhoto(ref));
+    }
 }

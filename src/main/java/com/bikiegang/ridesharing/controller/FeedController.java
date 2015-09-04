@@ -89,25 +89,27 @@ public class FeedController {
             TripInFeed tif = null;
             ExPartnerInfoResponse partnerInfoResponse = null;
             UserShortDetailResponse userShortDetailResponse = null;
-            switch (feed.getType()) {
-                case Feed.PLANNED_TRIP:
-                    tif = new PlannedTripShortDetailResponse(database.getPlannedTripHashMap().get(feed.getRefId()), request.getUserId());
-                    break;
-                case Feed.SOCIAL_TRIP:
-                    tif = new SocialTripResponse(database.getSocialTripHashMap().get(feed.getRefId()));
-                    break;
-            }
-            if (tif != null) {
-                User user = database.getUserHashMap().get(tif.getCreatorId());
-                if (user != null) {
-                    userShortDetailResponse = new UserShortDetailResponse(user);
-                    partnerInfoResponse = new UserController().getExPartners(user.getId());
-                    response.setPartnerInfo(partnerInfoResponse);
-                    response.setUserDetail(userShortDetailResponse);
-                    response.setTripDetail(tif);
-                    responses.add(response);
+            try {
+                switch (feed.getType()) {
+                    case Feed.PLANNED_TRIP:
+                        tif = new PlannedTripShortDetailResponse(database.getPlannedTripHashMap().get(feed.getRefId()), request.getUserId());
+                        break;
+                    case Feed.SOCIAL_TRIP:
+                        tif = new SocialTripResponse(database.getSocialTripHashMap().get(feed.getRefId()));
+                        break;
                 }
-            }
+                if (tif != null) {
+                    User user = database.getUserHashMap().get(tif.getCreatorId());
+                    if (user != null) {
+                        userShortDetailResponse = new UserShortDetailResponse(user);
+                        partnerInfoResponse = new UserController().getExPartners(user.getId());
+                        response.setPartnerInfo(partnerInfoResponse);
+                        response.setUserDetail(userShortDetailResponse);
+                        response.setTripDetail(tif);
+                        responses.add(response);
+                    }
+                }
+            }catch (Exception ignored){}
         }
         GetFeedsResponse feedsResponse = new GetFeedsResponse();
         feedsResponse.setFeeds(responses.toArray(new FeedResponse[responses.size()]));

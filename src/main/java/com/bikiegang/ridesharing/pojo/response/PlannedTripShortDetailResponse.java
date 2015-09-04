@@ -46,6 +46,7 @@ public class PlannedTripShortDetailResponse extends TripInFeed {
         this.ownerDistance = route.getSumDistance();
         this.goTime = that.getDepartureTime();
         this.duration = route.getEstimatedTime();
+        this.setCreatorId(that.getCreatorId());
         if (that.getRequestId() <= 0 || null == database.getRequestMakeTripHashMap().get(that.getRequestId())){
             this.status = NON_REQUEST;
         }else {

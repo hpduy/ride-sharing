@@ -9,8 +9,10 @@ package com.bikiegang.ridesharing.api;
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.response.UploadImageResponse;
-import com.bikiegang.ridesharing.utilities.*;
-import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
+import com.bikiegang.ridesharing.utilities.ApiDocumentGenerator;
+import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
+import com.bikiegang.ridesharing.utilities.Path;
+import com.bikiegang.ridesharing.utilities.UploadImageUtil;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -52,7 +54,7 @@ public class UploadImageAPI extends HttpServlet {
                 if (request.getPart("image" + i) != null) {
                     Part filePart = request.getPart("image" + i);
                     String fileName = getFileName(filePart);
-                    imagePath[i-1] = new UploadImageUtil().upload(fileName + "_" + new DateTimeUtil().now(), Path.getImagePath(), filePart);
+                    imagePath[i-1] = new UploadImageUtil().upload(fileName + "_" + System.currentTimeMillis(), Path.getImagePath(), filePart);
                 }
             }
             UploadImageResponse uploadImageResponse = new UploadImageResponse(imagePath);

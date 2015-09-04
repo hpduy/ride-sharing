@@ -78,6 +78,7 @@ public class UserDA implements IDA {
                 stmt.setString(18, value.getSelfIntro());
                 stmt.setInt(19, value.getPrivacy());
                 stmt.setString(20, value.getJob());
+                stmt.setString(21, JSONUtil.Serialize(value.getPhoneViewer()));
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {
@@ -121,7 +122,8 @@ public class UserDA implements IDA {
                 stmt.setString(18, value.getSelfIntro());
                 stmt.setInt(19, value.getPrivacy());
                 stmt.setString(20, value.getJob());
-                stmt.setString(21, value.getId());
+                stmt.setString(21, JSONUtil.Serialize(value.getPhoneViewer()));
+                stmt.setString(22, value.getId());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {

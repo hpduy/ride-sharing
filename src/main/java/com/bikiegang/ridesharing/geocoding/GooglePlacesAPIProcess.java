@@ -63,26 +63,26 @@ public class GooglePlacesAPIProcess extends GoogleQuery {
 
     }; // meter
     //type
-    private final String AIRPORT_TYPE = "airport";
-    private final String BOOK_STORE_TYPE = "book_store";
-    private final String CAFE_TYPE = "cafe";
-    private final String CEMETERY_TYPE = "cemetery";
-    private final String CITY_HALL_TYPE = "city_hall";
-    private final String CONVENIENCE_STORE_TYPE = "convenience_store";
-    private final String SUPERMARKET_TYPE = "grocery_or_supermarket";
-    private final String HOSPITAL_TYPE = "hospital";
-    private final String LIBRARY_TYPE = "library";
-    private final String CINEBOX_TYPE = "movie_theater";
-    private final String MUSEUM_TYPE = "museum";
-    private final String PARK_TYPE = "park";
-    private final String POST_OFFICE_TYPE = "post_office";
-    private final String SHOPPING_MALL_TYPE = "shopping_mall";
-    private final String STADIUM_TYPE = "stadium";
-    private final String TRAIN_STATION_TYPE = "train_station";
-    private final String ZOO_TYPE = "zoo";
-    private final String UNIVERSITY_TYPE = "university";
-    private final String LANGUAGE_VN = "vi";
-    private final String PAGE_TOKEN_PARAM = "&pagetoken=%s";
+    public static final String AIRPORT_TYPE = "airport";
+    public static final String BOOK_STORE_TYPE = "book_store";
+    public static final String CAFE_TYPE = "cafe";
+    //    private final String CEMETERY_TYPE = "cemetery";
+    public static final String CITY_HALL_TYPE = "city_hall";
+    public static final String CONVENIENCE_STORE_TYPE = "convenience_store";
+    public static final String SUPERMARKET_TYPE = "grocery_or_supermarket";
+    public static final String HOSPITAL_TYPE = "hospital";
+    public static final String LIBRARY_TYPE = "library";
+    public static final String CINEBOX_TYPE = "movie_theater";
+    //    private final String MUSEUM_TYPE = "museum";
+    public static final String PARK_TYPE = "park";
+    public static final String POST_OFFICE_TYPE = "post_office";
+    public static final String SHOPPING_MALL_TYPE = "shopping_mall";
+    public static final String STADIUM_TYPE = "stadium";
+    public static final String TRAIN_STATION_TYPE = "train_station";
+    public static final String ZOO_TYPE = "zoo";
+    public static final String UNIVERSITY_TYPE = "university";
+    public static final String LANGUAGE_VN = "vi";
+    public static final String PAGE_TOKEN_PARAM = "&pagetoken=%s";
 
 
     public List<SearchPlaceResult> getUniversity() throws IOException {

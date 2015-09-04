@@ -13,6 +13,14 @@ public class Broadcast implements PojoBase {
     private String regId;
     private int os;
     private int type;
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
     //final field
     @JsonIgnore
     public static final int ANDROID = 1;

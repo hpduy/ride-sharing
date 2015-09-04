@@ -11,6 +11,7 @@ public class Place {
     private String icon;
     private String id;
     private String name;
+    private Photo[] photos;
     private String place_id;
     private double rating;
     private String reference;
