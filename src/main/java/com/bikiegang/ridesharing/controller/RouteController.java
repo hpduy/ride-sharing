@@ -25,7 +25,7 @@ public class RouteController {
         try{
             Route route = new Route();
             route.setId(IdGenerator.getRouteId());
-            route.setRawRoutingResult(new JSONObject(googleRoutingResult));
+            route.setRawRoutingResult(googleRoutingResult);
             route.setCreatedTime(DateTimeUtil.now());
             route.setCreatorId(creatorId);
             route.setTitle(title);
