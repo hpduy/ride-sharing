@@ -7,9 +7,10 @@
 package com.bikiegang.ridesharing.api.angel;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
-import com.bikiegang.ridesharing.controller.AngelController;
+import com.bikiegang.ridesharing.controller.AngelGroupController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.request.GetAngelActiveCodesRequest;
+import com.bikiegang.ridesharing.pojo.request.GetUsersAroundFromMeRequest;
+import com.bikiegang.ridesharing.pojo.response.angel.GetAlphabetAngelGroupsResponse;
 import com.bikiegang.ridesharing.utilities.ApiDocumentGenerator;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import org.apache.log4j.Logger;
@@ -23,10 +24,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class GetAngelActiveCodesAPI extends HttpServlet {
+public class GetAngelGroupsAroundAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
-    public Class requestClass = GetAngelActiveCodesRequest.class;
-    public Class responseClass = null;
+    public Class requestClass = GetUsersAroundFromMeRequest.class;
+    public Class responseClass = GetAlphabetAngelGroupsResponse.class;
     public boolean responseIsArray = false;
 
     /**
@@ -50,10 +51,9 @@ public class GetAngelActiveCodesAPI extends HttpServlet {
             while ((line = reader.readLine()) != null) {
                 jsonData.append(line);
             }
-            logger.info(jsonData.toString());
-            GetAngelActiveCodesRequest getAngelActiveCodesRequest = (GetAngelActiveCodesRequest) Parser.JSonToObject(jsonData.toString(), GetAngelActiveCodesRequest.class);
-            AngelController controller = new AngelController();
-            String result = controller.getAngelActiveCode(getAngelActiveCodesRequest);
+            GetUsersAroundFromMeRequest getUsersAroundFromMeRequest = (GetUsersAroundFromMeRequest) Parser.JSonToObject(jsonData.toString(), GetUsersAroundFromMeRequest.class);
+            AngelGroupController controller = new AngelGroupController();
+            String result = controller.getListAngelGroupByDistance(getUsersAroundFromMeRequest);
             logger.info(result);
             out.print(result);
         } catch (Exception ex) {

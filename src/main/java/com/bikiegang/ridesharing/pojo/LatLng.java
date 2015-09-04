@@ -37,7 +37,7 @@ public class LatLng {
     public LatLng(String coordinate) {
         String latlngString = "";
         Matcher matcher = latlngPattern.matcher(coordinate);
-        if (!matcher.find()) {
+        if (matcher.find()) {
             latlngString = matcher.group(1);
             String[] temp = latlngString.split(",");
             this.lat = Double.parseDouble(temp[0]);

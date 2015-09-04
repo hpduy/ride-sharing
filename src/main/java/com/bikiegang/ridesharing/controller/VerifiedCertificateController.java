@@ -30,7 +30,7 @@ public class VerifiedCertificateController {
         }
         VerifiedCertificate certificate = new VerifiedCertificate(request.getCertificate(), IdGenerator.getVerifiedCertificatedId(),
                 "", DateTimeUtil.now(), request.getUserId(), "", VerifiedCertificate.WAITING);
-        if (!dao.insert(certificate)) {
+        if (dao.insert(certificate)) {
             return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
         }
         return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);

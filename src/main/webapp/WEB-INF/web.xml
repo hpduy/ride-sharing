@@ -447,6 +447,14 @@
         <servlet-name>GetAlphabetAngelGroupsAPI</servlet-name>
         <url-pattern>/GetAlphabetAngelGroupsAPI</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>GetAngelGroupsAroundAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.angel.GetAngelGroupsAroundAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetAngelGroupsAroundAPI</servlet-name>
+        <url-pattern>/GetAngelGroupsAroundAPI</url-pattern>
+    </servlet-mapping>
       <servlet>
         <servlet-name>AutocompleteGroupSearchAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.angel.AutocompleteGroupSearchAPI</servlet-class>

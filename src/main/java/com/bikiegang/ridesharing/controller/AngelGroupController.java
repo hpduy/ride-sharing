@@ -7,6 +7,7 @@ import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.AngelGroup;
 import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.request.GetInformationUsingUserIdRequest;
+import com.bikiegang.ridesharing.pojo.request.GetUsersAroundFromMeRequest;
 import com.bikiegang.ridesharing.pojo.request.MergeGroupRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.AddGroupRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.AutocompleteSearchGroupRequest;
@@ -38,8 +39,8 @@ public class AngelGroupController {
             University.loadData();
             for (University u : University.universities) {
                 List<String> tagNames = new ArrayList<>();
-                for(int i =0 ; i < 6; i ++) {
-                    int begin = RandomUtils.nextInt() % u.getName().length()/2;
+                for (int i = 0; i < 6; i++) {
+                    int begin = RandomUtils.nextInt() % u.getName().length() / 2;
                     int end = begin + 5;
                     if (end > u.getName().length()) {
                         end = u.getName().length();
@@ -119,6 +120,24 @@ public class AngelGroupController {
         List<AngelGroupDetailResponse> responses = new ArrayList<>();
         for (AngelGroup group : groups) {
             responses.add(new AngelGroupDetailResponse(group, request.getUserId()));
+        }
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new GetAlphabetAngelGroupsResponse(responses));
+    }
+
+    public String getListAngelGroupByDistance(GetUsersAroundFromMeRequest request) throws JsonProcessingException {
+        if (request.getCenterLat() == 0 && request.getCenterLng() == 0) {
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'lat' and 'lng'");
+        }
+        if (request.getRadius() < 0) {
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "radius");
+        }
+        List<AngelGroup> groups = new ArrayList<>(database.getAngelGroupHashMap().values());
+        final LatLng center = new LatLng(request.getCenterLat(), request.getCenterLng());
+        //sort by alphabet
+        List<AngelGroupDetailResponse> responses = new ArrayList<>();
+        for (AngelGroup group : groups) {
+            if (group.getLocation().distanceInMetres(center) <= request.getRadius())
+                responses.add(new AngelGroupDetailResponse(group, request.getUserId()));
         }
         return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new GetAlphabetAngelGroupsResponse(responses));
     }

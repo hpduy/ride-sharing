@@ -13,7 +13,8 @@ import java.util.List;
  */
 public class GooglePlacesAPIProcess extends GoogleQuery {
     private String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%s&radius=%d&types=%s&key=%s&language=%s%s";
-
+    private final LatLng HCM_Center = new LatLng(10.823099, 106.629664);
+    private final int default_radius = 5000;
     private final LatLng[] HCM_LatLngs
             = {new LatLng(10.776513, 106.699677), new LatLng(10.787233, 106.748456), new LatLng(10.770539, 106.772832),
             new LatLng(10.783754, 106.682100), new LatLng(10.759254, 106.704008), new LatLng(10.753173, 106.661953),
@@ -61,21 +62,40 @@ public class GooglePlacesAPIProcess extends GoogleQuery {
             5000, 5000, 5000
 
     }; // meter
+    //type
+    private final String AIRPORT_TYPE = "airport";
+    private final String BOOK_STORE_TYPE = "book_store";
+    private final String CAFE_TYPE = "cafe";
+    private final String CEMETERY_TYPE = "cemetery";
+    private final String CITY_HALL_TYPE = "city_hall";
+    private final String CONVENIENCE_STORE_TYPE = "convenience_store";
+    private final String SUPERMARKET_TYPE = "grocery_or_supermarket";
+    private final String HOSPITAL_TYPE = "hospital";
+    private final String LIBRARY_TYPE = "library";
+    private final String CINEBOX_TYPE = "movie_theater";
+    private final String MUSEUM_TYPE = "museum";
+    private final String PARK_TYPE = "park";
+    private final String POST_OFFICE_TYPE = "post_office";
+    private final String SHOPPING_MALL_TYPE = "shopping_mall";
+    private final String STADIUM_TYPE = "stadium";
+    private final String TRAIN_STATION_TYPE = "train_station";
+    private final String ZOO_TYPE = "zoo";
     private final String UNIVERSITY_TYPE = "university";
     private final String LANGUAGE_VN = "vi";
     private final String PAGE_TOKEN_PARAM = "&pagetoken=%s";
+
 
     public List<SearchPlaceResult> getUniversity() throws IOException {
         List<SearchPlaceResult> results = new ArrayList<>();
         // first query
         int keyIdx = 0;
-        for(int i = 0 ; i < HCM_LatLngs.length ; i ++) {
+        for (int i = 0; i < HCM_LatLngs.length; i++) {
             String url;
             SearchPlaceResult result;
             do {
                 url = buildQueryURL(key[keyIdx], HCM_LatLngs[i], radius[i], UNIVERSITY_TYPE, LANGUAGE_VN, "", false);
                 result = (SearchPlaceResult) Parser.JSonToObject(queryGoogle(url).toString(), SearchPlaceResult.class);
-                if(result.getStatus().equals(GoogleQuery.OVER_QUERY_LIMIT))
+                if (result.getStatus().equals(GoogleQuery.OVER_QUERY_LIMIT))
                     keyIdx++;
             }
             while (result.getStatus().equals(GoogleQuery.OVER_QUERY_LIMIT) && keyIdx < this.key.length);
@@ -93,7 +113,7 @@ public class GooglePlacesAPIProcess extends GoogleQuery {
                         do {
                             url = buildQueryURL(key[keyIdx], HCM_LatLngs[i], radius[i], UNIVERSITY_TYPE, LANGUAGE_VN, nextPageToken, true);
                             nextResult = (SearchPlaceResult) Parser.JSonToObject(queryGoogle(url).toString(), SearchPlaceResult.class);
-                            if(nextResult.getStatus().equals(GoogleQuery.OVER_QUERY_LIMIT))
+                            if (nextResult.getStatus().equals(GoogleQuery.OVER_QUERY_LIMIT))
                                 keyIdx++;
                         }
                         while (nextResult.getStatus().equals(GoogleQuery.OVER_QUERY_LIMIT) && keyIdx < this.key.length);
@@ -118,6 +138,42 @@ public class GooglePlacesAPIProcess extends GoogleQuery {
     public String buildQueryURL(String key, LatLng location, int radius, String types, String language, String nextPageToken, boolean isGetNextPage) {
         String nextPage = isGetNextPage ? String.format(PAGE_TOKEN_PARAM, nextPageToken) : "";
         return String.format(url, location.toGoogleParameter(), radius, types, key, language, nextPage);
+    }
+
+    // POPULAR LOCATION
+    public List<SearchPlaceResult> getPopularLocation(String type) throws IOException {
+        String url;
+        SearchPlaceResult result;
+        List<SearchPlaceResult> results = new ArrayList<>();
+        url = buildQueryURL(key[0], HCM_Center, default_radius, type, LANGUAGE_VN, "", false);
+        result = (SearchPlaceResult) Parser.JSonToObject(queryGoogle(url).toString(), SearchPlaceResult.class);
+        if (result.getStatus().equals(GoogleQuery.OK)) {
+            results.add(result);
+            // next query
+            String nextPageToken = result.getNext_page_token();
+            while (nextPageToken != null && !nextPageToken.equals("")) {
+                String nextUrl;
+                SearchPlaceResult nextResult;
+                nextUrl = buildQueryURL(key[0], HCM_Center, default_radius, type, LANGUAGE_VN, nextPageToken, true);
+                nextResult = (SearchPlaceResult) Parser.JSonToObject(queryGoogle(nextUrl).toString(), SearchPlaceResult.class);
+                if (nextResult.getStatus().equals(GoogleQuery.OVER_QUERY_LIMIT)) {
+                    url = buildQueryURL(key[0], HCM_Center, default_radius, type, LANGUAGE_VN, nextPageToken, true);
+                    nextResult = (SearchPlaceResult) Parser.JSonToObject(queryGoogle(url).toString(), SearchPlaceResult.class);
+
+                    if (nextResult.getStatus().equals(GoogleQuery.OVER_QUERY_LIMIT)) {
+                        break;
+                    }
+                }
+                if (nextResult.getStatus().equals(GoogleQuery.OK)) {
+                    results.add(nextResult);
+                    nextPageToken = nextResult.getNext_page_token();
+                }
+
+            }
+        } else {
+            System.out.println(result.getStatus());
+        }
+        return results;
     }
 
 

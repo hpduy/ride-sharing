@@ -17,7 +17,8 @@ public class FakeRequestVerify {
 
     Logger logger = LogUtil.getLogger(this.getClass());
 
-    public void FakeRequestVerify(User angel, int numberOfRequest) throws JsonProcessingException, InterruptedException {
+    public void
+    FakeRequestVerify(User angel, int numberOfRequest) throws JsonProcessingException, InterruptedException {
         Database database = Database.getInstance();
         for (int i = 0; i < numberOfRequest; i++) {
             RequestVerifyRequest requestVerifyRequest = new RequestVerifyRequest();

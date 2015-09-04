@@ -9,7 +9,7 @@ package com.bikiegang.ridesharing.api.angel;
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.controller.AngelController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.User;
+import com.bikiegang.ridesharing.pojo.request.GetInformationUsingUserIdRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.AngelRegisterRequest;
 import com.bikiegang.ridesharing.utilities.ApiDocumentGenerator;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
@@ -27,7 +27,7 @@ import java.io.PrintWriter;
 public class AngelRegisterAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
     public Class requestClass = AngelRegisterRequest.class;
-    public Class responseClass = User.class;
+    public Class responseClass = GetInformationUsingUserIdRequest.class;
     public boolean responseIsArray = false;
 
     /**

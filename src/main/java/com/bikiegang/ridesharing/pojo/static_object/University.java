@@ -16,6 +16,7 @@ public class University {
     private LatLng location;
 
     public static List<University> universities = new ArrayList<>();
+
     public University() {
 
     }
@@ -299,13 +300,15 @@ public class University {
             "b5cfb0db28d7679bb8382877a9ebf322ca4ea8d8\tTrường Trung cấp nghề Củ Chi\t10.972397,106.491297\tNguyễn Đại Năng, Củ Chi\n" +
             "e9db0bd172de8a0f91892fa91717a6f48f95358a\tChi nhánh Đại học mở TP.HCM\t10.748419,106.622556\tSố 1, An Lạc A, Hồ Chí Minh\n" +
             "23dc1e5fecbb55eec99123d0b24cef952cf9fcc6\tTrường Trung cấp nghề Trần Đại Nghĩa\t10.678202,106.58501\tA16/4 Quốc lộ 1A, ấp 1, xã Bình Chánh, huyện Bình Chánh, Quốc lộ 1A, tt. Tân Túc, Hồ Chí Minh\n").split("\\n");
-    public static void loadData(){
-        for(String r : rawUniversities){
+
+    public static void loadData() {
+        for (String r : rawUniversities) {
             String[] element = r.split("\\t");
+            String[] latlngString = element[2].split(",");
             University university = new University();
             university.setId(element[0]);
             university.setName(element[1]);
-            university.setLocation(new LatLng(element[2]));
+            university.setLocation(new LatLng(Double.parseDouble(latlngString[0]), Double.parseDouble(latlngString[1])));
             university.setAddress(element[3]);
             universities.add(university);
         }

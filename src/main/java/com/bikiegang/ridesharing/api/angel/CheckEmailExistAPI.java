@@ -9,7 +9,6 @@ package com.bikiegang.ridesharing.api.angel;
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.controller.AngelController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.angel.AngelLoginRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.AngelRegisterRequest;
 import com.bikiegang.ridesharing.utilities.ApiDocumentGenerator;
@@ -28,7 +27,7 @@ import java.io.PrintWriter;
 public class CheckEmailExistAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
     public Class requestClass = AngelRegisterRequest.class;
-    public Class responseClass = User.class;
+    public Class responseClass = null;
     public boolean responseIsArray = false;
 
     /**
