@@ -60,7 +60,7 @@ public class PlannedTripController {
         fakePlannedTrip.setRole(0);
         fakePlannedTrip.setCreatorId(request.getCreatorId());
         Route fakeRoute = new Route();
-        fakeRoute.setRawRoutingResult(new JSONObject(request.getGoogleRoutingResult()));
+        fakeRoute.setRawRoutingResult(request.getGoogleRoutingResult());
         fakeRoute.setCreatedTime(DateTimeUtil.now());
         if (request.getGoTime() > DateTimeUtil.now()) {
             fakePlannedTrip.setType(PlannedTrip.SINGLE_FUTURE);

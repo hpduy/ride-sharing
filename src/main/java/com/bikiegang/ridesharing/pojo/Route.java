@@ -8,7 +8,7 @@ import org.json.JSONObject;
 public class Route implements PojoBase {
 
     private long id;
-    private JSONObject rawRoutingResult = new JSONObject();
+    private String rawRoutingResult = "";
     private double estimatedFuel;
     private long estimatedTime; // duration from first location
     private LatLng startLocation = new LatLng();
@@ -24,7 +24,7 @@ public class Route implements PojoBase {
     public Route() {
     }
 
-    public Route(long id, JSONObject rawRoutingResult, double estimatedFuel, long estimatedTime, LatLng startLocation, LatLng[] waypoints, LatLng endLocation, String overViewPolyLine, long createdTime, double sumDistance, String creatorId, String title) {
+    public Route(long id, String rawRoutingResult, double estimatedFuel, long estimatedTime, LatLng startLocation, LatLng[] waypoints, LatLng endLocation, String overViewPolyLine, long createdTime, double sumDistance, String creatorId, String title) {
         this.id = id;
         this.rawRoutingResult = rawRoutingResult;
         this.estimatedFuel = estimatedFuel;
@@ -63,10 +63,10 @@ public class Route implements PojoBase {
     }
 
     public JSONObject getRawRoutingResult() {
-        return rawRoutingResult;
+        return new JSONObject(this.rawRoutingResult);
     }
 
-    public void setRawRoutingResult(JSONObject rawRoutingResult) {
+    public void setRawRoutingResult(String rawRoutingResult) {
         this.rawRoutingResult = rawRoutingResult;
     }
 

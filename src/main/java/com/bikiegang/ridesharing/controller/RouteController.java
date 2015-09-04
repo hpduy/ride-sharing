@@ -1,9 +1,11 @@
 package com.bikiegang.ridesharing.controller;
 
+import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
 import com.bikiegang.ridesharing.dao.RouteDao;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.database.IdGenerator;
 import com.bikiegang.ridesharing.geocoding.FetchingDataFromGoogleRouting;
+import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.LinkedLocation;
 import com.bikiegang.ridesharing.pojo.Route;
@@ -23,12 +25,14 @@ public class RouteController {
         try{
             Route route = new Route();
             route.setId(IdGenerator.getRouteId());
-            route.setRawRoutingResult(new JSONObject(googleRoutingResult));
+            route.setRawRoutingResult(googleRoutingResult);
             route.setCreatedTime(DateTimeUtil.now());
             route.setCreatorId(creatorId);
             route.setTitle(title);
             route.setWaypoints(waypoint);
             route.setRole(role);
+            System.out.println(JSONUtil.Serialize(route));
+            System.out.println(Parser.ObjectToJSon(route));
             //fetch data
             if(dao.insert(route)) {
                 List<LinkedLocation> locations = new FetchingDataFromGoogleRouting().fetch(route);
