@@ -69,6 +69,7 @@ public class GCMBroadcast extends HttpServlet {
         while ((line = reader.readLine()) != null) {
             jsonData.append(line);
         }
+
         GCMTransferMessage gcmTransferMessage = (GCMTransferMessage) Parser.JSonToObject(jsonData.toString(),GCMTransferMessage.class);
         String collapseKey = "";
         //Mess send for each userId

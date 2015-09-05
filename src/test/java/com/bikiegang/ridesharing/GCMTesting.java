@@ -14,12 +14,12 @@ public class GCMTesting extends com.bikiegang.ridesharing.Test {
         BroadcastCenterUtil broadcast = new BroadcastCenterUtil();
         Broadcast br = new Broadcast();
         br.setOs(Broadcast.ANDROID);
-        br.setUserId("tester");
-        br.setRegId("euu5XrHm10c:APA91bFJdp9h2SBS40pFhOyNIhAQoKNcwQsKTQky9vmVR0RF74-p23HW4HoZ3UY-zzT489KI64bdYzhHncrSazgbhKPaziRftswtp1QcyDqv761fPbCz9Ljk6fcJXFTmNN00cACt5Pfh");
+        br.setUserId("fb_796315037151408");
+        br.setRegId("elNksjUHzh0:APA91bGvjbuAdv26NnUjI1lbCzKbgnG1Kh-S8LksbS7wLKmkmGCFMGvJUqaRYQEdMxdjLaVPiYrNy2D_KvXO_eyQPn-gVRIPnAz_brEdoNcbUsNXAK2j9_QRgy5PR8aLpTd9Njn4QL1W");
         br.setDeviceId("abc");
         br.setId(br.getDeviceId() + "#" + br.getUserId());
         new BroadcastDao().insert(br);
-        broadcast.pushNotification("Test", "tester", BroadcastCenterUtil.ANGEL_SPECIAL_APP_SENDER_ID);
+        broadcast.pushNotification("Test", "fb_796315037151408", BroadcastCenterUtil.ANGEL_SPECIAL_APP_SENDER_ID);
         Thread thread = new Thread(broadcast);
         thread.start();
         while (true){

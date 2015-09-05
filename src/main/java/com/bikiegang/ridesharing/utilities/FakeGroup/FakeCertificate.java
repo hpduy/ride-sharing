@@ -1,6 +1,9 @@
 package com.bikiegang.ridesharing.utilities.FakeGroup;
 
+import com.bikiegang.ridesharing.controller.VerifiedCertificateController;
 import com.bikiegang.ridesharing.pojo.CertificateDetail;
+import com.bikiegang.ridesharing.pojo.request.angel.CreateCertificateRequest;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 
@@ -15,7 +18,7 @@ public class FakeCertificate {
             "http://www.mt.gov.vn/Uploads/Image/Vu%20Thuy%20Hoa/Mau_giay_phep_lai_xe_moi.jpg"// driver license
     };
 
-    public CertificateDetail fakeCertificates() {
+    public void fakeCertificates(String userId) throws JsonProcessingException {
         CertificateDetail certificateDetail = new CertificateDetail();
         String[] image = new String[2];
         int idx = RandomUtils.nextInt() % 2+2;
@@ -29,6 +32,9 @@ public class FakeCertificate {
         certificateDetail.setType(idx+1);
         if(idx == 3)
             certificateDetail.setOrganization("university");
-        return certificateDetail;
+        CreateCertificateRequest request = new CreateCertificateRequest();
+        request.setUserId(userId);
+        request.setCertificate(certificateDetail);
+        new VerifiedCertificateController().createCertificate(request);
     }
 }

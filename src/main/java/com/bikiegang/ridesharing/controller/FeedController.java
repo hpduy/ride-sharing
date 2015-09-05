@@ -94,7 +94,7 @@ public class FeedController {
                 try {
                     switch (feed.getType()) {
                         case Feed.PLANNED_TRIP:
-                            tif = new PlannedTripShortDetailResponse(database.getPlannedTripHashMap().get(feed.getRefId()), request.getUserId());
+                            tif = new PlannedTripDetailResponse(database.getPlannedTripHashMap().get(feed.getRefId()), request.getUserId());
                             break;
                         case Feed.SOCIAL_TRIP:
                             tif = new SocialTripResponse(database.getSocialTripHashMap().get(feed.getRefId()));

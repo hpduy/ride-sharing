@@ -43,7 +43,7 @@ public class BroadcastCenterUtil implements Runnable {
     public void run() {
         try {
             //connect different server;
-            if (Database.databaseStatus != Database.TESTING) {
+            if (Database.databaseStatus == Database.TESTING) {
                 URL url = new URL(urlStringPath);
                 HttpURLConnection myConn = (HttpURLConnection) url.openConnection();
                 myConn.setDoOutput(true); // do output or post

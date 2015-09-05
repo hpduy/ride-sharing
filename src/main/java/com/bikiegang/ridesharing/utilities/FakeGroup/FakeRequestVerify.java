@@ -3,7 +3,6 @@ package com.bikiegang.ridesharing.utilities.FakeGroup;
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.controller.RequestVerifyController;
 import com.bikiegang.ridesharing.database.Database;
-import com.bikiegang.ridesharing.pojo.CertificateDetail;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.angel.GetRequestDetailRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.RequestVerifyRequest;
@@ -31,11 +30,10 @@ public class FakeRequestVerify {
             database.getUserHashMap().put(user.getId(), user);
             requestVerifyRequest.setUserId(user.getId());
             requestVerifyRequest.setAngelId(angel.getId());
-            CertificateDetail[] details = new CertificateDetail[2];
             for (int j = 0; j < 2; j++) {
-                details[j] = new FakeCertificate().fakeCertificates();
+                new FakeCertificate().fakeCertificates(user.getId());
             }
-            requestVerifyRequest.setCertificates(details);
+
             String result = new RequestVerifyController().sendVerificationRequest(requestVerifyRequest);
             System.out.println("Fake verify request :::: " + result);
             System.out.println("----------------------------");

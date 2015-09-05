@@ -18,6 +18,7 @@ import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -34,7 +35,8 @@ public class RequestVerifyController {
         if (null == request.getAngelId() || request.getAngelId().equals("")) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'angelId'");
         }
-        if (request.getCertificates().length == 0) {
+        HashSet<Long> cerIds = database.getUserIdRFCertificates().get(request.getUserId());
+        if (cerIds == null || cerIds.isEmpty()) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "Certificates");
         }
         User user = database.getUserHashMap().get(request.getUserId());
@@ -52,7 +54,7 @@ public class RequestVerifyController {
         requestVerify.setCreatedTime(DateTimeUtil.now());
         requestVerify.setAngelId(request.getAngelId());
         requestVerify.setUserId(request.getUserId());
-        requestVerify.setNumberOfCertificate(request.getCertificates().length);
+        requestVerify.setNumberOfCertificate(cerIds.size());
         requestVerify.setStatus(RequestVerify.WAITING);
         requestVerify.createSignature();
 
