@@ -33,7 +33,7 @@ public class BroadcastDao {
             HashSet<String> broadcastIds = database.getUserIdRFBroadcasts().get(obj.getUserId());
             if (broadcastIds == null) {
                 broadcastIds = new HashSet<>();
-                database.getUserIdRFBroadcasts().put(obj.getUserId(), broadcastIds);
+                database.getUserIdRFBroadcasts().put(obj.getUserId() + "#" + obj.getType(), broadcastIds);
             }
             broadcastIds.add(obj.getId());
 
@@ -75,7 +75,7 @@ public class BroadcastDao {
             HashSet<String> broadcastIds = database.getUserIdRFBroadcasts().get(obj.getUserId());
             if (broadcastIds == null) {
                 broadcastIds = new HashSet<>();
-                database.getUserIdRFBroadcasts().put(obj.getUserId(), broadcastIds);
+                database.getUserIdRFBroadcasts().put(obj.getUserId() + "#" + obj.getType(), broadcastIds);
             }
             broadcastIds.remove(obj.getId());
 
