@@ -9,8 +9,9 @@ import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.Broadcast;
 import com.bikiegang.ridesharing.utilities.Const;
-import java.util.HashSet;
 import org.apache.log4j.Logger;
+
+import java.util.HashSet;
 
 /**
  * Created by hpduy17 on 6/26/15.
@@ -29,11 +30,11 @@ public class BroadcastDao {
             }
             //Step 1: put in hashmap
             database.getBroadcastHashMap().put(obj.getId(), obj);
-            // userIdRFBroadcasts = new HashMap<>(); //<userId,<broadcastId>>
+            // userIdRFBroadcasts = new HashMap<>(); //<userId#type,<broadcastId>>
             HashSet<String> broadcastIds = database.getUserIdRFBroadcasts().get(obj.getUserId());
             if (broadcastIds == null) {
                 broadcastIds = new HashSet<>();
-                database.getUserIdRFBroadcasts().put(obj.getUserId(), broadcastIds);
+                database.getUserIdRFBroadcasts().put(obj.getUserId()+"#"+obj.getType(), broadcastIds);
             }
             broadcastIds.add(obj.getId());
 

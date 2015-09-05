@@ -53,7 +53,7 @@ public class BroadcastController {
         broadcast.setRegId(request.getRegId());
         broadcast.setUserId(request.getUserId());
         broadcast.setOs(request.getOs());
-        if (database.getBroadcastHashMap().containsKey(id)) {
+        if (!database.getBroadcastHashMap().containsKey(id)) {
             if (dao.insert(broadcast)) {
                 return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
             }
