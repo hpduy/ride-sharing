@@ -16,7 +16,7 @@ import com.bikiegang.ridesharing.pojo.static_object.TripPattern;
 public class NewClass {
 
     public static void main(String[] args) {
-        CreateSocialTripRequest a = new CreateSocialTripRequest("", 0, 0, "", 0, "", 0, 0);
+        EndTripRequest a = new EndTripRequest(0, new LatLng(0, 0), "");
         System.out.println(JSONUtil.Serialize(a));
     }
 }
