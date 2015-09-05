@@ -39,7 +39,7 @@ public class BroadcastDao {
 
             //Step 2: put redis
             result = cache.hset(obj.getClass().getName(), String.valueOf(obj.getId()), JSONUtil.Serialize(obj));
-            result &= cache.hset(obj.getClass().getName() + ":user", obj.getUserId(), JSONUtil.Serialize(broadcastIds));
+            result &= cache.hset(obj.getClass().getName() + ":user", obj.getUserId() + "#" + obj.getType(), JSONUtil.Serialize(broadcastIds));
             if (result) {
                 //Step 3: put job gearman
                 short actionType = Const.RideSharing.ActionType.INSERT;
@@ -82,7 +82,7 @@ public class BroadcastDao {
             //Step 2: remove redis
             result = cache.hdel(obj.getClass().getName(), obj.getId());
             result &= cache.hset(obj.getClass().getName() + ":user",
-                    obj.getUserId(), JSONUtil.Serialize(broadcastIds));
+                    obj.getUserId() + "#" + obj.getType(), JSONUtil.Serialize(broadcastIds));
 
             if (result) {
                 //Step 3: put job gearman

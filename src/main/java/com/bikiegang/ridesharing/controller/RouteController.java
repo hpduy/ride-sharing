@@ -28,8 +28,6 @@ public class RouteController {
             route.setTitle(title);
             route.setWaypoints(waypoint);
             route.setRole(role);
-//            System.out.println(JSONUtil.Serialize(route));
-//            System.out.println(Parser.ObjectToJSon(route));
             //fetch data
             if(dao.insert(route)) {
                 List<LinkedLocation> locations = new FetchingDataFromGoogleRouting().fetch(route);
