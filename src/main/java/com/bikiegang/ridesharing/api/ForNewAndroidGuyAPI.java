@@ -4,13 +4,13 @@
  * and open the template in the editor.
  */
 
-package com.bikiegang.ridesharing.api.angel;
+package com.bikiegang.ridesharing.api;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
-import com.bikiegang.ridesharing.controller.AngelController;
+import com.bikiegang.ridesharing.controller.FeedController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.request.angel.AngelRegisterRequest;
-import com.bikiegang.ridesharing.pojo.response.UserDetailResponse;
+import com.bikiegang.ridesharing.pojo.request.GetInformationUsingUserIdRequest;
+import com.bikiegang.ridesharing.pojo.response.GetFeedsResponse;
 import com.bikiegang.ridesharing.utilities.ApiDocumentGenerator;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import org.apache.log4j.Logger;
@@ -24,10 +24,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class AngelRegisterAPI extends HttpServlet {
+public class ForNewAndroidGuyAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
-    public Class requestClass = AngelRegisterRequest.class;
-    public Class responseClass = UserDetailResponse.class;
+    public Class requestClass = GetInformationUsingUserIdRequest.class;
+    public Class responseClass = GetFeedsResponse.class;
     public boolean responseIsArray = false;
 
     /**
@@ -52,15 +52,15 @@ public class AngelRegisterAPI extends HttpServlet {
                 jsonData.append(line);
             }
             logger.info(jsonData.toString());
-            AngelRegisterRequest registerRequest = (AngelRegisterRequest) Parser.JSonToObject(jsonData.toString(), AngelRegisterRequest.class);
-            AngelController controller = new AngelController();
-            String result = controller.register(registerRequest);
+            GetInformationUsingUserIdRequest getFeedsRequest = (GetInformationUsingUserIdRequest) Parser.JSonToObject(jsonData.toString(), GetInformationUsingUserIdRequest.class);
+            FeedController controller = new FeedController();
+            String result = controller.ForAndroidGuy(getFeedsRequest);
             logger.info(result);
             out.print(result);
         } catch (Exception ex) {
             ex.printStackTrace();
             logger.error(ex.getStackTrace());
-            out.print(Parser.ObjectToJSon(false, MessageMappingUtil.System_Exception,  ex.getMessage()));
+            out.print(Parser.ObjectToJSon(false, MessageMappingUtil.System_Exception, ex.getMessage()));
         }
     }
 

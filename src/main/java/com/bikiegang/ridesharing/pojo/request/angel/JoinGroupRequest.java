@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JoinGroupRequest {
     private String userId;
-    private long[] groupIds;
+    private Long[] groupIds;
 
     public String getUserId() {
         return userId;
@@ -18,11 +18,11 @@ public class JoinGroupRequest {
         this.userId = userId;
     }
 
-    public long[] getGroupIds() {
+    public Long[] getGroupIds() {
         return groupIds;
     }
 
-    public void setGroupIds(long[] groupIds) {
+    public void setGroupIds(Long[] groupIds) {
         this.groupIds = groupIds;
     }
 }

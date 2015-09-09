@@ -9,6 +9,7 @@ import com.bikiegang.ridesharing.pojo.PlannedTrip;
 import com.bikiegang.ridesharing.pojo.SocialTrip;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.GetFeedsRequest;
+import com.bikiegang.ridesharing.pojo.request.GetInformationUsingUserIdRequest;
 import com.bikiegang.ridesharing.pojo.response.*;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
@@ -118,6 +119,18 @@ public class FeedController {
         GetFeedsResponse feedsResponse = new GetFeedsResponse();
         feedsResponse.setFeeds(responses.toArray(new FeedResponse[responses.size()]));
         return Parser.FeedsToJSon(true, MessageMappingUtil.Successfully, feedsResponse);
+    }
+
+    public String ForAndroidGuy(GetInformationUsingUserIdRequest request) throws IOException {
+        if (null == request.getUserId() || request.getUserId().equals("")) {
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
+        }
+        GetFeedsResponse response = new GetFeedsResponse();
+        List<PlannedTrip> plannedTrips = new ArrayList<>(database.getPlannedTripHashMap().values());
+        if(database.getPlannedTripHashMap().size() > 20)
+            plannedTrips = plannedTrips.subList(0,21);
+        response.setFeeds(convertPlannedTripsToFeeds(plannedTrips,request.getUserId()));
+        return Parser.ObjectToJSon(true,MessageMappingUtil.Successfully,response);
     }
 
     public FeedResponse[] convertPlannedTripsToFeeds(PlannedTrip[] plannedTrips, String requesterId) throws IOException {

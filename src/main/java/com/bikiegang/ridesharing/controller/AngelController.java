@@ -90,7 +90,7 @@ public class AngelController {
         user.setStatus(User.ANGEL);
         if (dao.insert(user)) {
             JoinGroupRequest request = new JoinGroupRequest();
-            long[] ids =  registerRequest.getGroupIds();
+            Long[] ids =  registerRequest.getGroupIds();
             request.setGroupIds(ids);
             request.setUserId(user.getId());
             new AngelGroupMemberController().joinGroup(request);

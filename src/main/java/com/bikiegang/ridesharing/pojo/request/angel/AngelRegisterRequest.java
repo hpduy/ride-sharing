@@ -12,7 +12,7 @@ public class AngelRegisterRequest {
     private String phone;
     private String email;
     private String password;
-    private long[] groupIds;
+    private Long[] groupIds;
     private String activeCode;
 
     public String getEmail() {
@@ -39,11 +39,11 @@ public class AngelRegisterRequest {
         this.activeCode = activeCode;
     }
 
-    public long[] getGroupIds() {
+    public Long[] getGroupIds() {
         return groupIds;
     }
 
-    public void setGroupIds(long[] groupIds) {
+    public void setGroupIds(Long[] groupIds) {
         this.groupIds = groupIds;
     }
 

@@ -501,7 +501,14 @@
         <servlet-name>GenerateApiDoccumentServlet</servlet-name>
         <url-pattern>/GenerateApiDoccumentServlet</url-pattern>
     </servlet-mapping>
-
+    <servlet>
+        <servlet-name>ForNewAndroidGuyAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.ForNewAndroidGuyAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ForNewAndroidGuyAPI</servlet-name>
+        <url-pattern>/ForNewAndroidGuyAPI</url-pattern>
+    </servlet-mapping>
     <!--**GCM**-->
     <servlet>
         <servlet-name>GCMBroadcast</servlet-name>
