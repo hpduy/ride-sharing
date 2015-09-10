@@ -168,6 +168,14 @@
         <servlet-class>com.bikiegang.ridesharing.api.angel.UpdateAngelBroadcastAPI</servlet-class>
     </servlet>
     <servlet-mapping>
+        <servlet-name>AngelChangePasswordAPI</servlet-name>
+        <url-pattern>/AngelChangePasswordAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>AngelChangePasswordAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.angel.AngelChangePasswordAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
         <servlet-name>UpdateAngelBroadcastAPI</servlet-name>
         <url-pattern>/UpdateAngelBroadcastAPI</url-pattern>
     </servlet-mapping>
@@ -467,7 +475,7 @@
         <servlet-name>GetAngelGroupsAroundAPI</servlet-name>
         <url-pattern>/GetAngelGroupsAroundAPI</url-pattern>
     </servlet-mapping>
-      <servlet>
+    <servlet>
         <servlet-name>AutocompleteGroupSearchAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.angel.AutocompleteGroupSearchAPI</servlet-class>
     </servlet>
