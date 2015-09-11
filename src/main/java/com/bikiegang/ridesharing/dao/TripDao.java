@@ -9,6 +9,7 @@ import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.Trip;
 import com.bikiegang.ridesharing.utilities.Const;
+import com.bikiegang.ridesharing.utilities.RequestLogger;
 import java.util.HashSet;
 import org.apache.log4j.Logger;
 
@@ -27,6 +28,8 @@ public class TripDao {
             if (obj == null) {
                 return false;
             }
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.INSERT);
+
             //Step 1: put in hashmap
             database.getTripHashMap().put(obj.getId(), obj);
             //driverIdRFTrips = new HashMap<>(); // <userId,<tripId>>
@@ -83,6 +86,8 @@ public class TripDao {
             if (obj == null) {
                 return false;
             }
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.DELETE);
+
             //Step 1: put in hashmap
             database.getTripHashMap().remove(obj.getId());
             //driverIdRFTrips = new HashMap<>(); // <userId,<tripId>>
@@ -138,6 +143,8 @@ public class TripDao {
             if (obj == null) {
                 return false;
             }
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.UPDATE);
+
             //Step 1: put in hashmap
             database.getTripHashMap().put(obj.getId(), obj);
             //Step 2: put redis

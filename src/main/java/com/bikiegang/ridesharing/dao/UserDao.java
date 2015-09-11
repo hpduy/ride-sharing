@@ -9,6 +9,7 @@ import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.utilities.Const;
+import com.bikiegang.ridesharing.utilities.RequestLogger;
 import org.apache.log4j.Logger;
 
 /**
@@ -26,6 +27,8 @@ public class UserDao {
             if (obj == null) {
                 return false;
             }
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.INSERT);
+
             //Step 1: put in hashmap
             database.getUserHashMap().put(obj.getId(), obj);
             //facebookRFUserId = new HashMap<>();//<fbId, userId>
@@ -78,6 +81,8 @@ public class UserDao {
             if (obj == null) {
                 return false;
             }
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.DELETE);
+
             //Step 1: put in hashmap
             database.getUserHashMap().remove(obj.getId());
             //facebookRFUserId = new HashMap<>();//<fbId, userId>
@@ -130,6 +135,8 @@ public class UserDao {
             if (obj == null) {
                 return false;
             }
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.UPDATE);
+
             //Step 1: put in hashmap
             database.getUserHashMap().put(obj.getId(), obj);
             //facebookRFUserId = new HashMap<>();//<fbId, userId>

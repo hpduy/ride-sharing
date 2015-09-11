@@ -9,6 +9,7 @@ import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.SocialTrip;
 import com.bikiegang.ridesharing.utilities.Const;
+import com.bikiegang.ridesharing.utilities.RequestLogger;
 import java.util.HashSet;
 import org.apache.log4j.Logger;
 
@@ -27,6 +28,7 @@ public class SocialTripDao {
             if (obj == null) {
                 return false;
             }
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.INSERT);
             //put hashmap
             database.getSocialTripHashMap().put(obj.getId(), obj);
 //            /userIdRFSocialTrips = new HashMap<>(); // <userId,<socialTripId>>
@@ -66,6 +68,11 @@ public class SocialTripDao {
     public boolean delete(SocialTrip obj) {
         boolean result = false;
         try {
+            if (obj == null) {
+                return false;
+            }
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.DELETE);
+
             //remove in hashmap
             database.getSocialTripHashMap().remove(obj.getId());
             //            /userIdRFSocialTrips = new HashMap<>(); // <userId,<socialTripId>>
@@ -105,6 +112,11 @@ public class SocialTripDao {
     public boolean update(SocialTrip obj) {
         boolean result = false;
         try {
+            if (obj == null) {
+                return false;
+            }
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.UPDATE);
+
             //Update hashmap
             database.getSocialTripHashMap().put(obj.getId(), obj);
             //Step 2: Update redis

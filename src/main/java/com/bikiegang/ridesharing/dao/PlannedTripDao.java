@@ -9,6 +9,7 @@ import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.PlannedTrip;
 import com.bikiegang.ridesharing.utilities.Const;
+import com.bikiegang.ridesharing.utilities.RequestLogger;
 import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import java.util.HashMap;
 import org.apache.log4j.Logger;
@@ -30,6 +31,8 @@ public class PlannedTripDao {
             if (obj == null) {
                 return false;
             }
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.INSERT);
+
             //Step 1: put in hashmap
             database.getPlannedTripHashMap().put(obj.getId(), obj);
             //roleRFPlannedTrips = new HashMap<>(); // <role,<plannedTripId>>
@@ -107,6 +110,8 @@ public class PlannedTripDao {
             if (obj == null) {
                 return false;
             }
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.DELETE);
+
             //Step 1: put in hashmap
             database.getPlannedTripHashMap().remove(obj.getId());
 
@@ -184,6 +189,8 @@ public class PlannedTripDao {
             if (obj == null) {
                 return false;
             }
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.UPDATE);
+
             //update geocell
             PlannedTrip tmp = database.getPlannedTripHashMap().get(obj.getId());
 //            if (tmp != null) {

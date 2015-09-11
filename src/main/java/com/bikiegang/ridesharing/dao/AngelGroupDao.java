@@ -9,6 +9,7 @@ import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.AngelGroup;
 import com.bikiegang.ridesharing.utilities.Const;
+import com.bikiegang.ridesharing.utilities.RequestLogger;
 import java.util.HashSet;
 import org.apache.log4j.Logger;
 
@@ -27,6 +28,8 @@ public class AngelGroupDao {
             if (obj == null) {
                 return false;
             }
+
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.INSERT);
             //put hashmap
             database.getAngelGroupHashMap().put(obj.getId(), obj);
             //groupIdRFAngelGroups = new HashMap<>(); // <groupId,<AngelGroupId>>
@@ -67,6 +70,10 @@ public class AngelGroupDao {
     public boolean delete(AngelGroup obj) {
         boolean result = false;
         try {
+            if (obj == null) {
+                return false;
+            }
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.DELETE);
             //remove in hashmap
             database.getAngelGroupHashMap().remove(obj.getId());
             //groupIdRFAngelGroups = new HashMap<>(); // <groupId,<AngelGroupId>>
@@ -107,6 +114,10 @@ public class AngelGroupDao {
     public boolean update(AngelGroup obj) {
         boolean result = false;
         try {
+            if (obj == null) {
+                return false;
+            }
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.UPDATE);
             //Update hashmap
             database.getAngelGroupHashMap().put(obj.getId(), obj);
             //Step 2: Update redis

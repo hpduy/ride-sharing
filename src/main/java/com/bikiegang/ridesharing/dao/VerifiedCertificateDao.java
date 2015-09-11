@@ -7,9 +7,9 @@ import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
 import com.bikiegang.ridesharing.cache.RideSharingCA;
 import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.database.Database;
-import com.bikiegang.ridesharing.pojo.RequestVerify;
 import com.bikiegang.ridesharing.pojo.VerifiedCertificate;
 import com.bikiegang.ridesharing.utilities.Const;
+import com.bikiegang.ridesharing.utilities.RequestLogger;
 import java.util.HashSet;
 import org.apache.log4j.Logger;
 
@@ -28,6 +28,8 @@ public class VerifiedCertificateDao {
             if (obj == null) {
                 return false;
             }
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.INSERT);
+
             //Step 1: put in hashmap
             database.getVerifiedCertificateHashMap().put(obj.getId(), obj);
             //userIdRFCertificates = new HashMap<>(); //<userId,<verifiedCertificateId>>
@@ -74,6 +76,8 @@ public class VerifiedCertificateDao {
             if (obj == null) {
                 return false;
             }
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.DELETE);
+
             //Step 1: put in hashmap
             database.getVerifiedCertificateHashMap().remove(obj.getId());
             //userIdRFCertificates = new HashMap<>(); //<userId,<verifiedCertificateId>>
@@ -118,6 +122,7 @@ public class VerifiedCertificateDao {
             if (obj == null) {
                 return false;
             }
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.UPDATE);
             //Step 1: put in hashmap
             database.getVerifiedCertificateHashMap().put(obj.getId(), obj);
             //Step 2: put redis

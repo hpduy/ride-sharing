@@ -12,7 +12,7 @@ public class RequestVerify implements PojoBase {
     private String userId = "";
     private String angelId = "";
     private int numberOfCertificate;
-    private String signature = RandomStringUtils.random(NUM_CHAR_SIGNATURE);
+//    private String signature = RandomStringUtils.random(NUM_CHAR_SIGNATURE);
     private int status;
     private long createdTime;
 
@@ -35,7 +35,7 @@ public class RequestVerify implements PojoBase {
         this.userId = userId;
         this.angelId = angelId;
         this.numberOfCertificate = numberOfCertificate;
-        this.signature = signature;
+//        this.signature = signature;
         this.status = status;
     }
 
@@ -44,13 +44,13 @@ public class RequestVerify implements PojoBase {
         this.userId = that.userId;
         this.angelId = that.angelId;
         this.numberOfCertificate = that.numberOfCertificate;
-        this.signature = that.signature;
+//        this.signature = that.signature;
         this.status = that.status;
     }
-
-    public void createSignature(){
-        this.signature = RandomStringUtils.random(NUM_CHAR_SIGNATURE);
-    }
+//
+//    public void createSignature(){
+//        this.signature = RandomStringUtils.random(NUM_CHAR_SIGNATURE);
+//    }
 
     public long getId() {
         return id;
@@ -84,13 +84,13 @@ public class RequestVerify implements PojoBase {
         this.numberOfCertificate = numberOfCertificate;
     }
 
-    public String getSignature() {
-        return signature;
-    }
-
-    public void setSignature(String signature) {
-        this.signature = signature;
-    }
+//    public String getSignature() {
+//        return signature;
+//    }
+//
+//    public void setSignature(String signature) {
+//        this.signature = signature;
+//    }
 
     public int getStatus() {
         return status;

@@ -9,6 +9,7 @@ import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.Route;
 import com.bikiegang.ridesharing.utilities.Const;
+import com.bikiegang.ridesharing.utilities.RequestLogger;
 import java.util.HashSet;
 import org.apache.log4j.Logger;
 
@@ -27,6 +28,8 @@ public class RouteDao {
             if (obj == null) {
                 return false;
             }
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.INSERT);
+
             //put hashmap
             database.getRouteHashMap().put(obj.getId(), obj);
 
@@ -57,6 +60,10 @@ public class RouteDao {
     public boolean delete(Route obj) {
         boolean result = false;
         try {
+            if (obj == null) {
+                return false;
+            }
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.DELETE);
             //remove in hashmap
             database.getRouteHashMap().remove(obj.getId());
             //Step 2: remove redis
@@ -88,6 +95,11 @@ public class RouteDao {
     public boolean update(Route obj) {
         boolean result = false;
         try {
+            if (obj == null) {
+                return false;
+            }
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.UPDATE);
+
             //Update hashmap
             database.getRouteHashMap().put(obj.getId(), obj);
             //Step 2: Update redis
