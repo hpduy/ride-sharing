@@ -33,7 +33,7 @@ public class UserShortDetailResponse {
             this.birthDay = user.getBirthDay();
             this.verifyStatus = user.getStatus();
             this.privacy = user.getPrivacy();
-            this.email = user.getEmagil();
+            this.email = user.getEmail();
             this.facebookId = user.getFacebookId();
             this.twitterId = user.getTwitterId();
             this.googleId = user.getGoogleId();
