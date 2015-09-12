@@ -9,6 +9,7 @@ import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.Rating;
 import com.bikiegang.ridesharing.utilities.Const;
+import com.bikiegang.ridesharing.utilities.RequestLogger;
 import org.apache.log4j.Logger;
 
 /**
@@ -26,6 +27,8 @@ public class RatingDao {
             if (obj == null) {
                 return false;
             }
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.INSERT);
+
             //put hashmap
             database.getRatingHashMap().put(obj.getId(), obj);
             //Step 2: put redis
@@ -55,6 +58,11 @@ public class RatingDao {
     public boolean delete(Rating obj) {
         boolean result = false;
         try {
+            if (obj == null) {
+                return false;
+            }
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.DELETE);
+
             //remove in hashmap
             database.getRatingHashMap().remove(obj.getId());
             //Step 2: remove redis
@@ -86,6 +94,11 @@ public class RatingDao {
     public boolean update(Rating obj) {
         boolean result = false;
         try {
+            if (obj == null) {
+                return false;
+            }
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.UPDATE);
+
             //Update hashmap
             database.getRatingHashMap().put(obj.getId(), obj);
             //Step 2: Update redis

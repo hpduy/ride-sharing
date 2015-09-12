@@ -9,6 +9,7 @@ import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.Broadcast;
 import com.bikiegang.ridesharing.utilities.Const;
+import com.bikiegang.ridesharing.utilities.RequestLogger;
 import org.apache.log4j.Logger;
 
 import java.util.HashSet;
@@ -28,6 +29,7 @@ public class BroadcastDao {
             if (obj == null) {
                 return false;
             }
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.INSERT);
             //Step 1: put in hashmap
             database.getBroadcastHashMap().put(obj.getId(), obj);
             // userIdRFBroadcasts = new HashMap<>(); //<userId#type,<broadcastId>>
@@ -70,6 +72,7 @@ public class BroadcastDao {
             if (obj == null) {
                 return false;
             }
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.DELETE);
             //Step 1: remove in hashmap
             database.getBroadcastHashMap().remove(obj.getId());
             // userIdRFBroadcasts = new HashMap<>(); //<userId,<broadcastId>>
@@ -114,6 +117,7 @@ public class BroadcastDao {
             if (obj == null) {
                 return false;
             }
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.UPDATE);
             //Step 1: Update in hashmap
             database.getBroadcastHashMap().put(obj.getId(), obj);
 

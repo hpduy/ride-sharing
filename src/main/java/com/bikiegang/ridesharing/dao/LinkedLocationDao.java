@@ -12,6 +12,7 @@ import com.bikiegang.ridesharing.pojo.LinkedLocation;
 import com.bikiegang.ridesharing.pojo.Route;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.utilities.Const;
+import com.bikiegang.ridesharing.utilities.RequestLogger;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class LinkedLocationDao {
             if (obj == null) {
                 return false;
             }
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.INSERT);
             //Step 1: put in hashmap
             database.getLinkedLocationHashMap().put(obj.getId(), obj);
             //plannedTripIdRFLinkedLocations = new HashMap<>(); //<routeId,<LinkedLocationId>>
@@ -93,6 +95,8 @@ public class LinkedLocationDao {
             if (obj == null) {
                 return false;
             }
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.DELETE);
+
             // remove from geo cell
             Route route = database.getRouteHashMap().get(obj.getRefId());
             GeoCell<Long> geoCell = null;
@@ -151,6 +155,8 @@ public class LinkedLocationDao {
             if (obj == null) {
                 return false;
             }
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.UPDATE);
+
             //get old linkedlocation
             LinkedLocation tmp = database.getLinkedLocationHashMap().get(obj.getId());
             if (tmp != null) {

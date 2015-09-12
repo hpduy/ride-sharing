@@ -9,6 +9,7 @@ import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.RequestVerify;
 import com.bikiegang.ridesharing.utilities.Const;
+import com.bikiegang.ridesharing.utilities.RequestLogger;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
@@ -28,6 +29,8 @@ public class RequestVerifyDao {
             if (obj == null) {
                 return false;
             }
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.INSERT);
+
             //Step 1: put in hashmap
             database.getRequestVerifyHashMap().put(obj.getId(), obj);
             //userRequestBox = new HashMap<>(); //<senderId,<receiverPlannedTripId,requestIds>>
@@ -79,6 +82,8 @@ public class RequestVerifyDao {
             if (obj == null) {
                 return false;
             }
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.DELETE);
+
             //Step 1: put in hashmap
             database.getRequestVerifyHashMap().remove(obj.getId());
             //userRequestBox = new HashMap<>(); //<senderId,<receiverPlannedTripId,requestIds>>
@@ -127,6 +132,8 @@ public class RequestVerifyDao {
             if (obj == null) {
                 return false;
             }
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.UPDATE);
+
             //Step 1: put in hashmap
             database.getRequestVerifyHashMap().put(obj.getId(), obj);
             //Step 2: put redis

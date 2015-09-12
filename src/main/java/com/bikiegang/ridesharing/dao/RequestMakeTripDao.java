@@ -10,6 +10,7 @@ import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.RequestMakeTrip;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.utilities.Const;
+import com.bikiegang.ridesharing.utilities.RequestLogger;
 import org.apache.log4j.Logger;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,6 +31,9 @@ public class RequestMakeTripDao {
             if (obj == null) {
                 return false;
             }
+
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.INSERT);
+
             //Step 1: put in hashmap
             database.getRequestMakeTripHashMap().put(obj.getId(), obj);
             //senderRequestsBox = new HashMap<>(); //<senderId,<receiverPlannedTripId,requestIds>>
@@ -104,6 +108,8 @@ public class RequestMakeTripDao {
             if (obj == null) {
                 return false;
             }
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.DELETE);
+
             //Step 1: put in hashmap
             database.getRequestMakeTripHashMap().remove(obj.getId());
             //senderRequestsBox = new HashMap<>(); //<senderId,<receiverPlannedTripId,requestIds>>
@@ -175,6 +181,8 @@ public class RequestMakeTripDao {
             if (obj == null) {
                 return false;
             }
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.UPDATE);
+
             //Step 1: put in hashmap
             database.getRequestMakeTripHashMap().put(obj.getId(), obj);
             //Step 2: put redis

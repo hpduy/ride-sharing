@@ -9,6 +9,7 @@ import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.PopularLocation;
 import com.bikiegang.ridesharing.utilities.Const;
+import com.bikiegang.ridesharing.utilities.RequestLogger;
 import org.apache.log4j.Logger;
 
 /**
@@ -26,6 +27,8 @@ public class PopularLocationDao {
             if (obj == null) {
                 return false;
             }
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.INSERT);
+
             //put hashmap
             database.getPopularLocationHashMap().put(obj.getId(), obj);
             //orderedPopularLocation = new ArrayList<>(); // < popularLocationId> which sorted
@@ -33,7 +36,7 @@ public class PopularLocationDao {
             //Step 2: put redis
             result = cache.hset(obj.getClass().getName(), String.valueOf(obj.getId()), JSONUtil.Serialize(obj));
             result &= cache.lpush(obj.getClass().getName() + ":ordered", String.valueOf(obj.getId()));
-            
+
             if (result) {
                 //Step 3: put job gearman
                 short actionType = Const.RideSharing.ActionType.INSERT;
@@ -60,6 +63,11 @@ public class PopularLocationDao {
     public boolean delete(PopularLocation obj) {
         boolean result = false;
         try {
+            if (obj == null) {
+                return false;
+            }
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.DELETE);
+
             //remove in hashmap
             database.getPopularLocationHashMap().remove(obj.getId());
             //orderedPopularLocation = new ArrayList<>(); // < popularLocationId> which sorted
@@ -94,6 +102,11 @@ public class PopularLocationDao {
     public boolean update(PopularLocation obj) {
         boolean result = false;
         try {
+            if (obj == null) {
+                return false;
+            }
+            RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.UPDATE);
+
             //Update hashmap
             database.getPopularLocationHashMap().put(obj.getId(), obj);
             //Step 2: Update redis

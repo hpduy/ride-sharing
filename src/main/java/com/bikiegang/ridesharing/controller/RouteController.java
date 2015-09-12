@@ -18,8 +18,8 @@ public class RouteController {
     private RouteDao dao = new RouteDao();
     private Database database = Database.getInstance();
 
-    public Route createRoute(String googleRoutingResult, String creatorId, int role, String title, LatLng[] waypoint){
-        try{
+    public Route createRoute(String googleRoutingResult, String creatorId, int role, String title, LatLng[] waypoint) {
+        try {
             Route route = new Route();
             route.setId(IdGenerator.getRouteId());
             route.setRawRoutingResult(googleRoutingResult);
@@ -29,7 +29,7 @@ public class RouteController {
             route.setWaypoints(waypoint);
             route.setRole(role);
             //fetch data
-            if(dao.insert(route)) {
+            if (dao.insert(route)) {
                 List<LinkedLocation> locations = new FetchingDataFromGoogleRouting().fetch(route);
                 if (null != locations) {
                     LinkedLocationController controller = new LinkedLocationController();
@@ -41,7 +41,7 @@ public class RouteController {
                 return route;
             }
             return null;
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
             return null;
         }

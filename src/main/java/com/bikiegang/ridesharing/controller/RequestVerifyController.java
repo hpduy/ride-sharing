@@ -56,7 +56,7 @@ public class RequestVerifyController {
         requestVerify.setUserId(request.getUserId());
         requestVerify.setNumberOfCertificate(cerIds.size());
         requestVerify.setStatus(RequestVerify.WAITING);
-        requestVerify.createSignature();
+//        requestVerify.createSignature();
 
         if (dao.insert(requestVerify)) {
             new BroadcastCenterUtil().pushNotification(Parser.ObjectToNotification(MessageMappingUtil.Notification_RequestVerify, user), angel.getId(), Broadcast.ANGEL_APP);

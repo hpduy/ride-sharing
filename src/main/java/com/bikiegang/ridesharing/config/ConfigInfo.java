@@ -267,17 +267,15 @@ public class ConfigInfo {
                 + "`userId`,\n"
                 + "`angelId`,\n"
                 + "`numberOfCertificate`,\n"
-                + "`signature`,\n"
                 + "`status`, `createdTime`)\n"
                 + "VALUES\n"
-                + "(?,?,?,?,?,?,?);";
+                + "(?,?,?,?,?,?);";
         REQUESTVERIFY_UPDATE_QUERY = "UPDATE `ridesharing_db`.`RequestVerify`\n"
                 + "SET\n"
                 + "`id` = ?,\n"
                 + "`userId` = ?,\n"
                 + "`angelId` = ?,\n"
                 + "`numberOfCertificate` = ?,\n"
-                + "`signature` = ?,\n"
                 + "`status` = ?,\n"
                 + "`createdTime` = ?\n"
                 + "WHERE `id` = ?;";
