@@ -15,6 +15,10 @@ public class UserShortDetailResponse {
     private int verifyStatus;
     private String job;
     private String email;
+    private String facebookId = "";
+    private String googleId = "";
+    private String twitterId = "";
+    private String linkedInId = "";
     private int privacy;
     public UserShortDetailResponse() {
     }
@@ -24,12 +28,16 @@ public class UserShortDetailResponse {
             this.id = user.getId();
             this.firstName = user.getFirstName();
             this.lastName = user.getLastName();
-            this.lastName = user.getEmail();
             this.profilePictureLink = Path.getUrlFromPath(user.getProfilePictureLink());
             this.job = user.getJob();
             this.birthDay = user.getBirthDay();
             this.verifyStatus = user.getStatus();
             this.privacy = user.getPrivacy();
+            this.email = user.getEmagil();
+            this.facebookId = user.getFacebookId();
+            this.twitterId = user.getTwitterId();
+            this.googleId = user.getGoogleId();
+            this.linkedInId = user.getLinkedInId();
         }
     }
 
@@ -95,5 +103,45 @@ public class UserShortDetailResponse {
 
     public void setPrivacy(int privacy) {
         this.privacy = privacy;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getFacebookId() {
+        return facebookId;
+    }
+
+    public void setFacebookId(String facebookId) {
+        this.facebookId = facebookId;
+    }
+
+    public String getGoogleId() {
+        return googleId;
+    }
+
+    public void setGoogleId(String googleId) {
+        this.googleId = googleId;
+    }
+
+    public String getTwitterId() {
+        return twitterId;
+    }
+
+    public void setTwitterId(String twitterId) {
+        this.twitterId = twitterId;
+    }
+
+    public String getLinkedInId() {
+        return linkedInId;
+    }
+
+    public void setLinkedInId(String linkedInId) {
+        this.linkedInId = linkedInId;
     }
 }
