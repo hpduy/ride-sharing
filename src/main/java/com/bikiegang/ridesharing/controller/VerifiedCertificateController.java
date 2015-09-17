@@ -4,10 +4,12 @@ import com.bikiegang.ridesharing.dao.VerifiedCertificateDao;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.database.IdGenerator;
 import com.bikiegang.ridesharing.parsing.Parser;
+import com.bikiegang.ridesharing.pojo.Broadcast;
 import com.bikiegang.ridesharing.pojo.VerifiedCertificate;
 import com.bikiegang.ridesharing.pojo.request.GetInformationUsingUserIdRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.CreateCertificateRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.VerifyCertificateRequest;
+import com.bikiegang.ridesharing.utilities.BroadcastCenterUtil;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -56,8 +58,10 @@ public class VerifiedCertificateController {
         certificate.setStatus(VerifiedCertificate.AVAILABLE);
         certificate.setEndorserId(request.getUserId());
         certificate.setCreatedTime(DateTimeUtil.now());
-        if (dao.update(certificate))
+        if (dao.update(certificate)) {
+            new BroadcastCenterUtil().pushNotification(Parser.ObjectToNotification(MessageMappingUtil.Notification_VerifyCertificate_Success, database.getUserHashMap().get(request.getUserId())), certificate.getOwnerId(), Broadcast.ANGEL_APP);
             return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
+        }
         return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
     }
 

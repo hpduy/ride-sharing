@@ -3,10 +3,12 @@ package com.bikiegang.ridesharing.pojo.response;
 import com.bikiegang.ridesharing.pojo.Feed;
 import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.SocialTrip;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * Created by hpduy17 on 7/8/15.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SocialTripResponse extends TripInFeed {
 
     protected LatLng location = new LatLng();

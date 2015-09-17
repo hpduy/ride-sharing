@@ -5,12 +5,14 @@ import com.bikiegang.ridesharing.geocoding.FetchingDataFromGoogleRouting;
 import com.bikiegang.ridesharing.geocoding.GoogleRoutingObject.GoogleRoute;
 import com.bikiegang.ridesharing.pojo.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.IOException;
 
 /**
  * Created by hpduy17 on 7/8/15.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PlannedTripShortDetailResponse extends TripInFeed {
     private int numberOfRequest;
     private String startAddress;
@@ -47,6 +49,11 @@ public class PlannedTripShortDetailResponse extends TripInFeed {
         this.goTime = that.getDepartureTime();
         this.duration = route.getEstimatedTime();
         this.setCreatorId(that.getCreatorId());
+        try {
+            this.requested = (database.getSenderRequestsBox().get(senderId).containsKey(that.getId()));
+        } catch (Exception ignored) {
+            this.requested = false;
+        }
         if (that.getRequestId() <= 0 || null == database.getRequestMakeTripHashMap().get(that.getRequestId())){
             this.status = NON_REQUEST;
         }else {
@@ -55,11 +62,6 @@ public class PlannedTripShortDetailResponse extends TripInFeed {
             }else if(requested){
                 this.status = REQUESTED;
             }
-        }
-        try {
-            this.requested = (database.getSenderRequestsBox().get(senderId).containsKey(that.getId()));
-        } catch (Exception ignored) {
-            this.requested = false;
         }
         if (googleRoute != null) {
             this.startAddress = googleRoute.getLegs()[0].getStart_address();

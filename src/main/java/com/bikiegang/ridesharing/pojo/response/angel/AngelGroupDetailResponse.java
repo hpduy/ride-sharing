@@ -2,13 +2,14 @@ package com.bikiegang.ridesharing.pojo.response.angel;
 
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.AngelGroup;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.HashSet;
 
 /**
  * Created by hpduy17 on 7/23/15.
  */
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AngelGroupDetailResponse extends AngelGroup {
     private boolean joined = false;
 

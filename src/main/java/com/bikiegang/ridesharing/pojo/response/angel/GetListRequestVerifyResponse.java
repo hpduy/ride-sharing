@@ -1,10 +1,13 @@
 package com.bikiegang.ridesharing.pojo.response.angel;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
 
 /**
  * Created by hpduy17 on 8/24/15.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class GetListRequestVerifyResponse {
     RequestVerifySortDetailResponse[] response;
 

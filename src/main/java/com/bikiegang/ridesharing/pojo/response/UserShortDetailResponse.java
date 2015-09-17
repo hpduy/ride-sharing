@@ -2,10 +2,12 @@ package com.bikiegang.ridesharing.pojo.response;
 
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.utilities.Path;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * Created by hpduy17 on 7/8/15.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserShortDetailResponse {
     private String id = "";
     private String firstName = "";
@@ -15,10 +17,6 @@ public class UserShortDetailResponse {
     private int verifyStatus;
     private String job;
     private String email;
-    private String facebookId = "";
-    private String googleId = "";
-    private String twitterId = "";
-    private String linkedInId = "";
     private int privacy;
     public UserShortDetailResponse() {
     }
@@ -34,10 +32,6 @@ public class UserShortDetailResponse {
             this.verifyStatus = user.getStatus();
             this.privacy = user.getPrivacy();
             this.email = user.getEmail();
-            this.facebookId = user.getFacebookId();
-            this.twitterId = user.getTwitterId();
-            this.googleId = user.getGoogleId();
-            this.linkedInId = user.getLinkedInId();
         }
     }
 
@@ -113,35 +107,4 @@ public class UserShortDetailResponse {
         this.email = email;
     }
 
-    public String getFacebookId() {
-        return facebookId;
-    }
-
-    public void setFacebookId(String facebookId) {
-        this.facebookId = facebookId;
-    }
-
-    public String getGoogleId() {
-        return googleId;
-    }
-
-    public void setGoogleId(String googleId) {
-        this.googleId = googleId;
-    }
-
-    public String getTwitterId() {
-        return twitterId;
-    }
-
-    public void setTwitterId(String twitterId) {
-        this.twitterId = twitterId;
-    }
-
-    public String getLinkedInId() {
-        return linkedInId;
-    }
-
-    public void setLinkedInId(String linkedInId) {
-        this.linkedInId = linkedInId;
-    }
 }

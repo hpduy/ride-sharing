@@ -1,13 +1,14 @@
 package com.bikiegang.ridesharing.pojo.response.angel;
 
 import com.bikiegang.ridesharing.pojo.response.UserShortDetailResponse;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.List;
 
 /**
  * Created by hpduy17 on 7/23/15.
  */
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class GetAngelInGroupsResponse {
     UserShortDetailResponse[] angels;
 

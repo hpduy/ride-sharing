@@ -24,7 +24,7 @@ import java.io.PrintWriter;
 public class GetDefaultSettingAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
     public Class requestClass = null;
-    public Class responseClass = null;
+    public Class responseClass = DefaultSetting.class;
     public boolean responseIsArray = false;
 
     /**

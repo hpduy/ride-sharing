@@ -403,7 +403,7 @@ public class UserController {
     }
 
     public String updateCurrentLocation(UpdateCurrentLocationRequest request) throws JsonProcessingException {
-        if (request.getLat() <= 0 && request.getLng() <= 0) {
+        if (request.getLat() == 0 && request.getLng() == 0) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'lat' and 'lng'");
         }
         if (null == request.getUserId() || request.getUserId().equals("")) {
@@ -495,29 +495,53 @@ public class UserController {
         }
         if (request.getType() == 0)
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'type'");
-        User user = database.getUserHashMap().get(request.getUserId());
-        if (user == null) {
+        User angel = database.getUserHashMap().get(request.getUserId());
+        if (angel == null) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User");
         }
         switch (request.getType()) {
             case UpdateSocialNetworkAccountRequest.FACEBOOK:
-                database.getFacebookRFUserId().remove(user.getFacebookId());
-                user.setFacebookId(request.getSocialNetworkId());
+                if (database.getFacebookRFUserId().containsKey(request.getSocialNetworkId())) {
+                    User user = database.getUserHashMap().get(database.getFacebookRFUserId().get(request.getSocialNetworkId()));
+                    user.setStatus(User.ANGEL);
+                } else {
+                    database.getFacebookRFUserId().put(request.getSocialNetworkId(), angel.getId());
+                }
+                angel.setFacebookId(request.getSocialNetworkId());
+                angel.setProfilePictureLink(request.getProfilePictureLink());
                 break;
             case UpdateSocialNetworkAccountRequest.GOOGLE:
-                database.getGoogleRFUserId().remove(user.getGoogleId());
-                user.setGoogleId(request.getSocialNetworkId());
+                if (database.getGoogleRFUserId().containsKey(request.getSocialNetworkId())) {
+                    User user = database.getUserHashMap().get(database.getGoogleRFUserId().get(request.getSocialNetworkId()));
+                    user.setStatus(User.ANGEL);
+                } else {
+                    database.getGoogleRFUserId().put(request.getSocialNetworkId(), angel.getId());
+                }
+                angel.setGoogleId(request.getSocialNetworkId());
+                angel.setProfilePictureLink(request.getProfilePictureLink());
                 break;
             case UpdateSocialNetworkAccountRequest.TWITTER:
-                database.getTwitterRFUserId().remove(user.getTwitterId());
-                user.setTwitterId(request.getSocialNetworkId());
+                if (database.getTwitterRFUserId().containsKey(request.getSocialNetworkId())) {
+                    User user = database.getUserHashMap().get(database.getTwitterRFUserId().get(request.getSocialNetworkId()));
+                    user.setStatus(User.ANGEL);
+                } else {
+                    database.getTwitterRFUserId().put(request.getSocialNetworkId(), angel.getId());
+                }
+                angel.setTwitterId(request.getSocialNetworkId());
+                angel.setProfilePictureLink(request.getProfilePictureLink());
                 break;
             case UpdateSocialNetworkAccountRequest.LINKEDIN:
-                database.getLinkedInRFUserId().remove(user.getLinkedInId());
-                user.setLinkedInId(request.getSocialNetworkId());
+                if (database.getLinkedInRFUserId().containsKey(request.getSocialNetworkId())) {
+                    User user = database.getUserHashMap().get(database.getLinkedInRFUserId().get(request.getSocialNetworkId()));
+                    user.setStatus(User.ANGEL);
+                } else {
+                    database.getLinkedInRFUserId().put(request.getSocialNetworkId(), angel.getId());
+                }
+                angel.setLinkedInId(request.getSocialNetworkId());
+                angel.setProfilePictureLink(request.getProfilePictureLink());
                 break;
         }
-        if (dao.update(user)) {
+        if (dao.update(angel)) {
             return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
         }
         return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
@@ -638,6 +662,7 @@ public class UserController {
         new BroadcastCenterUtil().pushNotification(Parser.ObjectToNotification(MessageMappingUtil.Notification_RequestPhoneNumber, sender), receiver.getId());
         return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
     }
+
     public String acceptViewPhoneNumber(RequestPhoneNumberRequest request) throws JsonProcessingException {
         if (null == request.getSenderId() || request.getSenderId().equals("")) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'senderId'");
@@ -654,7 +679,7 @@ public class UserController {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "Receiver");
         }
         sender.getPhoneViewer().add(receiver.getId());
-        if(dao.update(sender)) {
+        if (dao.update(sender)) {
             new BroadcastCenterUtil().pushNotification(Parser.ObjectToNotification(MessageMappingUtil.Notification_AcceptPhoneNumber, sender), receiver.getId());
             return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
         }

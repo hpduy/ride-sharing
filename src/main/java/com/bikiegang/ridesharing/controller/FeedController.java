@@ -49,7 +49,7 @@ public class FeedController {
     }
 
     public String getFeeds(GetFeedsRequest request) throws IOException {
-        if (null == request.getUserId() || request.getUserId().equals("")) {
+            if (null == request.getUserId() || request.getUserId().equals("")) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
         }
         if (request.getNumberOfFeed() <= 0) {
@@ -62,29 +62,19 @@ public class FeedController {
         List<Feed> feedList = new ArrayList<>(database.getFeedHashMap().values());
         List<Long> feedId = new ArrayList<>(database.getFeedHashMap().keySet());
         if (!database.getFeedHashMap().isEmpty()) {
-            for (toIdx = database.getFeedHashMap().size(); toIdx >= 0; toIdx--) {
-                if (feedList.get(toIdx - 1).getCreatedTime() < DateTimeUtil.now()) {
-                    break;
-                }
-            }
-            if (!feedId.contains(request.getStartId())) {
-                fromIdx = toIdx - request.getNumberOfFeed();
+            if (feedId.contains(request.getStartId())) {
+                fromIdx = feedId.indexOf(request.getStartId());
             } else {
-                switch (request.getGetWay()) {
-                    case GetFeedsRequest.NEW_FEED:
-                        fromIdx = feedId.indexOf(request.getStartId());
+                for (int i = 0; i < feedList.size(); i++) {
+                    if (feedList.get(i).getCreatedTime() > DateTimeUtil.now() - DateTimeUtil.HOURS) {
+                        fromIdx = i;
                         break;
-                    case GetFeedsRequest.HISTORY_FEED:
-                        toIdx = feedId.indexOf(request.getStartId());
-                        fromIdx = toIdx - request.getNumberOfFeed();
-                        break;
-                    default:
-                        return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'getWay'");
+                    }
                 }
             }
-            if (fromIdx < 0) {
-                fromIdx = 0;
-            }
+            toIdx = fromIdx + request.getNumberOfFeed();
+            if (toIdx > feedList.size())
+                toIdx = feedList.size();
             List<Feed> feeds = new ArrayList<>(database.getFeedHashMap().values()).subList(fromIdx, toIdx);
 
             for (Feed feed : feeds) {
@@ -127,10 +117,10 @@ public class FeedController {
         }
         GetFeedsResponse response = new GetFeedsResponse();
         List<PlannedTrip> plannedTrips = new ArrayList<>(database.getPlannedTripHashMap().values());
-        if(database.getPlannedTripHashMap().size() > 20)
-            plannedTrips = plannedTrips.subList(0,21);
-        response.setFeeds(convertPlannedTripsToFeeds(plannedTrips,request.getUserId()));
-        return Parser.ObjectToJSon(true,MessageMappingUtil.Successfully,response);
+        if (database.getPlannedTripHashMap().size() > 20)
+            plannedTrips = plannedTrips.subList(0, 21);
+        response.setFeeds(convertPlannedTripsToFeeds(plannedTrips, request.getUserId()));
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, response);
     }
 
     public FeedResponse[] convertPlannedTripsToFeeds(PlannedTrip[] plannedTrips, String requesterId) throws IOException {
@@ -163,7 +153,7 @@ public class FeedController {
             partnerInfoResponse = new UserController().getExPartners(user.getId());
             response.setPartnerInfo(partnerInfoResponse);
             response.setUserDetail(userShortDetailResponse);
-            response.setTripDetail(new PlannedTripShortDetailResponse(plannedTrip, requesterId));
+            response.setTripDetail(new PlannedTripDetailResponse(plannedTrip, requesterId));
         }
         return response;
     }

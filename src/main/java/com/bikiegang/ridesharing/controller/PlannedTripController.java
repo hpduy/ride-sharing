@@ -12,7 +12,6 @@ import com.bikiegang.ridesharing.pojo.response.*;
 import com.bikiegang.ridesharing.pojo.static_object.TripPattern;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.*;
@@ -71,19 +70,16 @@ public class PlannedTripController {
         }
         fakePlannedTrip.setHasHelmet(request.isHasHelmet());
         List<LinkedLocation> fakeLocation = new FetchingDataFromGoogleRouting().fetch(fakeRoute);
-        //TODO fake trip
-//        if (Database.databaseStatus == Database.TESTING && !isCreatingFake) {
-//            isCreatingFake = true;
-//            new FakePlannedTrip().fakePlannedTrip(fakePlannedTrip, fakeRoute);
-//        }
-        //TODO end fake
         if (fakeLocation != null) {
             HashMap<Integer, List<PlannedTrip>> plannedTrips = new Pairing().pair(fakePlannedTrip, fakeRoute, fakeLocation);
             List<PlannedTrip> plannedTripList = new ArrayList<>();
             for (int key : plannedTrips.keySet()) {
                 plannedTripList.addAll(plannedTrips.get(key));
             }
-            sortPlannedTripByDistance(fakeRoute.getStartLocation(), plannedTripList);
+            sortPlannedTripByDepartureTime(fakeRoute.getStartLocation(), plannedTripList);
+            if (plannedTripList.size() > 100) {
+                plannedTripList = plannedTripList.subList(0, 100);
+            }
             response.setFeeds(new FeedController().convertPlannedTripsToFeeds(plannedTripList, fakePlannedTrip.getCreatorId()));
         }
         return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, response);
@@ -107,10 +103,12 @@ public class PlannedTripController {
             plannedTrip.setCreatorId(request.getPlannedTrip().getCreatorId());
             plannedTrip.setHasHelmet(request.getPlannedTrip().isHasHelmet());
             plannedTrip.setRouteId(route.getId());
-            plannedTrip.setOwnerPrice(request.getPlannedTrip().getPrice() < DEFAULT_PRICE ? DEFAULT_PRICE : request.getPlannedTrip().getPrice());
+            plannedTrip.setOwnerPrice(request.getPlannedTrip().getPrice() < 0 ? DEFAULT_PRICE : request.getPlannedTrip().getPrice());
             if (dao.insert(plannedTrip) || Database.databaseStatus == Database.TESTING) {
-                new FeedController().postNewFeed(plannedTrip.getId(), Feed.PLANNED_TRIP);
+                new FeedController().postNewFeed(plannedTrip.getId(), Feed.PLANNED_TRIP, plannedTrip.getDepartureTime());
                 UserAndPlannedTripDetailResponse yourPlannedTripDetail = getUserAndPlannedTripDetailFromObject(plannedTrip);
+                // insert calendar
+                new TripCalendarController().putToCalendar(plannedTrip.getDepartureTime(), plannedTrip.getId(), plannedTrip.getCreatorId());
                 if (request.getPlannedTrip().isParing()) {
                     HashMap<Integer, List<PlannedTrip>> paringResults = new Pairing().pair(plannedTrip);
                     List<PlannedTrip> result;
@@ -155,14 +153,16 @@ public class PlannedTripController {
             PlannedTrip plannedTrip = new PlannedTrip();
             plannedTrip.setId(IdGenerator.getPlannedTripId());
             plannedTrip.setRole(request.getPlannedTrip().getRole());
-            plannedTrip.setType(PlannedTrip.INSTANT);
+            plannedTrip.setType(PlannedTrip.SINGLE_FUTURE);
             plannedTrip.setDepartureTime(request.getPlannedTrip().getGoTime());
             plannedTrip.setCreatorId(request.getPlannedTrip().getCreatorId());
             plannedTrip.setHasHelmet(request.getPlannedTrip().isHasHelmet());
             plannedTrip.setRouteId(route.getId());
-            plannedTrip.setOwnerPrice(request.getPlannedTrip().getPrice() < DEFAULT_PRICE ? DEFAULT_PRICE : request.getPlannedTrip().getPrice());
+            plannedTrip.setOwnerPrice(request.getPlannedTrip().getPrice() < 0 ? DEFAULT_PRICE : request.getPlannedTrip().getPrice());
             if (dao.insert(plannedTrip) || Database.databaseStatus == Database.TESTING) {
-                new FeedController().postNewFeed(plannedTrip.getId(), Feed.PLANNED_TRIP);
+                // insert calendar
+                new TripCalendarController().putToCalendar(plannedTrip.getDepartureTime(), plannedTrip.getId(), plannedTrip.getCreatorId());
+                new FeedController().postNewFeed(plannedTrip.getId(), Feed.PLANNED_TRIP, plannedTrip.getDepartureTime());
                 FeedResponse yourPlannedTripDetail = new FeedController().convertPlannedTripToFeed(plannedTrip, plannedTrip.getCreatorId());
                 if (request.getPlannedTrip().isParing()) {
                     HashMap<Integer, List<PlannedTrip>> paringResults = new Pairing().pair(plannedTrip);
@@ -204,14 +204,16 @@ public class PlannedTripController {
                     PlannedTrip plannedTrip = new PlannedTrip();
                     plannedTrip.setId(IdGenerator.getPlannedTripId());
                     plannedTrip.setRole(request.getPlannedTrip().getRole());
-                    plannedTrip.setType(request.getPlannedTrip().getTypeOfTrip());
+                    plannedTrip.setType(PlannedTrip.MULTIPLE_FUTURE);
                     plannedTrip.setCreatorId(request.getPlannedTrip().getCreatorId());
                     plannedTrip.setHasHelmet(request.getPlannedTrip().isHasHelmet());
                     plannedTrip.setGroupId(groupId);
                     plannedTrip.setDepartureTime(tp);
-                    plannedTrip.setOwnerPrice(request.getPlannedTrip().getPrice() < DEFAULT_PRICE ? DEFAULT_PRICE : request.getPlannedTrip().getPrice());
+                    plannedTrip.setOwnerPrice(request.getPlannedTrip().getPrice() < 0 ? DEFAULT_PRICE : request.getPlannedTrip().getPrice());
                     plannedTrip.setRouteId(route.getId());
                     if (dao.insert(plannedTrip)) {
+                        // insert calendar
+                        new TripCalendarController().putToCalendar(plannedTrip.getDepartureTime(), plannedTrip.getId(), plannedTrip.getCreatorId());
                         FeedResponse yourPlannedTripDetail = new FeedController().convertPlannedTripToFeed(plannedTrip, plannedTrip.getCreatorId());
                         if (request.getPlannedTrip().isParing()) {
                             UserAndPlannedTripDetailByDayResponse plannedTripDetailByDayResponse = new UserAndPlannedTripDetailByDayResponse();
@@ -232,8 +234,8 @@ public class PlannedTripController {
                                     plannedTripDetailByDayResponse.setYourPlannedTrip(yourPlannedTripDetail);
                                     plannedTripsByDay.add(plannedTripDetailByDayResponse);
                                 }
-                            } else {
-                                new FeedController().postNewFeed(plannedTrip.getId(), Feed.PLANNED_TRIP, (epd - 1) * DateTimeUtil.SECONDS_PER_DAY); // (epd - 1) * DateTimeUtil.SECONDS_PER_DAY : post feed truoc ngay di 1 ngay
+                            } else {//(epd - 1) * DateTimeUtil.SECONDS_PER_DAY
+                                new FeedController().postNewFeed(plannedTrip.getId(), Feed.PLANNED_TRIP, plannedTrip.getDepartureTime()); // (epd - 1) * DateTimeUtil.SECONDS_PER_DAY : post feed truoc ngay di 1 ngay
                             }
                         }
 
@@ -319,6 +321,17 @@ public class PlannedTripController {
                 double dis1 = origin.distanceInMetres(r1.getStartLocation());
                 double dis2 = origin.distanceInMetres(r2.getStartLocation());
                 if (dis1 > dis2)
+                    return -1;
+                return 0;
+            }
+        });
+    }
+
+    private void sortPlannedTripByDepartureTime(final LatLng origin, List<PlannedTrip> plannedTrips) {
+        Collections.sort(plannedTrips, new Comparator<PlannedTrip>() {
+            @Override
+            public int compare(PlannedTrip o1, PlannedTrip o2) {
+                if (o1.getDepartureTime() > o2.getDepartureTime())
                     return -1;
                 return 0;
             }

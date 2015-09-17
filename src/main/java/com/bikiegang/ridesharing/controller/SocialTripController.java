@@ -20,16 +20,16 @@ public class SocialTripController {
     private Database database = Database.getInstance();
 
     public String createSocialTrip(CreateSocialTripRequest request) throws JsonProcessingException {
-        if(null == request.getUserId() ||request.getUserId().equals("")){
+        if (null == request.getUserId() || request.getUserId().equals("")) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
         }
-        if(null == request.getFeeling() ||request.getFeeling().equals("")){
+        if (null == request.getFeeling() || request.getFeeling().equals("")) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'feeling'");
         }
-        if(null == request.getWantToGo() ||request.getWantToGo().equals("")){
+        if (null == request.getWantToGo() || request.getWantToGo().equals("")) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'wantToGo'");
         }
-        if(request.getLat()<=0 && request.getLng() <= 0 ){
+        if (request.getLat() == 0 && request.getLng() == 0) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'lat' and 'lng'");
         }
         SocialTrip socialTrip = new SocialTrip();
@@ -41,11 +41,11 @@ public class SocialTripController {
         socialTrip.setFeelingIcon(request.getFeelingIcon());
         socialTrip.setWantToGo(request.getWantToGo());
         socialTrip.setWantToGoIcon(request.getWantToGoIcon());
-        socialTrip.setLocation( new LatLng(request.getLat(), request.getLng()));
-        if(dao.insert(socialTrip)){
+        socialTrip.setLocation(new LatLng(request.getLat(), request.getLng()));
+        if (dao.insert(socialTrip)) {
             new FeedController().postNewFeed(socialTrip.getId(), Feed.SOCIAL_TRIP);
-            return Parser.ObjectToJSon(true,MessageMappingUtil.Successfully);
+            return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
         }
-        return Parser.ObjectToJSon(false,MessageMappingUtil.Interactive_with_database_fail);
+        return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
     }
 }

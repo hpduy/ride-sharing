@@ -53,7 +53,7 @@ public class AngelGroupMemberController {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'groupIds'");
         }
         for (long id : request.getGroupIds()) {
-            if (database.getUserAndGroupRFAngelGroupMember().containsKey(combineKey(request.getUserId(), id))) {
+            if (!database.getUserAndGroupRFAngelGroupMember().containsKey(combineKey(request.getUserId(), id))) {
                 AngelGroupMember groupMember = new AngelGroupMember(IdGenerator.getAngelGroupMemberId(), id, request.getUserId(), DateTimeUtil.now());
                 if (!dao.insert(groupMember)) {
                     return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);

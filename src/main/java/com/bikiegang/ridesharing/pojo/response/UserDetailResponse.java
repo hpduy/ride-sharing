@@ -2,10 +2,12 @@ package com.bikiegang.ridesharing.pojo.response;
 
 import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.User;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * Created by hpduy17 on 7/8/15.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserDetailResponse extends UserShortDetailResponse {
     private int gender;
     private String phone;

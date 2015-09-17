@@ -1,10 +1,12 @@
 package com.bikiegang.ridesharing.pojo.response;
 
 import com.bikiegang.ridesharing.pojo.User;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * Created by hpduy17 on 7/8/15.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserAndPlannedTripDetailResponse {
     private UserDetailResponse user;
     private PlannedTripDetailResponse plannedTrip;

@@ -40,6 +40,7 @@ public class MessageMappingUtil {
     public static final int Notification_RequestPhoneNumber = 505;
     public static final int Notification_AcceptPhoneNumber = 506;
     public static final int Notification_AlertTripComingUp = 507;
+    public static final int Notification_Successfully = 508;
 
 
     // other final variable
@@ -48,24 +49,24 @@ public class MessageMappingUtil {
     public static final String Vietnam = "vi";
 
     public static void createMessageBoard() {
-        messages.add(createMessage(Successfully, new String[]{"", ""}));
-        messages.add(createMessage(Fail, new String[]{"", ""}));
-        messages.add(createMessage(System_Exception, new String[]{"", ""}));
-        messages.add(createMessage(Interactive_with_database_fail, new String[]{"", ""}));
-        messages.add(createMessage(Element_is_not_found, new String[]{"", ""}));
-        messages.add(createMessage(Element_is_invalid, new String[]{"", ""}));
-        messages.add(createMessage(Element_is_empty, new String[]{"", ""}));
-        messages.add(createMessage(Element_has_been_used, new String[]{"", ""}));
-        messages.add(createMessage(Element_is_invalid_or_used, new String[]{"", ""}));
-        messages.add(createMessage(Element_expired, new String[]{"", ""}));
-        messages.add(createMessage(Object_is_not_found, new String[]{"", ""}));
-        messages.add(createMessage(Object_is_not_belong_to_you, new String[]{"", ""}));
-        messages.add(createMessage(Request_has_accepted, new String[]{"", ""}));
-        messages.add(createMessage(Request_has_denied, new String[]{"", ""}));
-        messages.add(createMessage(Certificate_verified, new String[]{"", ""}));
-        messages.add(createMessage(Certificate_expired, new String[]{"", ""}));
-        messages.add(createMessage(User_is_busy, new String[]{"", ""}));
-        messages.add(createMessage(User_and_angel_is_not_same_place_and_time, new String[]{"", ""}));
+        messages.add(createMessage(Successfully, new String[]{"", "Thành công"}));
+        messages.add(createMessage(Fail, new String[]{"", "Thất bại"}));
+        messages.add(createMessage(System_Exception, new String[]{"", "Lỗi hệ thống"}));
+        messages.add(createMessage(Interactive_with_database_fail, new String[]{"", "Không thể tương tác với cơ sở dữ liệu"}));
+        messages.add(createMessage(Element_is_not_found, new String[]{"", "không được tìm thấy"}));
+        messages.add(createMessage(Element_is_invalid, new String[]{"", "không hợp lệ"}));
+        messages.add(createMessage(Element_is_empty, new String[]{"", "có nội dung rỗng"}));
+        messages.add(createMessage(Element_has_been_used, new String[]{"", "đã được sử dụng"}));
+        messages.add(createMessage(Element_is_invalid_or_used, new String[]{"", "không hợp lệ hoặc đã được sử dụng"}));
+        messages.add(createMessage(Element_expired, new String[]{"", "hết hạn"}));
+        messages.add(createMessage(Object_is_not_found, new String[]{"", "không được tìm thấy"}));
+        messages.add(createMessage(Object_is_not_belong_to_you, new String[]{"", "không thuộc về bạn"}));
+        messages.add(createMessage(Request_has_accepted, new String[]{"", "Yêu cầu của bạn đã được chấp nhận"}));
+        messages.add(createMessage(Request_has_denied, new String[]{"", "Yêu cầu của bạn đã bị từ chối"}));
+        messages.add(createMessage(Certificate_verified, new String[]{"", "Giấy tờ của bạn đã được chứng thực"}));
+        messages.add(createMessage(Certificate_expired, new String[]{"", "Giấy tờ của bạn đã hết hạn"}));
+        messages.add(createMessage(User_is_busy, new String[]{"", "Người dùng hiện tại đang bận"}));
+        messages.add(createMessage(User_and_angel_is_not_same_place_and_time, new String[]{"", "Người dùng và thiên thần không ở cùng nhau vào lúc này"}));
     }
 
     /**
