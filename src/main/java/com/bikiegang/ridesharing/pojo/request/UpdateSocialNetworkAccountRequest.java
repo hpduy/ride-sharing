@@ -12,6 +12,7 @@ public class UpdateSocialNetworkAccountRequest {
 
     private String userId;
     private String socialNetworkId;
+    private String profilePictureLink;
     private int type;
     @JsonIgnore
     public static final int FACEBOOK = 1;
@@ -44,6 +45,14 @@ public class UpdateSocialNetworkAccountRequest {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public String getProfilePictureLink() {
+        return profilePictureLink;
+    }
+
+    public void setProfilePictureLink(String profilePictureLink) {
+        this.profilePictureLink = profilePictureLink;
     }
 
     public UpdateSocialNetworkAccountRequest() {

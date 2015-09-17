@@ -2,10 +2,12 @@ package com.bikiegang.ridesharing.pojo.response;
 
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.utilities.Path;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * Created by hpduy17 on 7/8/15.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserShortDetailResponse {
     private String id = "";
     private String firstName = "";
@@ -24,12 +26,12 @@ public class UserShortDetailResponse {
             this.id = user.getId();
             this.firstName = user.getFirstName();
             this.lastName = user.getLastName();
-            this.lastName = user.getEmail();
             this.profilePictureLink = Path.getUrlFromPath(user.getProfilePictureLink());
             this.job = user.getJob();
             this.birthDay = user.getBirthDay();
             this.verifyStatus = user.getStatus();
             this.privacy = user.getPrivacy();
+            this.email = user.getEmail();
         }
     }
 
@@ -96,4 +98,13 @@ public class UserShortDetailResponse {
     public void setPrivacy(int privacy) {
         this.privacy = privacy;
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
 }

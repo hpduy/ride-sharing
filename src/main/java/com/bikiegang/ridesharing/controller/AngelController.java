@@ -7,7 +7,7 @@ import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.GetAngelActiveCodesRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.*;
 import com.bikiegang.ridesharing.pojo.response.GetAngelActiveCodesResponse;
-import com.bikiegang.ridesharing.pojo.response.UserDetailResponse;
+import com.bikiegang.ridesharing.pojo.response.angel.AngelDetailResponse;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import com.bikiegang.ridesharing.utilities.SendMailUtil;
 import com.bikiegang.ridesharing.utilities.StringProcessUtil;
@@ -93,7 +93,7 @@ public class AngelController {
             request.setGroupIds(ids);
             request.setUserId(user.getId());
             new AngelGroupMemberController().joinGroup(request);
-            return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new UserDetailResponse(user));
+            return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new AngelDetailResponse(user));
         }
         return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
     }
@@ -116,7 +116,7 @@ public class AngelController {
         if (!user.getPassword().equals(loginRequest.getPassword())) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "Password");
         }
-        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new UserDetailResponse(user));
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new AngelDetailResponse(user));
     }
 
     public String forgetPassword(AngelForgetPasswordRequest request) throws JsonProcessingException, UnsupportedEncodingException {
@@ -152,7 +152,7 @@ public class AngelController {
         if (!request.getCurrentPassword().equals(user.getPassword())) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "currentPassword");
         }
-        if (!request.getNewPassword().equals(user.getPassword())) {
+        if (request.getNewPassword().equals(user.getPassword())) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid_or_used, "newPassword");
         }
         user.setPassword(request.getNewPassword());

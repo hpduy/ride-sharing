@@ -4,10 +4,12 @@ import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.RequestVerify;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.response.UserDetailWithCertificatesResponse;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * Created by hpduy17 on 7/31/15.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RequestVerifyDetailResponse {
     private long id;
     private long createdTime;

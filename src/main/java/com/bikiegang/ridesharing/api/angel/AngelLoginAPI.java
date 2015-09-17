@@ -10,7 +10,7 @@ import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.controller.AngelController;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.request.angel.AngelLoginRequest;
-import com.bikiegang.ridesharing.pojo.response.UserDetailResponse;
+import com.bikiegang.ridesharing.pojo.response.angel.AngelDetailResponse;
 import com.bikiegang.ridesharing.utilities.ApiDocumentGenerator;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import org.apache.log4j.Logger;
@@ -27,7 +27,7 @@ import java.io.PrintWriter;
 public class AngelLoginAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
     public Class requestClass = AngelLoginRequest.class;
-    public Class responseClass =  UserDetailResponse.class;
+    public Class responseClass =  AngelDetailResponse.class;
     public boolean responseIsArray = false;
 
     /**

@@ -66,7 +66,7 @@ public class AngelGroupController {
         if (null == request.getTagName() || request.getTagName().equals("")) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'tagName'");
         }
-        if (request.getLat() <= 0 && request.getLng() <= 0) {
+        if (request.getLat() == 0 && request.getLng() == 0) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'lat' and 'lng'");
         }
         List<String> tagNames = new ArrayList<>();

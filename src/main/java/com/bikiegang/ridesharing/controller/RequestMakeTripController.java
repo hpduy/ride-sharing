@@ -145,10 +145,10 @@ public class RequestMakeTripController {
         if (null == requestMakeTrip) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "Request");
         }
-        if (request.getStatus() == RequestMakeTrip.ACCEPT) {
+        if (requestMakeTrip.getStatus() == RequestMakeTrip.ACCEPT) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Request_has_accepted);
         }
-        if (request.getStatus() == RequestMakeTrip.DENY) {
+        if (requestMakeTrip.getStatus() == RequestMakeTrip.DENY) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Request_has_denied);
         }
 
@@ -212,6 +212,7 @@ public class RequestMakeTripController {
         // change to deny status
         requestMakeTrip.setStatus(RequestMakeTrip.DENY);
         if (dao.update(requestMakeTrip)) {
+            new BroadcastCenterUtil().pushNotification(Parser.ObjectToNotification(MessageMappingUtil.Notification_ReplyMakeTrip_Deny, database.getUserHashMap().get(request.getUserId())), requestMakeTrip.getReceiverId());
             return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
         }
         return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
@@ -250,8 +251,10 @@ public class RequestMakeTripController {
                                     break;
                                 }
                             }
-                            RequestMakeTripDetailResponse response = new RequestMakeTripDetailResponse(requestMakeTrip);
-                            responses.add(i, response);
+                            if(requestMakeTrip.getStatus() == RequestMakeTrip.WAITING) {
+                                RequestMakeTripDetailResponse response = new RequestMakeTripDetailResponse(requestMakeTrip);
+                                responses.add(i, response);
+                            }
                         }
 
                     }
@@ -290,7 +293,7 @@ public class RequestMakeTripController {
             }
         });
         for (PlannedTrip t : pt) {
-            responses.add(new FeedController().convertPlannedTripToFeed(t, t.getCreatorId()));
+            responses.add(new FeedController().convertPlannedTripToFeed(t, request.getUserId()));
         }
         GetFeedsResponse response = new GetFeedsResponse();
         response.setFeeds(responses.toArray(new FeedResponse[responses.size()]));

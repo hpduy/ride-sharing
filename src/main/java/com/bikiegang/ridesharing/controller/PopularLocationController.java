@@ -67,7 +67,7 @@ public class PopularLocationController {
         if (null == request.getUserId() || request.getUserId().equals("")) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found,"'userId'");
         }
-        if (request.getLat() <= 0 && request.getLng() <= 0) {
+        if (request.getLat() == 0 && request.getLng() == 0) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid,"'lat' and 'lng'");
         }
         PopularLocation location = new PopularLocation();

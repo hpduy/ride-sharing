@@ -1,9 +1,11 @@
 package com.bikiegang.ridesharing.pojo.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * Created by hpduy17 on 7/23/15.
  */
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RequestMakeTripResponse {
     private long requestId;
 

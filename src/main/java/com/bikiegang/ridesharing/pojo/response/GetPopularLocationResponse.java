@@ -1,12 +1,14 @@
 package com.bikiegang.ridesharing.pojo.response;
 
 import com.bikiegang.ridesharing.pojo.PopularLocation;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.List;
 
 /**
  * Created by hpduy17 on 8/27/15.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class GetPopularLocationResponse {
     private PopularLocationResponse[] locations;
 

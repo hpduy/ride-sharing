@@ -2,10 +2,12 @@ package com.bikiegang.ridesharing.pojo.response;
 
 import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.PopularLocation;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * Created by hpduy17 on 8/27/15.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PopularLocationResponse extends LatLng {
     private long id;
     private String name;
