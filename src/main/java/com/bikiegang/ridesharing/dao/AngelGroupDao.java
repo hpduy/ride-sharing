@@ -52,7 +52,7 @@ public class AngelGroupDao {
                         System.currentTimeMillis(), "", JSONUtil.Serialize(obj), "", "");
                 result &= GClientManager.getInstance(ConfigInfo.RIDESHARING_WORKER_GEARMAN).push(job);
                 if (!result) {
-                    logger.error(String.format("Can't not insert DB with value=%s", obj));
+                    logger.error(String.format("Can't not insert DB with value=%s", JSONUtil.Serialize(obj)));
                 } else {
                     logger.info(String.format("Insert AngelGroup success with value=%s", JSONUtil.Serialize(obj)));
                 }
@@ -95,7 +95,7 @@ public class AngelGroupDao {
                         System.currentTimeMillis(), "", JSONUtil.Serialize(obj), "", "");
                 result &= GClientManager.getInstance(ConfigInfo.RIDESHARING_WORKER_GEARMAN).push(job);
                 if (!result) {
-                    logger.error(String.format("Can't not delete DB with value=%s", obj));
+                    logger.error(String.format("Can't not delete DB with value=%s", JSONUtil.Serialize(obj)));
                 } else {
                     logger.info(String.format("Delete Angel success with value=%s", JSONUtil.Serialize(obj)));
                 }
@@ -129,7 +129,7 @@ public class AngelGroupDao {
                         System.currentTimeMillis(), "", JSONUtil.Serialize(obj), "", "");
                 result &= GClientManager.getInstance(ConfigInfo.RIDESHARING_WORKER_GEARMAN).push(job);
                 if (!result) {
-                    logger.error(String.format("Can't not update DB with value=%s", obj));
+                    logger.error(String.format("Can't not update DB with value=%s", JSONUtil.Serialize(obj)));
                 } else {
                     logger.info(String.format("Update Angel with value=%s", JSONUtil.Serialize(obj)));
                 }

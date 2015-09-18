@@ -44,7 +44,7 @@ public class PopularLocationDao {
                         System.currentTimeMillis(), "", JSONUtil.Serialize(obj), "", "");
                 result &= GClientManager.getInstance(ConfigInfo.RIDESHARING_WORKER_GEARMAN).push(job);
                 if (!result) {
-                    logger.error(String.format("Can't not insert DB with value=%s", obj));
+                    logger.error(String.format("Can't not insert DB with value=%s", JSONUtil.Serialize(obj)));
                 } else {
                     logger.info(String.format("Insert PopularLocation success with value=%s", JSONUtil.Serialize(obj)));
                 }
@@ -83,7 +83,7 @@ public class PopularLocationDao {
                         System.currentTimeMillis(), "", JSONUtil.Serialize(obj), "", "");
                 result &= GClientManager.getInstance(ConfigInfo.RIDESHARING_WORKER_GEARMAN).push(job);
                 if (!result) {
-                    logger.error(String.format("Can't not delete DB with value=%s", obj));
+                    logger.error(String.format("Can't not delete DB with value=%s", JSONUtil.Serialize(obj)));
                 } else {
                     logger.info(String.format("Delete PopularLocation success with value=%s", JSONUtil.Serialize(obj)));
                 }
@@ -118,7 +118,7 @@ public class PopularLocationDao {
                         System.currentTimeMillis(), "", JSONUtil.Serialize(obj), "", "");
                 result &= GClientManager.getInstance(ConfigInfo.RIDESHARING_WORKER_GEARMAN).push(job);
                 if (!result) {
-                    logger.error(String.format("Can't not update DB with value=%s", obj));
+                    logger.error(String.format("Can't not update DB with value=%s", JSONUtil.Serialize(obj)));
                 } else {
                     logger.info(String.format("Update PopularLocation with value=%s", JSONUtil.Serialize(obj)));
                 }

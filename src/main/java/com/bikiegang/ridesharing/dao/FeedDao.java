@@ -39,7 +39,7 @@ public class FeedDao {
                         System.currentTimeMillis(), "", JSONUtil.Serialize(obj), "", "");
                 result &= GClientManager.getInstance(ConfigInfo.RIDESHARING_WORKER_GEARMAN).push(job);
                 if (!result) {
-                    logger.error(String.format("Can't not insert DB with value=%s", obj));
+                    logger.error(String.format("Can't not insert DB with value=%s", JSONUtil.Serialize(obj)));
                 } else {
                     logger.info(String.format("Insert Feed success with value=%s", JSONUtil.Serialize(obj)));
                 }
@@ -72,7 +72,7 @@ public class FeedDao {
                         System.currentTimeMillis(), "", JSONUtil.Serialize(obj), "", "");
                 result &= GClientManager.getInstance(ConfigInfo.RIDESHARING_WORKER_GEARMAN).push(job);
                 if (!result) {
-                    logger.error(String.format("Can't not delete DB with value=%s", obj));
+                    logger.error(String.format("Can't not delete DB with value=%s", JSONUtil.Serialize(obj)));
                 } else {
                     logger.info(String.format("Delete Feed success with value=%s", JSONUtil.Serialize(obj)));
                 }

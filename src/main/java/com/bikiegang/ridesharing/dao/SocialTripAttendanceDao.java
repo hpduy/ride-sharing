@@ -40,7 +40,7 @@ public class SocialTripAttendanceDao {
                         System.currentTimeMillis(), "", JSONUtil.Serialize(obj), "", "");
                 result &= GClientManager.getInstance(ConfigInfo.RIDESHARING_WORKER_GEARMAN).push(job);
                 if (!result) {
-                    logger.error(String.format("Can't not insert DB with value=%s", obj));
+                    logger.error(String.format("Can't not insert DB with value=%s", JSONUtil.Serialize(obj)));
                 } else {
                     logger.info(String.format("Insert SocialTripAttendance success with value=%s", JSONUtil.Serialize(obj)));
                 }
@@ -74,7 +74,7 @@ public class SocialTripAttendanceDao {
                         System.currentTimeMillis(), "", JSONUtil.Serialize(obj), "", "");
                 result &= GClientManager.getInstance(ConfigInfo.RIDESHARING_WORKER_GEARMAN).push(job);
                 if (!result) {
-                    logger.error(String.format("Can't not delete DB with value=%s", obj));
+                    logger.error(String.format("Can't not delete DB with value=%s", JSONUtil.Serialize(obj)));
                 } else {
                     logger.info(String.format("Delete SocialTripAttendance success with value=%s", JSONUtil.Serialize(obj)));
                 }
@@ -109,7 +109,7 @@ public class SocialTripAttendanceDao {
                         System.currentTimeMillis(), "", JSONUtil.Serialize(obj), "", "");
                 result &= GClientManager.getInstance(ConfigInfo.RIDESHARING_WORKER_GEARMAN).push(job);
                 if (!result) {
-                    logger.error(String.format("Can't not update DB with value=%s", obj));
+                    logger.error(String.format("Can't not update DB with value=%s", JSONUtil.Serialize(obj)));
                 } else {
                     logger.info(String.format("Update SocialTripAttendance with value=%s", JSONUtil.Serialize(obj)));
                 }
