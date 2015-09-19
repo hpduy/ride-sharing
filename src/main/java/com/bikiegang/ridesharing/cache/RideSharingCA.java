@@ -493,6 +493,15 @@ public class RideSharingCA {
                 database.getPassengerIdRFTrips().put(key, (HashSet<Long>) JSONUtil.DeSerialize(value, new TypeToken<HashSet<Long>>() {
                 }.getType()));
             }
+            //plannedTripIdRFTrips
+            Map<String, String> plannedTripIdRFTrips = hgetAll(Trip.class.getName() + ":plannedtrip");
+            for (Map.Entry<String, String> entrySet : plannedTripIdRFTrips.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+
+                database.getPlannedTripIdRFTrips().put(ConvertUtils.toLong(key), ConvertUtils.toLong(value));
+            }
+
             result = true;
         } catch (Exception ex) {
             _logger.error(ex.getMessage());
