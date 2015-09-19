@@ -40,7 +40,8 @@ public class MessageMappingUtil {
     public static final int Notification_RequestPhoneNumber = 505;
     public static final int Notification_AcceptPhoneNumber = 506;
     public static final int Notification_AlertTripComingUp = 507;
-    public static final int Notification_Successfully = 508;
+    public static final int Notification_Start_Trip = 508;
+    public static final int Notification_End_Trip = 509;
 
 
     // other final variable

@@ -11,6 +11,7 @@ import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.EndTripRequest;
 import com.bikiegang.ridesharing.pojo.request.GetInformationUsingUserIdRequest;
 import com.bikiegang.ridesharing.pojo.request.StartTripRequest;
+import com.bikiegang.ridesharing.utilities.BroadcastCenterUtil;
 import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -69,7 +70,13 @@ public class TripController {
         trip.setEndTime(DateTimeUtil.now());
         trip.setSensitiveLocationId(request.getEndLocation());
         trip.setTripStatus(Trip.FINISHED_TRIP_WITH_OUT_RATING);
+
         if (dao.update(trip)) {
+            try {
+                User driver = database.getUserHashMap().get(trip.getDriverId());
+                new BroadcastCenterUtil().pushNotification(Parser.ObjectToNotification(MessageMappingUtil.Notification_End_Trip, driver), trip.getPassengerId());
+            } catch (Exception ignored) {
+            }
             return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
         }
         return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
