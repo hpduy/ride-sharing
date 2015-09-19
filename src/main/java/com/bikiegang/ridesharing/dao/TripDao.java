@@ -10,6 +10,7 @@ import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.Trip;
 import com.bikiegang.ridesharing.utilities.Const;
 import com.bikiegang.ridesharing.utilities.RequestLogger;
+import java.util.HashMap;
 import java.util.HashSet;
 import org.apache.log4j.Logger;
 
@@ -49,6 +50,10 @@ public class TripDao {
             }
             setRfPassenger.add(obj.getId());
 
+            //plannedTripIdRFTrips = new HashMap<>(); // <userId,<tripId>>
+            database.getPlannedTripIdRFTrips().put(obj.getDriverPlannedTripId(), obj.getId());
+            database.getPlannedTripIdRFTrips().put(obj.getPassengerPlannedTripId(), obj.getId());
+
             //Step 2: put redis
             result = cache.hset(obj.getClass().getName(), String.valueOf(obj.getId()),
                     JSONUtil.Serialize(obj));
@@ -56,6 +61,11 @@ public class TripDao {
                     JSONUtil.Serialize(setRfDrive));
             result &= cache.hset(obj.getClass().getName() + ":passenger", obj.getPassengerId(),
                     JSONUtil.Serialize(setRfPassenger));
+            result &= cache.hset(obj.getClass().getName() + ":plannedtrip", String.valueOf(obj.getDriverPlannedTripId()),
+                    String.valueOf(obj.getId()));
+            result &= cache.hset(obj.getClass().getName() + ":plannedtrip", String.valueOf(obj.getPassengerPlannedTripId()),
+                    String.valueOf(obj.getId()));
+
             if (result) {
                 //Step 3: put job gearman
                 short actionType = Const.RideSharing.ActionType.INSERT;
@@ -106,12 +116,19 @@ public class TripDao {
                 database.getPassengerIdRFTrips().put(obj.getPassengerId(), setRfPassenger);
             }
             setRfPassenger.remove((Long) obj.getId());
+
+            //plannedTripIdRFTrips = new HashMap<>(); // <userId,<tripId>>
+            database.getPlannedTripIdRFTrips().remove(obj.getDriverPlannedTripId());
+            database.getPlannedTripIdRFTrips().remove(obj.getPassengerPlannedTripId());
+
             //Step 2: put redis
             result = cache.hdel(obj.getClass().getName(), String.valueOf(obj.getId()));
             result &= cache.hset(obj.getClass().getName() + ":drive", obj.getDriverId(),
                     JSONUtil.Serialize(setRfDrive));
             result &= cache.hset(obj.getClass().getName() + ":passenger", obj.getPassengerId(),
                     JSONUtil.Serialize(setRfPassenger));
+            result &= cache.hdel(obj.getClass().getName() + ":plannedtrip", String.valueOf(obj.getDriverPlannedTripId()));
+            result &= cache.hdel(obj.getClass().getName() + ":plannedtrip", String.valueOf(obj.getPassengerPlannedTripId()));
 
             if (result) {
                 //Step 3: put job gearman
