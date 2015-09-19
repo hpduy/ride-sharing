@@ -10,9 +10,10 @@ import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.RequestVerify;
 import com.bikiegang.ridesharing.utilities.Const;
 import com.bikiegang.ridesharing.utilities.RequestLogger;
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.log4j.Logger;
 
 /**
  * Created by hpduy17 on 6/26/15.
@@ -34,7 +35,7 @@ public class RequestVerifyDao {
             //Step 1: put in hashmap
             database.getRequestVerifyHashMap().put(obj.getId(), obj);
             //userRequestBox = new HashMap<>(); //<senderId,<receiverPlannedTripId,requestIds>>
-            database.getUserRequestBox().put(obj.getUserId(), obj.getId());
+            database.getUserRequestBox().put(obj.getUserId() + "#" + obj.getAngelId(), obj.getId());
             //angelRequestsBox = new HashMap<>(); //<receiverId,<receiverPlannedTripId,<requestIds>>>
             List<Long> angelRequests = database.getAngelRequestsBox().get(obj.getAngelId());
 
@@ -47,7 +48,7 @@ public class RequestVerifyDao {
             //Step 2: put redis
             result = cache.hset(obj.getClass().getName(), String.valueOf(obj.getId()),
                     JSONUtil.Serialize(obj));
-            result &= cache.hset(obj.getClass().getName() + ":user", String.valueOf(obj.getUserId()),
+            result &= cache.hset(obj.getClass().getName() + ":user", String.valueOf(obj.getUserId() + "#" + obj.getUserId()),
                     String.valueOf(obj.getId()));
             result &= cache.hset(obj.getClass().getName() + ":angel", String.valueOf(obj.getAngelId()),
                     JSONUtil.Serialize(angelRequests));
@@ -98,7 +99,7 @@ public class RequestVerifyDao {
             angelRequests.remove((Long) obj.getId());
             //Step 2: put redis
             result = cache.hdel(obj.getClass().getName(), String.valueOf(obj.getId()));
-            result &= cache.hdel(obj.getClass().getName() + ":user", String.valueOf(obj.getUserId()));
+            result &= cache.hdel(obj.getClass().getName() + ":user", String.valueOf(obj.getUserId() + "#" + obj.getAngelId()));
             result &= cache.hset(obj.getClass().getName() + ":angel", String.valueOf(obj.getAngelId()),
                     JSONUtil.Serialize(angelRequests));
             if (result) {

@@ -29,7 +29,7 @@ public class MessageMappingUtil {
     public static final int Certificate_expired = 16;
     public static final int User_is_busy = 17;
     public static final int User_and_angel_is_not_same_place_and_time = 18;
-
+    public static final int Request_has_been_sent = 19;
 
     // notification
     public static final int Notification_RequestVerify = 500;

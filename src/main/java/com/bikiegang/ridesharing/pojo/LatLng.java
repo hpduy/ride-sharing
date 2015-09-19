@@ -11,7 +11,8 @@ import java.util.regex.Pattern;
  * Created by hpduy17 on 6/16/15.
  */
 public class LatLng {
-    public static final Pattern latlngPattern = Pattern.compile("-?[0-9]{1,2}(.[0-9]+)?(,|%2C|%252C)-?[0-9]{1,3}.(.[0-9]+)?");
+//    public static final Pattern latlngPattern = Pattern.compile("-?[0-9]{1,2}(.[0-9]+)?(,|%2C|%252C)-?[0-9]{1,3}.(.[0-9]+)?");
+    public static final Pattern latlngPattern = Pattern.compile("-?[0-9]{1,2}(.[0-9]+)?([ ]*)([,]?)([ ]*)-?[0-9]{1,3}.(.[0-9]+)?");
     protected double lat;
     protected double lng;
     protected long time;
@@ -38,7 +39,7 @@ public class LatLng {
         String latlngString = "";
         Matcher matcher = latlngPattern.matcher(coordinate);
         if (matcher.find()) {
-            latlngString = matcher.group(1);
+            latlngString = matcher.group();
             String[] temp = latlngString.split(",");
             this.lat = Double.parseDouble(temp[0]);
             this.lng = Double.parseDouble(temp[1]);

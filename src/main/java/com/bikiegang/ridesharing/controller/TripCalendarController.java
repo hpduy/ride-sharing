@@ -5,6 +5,7 @@ import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.database.IdGenerator;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.PlannedTrip;
+import com.bikiegang.ridesharing.pojo.Trip;
 import com.bikiegang.ridesharing.pojo.TripCalendar;
 import com.bikiegang.ridesharing.pojo.request.GetInformationUsingUserIdRequest;
 import com.bikiegang.ridesharing.pojo.request.GetTripByCalendarRequest;
@@ -83,27 +84,36 @@ public class TripCalendarController {
             GetFeedsResponse response = new GetFeedsResponse();
             List<FeedResponse> tripByDay = new ArrayList<>();
             TripCalendar tripCalendar = database.getTripCalendarHashMap().get(database.getUserIdRFTripCalendar().get(request.getUserId()));
-            List<Long> feedIds = tripCalendar.getIdsInCellByTime(DateTimeUtil.now());
-            List<PlannedTrip> trips = new ArrayList<>();
-            for (long id : feedIds) {
-                PlannedTrip trip = database.getPlannedTripHashMap().get(id);
-                if (trip != null) {
-                    trips.add(database.getPlannedTripHashMap().get(id));
+            if (tripCalendar != null) {
+                List<Long> feedIds = tripCalendar.getIdsInCellByTime(DateTimeUtil.now());
+                List<PlannedTrip> trips = new ArrayList<>();
+                if (feedIds != null) {
+                    for (long id : feedIds) {
+                        PlannedTrip trip = database.getPlannedTripHashMap().get(id);
+                        if (trip != null) {
+                            if (database.getPlannedTripIdRFTrips().containsKey(id)) {
+                                long tripId = database.getPlannedTripIdRFTrips().get(id);
+                                if (database.getTripHashMap().containsKey(tripId) && database.getTripHashMap().get(tripId).getTripStatus() == Trip.COMPLETED_TRIP)
+                                    continue;
+                            }
+                            trips.add(database.getPlannedTripHashMap().get(id));
+                        }
+                    }
+                    Collections.sort(trips, new Comparator<PlannedTrip>() {
+                        @Override
+                        public int compare(PlannedTrip o1, PlannedTrip o2) {
+                            long dis = o2.getDepartureTime() - o1.getDepartureTime();
+                            if (dis > 0)
+                                return 1;
+                            return -1;
+                        }
+                    });
+                    for (PlannedTrip t : trips) {
+                        tripByDay.add(new FeedController().convertPlannedTripToFeed(t, t.getCreatorId()));
+                    }
+                    response.setFeeds(tripByDay.toArray(new FeedResponse[tripByDay.size()]));
                 }
             }
-            Collections.sort(trips, new Comparator<PlannedTrip>() {
-                @Override
-                public int compare(PlannedTrip o1, PlannedTrip o2) {
-                    long dis = o2.getDepartureTime() - o1.getDepartureTime();
-                    if (dis > 0)
-                        return 1;
-                    return -1;
-                }
-            });
-            for (PlannedTrip t : trips) {
-                tripByDay.add(new FeedController().convertPlannedTripToFeed(t, t.getCreatorId()));
-            }
-            response.setFeeds(tripByDay.toArray(new FeedResponse[tripByDay.size()]));
             return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, response);
         } catch (Exception ignored) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "TripCalendar");

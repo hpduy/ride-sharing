@@ -7,17 +7,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FeedResponse {
-    private UserShortDetailResponse userDetail;
+    private UserDetailResponse userDetail;
     private ExPartnerInfoResponse partnerInfo;
     private TripInFeed tripDetail;
+    private UserDetailResponse partnerDetail;
+    private TripInFeed partnerTripDetail;
 
-    public UserShortDetailResponse getUserDetail() {
-        return userDetail;
-    }
-
-    public void setUserDetail(UserShortDetailResponse userDetail) {
-        this.userDetail = userDetail;
-    }
 
     public ExPartnerInfoResponse getPartnerInfo() {
         return partnerInfo;
@@ -35,4 +30,28 @@ public class FeedResponse {
         this.tripDetail = tripDetail;
     }
 
+
+    public TripInFeed getPartnerTripDetail() {
+        return partnerTripDetail;
+    }
+
+    public void setPartnerTripDetail(TripInFeed partnerTripDetail) {
+        this.partnerTripDetail = partnerTripDetail;
+    }
+
+    public UserDetailResponse getUserDetail() {
+        return userDetail;
+    }
+
+    public void setUserDetail(UserDetailResponse userDetail) {
+        this.userDetail = userDetail;
+    }
+
+    public UserDetailResponse getPartnerDetail() {
+        return partnerDetail;
+    }
+
+    public void setPartnerDetail(UserDetailResponse partnerDetail) {
+        this.partnerDetail = partnerDetail;
+    }
 }

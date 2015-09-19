@@ -11,7 +11,7 @@ import com.bikiegang.ridesharing.pojo.Trip;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.*;
 import com.bikiegang.ridesharing.pojo.response.*;
-import com.bikiegang.ridesharing.pojo.response.angel.GetAngelInGroupsResponse;
+import com.bikiegang.ridesharing.pojo.response.angel.GetAngelsInGroupResponse;
 import com.bikiegang.ridesharing.utilities.BroadcastCenterUtil;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import com.bikiegang.ridesharing.utilities.Path;
@@ -355,7 +355,7 @@ public class UserController {
                 userDetails.add(detail);
             }
         }
-        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new GetAngelInGroupsResponse(userDetails));
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new GetAngelsInGroupResponse(userDetails));
     }
 
     public List<User> getUsersFromUserIds(List<String> ids) {

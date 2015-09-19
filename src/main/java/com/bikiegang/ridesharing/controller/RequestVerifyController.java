@@ -48,6 +48,9 @@ public class RequestVerifyController {
         if (null == angel) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "Angel");
         }
+        if(database.getUserHashMap().containsKey(request.getUserId()+"#"+request.getAngelId())){
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Request_has_been_sent, "verification");
+        }
         // create request
         RequestVerify requestVerify = new RequestVerify();
         requestVerify.setId(IdGenerator.getRequestVerifyId());

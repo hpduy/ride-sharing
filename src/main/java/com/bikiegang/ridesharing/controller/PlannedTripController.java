@@ -77,6 +77,7 @@ public class PlannedTripController {
                 plannedTripList.addAll(plannedTrips.get(key));
             }
             sortPlannedTripByDepartureTime(fakeRoute.getStartLocation(), plannedTripList);
+            sortPlannedTripByDepartureTime(fakeRoute.getStartLocation(), plannedTripList);
             if (plannedTripList.size() > 100) {
                 plannedTripList = plannedTripList.subList(0, 100);
             }
@@ -105,11 +106,11 @@ public class PlannedTripController {
             plannedTrip.setRouteId(route.getId());
             plannedTrip.setOwnerPrice(request.getPlannedTrip().getPrice() < 0 ? DEFAULT_PRICE : request.getPlannedTrip().getPrice());
             if (dao.insert(plannedTrip) || Database.databaseStatus == Database.TESTING) {
-                new FeedController().postNewFeed(plannedTrip.getId(), Feed.PLANNED_TRIP, plannedTrip.getDepartureTime());
                 UserAndPlannedTripDetailResponse yourPlannedTripDetail = getUserAndPlannedTripDetailFromObject(plannedTrip);
                 // insert calendar
                 new TripCalendarController().putToCalendar(plannedTrip.getDepartureTime(), plannedTrip.getId(), plannedTrip.getCreatorId());
                 if (request.getPlannedTrip().isParing()) {
+                    new FeedController().postNewFeed(plannedTrip.getId(), Feed.PLANNED_TRIP, plannedTrip.getDepartureTime());
                     HashMap<Integer, List<PlannedTrip>> paringResults = new Pairing().pair(plannedTrip);
                     List<PlannedTrip> result;
                     if (plannedTrip.getRole() == User.PASSENGER) {
@@ -162,9 +163,10 @@ public class PlannedTripController {
             if (dao.insert(plannedTrip) || Database.databaseStatus == Database.TESTING) {
                 // insert calendar
                 new TripCalendarController().putToCalendar(plannedTrip.getDepartureTime(), plannedTrip.getId(), plannedTrip.getCreatorId());
-                new FeedController().postNewFeed(plannedTrip.getId(), Feed.PLANNED_TRIP, plannedTrip.getDepartureTime());
+
                 FeedResponse yourPlannedTripDetail = new FeedController().convertPlannedTripToFeed(plannedTrip, plannedTrip.getCreatorId());
                 if (request.getPlannedTrip().isParing()) {
+                    new FeedController().postNewFeed(plannedTrip.getId(), Feed.PLANNED_TRIP, plannedTrip.getDepartureTime());
                     HashMap<Integer, List<PlannedTrip>> paringResults = new Pairing().pair(plannedTrip);
                     List<PlannedTrip> result;
                     if (plannedTrip.getRole() == User.PASSENGER) {
@@ -216,10 +218,10 @@ public class PlannedTripController {
                         new TripCalendarController().putToCalendar(plannedTrip.getDepartureTime(), plannedTrip.getId(), plannedTrip.getCreatorId());
                         FeedResponse yourPlannedTripDetail = new FeedController().convertPlannedTripToFeed(plannedTrip, plannedTrip.getCreatorId());
                         if (request.getPlannedTrip().isParing()) {
+                            new FeedController().postNewFeed(plannedTrip.getId(), Feed.PLANNED_TRIP, plannedTrip.getDepartureTime());
                             UserAndPlannedTripDetailByDayResponse plannedTripDetailByDayResponse = new UserAndPlannedTripDetailByDayResponse();
                             long epd = plannedTrip.getDepartureTime() / DateTimeUtil.SECONDS_PER_DAY;
                             if (epd < endP) {
-                                new FeedController().postNewFeed(plannedTrip.getId(), Feed.PLANNED_TRIP);
                                 HashMap<Integer, List<PlannedTrip>> paringResults = new Pairing().pair(plannedTrip);
                                 List<PlannedTrip> result;
                                 if (plannedTrip.getRole() == User.PASSENGER) {

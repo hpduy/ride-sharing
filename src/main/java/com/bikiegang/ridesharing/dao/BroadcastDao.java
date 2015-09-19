@@ -33,7 +33,7 @@ public class BroadcastDao {
             //Step 1: put in hashmap
             database.getBroadcastHashMap().put(obj.getId(), obj);
             // userIdRFBroadcasts = new HashMap<>(); //<userId#type,<broadcastId>>
-            HashSet<String> broadcastIds = database.getUserIdRFBroadcasts().get(obj.getUserId());
+            HashSet<String> broadcastIds = database.getUserIdRFBroadcasts().get(obj.getUserId() + "#" + obj.getType());
             if (broadcastIds == null) {
                 broadcastIds = new HashSet<>();
                 database.getUserIdRFBroadcasts().put(obj.getUserId() + "#" + obj.getType(), broadcastIds);
@@ -76,12 +76,11 @@ public class BroadcastDao {
             //Step 1: remove in hashmap
             database.getBroadcastHashMap().remove(obj.getId());
             // userIdRFBroadcasts = new HashMap<>(); //<userId,<broadcastId>>
-            HashSet<String> broadcastIds = database.getUserIdRFBroadcasts().get(obj.getUserId());
-            if (broadcastIds == null) {
-                broadcastIds = new HashSet<>();
-                database.getUserIdRFBroadcasts().put(obj.getUserId() + "#" + obj.getType(), broadcastIds);
+            HashSet<String> broadcastIds = database.getUserIdRFBroadcasts().get(obj.getUserId() + "#" + obj.getType());
+            if (broadcastIds != null) {
+                broadcastIds.remove(obj.getId());
             }
-            broadcastIds.remove(obj.getId());
+
 
             //Step 2: remove redis
             result = cache.hdel(obj.getClass().getName(), obj.getId());
@@ -119,10 +118,10 @@ public class BroadcastDao {
             }
             RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.UPDATE);
             //Step 1: Update in hashmap
-            database.getBroadcastHashMap().put(obj.getId(), obj);
+            database.getBroadcastHashMap().put( obj.getId(), obj);
 
             //Step 2: Update redis
-            result = cache.hset(obj.getClass().getName(), String.valueOf(obj.getId()), JSONUtil.Serialize(obj));
+            result = cache.hset(obj.getClass().getName(), String.valueOf( obj.getId()), JSONUtil.Serialize(obj));
             if (result) {
                 //Step 3: put job gearman
                 short actionType = Const.RideSharing.ActionType.UPDATE;

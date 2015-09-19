@@ -2,6 +2,7 @@ package com.bikiegang.ridesharing.utilities.FakeGroup;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.controller.RequestVerifyController;
+import com.bikiegang.ridesharing.dao.UserDao;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.angel.GetRequestDetailRequest;
@@ -22,12 +23,9 @@ public class FakeRequestVerify {
         for (int i = 0; i < numberOfRequest; i++) {
             RequestVerifyRequest requestVerifyRequest = new RequestVerifyRequest();
             FakeUser fakeUser = new FakeUser();
-            User user = new User();
-            synchronized (user) {
-                user = fakeUser.fakeUser(User.FEMALE, User.UNVERIFIED, false);
-            }
+            User user = fakeUser.fakeUser(User.FEMALE, User.UNVERIFIED, false);
             System.out.println("Fake user done:" + user.getId());
-            database.getUserHashMap().put(user.getId(), user);
+            new UserDao().insert(user);
             requestVerifyRequest.setUserId(user.getId());
             requestVerifyRequest.setAngelId(angel.getId());
             for (int j = 0; j < 2; j++) {

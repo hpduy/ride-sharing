@@ -49,28 +49,28 @@ public class BroadcastController {
                         && request.getOs() != Broadcast.WINDOW_PHONE)) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'os'");
         }
-        String id = request.getDeviceId() + "#" + request.getUserId() + "#" + broadcastType;
+        String id = request.getDeviceId() + "#" + broadcastType;
         Broadcast broadcast = new Broadcast();
         broadcast.setId(id);
         broadcast.setDeviceId(request.getDeviceId());
         broadcast.setRegId(request.getRegId());
         broadcast.setUserId(request.getUserId());
         broadcast.setOs(request.getOs());
-        if (!database.getBroadcastHashMap().containsKey(id)) {
-            if (dao.insert(broadcast)) {
-                return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
+        broadcast.setType(broadcastType);
+        if (database.getBroadcastHashMap().containsKey(id)) {
+            Broadcast oldBroadcast = database.getBroadcastHashMap().get(id);
+            if (!dao.delete(oldBroadcast)) {
+                return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
             }
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
-        } else {
-            if (dao.update(broadcast)) {
-                return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
-            }
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
         }
+        if(dao.insert(broadcast)){
+            return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
+        }
+        return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
     }
 
     private String deleteBroadcast(UpdateBroadcastRequest request, int broadcastType) throws JsonProcessingException {
-        String id = request.getDeviceId() + "#" + request.getUserId() + "#" + broadcastType;
+        String id = request.getDeviceId() + "#" + broadcastType;
         Broadcast broadcast = database.getBroadcastHashMap().get(id);
         if (null == broadcast) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "Broadcast");

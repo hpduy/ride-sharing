@@ -4,19 +4,16 @@ import com.bikiegang.ridesharing.dao.FeedDao;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.database.IdGenerator;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.Feed;
-import com.bikiegang.ridesharing.pojo.PlannedTrip;
-import com.bikiegang.ridesharing.pojo.SocialTrip;
-import com.bikiegang.ridesharing.pojo.User;
+import com.bikiegang.ridesharing.pojo.*;
 import com.bikiegang.ridesharing.pojo.request.GetFeedsRequest;
 import com.bikiegang.ridesharing.pojo.request.GetInformationUsingUserIdRequest;
 import com.bikiegang.ridesharing.pojo.response.*;
+import com.bikiegang.ridesharing.utilities.MapUtil;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by hpduy17 on 8/19/15.
@@ -43,13 +40,15 @@ public class FeedController {
             } else {
                 SocialTrip socialTrip = database.getSocialTripHashMap().get(refId);
             }
+            //sort
+            database.setFeedHashMap((LinkedHashMap<Long, Feed>) MapUtil.sortByValue(database.getFeedHashMap()));
             return true;
         }
         return false;
     }
 
     public String getFeeds(GetFeedsRequest request) throws IOException {
-            if (null == request.getUserId() || request.getUserId().equals("")) {
+        if (null == request.getUserId() || request.getUserId().equals("")) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
         }
         if (request.getNumberOfFeed() <= 0) {
@@ -65,26 +64,35 @@ public class FeedController {
             if (feedId.contains(request.getStartId())) {
                 fromIdx = feedId.indexOf(request.getStartId());
             } else {
-                for (int i = 0; i < feedList.size(); i++) {
-                    if (feedList.get(i).getCreatedTime() > DateTimeUtil.now() - DateTimeUtil.HOURS) {
-                        fromIdx = i;
+                for (; fromIdx < feedList.size(); fromIdx++) {
+                    if (feedList.get(fromIdx).getCreatedTime() > (DateTimeUtil.now() - DateTimeUtil.HOURS)) {
                         break;
                     }
                 }
             }
-            toIdx = fromIdx + request.getNumberOfFeed();
-            if (toIdx > feedList.size())
-                toIdx = feedList.size();
-            List<Feed> feeds = new ArrayList<>(database.getFeedHashMap().values()).subList(fromIdx, toIdx);
+            Collections.sort(feedList, new Comparator<Feed>() {
+                @Override
+                public int compare(Feed o1, Feed o2) {
+                    if (o1.getCreatedTime() < o2.getCreatedTime())
+                        return -1;
+                    return 0;
+                }
+            });
 
-            for (Feed feed : feeds) {
+            for (int i = fromIdx; i < feedList.size() || responses.size() <= request.getNumberOfFeed(); i++) {
+                Feed feed = feedList.get(i);
                 FeedResponse response = new FeedResponse();
                 TripInFeed tif = null;
                 ExPartnerInfoResponse partnerInfoResponse = null;
-                UserShortDetailResponse userShortDetailResponse = null;
+                UserDetailResponse userDetailResponse = null;
                 try {
                     switch (feed.getType()) {
                         case Feed.PLANNED_TRIP:
+                            if (database.getPlannedTripIdRFTrips().containsKey(feed.getRefId())) {
+                                long tripId = database.getPlannedTripIdRFTrips().get(feed.getRefId());
+                                if (database.getTripHashMap().containsKey(tripId) && database.getTripHashMap().get(tripId).getTripStatus() != Trip.UNFINISHED_TRIP)
+                                    continue;
+                            }
                             tif = new PlannedTripDetailResponse(database.getPlannedTripHashMap().get(feed.getRefId()), request.getUserId());
                             break;
                         case Feed.SOCIAL_TRIP:
@@ -94,10 +102,10 @@ public class FeedController {
                     if (tif != null) {
                         User user = database.getUserHashMap().get(tif.getCreatorId());
                         if (user != null) {
-                            userShortDetailResponse = new UserShortDetailResponse(user);
+                            userDetailResponse = new UserDetailResponse(user);
                             partnerInfoResponse = new UserController().getExPartners(user.getId());
                             response.setPartnerInfo(partnerInfoResponse);
-                            response.setUserDetail(userShortDetailResponse);
+                            response.setUserDetail(userDetailResponse);
                             response.setTripDetail(tif);
                             responses.add(response);
                         }
@@ -126,18 +134,8 @@ public class FeedController {
     public FeedResponse[] convertPlannedTripsToFeeds(PlannedTrip[] plannedTrips, String requesterId) throws IOException {
         List<FeedResponse> responses = new ArrayList<>();
         for (PlannedTrip plannedTrip : plannedTrips) {
-            FeedResponse response = new FeedResponse();
-            ExPartnerInfoResponse partnerInfoResponse = null;
-            UserShortDetailResponse userShortDetailResponse = null;
-            User user = database.getUserHashMap().get(plannedTrip.getCreatorId());
-            if (user != null) {
-                userShortDetailResponse = new UserShortDetailResponse(user);
-                partnerInfoResponse = new UserController().getExPartners(user.getId());
-                response.setPartnerInfo(partnerInfoResponse);
-                response.setUserDetail(userShortDetailResponse);
-                response.setTripDetail(new PlannedTripShortDetailResponse(plannedTrip, requesterId));
-                responses.add(response);
-            }
+            FeedResponse response = convertPlannedTripToFeed(plannedTrip, requesterId);
+            responses.add(response);
 
         }
         return responses.toArray(new FeedResponse[responses.size()]);
@@ -146,14 +144,37 @@ public class FeedController {
     public FeedResponse convertPlannedTripToFeed(PlannedTrip plannedTrip, String requesterId) throws IOException {
         FeedResponse response = new FeedResponse();
         ExPartnerInfoResponse partnerInfoResponse = null;
-        UserShortDetailResponse userShortDetailResponse = null;
+        UserDetailResponse userShortDetailResponse = null;
         User user = database.getUserHashMap().get(plannedTrip.getCreatorId());
         if (user != null) {
-            userShortDetailResponse = new UserShortDetailResponse(user);
+            userShortDetailResponse = new UserDetailResponse(user);
             partnerInfoResponse = new UserController().getExPartners(user.getId());
             response.setPartnerInfo(partnerInfoResponse);
             response.setUserDetail(userShortDetailResponse);
             response.setTripDetail(new PlannedTripDetailResponse(plannedTrip, requesterId));
+        }
+        // get partner info
+        if (database.getRequestMakeTripHashMap().containsKey(plannedTrip.getRequestId())) {
+            RequestMakeTrip requestMakeTrip = database.getRequestMakeTripHashMap().get(plannedTrip.getRequestId());
+            String partnerId = "";
+            long partnerTripId = 0;
+            if (user.getId().equals(requestMakeTrip.getSenderId())) {
+                partnerId = requestMakeTrip.getReceiverId();
+            } else {
+                partnerId = requestMakeTrip.getSenderId();
+            }
+            User partner = database.getUserHashMap().get(partnerId);
+            if (partner != null) {
+                response.setPartnerDetail(new UserDetailResponse(partner));
+            }
+            if (plannedTrip.getRole() == User.DRIVER) {
+                partnerTripId = requestMakeTrip.getPassengerPlannedTripId();
+            } else {
+                partnerTripId = requestMakeTrip.getDriverPlannedTripId();
+            }
+            if (database.getPlannedTripHashMap().containsKey(partnerTripId)) {
+                response.setPartnerTripDetail(new PlannedTripDetailResponse(database.getPlannedTripHashMap().get(partnerTripId), requesterId));
+            }
         }
         return response;
     }

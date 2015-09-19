@@ -46,6 +46,7 @@ public class Parser {
         this.success = success;
         this.messageCode = messageCode;
     }
+
     private Parser(boolean success, int messageCode, String message) {
         this.success = success;
         this.messageCode = messageCode;
@@ -75,9 +76,9 @@ public class Parser {
 
     public static String ObjectToNotification(int messageCode, User sender) throws JsonProcessingException {
         try {
-            Notification notification = new Notification(sender.getFirstName()+sender.getLastName(), sender.getId());
+            Notification notification = new Notification(sender.getFirstName() + sender.getLastName(), sender.getId());
             return toJson(new Parser(true, messageCode, notification));
-        }catch (Exception ex){
+        } catch (Exception ex) {
             throw ex;
         }
     }
@@ -100,20 +101,26 @@ public class Parser {
     public static String FeedsToJSon(boolean success, int messageCode, GetFeedsResponse result) throws JsonProcessingException {
         JSONObject response = new JSONObject();
         JSONArray feeds = new JSONArray();
-        for(FeedResponse feedResponse : result.getFeeds()){
+        for (FeedResponse feedResponse : result.getFeeds()) {
             JSONObject feed = new JSONObject();
-            feed.put("partnerInfo",ObjectToJSon(feedResponse.getPartnerInfo()));
-            feed.put("userDetail",ObjectToJSon(feedResponse.getUserDetail()));
-            if (feedResponse.getTripDetail().getTypeOfTrip() == Feed.PLANNED_TRIP) {
-                feed.put("tripDetail", ObjectToJSon((PlannedTripShortDetailResponse)feedResponse.getTripDetail()));
-            }else{
-                feed.put("tripDetail", ObjectToJSon((SocialTripResponse)feedResponse.getTripDetail()));
+            feed.put("partnerInfo", ObjectToJSon(feedResponse.getPartnerInfo()));
+            feed.put("userDetail", ObjectToJSon(feedResponse.getUserDetail()));
+            feed.put("partnerDetail", ObjectToJSon(feedResponse.getPartnerDetail()));
+            if (feedResponse.getTripDetail() != null && feedResponse.getTripDetail().getTypeOfTrip() == Feed.PLANNED_TRIP) {
+                feed.put("tripDetail", ObjectToJSon((PlannedTripShortDetailResponse) feedResponse.getTripDetail()));
+            } else {
+                feed.put("tripDetail", ObjectToJSon((SocialTripResponse) feedResponse.getTripDetail()));
+            }
+            if (feedResponse.getPartnerTripDetail() != null && feedResponse.getPartnerTripDetail().getTypeOfTrip() == Feed.PLANNED_TRIP) {
+                feed.put("partnerTripDetail", ObjectToJSon((PlannedTripShortDetailResponse) feedResponse.getPartnerTripDetail()));
+            } else {
+                feed.put("partnerTripDetail", ObjectToJSon((SocialTripResponse) feedResponse.getPartnerTripDetail()));
             }
             feeds.put(feed);
         }
-        response.put("success",success);
-        response.put("messageCode",messageCode);
-        response.put("result",new JSONObject().put("feeds",feeds));
+        response.put("success", success);
+        response.put("messageCode", messageCode);
+        response.put("result", new JSONObject().put("feeds", feeds));
         return toJson(new Parser(success, messageCode, result));
     }
 

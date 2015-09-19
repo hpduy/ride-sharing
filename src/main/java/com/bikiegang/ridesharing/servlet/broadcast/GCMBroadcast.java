@@ -110,7 +110,7 @@ public class GCMBroadcast extends HttpServlet {
                         .collapseKey(collapseKey)
                         .timeToLive(100)
                         .delayWhileIdle(true)
-                        .addData("content", URLEncoder.encode(contents.get(i), "UTF-8"))
+                        .addData("message", URLEncoder.encode(contents.get(i), "UTF-8"))
                         .build();
                 lstMessage.add(message);
             }

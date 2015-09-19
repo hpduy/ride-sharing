@@ -10,7 +10,7 @@ import com.bikiegang.ridesharing.pojo.request.angel.ExitGroupRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.GetAngelInGroupRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.JoinGroupRequest;
 import com.bikiegang.ridesharing.pojo.response.UserShortDetailResponse;
-import com.bikiegang.ridesharing.pojo.response.angel.GetAngelInGroupsResponse;
+import com.bikiegang.ridesharing.pojo.response.angel.GetAngelsInGroupResponse;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -34,15 +34,20 @@ public class AngelGroupMemberController {
         if (request.getGroupId() <= 0) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'groupIds'");
         }
+        if(!database.getAngelGroupHashMap().containsKey(request.getGroupId())){
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found,""+request.getGroupId());
+        }
         HashSet<String> angelList = database.getAngelGroupIdRFUsers().get(request.getGroupId());
         List<UserShortDetailResponse> responses = new ArrayList<>();
-        for (String id : angelList) {
-            User user = database.getUserHashMap().get(id);
-            if (null != user) {
-                responses.add(new UserShortDetailResponse(user));
+        if(angelList != null) {
+            for (String id : angelList) {
+                User user = database.getUserHashMap().get(id);
+                if (null != user) {
+                    responses.add(new UserShortDetailResponse(user));
+                }
             }
         }
-        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new GetAngelInGroupsResponse(responses));
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new GetAngelsInGroupResponse(responses));
     }
 
     public String joinGroup(JoinGroupRequest request) throws JsonProcessingException {
@@ -53,6 +58,9 @@ public class AngelGroupMemberController {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'groupIds'");
         }
         for (long id : request.getGroupIds()) {
+            if(!database.getAngelGroupHashMap().containsKey(id)){
+                return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found,""+id);
+            }
             if (!database.getUserAndGroupRFAngelGroupMember().containsKey(combineKey(request.getUserId(), id))) {
                 AngelGroupMember groupMember = new AngelGroupMember(IdGenerator.getAngelGroupMemberId(), id, request.getUserId(), DateTimeUtil.now());
                 if (!dao.insert(groupMember)) {

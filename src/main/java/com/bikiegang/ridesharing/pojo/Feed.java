@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 /**
  * Created by hpduy17 on 8/18/15.
  */
-public class Feed implements PojoBase {
+public class Feed implements PojoBase , Comparable{
 
     private long id;
     private int type;
@@ -57,5 +57,13 @@ public class Feed implements PojoBase {
 
     public void setCreatedTime(long createdTime) {
         this.createdTime = createdTime;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        Feed that = (Feed) o;
+        if (this.getCreatedTime() > that.getCreatedTime())
+            return 0;
+        return -1;
     }
 }

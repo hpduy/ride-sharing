@@ -15,6 +15,10 @@ public class PopularLocation extends LatLng implements PojoBase {
     public PopularLocation() {
     }
 
+    public PopularLocation(String coordinate) {
+        super(coordinate);
+    }
+
     public PopularLocation(LatLng that, long id, String name, String address, HashSet<String> searcher,String backgroundImageLink) {
         super(that);
         this.id = id;

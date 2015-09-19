@@ -4,14 +4,12 @@
  * and open the template in the editor.
  */
 
-package com.bikiegang.ridesharing.api.angel;
+package com.bikiegang.ridesharing.api;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
-import com.bikiegang.ridesharing.controller.AngelGroupMemberController;
+import com.bikiegang.ridesharing.controller.PopularLocationController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.request.GetUsersAroundFromMeRequest;
-import com.bikiegang.ridesharing.pojo.request.angel.GetAngelInGroupRequest;
-import com.bikiegang.ridesharing.pojo.response.UserShortDetailResponse;
+import com.bikiegang.ridesharing.pojo.request.IncreasePopularityRequest;
 import com.bikiegang.ridesharing.utilities.ApiDocumentGenerator;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import org.apache.log4j.Logger;
@@ -25,11 +23,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class GetAngelInGroups extends HttpServlet {
+public class IncreasePopularityOfLocationAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
-    public Class requestClass = GetUsersAroundFromMeRequest.class;
-    public Class responseClass = UserShortDetailResponse.class;
-    public boolean responseIsArray = true;
+    public Class requestClass = IncreasePopularityRequest.class;
+    public Class responseClass = null;
+    public boolean responseIsArray = false;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -53,15 +51,15 @@ public class GetAngelInGroups extends HttpServlet {
                 jsonData.append(line);
             }
             logger.info(jsonData.toString());
-            GetAngelInGroupRequest getAngelInGroupRequest = (GetAngelInGroupRequest) Parser.JSonToObject(jsonData.toString(), GetAngelInGroupRequest.class);
-            AngelGroupMemberController controller = new AngelGroupMemberController();
-            String result = controller.getAngelsInGroup(getAngelInGroupRequest);
+            IncreasePopularityRequest increasePopularityRequest = (IncreasePopularityRequest) Parser.JSonToObject(jsonData.toString(), IncreasePopularityRequest.class);
+            PopularLocationController controller = new PopularLocationController();
+            String result = controller.increasePopularity(increasePopularityRequest);
             logger.info(result);
             out.print(result);
         } catch (Exception ex) {
             ex.printStackTrace();
             logger.error(ex.getStackTrace());
-            out.print(Parser.ObjectToJSon(false, MessageMappingUtil.System_Exception,  ex.getMessage()));
+            out.print(Parser.ObjectToJSon(false, MessageMappingUtil.System_Exception, ex.getMessage()));
         }
     }
 

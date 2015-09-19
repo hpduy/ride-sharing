@@ -1,6 +1,5 @@
 package com.bikiegang.ridesharing.utilities;
 
-import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.Broadcast;
 import com.bikiegang.ridesharing.pojo.static_object.GCMTransferMessage;
@@ -23,7 +22,7 @@ public class BroadcastCenterUtil implements Runnable {
     private String collapseKey = "CloudBike";
     private String senderId = CLOUD_BIKE_SENDER_ID;
     private int type = Broadcast.MAIN_APP;
-    private final String urlStringPath = Path.getServerAddress() + "/GCMBroadcast";
+    private final String urlStringPath = "http://localhost:8080/RideSharing/GCMBroadcast";
 
     //final variable
     public static String CLOUD_BIKE_SENDER_ID = "AIzaSyCLMZnnCx00PKpYkrjFCfKExCFGRhVdoqA";//"AIzaSyBbF-lPqCpcUsiJdahgt21WB00vpKRxXik";
@@ -43,29 +42,28 @@ public class BroadcastCenterUtil implements Runnable {
     public void run() {
         try {
             //connect different server;
-            if (Database.databaseStatus == Database.TESTING) {
-                URL url = new URL(urlStringPath);
-                HttpURLConnection myConn = (HttpURLConnection) url.openConnection();
-                myConn.setDoOutput(true); // do output or post
-                PrintWriter po = new PrintWriter(new OutputStreamWriter(myConn.getOutputStream(), "UTF-8"));
-                GCMTransferMessage gcmMessage = new GCMTransferMessage();
-                gcmMessage.setCollapseKey(collapseKey);
-                gcmMessage.setContents(contents);
-                gcmMessage.setUserIds(userIds);
-                gcmMessage.setSenderId(senderId);
-                gcmMessage.setType(type);
-                po.println(Parser.ObjectToJSon(gcmMessage));
-                po.close();
-                //read data
-                StringBuffer strBuffer = new StringBuffer();
-                BufferedReader in = new BufferedReader(new InputStreamReader(myConn.getInputStream(), "UTF-8"));
-                String inputLine = null;
-                while ((inputLine = in.readLine()) != null) {
-                    strBuffer.append(inputLine);
-                }
-                System.out.print(strBuffer.toString());
-                in.close();
+            URL url = new URL(urlStringPath);
+            HttpURLConnection myConn = (HttpURLConnection) url.openConnection();
+            myConn.setDoOutput(true); // do output or post
+            PrintWriter po = new PrintWriter(new OutputStreamWriter(myConn.getOutputStream(), "UTF-8"));
+            GCMTransferMessage gcmMessage = new GCMTransferMessage();
+            gcmMessage.setCollapseKey(collapseKey);
+            gcmMessage.setContents(contents);
+            gcmMessage.setUserIds(userIds);
+            gcmMessage.setSenderId(senderId);
+            gcmMessage.setType(type);
+            po.println(Parser.ObjectToJSon(gcmMessage));
+            po.close();
+            //read data
+            StringBuffer strBuffer = new StringBuffer();
+            BufferedReader in = new BufferedReader(new InputStreamReader(myConn.getInputStream(), "UTF-8"));
+            String inputLine = null;
+            while ((inputLine = in.readLine()) != null) {
+                strBuffer.append(inputLine);
             }
+            System.out.print(strBuffer.toString());
+            in.close();
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -81,7 +79,7 @@ public class BroadcastCenterUtil implements Runnable {
     }
 
     public void pushNotification(String content, List<String> userIds, String senderId) {
-       pushNotification(content,userIds,senderId,type);
+        pushNotification(content, userIds, senderId, type);
     }
 
     public void pushNotification(String content, List<String> userIds, int type) {
@@ -92,8 +90,9 @@ public class BroadcastCenterUtil implements Runnable {
         Thread pusher = new Thread(new BroadcastCenterUtil(contents, userIds, senderId, type));
         pusher.start();
     }
+
     public void pushNotification(String content, List<String> userIds) {
-       pushNotification(content,userIds,type);
+        pushNotification(content, userIds, type);
     }
 
     public void pushNotification(String content, String userId, String senderId, int type) {
@@ -104,8 +103,9 @@ public class BroadcastCenterUtil implements Runnable {
         Thread pusher = new Thread(new BroadcastCenterUtil(contents, userIds, senderId, type));
         pusher.start();
     }
+
     public void pushNotification(String content, String userId, String senderId) {
-       pushNotification(content,userId,senderId,type);
+        pushNotification(content, userId, senderId, type);
     }
 
     public void pushNotification(String content, String userId, int type) {
@@ -116,10 +116,10 @@ public class BroadcastCenterUtil implements Runnable {
         Thread pusher = new Thread(new BroadcastCenterUtil(contents, userIds, senderId, type));
         pusher.start();
     }
-    public void pushNotification(String content, String userId) {
-       pushNotification(content,userId,type);
-    }
 
+    public void pushNotification(String content, String userId) {
+        pushNotification(content, userId, type);
+    }
 
 
 }

@@ -9,14 +9,14 @@ import java.util.List;
  * Created by hpduy17 on 7/23/15.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class GetAngelInGroupsResponse {
+public class GetAngelsInGroupResponse {
     UserShortDetailResponse[] angels;
 
-    public GetAngelInGroupsResponse(UserShortDetailResponse[] angels) {
+    public GetAngelsInGroupResponse(UserShortDetailResponse[] angels) {
         this.angels = angels;
     }
 
-    public GetAngelInGroupsResponse(List<UserShortDetailResponse> angels) {
+    public GetAngelsInGroupResponse(List<UserShortDetailResponse> angels) {
         this.angels = angels.toArray(new UserShortDetailResponse[angels.size()]);
     }
 

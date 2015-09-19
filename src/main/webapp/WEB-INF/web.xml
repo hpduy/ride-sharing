@@ -255,12 +255,12 @@
         <url-pattern>/GetAngelsAroundFromMeAPI</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>GetAngelInGroups</servlet-name>
-        <servlet-class>com.bikiegang.ridesharing.api.angel.GetAngelInGroups</servlet-class>
+        <servlet-name>GetAngelsInGroupAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.angel.GetAngelsInGroupAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>GetAngelInGroups</servlet-name>
-        <url-pattern>/GetAngelInGroups</url-pattern>
+        <servlet-name>GetAngelsInGroupAPI</servlet-name>
+        <url-pattern>/GetAngelsInGroupAPI</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>GetAngelActiveCodesAPI</servlet-name>

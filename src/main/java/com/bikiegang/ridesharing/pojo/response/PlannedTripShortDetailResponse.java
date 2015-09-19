@@ -32,13 +32,15 @@ public class PlannedTripShortDetailResponse extends TripInFeed {
     public static final int REQUESTED = 1;
     @JsonIgnore
     public static final int READY_GO = 2;
+    @JsonIgnore
+    public static final int COMPLETE_NON_RATING = 3;
 
     public PlannedTripShortDetailResponse() {
     }
 
     public PlannedTripShortDetailResponse(PlannedTrip that, String senderId) throws IOException {
         Database database = Database.getInstance();
-        Route route  = Database.getInstance().getRouteHashMap().get(that.getRouteId());
+        Route route = Database.getInstance().getRouteHashMap().get(that.getRouteId());
         GoogleRoute googleRoute = new FetchingDataFromGoogleRouting().getRouteFromRoutingResult(route);
         this.id = that.getId();
         this.role = that.getRole();
@@ -54,12 +56,17 @@ public class PlannedTripShortDetailResponse extends TripInFeed {
         } catch (Exception ignored) {
             this.requested = false;
         }
-        if (that.getRequestId() <= 0 || null == database.getRequestMakeTripHashMap().get(that.getRequestId())){
+        if (that.getRequestId() <= 0 || null == database.getRequestMakeTripHashMap().get(that.getRequestId())) {
             this.status = NON_REQUEST;
-        }else {
-            if(database.getRequestMakeTripHashMap().get(that.getRequestId()).getStatus() == RequestMakeTrip.ACCEPT){
+        } else {
+            if (database.getRequestMakeTripHashMap().get(that.getRequestId()).getStatus() == RequestMakeTrip.ACCEPT) {
                 this.status = READY_GO;
-            }else if(requested){
+                if (database.getPlannedTripIdRFTrips().containsKey(that.getId())) {
+                    long tripId = database.getPlannedTripIdRFTrips().get(that.getId());
+                    if (database.getTripHashMap().containsKey(tripId) && database.getTripHashMap().get(tripId).getTripStatus() == Trip.FINISHED_TRIP_WITH_OUT_RATING)
+                        this.status = COMPLETE_NON_RATING;
+                }
+            } else if (requested) {
                 this.status = REQUESTED;
             }
         }

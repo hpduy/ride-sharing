@@ -4,6 +4,7 @@ import com.bikiegang.ridesharing.cache.RideSharingCA;
 import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.geocoding.GeoCell;
 import com.bikiegang.ridesharing.pojo.*;
+import com.bikiegang.ridesharing.utilities.MapUtil;
 
 import java.util.*;
 
@@ -22,7 +23,7 @@ public class Database {
     }
 
     // STATIC DATABASE STATUS
-    public static int databaseStatus = Database.TESTING;
+    public static int databaseStatus = Database.DEVELOPMENT;
     //FINAL STATE
     public static final int DEVELOPMENT = 0;
     public static final int PRODUCTION = 1;
@@ -74,6 +75,7 @@ public class Database {
      */
     private HashMap<String, HashSet<Long>> driverIdRFTrips = new HashMap<>(); // <userId,<tripId>>
     private HashMap<String, HashSet<Long>> passengerIdRFTrips = new HashMap<>(); // <userId,<tripId>>
+    private HashMap<Long, Long> plannedTripIdRFTrips = new HashMap<>(); // <userId,<tripId>>
     /**
      * REQUEST MAKE TRIP
      */
@@ -82,8 +84,8 @@ public class Database {
     /**
      * REQUEST VERIFY
      */
-    private HashMap<String, Long> userRequestBox = new HashMap<>(); //<senderId,<receiverPlannedTripId,requestIds>>
-    private HashMap<String, List<Long>> angelRequestsBox = new HashMap<>(); //<receiverId,<receiverPlannedTripId,<requestIds>>>
+    private HashMap<String, Long> userRequestBox = new HashMap<>(); //<userId#angelId,requestIds>
+    private HashMap<String, List<Long>> angelRequestsBox = new HashMap<>(); //<angelId,<requestIds>>
     /**
      * VERIFY CERTIFICATE
      */
@@ -140,6 +142,7 @@ public class Database {
         RideSharingCA rideSharingCA = RideSharingCA.getInstance(ConfigInfo.REDIS_SERVER);
         //restore
         rideSharingCA.RestoreDatabase();
+        setFeedHashMap((LinkedHashMap<Long, Feed>) MapUtil.sortByValue(getFeedHashMap()));
     }
 
     public void backup() {
@@ -348,6 +351,10 @@ public class Database {
         return UserIdRFRatings;
     }
 
+    public HashMap<Long, Long> getPlannedTripIdRFTrips() {
+        return plannedTripIdRFTrips;
+    }
+
     /*GEOCELL GET-SET*/
     public GeoCell<Long> getGeoCellDriver() {
         return geoCellDriver;
@@ -391,5 +398,9 @@ public class Database {
 
     public GeoCell<Long> getGeoCellSocialTrip() {
         return geoCellSocialTrip;
+    }
+
+    public void setFeedHashMap(LinkedHashMap<Long, Feed> feedHashMap) {
+        this.feedHashMap = feedHashMap;
     }
 }

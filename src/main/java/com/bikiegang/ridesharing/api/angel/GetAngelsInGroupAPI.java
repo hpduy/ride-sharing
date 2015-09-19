@@ -7,13 +7,11 @@
 package com.bikiegang.ridesharing.api.angel;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
-import com.bikiegang.ridesharing.controller.UserController;
-import com.bikiegang.ridesharing.database.Database;
+import com.bikiegang.ridesharing.controller.AngelGroupMemberController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.request.GetUsersAroundFromMeRequest;
+import com.bikiegang.ridesharing.pojo.request.angel.GetAngelInGroupRequest;
 import com.bikiegang.ridesharing.pojo.response.angel.GetAngelsInGroupResponse;
 import com.bikiegang.ridesharing.utilities.ApiDocumentGenerator;
-import com.bikiegang.ridesharing.utilities.FakeGroup.FakeUser;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import org.apache.log4j.Logger;
 
@@ -26,9 +24,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class GetAngelsAroundFromMeAPI extends HttpServlet {
+public class GetAngelsInGroupAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
-    public Class requestClass = GetUsersAroundFromMeRequest.class;
+    public Class requestClass = GetAngelInGroupRequest.class;
     public Class responseClass = GetAngelsInGroupResponse.class;
     public boolean responseIsArray = false;
 
@@ -54,14 +52,9 @@ public class GetAngelsAroundFromMeAPI extends HttpServlet {
                 jsonData.append(line);
             }
             logger.info(jsonData.toString());
-            GetUsersAroundFromMeRequest getUsersAroundFromMeRequest = (GetUsersAroundFromMeRequest) Parser.JSonToObject(jsonData.toString(), GetUsersAroundFromMeRequest.class);
-            UserController controller = new UserController();
-            String result = controller.getAngelsAroundFromMe(getUsersAroundFromMeRequest, true);
-            //TODO fake
-            if(Database.databaseStatus == Database.TESTING){
-                result = new FakeUser().getUsersAroundFromMeFake(getUsersAroundFromMeRequest);
-            }
-            //TODO end fake
+            GetAngelInGroupRequest getAngelInGroupRequest = (GetAngelInGroupRequest) Parser.JSonToObject(jsonData.toString(), GetAngelInGroupRequest.class);
+            AngelGroupMemberController controller = new AngelGroupMemberController();
+            String result = controller.getAngelsInGroup(getAngelInGroupRequest);
             logger.info(result);
             out.print(result);
         } catch (Exception ex) {

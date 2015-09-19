@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 public class Broadcast implements PojoBase {
 
-    private String id = ""; // <deviceId#userId>
+    private String id = ""; // <deviceId#type>
     private String userId = "";
     private String deviceId = "";
     private String regId;

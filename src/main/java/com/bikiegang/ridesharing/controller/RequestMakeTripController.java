@@ -1,5 +1,6 @@
 package com.bikiegang.ridesharing.controller;
 
+import com.bikiegang.ridesharing.dao.PlannedTripDao;
 import com.bikiegang.ridesharing.dao.RequestMakeTripDao;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.database.IdGenerator;
@@ -10,8 +11,8 @@ import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.*;
 import com.bikiegang.ridesharing.pojo.response.*;
 import com.bikiegang.ridesharing.utilities.BroadcastCenterUtil;
-import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
+import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.io.IOException;
@@ -42,6 +43,9 @@ public class RequestMakeTripController {
         if (null == receiver) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "Receiver");
         }
+        if(database.getSenderRequestsBox().containsKey(request.getSenderId()) && database.getSenderRequestsBox().get(request.getSenderId()).containsKey(request.getReceiverPlannedTripId())){
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Request_has_been_sent, "receiverPlannedTrip");
+        }
         // process plannedTrip
         //case 1 : sender's planned trips is created ->
         long driverPlannedTripId;
@@ -71,7 +75,7 @@ public class RequestMakeTripController {
             }
             PlannedTripInfoRequest ptR = new PlannedTripInfoRequest();
             ptR.setCreatorId(request.getSenderId());
-            ptR.setGoTime(DateTimeUtil.now());
+            ptR.setGoTime(passengerPlannedTrip.getDepartureTime());
             ptR.setRole(senderRole);
 
             try {
@@ -94,10 +98,10 @@ public class RequestMakeTripController {
         //case 3: sender is passenger -> create route from google routing result
         else {
             driverPlannedTripId = request.getReceiverPlannedTripId();
-
+            PlannedTrip driverPlannedTrip = database.getPlannedTripHashMap().get(driverPlannedTripId);
             PlannedTripInfoRequest ptR = new PlannedTripInfoRequest();
             ptR.setCreatorId(request.getSenderId());
-            ptR.setGoTime(DateTimeUtil.now());
+            ptR.setGoTime(driverPlannedTrip.getDepartureTime());
             ptR.setRole(senderRole);
             ptR.setGoogleRoutingResult(request.getGoogleRoutingResult());
             ptR.setIsParing(false);// no paring
@@ -181,6 +185,8 @@ public class RequestMakeTripController {
                 PlannedTrip passengerPlannedTrip = database.getPlannedTripHashMap().get(requestMakeTrip.getPassengerPlannedTripId());
                 driverPlannedTrip.setRequestId(requestMakeTrip.getId());
                 passengerPlannedTrip.setRequestId(requestMakeTrip.getId());
+                new PlannedTripDao().update(driverPlannedTrip);
+                new PlannedTripDao().update(passengerPlannedTrip);
                 // Deny all request similar of other user in receiver box
                 long plannedTripId = requestMakeTrip.getSenderRole() == User.DRIVER ? requestMakeTrip.getPassengerPlannedTripId() : requestMakeTrip.getDriverPlannedTripId();
                 denyRequest(request.getReplierId(), plannedTripId);
@@ -219,13 +225,15 @@ public class RequestMakeTripController {
         //TODO notification
     }
 
-    private void denyRequest(String userId, long routeId) {
+    private void denyRequest(String userId, long routeId) throws JsonProcessingException {
         List<Long> requestList = database.getReceiverRequestsBox().get(userId).get(routeId);
         for (long requestId : requestList) {
             RequestMakeTrip requestMakeTrip = database.getRequestMakeTripHashMap().get(requestId);
-            if (requestMakeTrip != null) {
+            if (requestMakeTrip != null && requestMakeTrip.getId() == RequestMakeTrip.WAITING) {
                 requestMakeTrip.setStatus(RequestMakeTrip.DENY);
-                dao.update(requestMakeTrip);
+                if (dao.update(requestMakeTrip)) {
+                    new BroadcastCenterUtil().pushNotification(Parser.ObjectToNotification(MessageMappingUtil.Notification_ReplyMakeTrip_Deny, database.getUserHashMap().get(requestMakeTrip.getSenderId())), requestMakeTrip.getReceiverId());
+                }
             }
         }
 
@@ -251,7 +259,7 @@ public class RequestMakeTripController {
                                     break;
                                 }
                             }
-                            if(requestMakeTrip.getStatus() == RequestMakeTrip.WAITING) {
+                            if (requestMakeTrip.getStatus() == RequestMakeTrip.WAITING) {
                                 RequestMakeTripDetailResponse response = new RequestMakeTripDetailResponse(requestMakeTrip);
                                 responses.add(i, response);
                             }
