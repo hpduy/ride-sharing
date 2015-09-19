@@ -70,7 +70,7 @@ public class LinkedLocationDao {
                         ConfigInfo.RIDESHARING_WORKER_GEARMAN).push(job);
                 if (!result) {
                     logger.error(String.format("Can't not insert DB with "
-                            + "value=%s", obj));
+                            + "value=%s", JSONUtil.Serialize(obj)));
                 } else {
                     logger.info(String.format("Insert linkedlocation "
                             + "success with value=%s", JSONUtil.Serialize(obj)));
@@ -132,7 +132,7 @@ public class LinkedLocationDao {
                         System.currentTimeMillis(), "", JSONUtil.Serialize(obj), "", "");
                 result &= GClientManager.getInstance(ConfigInfo.RIDESHARING_WORKER_GEARMAN).push(job);
                 if (!result) {
-                    logger.error(String.format("Can't not delete DB with value=%s", obj));
+                    logger.error(String.format("Can't not delete DB with value=%s", JSONUtil.Serialize(obj)));
                 } else {
                     logger.info(String.format("Remove linkedlocation "
                             + "success with value=%s", JSONUtil.Serialize(obj)));
@@ -188,7 +188,7 @@ public class LinkedLocationDao {
                         System.currentTimeMillis(), "", JSONUtil.Serialize(obj), "", "");
                 result &= GClientManager.getInstance(ConfigInfo.RIDESHARING_WORKER_GEARMAN).push(job);
                 if (!result) {
-                    logger.error(String.format("Can't not update DB with value=%s", obj));
+                    logger.error(String.format("Can't not update DB with value=%s", JSONUtil.Serialize(obj)));
                 } else {
                     logger.info(String.format("Update linkedlocation "
                             + "success with value=%s", JSONUtil.Serialize(obj)));
