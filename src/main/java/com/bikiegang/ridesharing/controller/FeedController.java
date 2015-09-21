@@ -58,6 +58,7 @@ public class FeedController {
         int toIdx = 0;
         List<FeedResponse> responses = new ArrayList<>();
         // to index process
+        database.setFeedHashMap((LinkedHashMap<Long, Feed>) MapUtil.sortByValue(database.getFeedHashMap()));
         List<Feed> feedList = new ArrayList<>(database.getFeedHashMap().values());
         List<Long> feedId = new ArrayList<>(database.getFeedHashMap().keySet());
         if (!database.getFeedHashMap().isEmpty()) {

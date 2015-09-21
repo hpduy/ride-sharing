@@ -1,6 +1,7 @@
 package com.bikiegang.ridesharing.pojo.request;
 
 import com.bikiegang.ridesharing.pojo.LatLng;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -14,6 +15,7 @@ public class PlannedTripInfoRequest {
     private double price = -1;
     private String googleRoutingResult;
     private boolean hasHelmet;
+    @JsonIgnore
     private boolean isParing = true;
     private int typeOfTrip;
     private String title;

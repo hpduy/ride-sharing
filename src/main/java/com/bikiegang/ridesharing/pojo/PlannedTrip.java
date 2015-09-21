@@ -20,6 +20,7 @@ public class PlannedTrip implements PojoBase {
     private boolean hasHelmet;
     private long requestId;
     private long routeId;
+    private String note;
     /**
      * PLANNED TRIP TYPE
      */
@@ -182,5 +183,13 @@ public class PlannedTrip implements PojoBase {
 
     public void setRouteId(long routeId) {
         this.routeId = routeId;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 }
