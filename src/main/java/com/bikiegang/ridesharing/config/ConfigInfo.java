@@ -156,11 +156,11 @@ public class ConfigInfo {
                 + "`timePatternId`,\n"
                 + "`hasHelmet`,\n"
                 + "`requestId`,\n"
-                + "`routeId`)\n"
+                + "`routeId`, `note`)\n"
                 + "VALUES\n"
                 + "(?,?,?,?,?,"
                 + "?,?,?,?,?,"
-                + "?,?,?);";
+                + "?,?,?,?);";
         PLANNEDTRIP_UPDATE_QUERY = "UPDATE `ridesharing_db`.`PlannedTrip`\n"
                 + "SET\n"
                 + "`id` = ?,\n"
@@ -175,7 +175,8 @@ public class ConfigInfo {
                 + "`timePatternId` = ?,\n"
                 + "`hasHelmet` = ?,\n"
                 + "`requestId` = ?,\n"
-                + "`routeId` = ?\n"
+                + "`routeId` = ?,\n"
+                + "`note` = ?\n"
                 + "WHERE `id` = ?;";
         PLANNEDTRIP_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`PlannedTrip`\n"
                 + "WHERE `id` = ?;";

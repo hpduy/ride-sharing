@@ -70,6 +70,7 @@ public class PlannedTripDA implements IDA {
                 stmt.setBoolean(11, value.isHasHelmet());
                 stmt.setLong(12, value.getRequestId());
                 stmt.setLong(13, value.getRouteId());
+                stmt.setString(14, value.getNote());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {
@@ -106,7 +107,8 @@ public class PlannedTripDA implements IDA {
                 stmt.setBoolean(11, value.isHasHelmet());
                 stmt.setLong(12, value.getRequestId());
                 stmt.setLong(13, value.getRouteId());
-                stmt.setLong(14, value.getId());
+                stmt.setString(14, value.getNote());
+                stmt.setLong(15, value.getId());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {
