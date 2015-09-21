@@ -43,8 +43,23 @@ public class RequestMakeTripController {
         if (null == receiver) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "Receiver");
         }
-        if(database.getSenderRequestsBox().containsKey(request.getSenderId()) && database.getSenderRequestsBox().get(request.getSenderId()).containsKey(request.getReceiverPlannedTripId())){
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Request_has_been_sent, "receiverPlannedTrip");
+        if (database.getSenderRequestsBox().containsKey(request.getSenderId()) && database.getSenderRequestsBox().get(request.getSenderId()).containsKey(request.getReceiverPlannedTripId())) {
+            long requestId = database.getSenderRequestsBox().get(request.getSenderId()).get(request.getReceiverPlannedTripId());
+            if (database.getRequestMakeTripHashMap().containsKey(requestId)) {
+                RequestMakeTrip requestMakeTrip = database.getRequestMakeTripHashMap().get(requestId);
+                if (database.getRequestMakeTripHashMap().get(requestId).getStatus() != RequestMakeTrip.DENY)
+                    return Parser.ObjectToJSon(false, MessageMappingUtil.Request_has_been_sent, "receiverPlannedTrip");
+                else {
+                    requestMakeTrip.setStatus(RequestMakeTrip.WAITING);
+                    if (dao.update(requestMakeTrip)) {
+                        RequestMakeTripResponse requestMakeTripResponse = new RequestMakeTripResponse();
+                        requestMakeTripResponse.setRequestId(requestMakeTrip.getId());
+                        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, requestMakeTripResponse);
+                    }
+                    return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
+                }
+            }
+
         }
         // process plannedTrip
         //case 1 : sender's planned trips is created ->

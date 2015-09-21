@@ -9,10 +9,16 @@ public class Notification {
     private long createdTime = DateTimeUtil.now();
     private String senderName = "";
     private String senderId = "";
+    private long objectId;
 
     public Notification(String senderName, String senderId) {
         this.senderName = senderName;
         this.senderId = senderId;
+    }
+    public Notification(String senderName, String senderId, long objectId) {
+        this.senderName = senderName;
+        this.senderId = senderId;
+        this.objectId = objectId;
     }
 
     public Notification() {
@@ -40,5 +46,13 @@ public class Notification {
 
     public void setSenderId(String senderId) {
         this.senderId = senderId;
+    }
+
+    public long getObjectId() {
+        return objectId;
+    }
+
+    public void setObjectId(long objectId) {
+        this.objectId = objectId;
     }
 }

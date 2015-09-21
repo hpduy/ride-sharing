@@ -79,7 +79,7 @@ public class FeedController {
                 }
             });
 
-            for (int i = fromIdx; i < feedList.size() || responses.size() <= request.getNumberOfFeed(); i++) {
+            for (int i = fromIdx; i < feedList.size() && responses.size() <= request.getNumberOfFeed(); i++) {
                 Feed feed = feedList.get(i);
                 FeedResponse response = new FeedResponse();
                 TripInFeed tif = null;

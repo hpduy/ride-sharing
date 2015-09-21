@@ -83,6 +83,15 @@ public class Parser {
         }
     }
 
+    public static String ObjectToNotification(int messageCode, User sender, long objectId) throws JsonProcessingException {
+        try {
+            Notification notification = new Notification(sender.getFirstName() + sender.getLastName(), sender.getId(), objectId);
+            return toJson(new Parser(true, messageCode, notification));
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+
     public static String ObjectToJSon(Object result) throws JsonProcessingException {
         return toJson(result);
     }

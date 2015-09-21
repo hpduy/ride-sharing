@@ -5,7 +5,6 @@ import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.Broadcast;
 import com.bikiegang.ridesharing.pojo.request.UpdateBroadcastRequest;
-import com.bikiegang.ridesharing.utilities.BroadcastCenterUtil;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -30,10 +29,8 @@ public class BroadcastController {
         }
         switch (request.getType()) {
             case UpdateBroadcastRequest.DELETE:
-                new BroadcastCenterUtil().pushNotification(Parser.ObjectToNotification(MessageMappingUtil.Notification_Successfully, database.getUserHashMap().get(request.getUserId())), request.getUserId(), broadcastType);
-                return deleteBroadcast(request, broadcastType);
+                 return deleteBroadcast(request, broadcastType);
             case UpdateBroadcastRequest.UPDATE:
-                new BroadcastCenterUtil().pushNotification(Parser.ObjectToNotification(MessageMappingUtil.Notification_Successfully, database.getUserHashMap().get(request.getUserId())), request.getUserId(), broadcastType);
                 return insertAndUpdateBroadcast(request, broadcastType);
         }
         return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);

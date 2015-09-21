@@ -75,7 +75,7 @@ public class Database {
      */
     private HashMap<String, HashSet<Long>> driverIdRFTrips = new HashMap<>(); // <userId,<tripId>>
     private HashMap<String, HashSet<Long>> passengerIdRFTrips = new HashMap<>(); // <userId,<tripId>>
-    private HashMap<Long, Long> plannedTripIdRFTrips = new HashMap<>(); // <userId,<tripId>>
+    private HashMap<Long, Long> plannedTripIdRFTrips = new HashMap<>(); // <plannedTripId,<tripId>>
     /**
      * REQUEST MAKE TRIP
      */
