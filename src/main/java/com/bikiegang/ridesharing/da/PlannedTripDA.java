@@ -93,7 +93,7 @@ public class PlannedTripDA implements IDA {
         try {
             String query = ConfigInfo.PLANNEDTRIP_UPDATE_QUERY;
             try (PreparedStatement stmt = cnn.prepareStatement(query)) {
-//                stmt.setLong(1, value.getId());
+                stmt.setLong(1, value.getId());
                 stmt.setLong(2, value.getArriveTime());
                 stmt.setLong(3, value.getDepartureTime());
                 stmt.setDouble(4, value.getOwnerPrice());
