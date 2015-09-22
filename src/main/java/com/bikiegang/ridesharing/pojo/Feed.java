@@ -62,8 +62,8 @@ public class Feed implements PojoBase , Comparable{
     @Override
     public int compareTo(Object o) {
         Feed that = (Feed) o;
-        if (this.getCreatedTime() > that.getCreatedTime())
-            return 0;
-        return -1;
+        if (this.getCreatedTime() < that.getCreatedTime())
+            return -1;
+        return 1;
     }
 }

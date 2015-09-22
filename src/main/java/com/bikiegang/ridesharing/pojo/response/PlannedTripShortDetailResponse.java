@@ -63,14 +63,18 @@ public class PlannedTripShortDetailResponse extends TripInFeed {
                 if (!database.getRequestMakeTripHashMap().get(that.getRequestId()).getSenderId().equals(senderId)
                         && !database.getRequestMakeTripHashMap().get(that.getRequestId()).getSenderId().equals(senderId)) {
                     this.status = READY_GO_BY_ME;
-                    long tripId = database.getPlannedTripIdRFTrips().get(that.getId());
-                    if (database.getTripHashMap().containsKey(tripId) && database.getTripHashMap().get(tripId).getTripStatus() == Trip.FINISHED_TRIP_WITH_OUT_RATING)
-                        this.status = COMPLETE_NON_RATING;
+                    if (null != database.getPlannedTripIdRFTrips().get(that.getId())) {
+                        long tripId = database.getPlannedTripIdRFTrips().get(that.getId());
+                        if (database.getTripHashMap().containsKey(tripId) && database.getTripHashMap().get(tripId).getTripStatus() == Trip.FINISHED_TRIP_WITH_OUT_RATING)
+                            this.status = COMPLETE_NON_RATING;
+                    }
                 } else {
                     this.status = READY_GO;
-                    long tripId = database.getPlannedTripIdRFTrips().get(that.getId());
-                    if (database.getTripHashMap().containsKey(tripId) && database.getTripHashMap().get(tripId).getTripStatus() == Trip.FINISHED_TRIP_WITH_OUT_RATING)
-                        this.status = COMPLETE;
+                    if (null != database.getPlannedTripIdRFTrips().get(that.getId())) {
+                        long tripId = database.getPlannedTripIdRFTrips().get(that.getId());
+                        if (database.getTripHashMap().containsKey(tripId) && database.getTripHashMap().get(tripId).getTripStatus() == Trip.FINISHED_TRIP_WITH_OUT_RATING)
+                            this.status = COMPLETE;
+                    }
                 }
 
             } else if (null != database.getSenderRequestsBox().get(senderId).get(that.getId())) {

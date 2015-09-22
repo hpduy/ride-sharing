@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FeedResponse {
+    private long feedId;
     private UserDetailResponse userDetail;
     private ExPartnerInfoResponse partnerInfo;
     private TripInFeed tripDetail;
@@ -53,5 +54,13 @@ public class FeedResponse {
 
     public void setPartnerDetail(UserDetailResponse partnerDetail) {
         this.partnerDetail = partnerDetail;
+    }
+
+    public long getFeedId() {
+        return feedId;
+    }
+
+    public void setFeedId(long feedId) {
+        this.feedId = feedId;
     }
 }

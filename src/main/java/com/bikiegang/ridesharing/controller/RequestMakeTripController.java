@@ -252,14 +252,13 @@ public class RequestMakeTripController {
             return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
         }
         return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
-        //TODO notification
     }
 
     private void denyRequest(String userId, long routeId) throws JsonProcessingException {
         List<Long> requestList = database.getReceiverRequestsBox().get(userId).get(routeId);
         for (long requestId : requestList) {
             RequestMakeTrip requestMakeTrip = database.getRequestMakeTripHashMap().get(requestId);
-            if (requestMakeTrip != null && requestMakeTrip.getId() == RequestMakeTrip.WAITING) {
+            if (requestMakeTrip != null && requestMakeTrip.getStatus() == RequestMakeTrip.WAITING) {
                 requestMakeTrip.setStatus(RequestMakeTrip.DENY);
                 if (dao.update(requestMakeTrip)) {
                     new BroadcastCenterUtil().pushNotification(Parser.ObjectToNotification(MessageMappingUtil.Notification_ReplyMakeTrip_Deny, database.getUserHashMap().get(requestMakeTrip.getSenderId())), requestMakeTrip.getReceiverId());

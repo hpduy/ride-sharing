@@ -57,26 +57,19 @@ public class FeedController {
         List<Long> feedId = new ArrayList<>(database.getFeedHashMap().keySet());
         if (!database.getFeedHashMap().isEmpty()) {
             if (feedId.contains(request.getStartId())) {
-                fromIdx = feedId.indexOf(request.getStartId());
+                fromIdx = feedId.indexOf(request.getStartId()) + 1;
             } else {
                 for (; fromIdx < feedList.size(); fromIdx++) {
-                    if (feedList.get(fromIdx).getCreatedTime() > (DateTimeUtil.now() - DateTimeUtil.HOURS)) {
+                    if (feedList.get(fromIdx).getCreatedTime() > (DateTimeUtil.now() - 3 * DateTimeUtil.HOURS)) {
                         break;
                     }
                 }
             }
-            Collections.sort(feedList, new Comparator<Feed>() {
-                @Override
-                public int compare(Feed o1, Feed o2) {
-                    if (o1.getCreatedTime() < o2.getCreatedTime())
-                        return -1;
-                    return 0;
-                }
-            });
 
             for (int i = fromIdx; i < feedList.size() && responses.size() <= request.getNumberOfFeed(); i++) {
                 Feed feed = feedList.get(i);
                 FeedResponse response = new FeedResponse();
+                response.setFeedId(feed.getId());
                 TripInFeed tif = null;
                 ExPartnerInfoResponse partnerInfoResponse = null;
                 UserDetailResponse userDetailResponse = null;
@@ -89,8 +82,8 @@ public class FeedController {
                                     continue;
                             }
                             tif = new PlannedTripDetailResponse(database.getPlannedTripHashMap().get(feed.getRefId()), request.getUserId());
-                            if(feed.getCreatedTime() != database.getPlannedTripHashMap().get(feed.getRefId()).getDepartureTime()){
-                                System.out.println("Weird Time:"+feed.getRefId());
+                            if (feed.getCreatedTime() != database.getPlannedTripHashMap().get(feed.getRefId()).getDepartureTime()) {
+                                System.out.println("Weird Time:" + feed.getRefId());
                             }
                             break;
                         case Feed.SOCIAL_TRIP:
