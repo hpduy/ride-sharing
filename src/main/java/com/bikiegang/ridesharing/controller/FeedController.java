@@ -35,12 +35,6 @@ public class FeedController {
         feed.setType(type);
         feed.setCreatedTime(epochTime);
         if (dao.insert(feed)) {
-            if (type == Feed.PLANNED_TRIP) {
-                PlannedTrip plannedTrip = database.getPlannedTripHashMap().get(refId);
-            } else {
-                SocialTrip socialTrip = database.getSocialTripHashMap().get(refId);
-            }
-            //sort
             database.setFeedHashMap((LinkedHashMap<Long, Feed>) MapUtil.sortByValue(database.getFeedHashMap()));
             return true;
         }
@@ -95,6 +89,9 @@ public class FeedController {
                                     continue;
                             }
                             tif = new PlannedTripDetailResponse(database.getPlannedTripHashMap().get(feed.getRefId()), request.getUserId());
+                            if(feed.getCreatedTime() != database.getPlannedTripHashMap().get(feed.getRefId()).getDepartureTime()){
+                                System.out.println("Weird Time:"+feed.getRefId());
+                            }
                             break;
                         case Feed.SOCIAL_TRIP:
                             tif = new SocialTripResponse(database.getSocialTripHashMap().get(feed.getRefId()));
@@ -125,10 +122,10 @@ public class FeedController {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
         }
         GetFeedsResponse response = new GetFeedsResponse();
-        List<PlannedTrip> plannedTrips = new ArrayList<>(database.getPlannedTripHashMap().values());
-        if (database.getPlannedTripHashMap().size() > 20)
-            plannedTrips = plannedTrips.subList(0, 21);
-        response.setFeeds(convertPlannedTripsToFeeds(plannedTrips, request.getUserId()));
+//        List<PlannedTrip> plannedTrips = new ArrayList<>(database.getPlannedTripHashMap().values());
+////        if (database.getPlannedTripHashMap().size() > 20)
+////            plannedTrips = plannedTrips.subList(0, 21);
+//        response.setFeeds(convertPlannedTripsToFeeds(plannedTrips, request.getUserId()));
         return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, response);
     }
 

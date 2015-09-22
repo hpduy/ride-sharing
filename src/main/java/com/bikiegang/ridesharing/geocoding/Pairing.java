@@ -103,42 +103,47 @@ public class Pairing {
                 // check same route ? -> that means route via location near des and src or not
                 // check index -> that means check direction
                 // check same epoch day -> check time
-                if (nearSrcLocation.getRefId() == nearDesLocation.getRefId() && src.getIndex() < des.getIndex()
-                        && database.getRouteRFPlannedTripsByDay().get(nearSrcLocation.getRefId()).containsKey(passengerEpochday)) {
+                try {
+                    if (nearSrcLocation.getRefId() == nearDesLocation.getRefId() && src.getIndex() < des.getIndex()
+                            && database.getRouteRFPlannedTripsByDay().get(nearSrcLocation.getRefId()) != null
+                            && database.getRouteRFPlannedTripsByDay().get(nearSrcLocation.getRefId()).containsKey(passengerEpochday)) {
 
-                    // check condition to pare between passenger plannedTrip and drivers plannedTrip
-                    long driverPlannedTripId = database.getRouteRFPlannedTripsByDay().get(nearSrcLocation.getRefId()).get(passengerEpochday);
-                    PlannedTrip driverPlannedTrip = database.getPlannedTripHashMap().get(driverPlannedTripId);
+                        // check condition to pare between passenger plannedTrip and drivers plannedTrip
+                        long driverPlannedTripId = database.getRouteRFPlannedTripsByDay().get(nearSrcLocation.getRefId()).get(passengerEpochday);
+                        PlannedTrip driverPlannedTrip = database.getPlannedTripHashMap().get(driverPlannedTripId);
 
-                    // plannedTrip is not null and not own by passenger
-                    if (null != driverPlannedTrip && !driverPlannedTrip.getCreatorId().equals(plannedTrip.getCreatorId()) && driverPlannedTrip.getRequestId() == 0) {
-                        long plannedTripGoTime = plannedTrip.getDepartureTime();
-                        long driverTripGoTime = driverPlannedTrip.getDepartureTime();
-                        // get time driver reach a location near passenger
-                        long timeDriveReachNearSrcLocation = driverTripGoTime + nearSrcLocation.getEstimatedTime();
-                        // if time is ignore -> get all planned trip > now - acceptable time
-                        if (ignoredTime) {
-                            if (timeDriveReachNearSrcLocation > DateTimeUtil.now() - ACCEPTABLE_TIME) {
-                                listDriverPlannedTripResult.add(driverPlannedTrip);
-                            }
-                        } else {
-                            // check this time in acceptable time?
-                            if (DateTimeUtil.timeDistance(timeDriveReachNearSrcLocation, plannedTripGoTime) <= ACCEPTABLE_TIME) {
-                                //Get this plannedTrip
-                                if (!listDriverPlannedTripResult.contains(driverPlannedTrip)) {
-                                    // check helmet
-                                    if (plannedTrip.isHasHelmet() || driverPlannedTrip.isHasHelmet()) {
-                                        listDriverPlannedTripResult.add(driverPlannedTrip);
+                        // plannedTrip is not null and not own by passenger
+                        if (null != driverPlannedTrip && !driverPlannedTrip.getCreatorId().equals(plannedTrip.getCreatorId()) && driverPlannedTrip.getRequestId() == 0) {
+                            long plannedTripGoTime = plannedTrip.getDepartureTime();
+                            long driverTripGoTime = driverPlannedTrip.getDepartureTime();
+                            // get time driver reach a location near passenger
+                            long timeDriveReachNearSrcLocation = driverTripGoTime + nearSrcLocation.getEstimatedTime();
+                            // if time is ignore -> get all planned trip > now - acceptable time
+                            if (ignoredTime) {
+                                if (timeDriveReachNearSrcLocation > DateTimeUtil.now() - ACCEPTABLE_TIME) {
+                                    listDriverPlannedTripResult.add(driverPlannedTrip);
+                                }
+                            } else {
+                                // check this time in acceptable time?
+                                if (DateTimeUtil.timeDistance(timeDriveReachNearSrcLocation, plannedTripGoTime) <= ACCEPTABLE_TIME) {
+                                    //Get this plannedTrip
+                                    if (!listDriverPlannedTripResult.contains(driverPlannedTrip)) {
+                                        // check helmet
+                                        if (plannedTrip.isHasHelmet() || driverPlannedTrip.isHasHelmet()) {
+                                            listDriverPlannedTripResult.add(driverPlannedTrip);
+                                        }
                                     }
                                 }
                             }
+                            // if it expired -> remove from GeoCell to reduce algorithm cost
+                            if (timeDriveReachNearSrcLocation - DateTimeUtil.now() > REMOVEABLE_TIME) {
+                                //TODO REMOVE ALL LOCATION IN GEOCELL
+                            }
                         }
-                        // if it expired -> remove from GeoCell to reduce algorithm cost
-                        if (timeDriveReachNearSrcLocation - DateTimeUtil.now() > REMOVEABLE_TIME) {
-                            //TODO REMOVE ALL LOCATION IN GEOCELL
-                        }
-                    }
 
+                    }
+                }catch (Exception ignored){
+                    ignored.printStackTrace();
                 }
             }
 

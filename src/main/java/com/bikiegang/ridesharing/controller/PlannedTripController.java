@@ -105,6 +105,7 @@ public class PlannedTripController {
             plannedTrip.setHasHelmet(request.getPlannedTrip().isHasHelmet());
             plannedTrip.setRouteId(route.getId());
             plannedTrip.setOwnerPrice(request.getPlannedTrip().getPrice() < 0 ? DEFAULT_PRICE : request.getPlannedTrip().getPrice());
+            plannedTrip.setNote(request.getPlannedTrip().getNote());
             if (dao.insert(plannedTrip) || Database.databaseStatus == Database.TESTING) {
                 UserAndPlannedTripDetailResponse yourPlannedTripDetail = getUserAndPlannedTripDetailFromObject(plannedTrip);
                 // insert calendar
@@ -159,11 +160,11 @@ public class PlannedTripController {
             plannedTrip.setCreatorId(request.getPlannedTrip().getCreatorId());
             plannedTrip.setHasHelmet(request.getPlannedTrip().isHasHelmet());
             plannedTrip.setRouteId(route.getId());
+            plannedTrip.setNote(request.getPlannedTrip().getNote());
             plannedTrip.setOwnerPrice(request.getPlannedTrip().getPrice() < 0 ? DEFAULT_PRICE : request.getPlannedTrip().getPrice());
             if (dao.insert(plannedTrip) || Database.databaseStatus == Database.TESTING) {
                 // insert calendar
                 new TripCalendarController().putToCalendar(plannedTrip.getDepartureTime(), plannedTrip.getId(), plannedTrip.getCreatorId());
-
                 FeedResponse yourPlannedTripDetail = new FeedController().convertPlannedTripToFeed(plannedTrip, plannedTrip.getCreatorId());
                 if (request.getPlannedTrip().isParing()) {
                     new FeedController().postNewFeed(plannedTrip.getId(), Feed.PLANNED_TRIP, plannedTrip.getDepartureTime());
@@ -213,6 +214,7 @@ public class PlannedTripController {
                     plannedTrip.setDepartureTime(tp);
                     plannedTrip.setOwnerPrice(request.getPlannedTrip().getPrice() < 0 ? DEFAULT_PRICE : request.getPlannedTrip().getPrice());
                     plannedTrip.setRouteId(route.getId());
+                    plannedTrip.setNote(request.getPlannedTrip().getNote());
                     if (dao.insert(plannedTrip)) {
                         // insert calendar
                         new TripCalendarController().putToCalendar(plannedTrip.getDepartureTime(), plannedTrip.getId(), plannedTrip.getCreatorId());

@@ -26,14 +26,19 @@ public class PlannedTripShortDetailResponse extends TripInFeed {
     private boolean requested;
     private int typeOfTrip;
     private int status;
+    private String note;
     @JsonIgnore
     public static final int NON_REQUEST = 0;
     @JsonIgnore
-    public static final int REQUESTED = 1;
+    public static final int REQUESTED = 1; // can deny
     @JsonIgnore
     public static final int READY_GO = 2;
     @JsonIgnore
-    public static final int COMPLETE_NON_RATING = 3;
+    public static final int READY_GO_BY_ME = 3;// can deny
+    @JsonIgnore
+    public static final int COMPLETE_NON_RATING = 4;
+    @JsonIgnore
+    public static final int COMPLETE = 5;
 
     public PlannedTripShortDetailResponse() {
     }
@@ -50,26 +55,30 @@ public class PlannedTripShortDetailResponse extends TripInFeed {
         this.ownerDistance = route.getSumDistance();
         this.goTime = that.getDepartureTime();
         this.duration = route.getEstimatedTime();
-        this.setCreatorId(that.getCreatorId());
+        this.creatorId = that.getCreatorId();
+        this.note = that.getNote();
+        this.status = NON_REQUEST;
         try {
-            this.requested = (database.getSenderRequestsBox().get(senderId).containsKey(that.getId()));
-        } catch (Exception ignored) {
-            this.requested = false;
-        }
-        if (that.getRequestId() <= 0 || null == database.getRequestMakeTripHashMap().get(that.getRequestId())) {
-            this.status = NON_REQUEST;
-        } else {
-            if (database.getRequestMakeTripHashMap().get(that.getRequestId()).getStatus() == RequestMakeTrip.ACCEPT) {
-                this.status = READY_GO;
-                if (database.getPlannedTripIdRFTrips().containsKey(that.getId())) {
+            if (database.getRequestMakeTripHashMap().containsKey(that.getRequestId())) {
+                if (!database.getRequestMakeTripHashMap().get(that.getRequestId()).getSenderId().equals(senderId)
+                        && !database.getRequestMakeTripHashMap().get(that.getRequestId()).getSenderId().equals(senderId)) {
+                    this.status = READY_GO_BY_ME;
                     long tripId = database.getPlannedTripIdRFTrips().get(that.getId());
                     if (database.getTripHashMap().containsKey(tripId) && database.getTripHashMap().get(tripId).getTripStatus() == Trip.FINISHED_TRIP_WITH_OUT_RATING)
                         this.status = COMPLETE_NON_RATING;
+                } else {
+                    this.status = READY_GO;
+                    long tripId = database.getPlannedTripIdRFTrips().get(that.getId());
+                    if (database.getTripHashMap().containsKey(tripId) && database.getTripHashMap().get(tripId).getTripStatus() == Trip.FINISHED_TRIP_WITH_OUT_RATING)
+                        this.status = COMPLETE;
                 }
-            } else if (requested) {
+
+            } else if (null != database.getSenderRequestsBox().get(senderId).get(that.getId())) {
                 this.status = REQUESTED;
             }
+        } catch (Exception ignored) {
         }
+
         if (googleRoute != null) {
             this.startAddress = googleRoute.getLegs()[0].getStart_address();
             this.endAddress = googleRoute.getLegs()[0].getEnd_address();
@@ -194,5 +203,13 @@ public class PlannedTripShortDetailResponse extends TripInFeed {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 }

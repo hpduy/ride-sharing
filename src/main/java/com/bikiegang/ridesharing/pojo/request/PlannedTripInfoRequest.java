@@ -20,6 +20,7 @@ public class PlannedTripInfoRequest {
     private int typeOfTrip;
     private String title;
     private LatLng[] waypoints;
+    private String note;
 
     public PlannedTripInfoRequest() {
     }
@@ -115,5 +116,13 @@ public class PlannedTripInfoRequest {
 
     public void setWaypoints(LatLng[] waypoints) {
         this.waypoints = waypoints;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 }

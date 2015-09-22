@@ -25,4 +25,5 @@ public class GeneralTest {
         ll = new LatLng(type5);
         assert(ll.getLat() == 10.774033 && ll.getLng() == 106.703653);
     }
+
 }

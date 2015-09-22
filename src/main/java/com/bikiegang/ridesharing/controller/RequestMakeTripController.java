@@ -175,11 +175,16 @@ public class RequestMakeTripController {
         // check user status
         if (request.getReplierId().equals(requestMakeTrip.getReceiverId())) {
             PlannedTrip senderPlannedTrip;
-            if (requestMakeTrip.getSenderRole() == User.DRIVER)
+            PlannedTrip receiverPlannedTrip;
+            if (requestMakeTrip.getSenderRole() == User.DRIVER) {
                 senderPlannedTrip = database.getPlannedTripHashMap().get(requestMakeTrip.getDriverPlannedTripId());
-            else
+                receiverPlannedTrip = database.getPlannedTripHashMap().get(requestMakeTrip.getPassengerPlannedTripId());
+            } else {
                 senderPlannedTrip = database.getPlannedTripHashMap().get(requestMakeTrip.getPassengerPlannedTripId());
-            if (senderPlannedTrip.getRequestId() > 0 && database.getRequestMakeTripHashMap().containsKey(senderPlannedTrip.getRequestId())) {
+                receiverPlannedTrip = database.getPlannedTripHashMap().get(requestMakeTrip.getDriverPlannedTripId());
+            }
+            if (senderPlannedTrip.getRequestId() > 0 && database.getRequestMakeTripHashMap().containsKey(senderPlannedTrip.getRequestId())
+                    || receiverPlannedTrip.getRequestId() > 0 && database.getRequestMakeTripHashMap().containsKey(receiverPlannedTrip.getRequestId())) {
                 requestMakeTrip.setStatus(RequestMakeTrip.DENY);
                 dao.update(requestMakeTrip);
                 return Parser.ObjectToJSon(false, MessageMappingUtil.User_is_busy);
@@ -233,6 +238,16 @@ public class RequestMakeTripController {
         // change to deny status
         requestMakeTrip.setStatus(RequestMakeTrip.DENY);
         if (dao.update(requestMakeTrip)) {
+            PlannedTrip driverPlannedTrip = database.getPlannedTripHashMap().get(requestMakeTrip.getDriverPlannedTripId());
+            PlannedTrip passengerPlannedTrip = database.getPlannedTripHashMap().get(requestMakeTrip.getPassengerPlannedTripId());
+            if (driverPlannedTrip.getRequestId() == requestMakeTrip.getId()) {
+                driverPlannedTrip.setRequestId(0);
+                new PlannedTripDao().update(driverPlannedTrip);
+            }
+            if (passengerPlannedTrip.getRequestId() == requestMakeTrip.getId()) {
+                passengerPlannedTrip.setRequestId(0);
+                new PlannedTripDao().update(passengerPlannedTrip);
+            }
             new BroadcastCenterUtil().pushNotification(Parser.ObjectToNotification(MessageMappingUtil.Notification_ReplyMakeTrip_Deny, database.getUserHashMap().get(request.getUserId())), requestMakeTrip.getReceiverId());
             return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
         }
