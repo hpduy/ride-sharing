@@ -10,6 +10,16 @@ public class RoutingResult {
     private GoogleRoute[] routes;
     private String status;
 
+    public RoutingResult() {
+    }
+
+    public RoutingResult(GoogleRoute[] routes, String status) {
+        this.routes = routes;
+        this.status = status;
+    }
+    
+    
+
     public GoogleRoute[] getRoutes() {
         return routes;
     }

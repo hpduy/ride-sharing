@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GoogleRoute {
+
     private Bound bounds;
     private String copyrights;
     private Leg[] legs;
@@ -14,6 +15,19 @@ public class GoogleRoute {
     private String summary;
     private String[] warnings;
     private Object[] waypoint_order;
+
+    public GoogleRoute() {
+    }
+
+    public GoogleRoute(Bound bounds, String copyrights, Leg[] legs, Polyline overview_polyline, String summary, String[] warnings, Object[] waypoint_order) {
+        this.bounds = bounds;
+        this.copyrights = copyrights;
+        this.legs = legs;
+        this.overview_polyline = overview_polyline;
+        this.summary = summary;
+        this.warnings = warnings;
+        this.waypoint_order = waypoint_order;
+    }
 
     public Bound getBounds() {
         return bounds;
