@@ -63,7 +63,7 @@ public class Route implements PojoBase {
     }
 
     public JSONObject getRawRoutingResult() {
-        return new JSONObject(this.rawRoutingResult.replaceAll("\\\\", "\\\\\\\\").replaceAll("style=\"", "style=\\\\\"").replaceAll("\">", "\\\\\">"));
+        return new JSONObject(this.rawRoutingResult);
     }
 
     public void setRawRoutingResult(String rawRoutingResult) {
