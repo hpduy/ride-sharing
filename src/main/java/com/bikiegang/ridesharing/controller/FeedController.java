@@ -60,7 +60,7 @@ public class FeedController {
                 fromIdx = feedId.indexOf(request.getStartId()) + 1;
             } else {
                 for (; fromIdx < feedList.size(); fromIdx++) {
-                    if (feedList.get(fromIdx).getCreatedTime() > (DateTimeUtil.now() - 3 * DateTimeUtil.HOURS)) {
+                    if (feedList.get(fromIdx).getCreatedTime() > (DateTimeUtil.now() - DateTimeUtil.HOURS)) {
                         break;
                     }
                 }

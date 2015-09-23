@@ -157,7 +157,7 @@ public class PlannedTripController {
             PlannedTrip plannedTrip = new PlannedTrip();
             plannedTrip.setId(IdGenerator.getPlannedTripId());
             plannedTrip.setRole(request.getPlannedTrip().getRole());
-            plannedTrip.setType(PlannedTrip.SINGLE_FUTURE);
+            plannedTrip.setType(request.getPlannedTrip().isParing() ? PlannedTrip.SINGLE_FUTURE : PlannedTrip.REQUESTED_PLANNED_TRIP);
             plannedTrip.setDepartureTime(request.getPlannedTrip().getGoTime());
             plannedTrip.setCreatorId(request.getPlannedTrip().getCreatorId());
             plannedTrip.setHasHelmet(request.getPlannedTrip().isHasHelmet());
