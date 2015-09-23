@@ -30,6 +30,8 @@ public class PlannedTrip implements PojoBase {
     public static final int SINGLE_FUTURE = 1;
     @JsonIgnore
     public static final int MULTIPLE_FUTURE = 2;
+    @JsonIgnore
+    public static final int REQUESTED_PLANNED_TRIP = 3;
     /**
      * ESTIMATE PARAMETER
      */

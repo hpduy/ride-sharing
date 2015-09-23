@@ -1,6 +1,7 @@
 package com.bikiegang.ridesharing.controller;
 
 import com.bikiegang.ridesharing.dao.PlannedTripDao;
+import com.bikiegang.ridesharing.dao.RouteDao;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.database.IdGenerator;
 import com.bikiegang.ridesharing.geocoding.FetchingDataFromGoogleRouting;
@@ -12,6 +13,7 @@ import com.bikiegang.ridesharing.pojo.response.*;
 import com.bikiegang.ridesharing.pojo.static_object.TripPattern;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.io.IOException;
 import java.util.*;
@@ -155,7 +157,7 @@ public class PlannedTripController {
             PlannedTrip plannedTrip = new PlannedTrip();
             plannedTrip.setId(IdGenerator.getPlannedTripId());
             plannedTrip.setRole(request.getPlannedTrip().getRole());
-            plannedTrip.setType(PlannedTrip.SINGLE_FUTURE);
+            plannedTrip.setType(request.getPlannedTrip().isParing() ? PlannedTrip.SINGLE_FUTURE : PlannedTrip.REQUESTED_PLANNED_TRIP);
             plannedTrip.setDepartureTime(request.getPlannedTrip().getGoTime());
             plannedTrip.setCreatorId(request.getPlannedTrip().getCreatorId());
             plannedTrip.setHasHelmet(request.getPlannedTrip().isHasHelmet());
@@ -271,6 +273,31 @@ public class PlannedTripController {
         return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, response);
     }
 
+    public String removePlannedTrip(GetPlannedTripDetailRequest request) throws JsonProcessingException {
+        if (null == request.getUserId() || request.getUserId().equals("")) {
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
+        }
+        if (request.getPlannedTripId() <= 0) {
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'plannedTripId'");
+        }
+        PlannedTrip plannedTrip = database.getPlannedTripHashMap().get(request.getPlannedTripId());
+        if (plannedTrip == null) {
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "Planned Trip");
+        }
+        if (!plannedTrip.getCreatorId().equals(request.getUserId())) {
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_belong_to_you, "Planned Trip");
+        }
+        // remove planned trip
+        long routeId = plannedTrip.getRouteId();
+        if (dao.delete(plannedTrip)) {
+            if (null == database.getRouteRFPlannedTripsByDay().get(routeId) || database.getRouteRFPlannedTripsByDay().get(routeId).isEmpty()) {
+                Route route = database.getRouteHashMap().get(routeId);
+                new RouteDao().delete(route);
+            }
+            return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
+        }
+        return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
+    }
 
     /**
      * SUPPORT FUNCTION

@@ -96,20 +96,22 @@ public class TripCalendarController {
                                 if (database.getTripHashMap().containsKey(tripId) && database.getTripHashMap().get(tripId).getTripStatus() == Trip.COMPLETED_TRIP)
                                     continue;
                             }
+                            if (trip.getDepartureTime() < (DateTimeUtil.now() - DateTimeUtil.HOURS))
+                                continue;
                             trips.add(database.getPlannedTripHashMap().get(id));
                         }
                     }
                     Collections.sort(trips, new Comparator<PlannedTrip>() {
                         @Override
                         public int compare(PlannedTrip o1, PlannedTrip o2) {
-                            long dis = o2.getDepartureTime() - o1.getDepartureTime();
-                            if (dis > 0)
+                            if (o1.getDepartureTime() > o2.getDepartureTime())
                                 return 1;
                             return -1;
                         }
                     });
                     for (PlannedTrip t : trips) {
-                        tripByDay.add(new FeedController().convertPlannedTripToFeed(t, t.getCreatorId()));
+                        if (t.getType() != PlannedTrip.REQUESTED_PLANNED_TRIP && !database.getRequestMakeTripHashMap().containsKey(t.getRequestId()))
+                            tripByDay.add(new FeedController().convertPlannedTripToFeed(t, t.getCreatorId()));
                     }
                     response.setFeeds(tripByDay.toArray(new FeedResponse[tripByDay.size()]));
                 }

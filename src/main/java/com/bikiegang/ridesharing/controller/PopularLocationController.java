@@ -48,7 +48,7 @@ public class PopularLocationController {
             "Khu du lịch Bình Quới 1#1147 Bình Quới, phường 28, quận Bình Thạnh, thành phố Hồ Chí Minh#http://thuexetienvan.com/img/dia%20diem%20du%20lich%202/binhquoi1.jpg#10.832463, 106.739131#Bình Quới 1, Thanh Đa\n" +
             "Khu vui chơi Thỏ Trắng#875 Cách Mạng Tháng Tám, phường 15, quận 10, thành phố Hồ Chí Minh#http://farm1.staticflickr.com/270/19766255975_2324e703dd_o.jpg#10.785511, 106.666258#Công viên Thỏ Trắng, công viên Lê Thị Riêng\n" +
             "Đầm Sen#3 Hòa Bình, phường 3, quận 11, thành phố Hồ Chí Minh#http://img5.arrivo.ru/cfcd/4d/843/6/hochimin_saygon_dla_detej_6_english.viettraveltips.com.jpg#10.768978, 106.637478#Đầm Sen, công viên văn hóa Đầm Sen, Đầm Sen khô, Đầm Sen \n" +
-            "Cầu Mống#phường Nguyễn Thái Bình, quận 1, thành phố Hồ Chí Minh#http://img5.arrivo.ru/cfcd/4d/843/6/hochimin_saygon_dla_detej_6_english.viettraveltips.com.jpg#10.768102, 106.703684#Cầu Mống\n" +
+            "Cầu Mống#phường Nguyễn Thái Bình, quận 1, thành phố Hồ Chí Minh#http://farm8.staticflickr.com/7386/9437945614_124b6aefee_b.jpg#10.768102, 106.703684#Cầu Mống\n" +
             "Dinh Độc Lập#135 Nam Kỳ Khởi Nghĩa, phường Bến Thành, quận 1, thành phố Hồ Chí Minh#http://www.dinhdoclap.gov.vn/App_Themes/images/bg.jpg#10.777139, 106.695875#Dinh Độc Lập, Dinh Thống Nhất, Norodom").split("\\n");
 
     public PopularLocationController() {

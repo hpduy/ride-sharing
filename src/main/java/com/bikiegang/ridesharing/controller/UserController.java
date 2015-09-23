@@ -600,32 +600,34 @@ public class UserController {
         int size = 0;
         if (driverTrip != null && !driverTrip.isEmpty()) {
             for (long tId : driverTrip) {
-                if (userPictureLinks.size() >= 3) break;
                 Trip trip = database.getTripHashMap().get(tId);
                 if (null != trip) {
                     User partner = database.getUserHashMap().get(trip.getPassengerId());
-                    if (null != partner.getProfilePictureLink() && !partner.getProfilePictureLink().equals("")) {
+                    if (null != partner.getProfilePictureLink() && !partner.getProfilePictureLink().equals("") && !userPictureLinks.contains(partner.getProfilePictureLink())) {
                         userPictureLinks.add(Path.getUrlFromPath(partner.getProfilePictureLink()));
+                        size++;
                     }
                 }
             }
-            size += driverTrip.size();
+
         }
         if (passengerTrip != null && !passengerTrip.isEmpty()) {
             for (long tId : passengerTrip) {
-                if (userPictureLinks.size() >= 3) break;
                 Trip trip = database.getTripHashMap().get(tId);
                 if (null != trip) {
-                    User partner = database.getUserHashMap().get(trip.getPassengerId());
-                    if (null != partner.getProfilePictureLink() && !partner.getProfilePictureLink().equals("")) {
+                    User partner = database.getUserHashMap().get(trip.getDriverId());
+                    if (null != partner.getProfilePictureLink() && !partner.getProfilePictureLink().equals("") && !userPictureLinks.contains(partner.getProfilePictureLink())) {
                         userPictureLinks.add(Path.getUrlFromPath(partner.getProfilePictureLink()));
+                        size++;
                     }
                 }
             }
             size += passengerTrip.size();
         }
+
         response.setNumberOfExPartner(size);
-        response.setPartnerPictureLinks(userPictureLinks.toArray(new String[userPictureLinks.size()]));
+        response.setPartnerPictureLinks(userPictureLinks.size() > 3 ? new String[]{userPictureLinks.get(0), userPictureLinks.get(1), userPictureLinks.get(2)}
+                : userPictureLinks.toArray(new String[userPictureLinks.size()]));
         return response;
 
     }
