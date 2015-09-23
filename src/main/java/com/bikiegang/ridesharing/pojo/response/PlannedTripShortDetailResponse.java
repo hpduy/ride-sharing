@@ -78,7 +78,10 @@ public class PlannedTripShortDetailResponse extends TripInFeed {
                 }
 
             } else if (null != database.getSenderRequestsBox().get(senderId).get(that.getId())) {
-                this.status = REQUESTED;
+                RequestMakeTrip requestMakeTrip = database.getRequestMakeTripHashMap()
+                        .get(database.getSenderRequestsBox().get(senderId).get(that.getId()));
+                if (requestMakeTrip != null && requestMakeTrip.getStatus() == RequestMakeTrip.WAITING)
+                    this.status = REQUESTED;
             }
         } catch (Exception ignored) {
         }

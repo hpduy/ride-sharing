@@ -40,6 +40,14 @@
         <url-pattern>/GetListTripByCalendarAPI</url-pattern>
     </servlet-mapping>
     <servlet>
+        <servlet-name>RemovePlannedTripAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.RemovePlannedTripAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RemovePlannedTripAPI</servlet-name>
+        <url-pattern>/RemovePlannedTripAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
         <servlet-name>AutoParingWhenSearchAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.AutoParingWhenSearchAPI</servlet-class>
     </servlet>
