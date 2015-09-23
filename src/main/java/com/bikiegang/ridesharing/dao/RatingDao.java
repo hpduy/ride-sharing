@@ -10,6 +10,7 @@ import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.Rating;
 import com.bikiegang.ridesharing.utilities.Const;
 import com.bikiegang.ridesharing.utilities.RequestLogger;
+import java.util.HashSet;
 import org.apache.log4j.Logger;
 
 /**
@@ -31,8 +32,18 @@ public class RatingDao {
 
             //put hashmap
             database.getRatingHashMap().put(obj.getId(), obj);
+            // UserIdRFRatings = new HashMap<>();// <userId(ratedUserId),<id>>
+            HashSet<Long> get = database.getUserIdRFRatings().get(obj.getRatedUserId());
+            if (get == null) {
+                get = new HashSet<>();
+                database.getUserIdRFRatings().put(obj.getRatedUserId(), get);
+            }
+            get.add(obj.getId());
+
             //Step 2: put redis
             result = cache.hset(obj.getClass().getName(), String.valueOf(obj.getId()), JSONUtil.Serialize(obj));
+            result &= cache.hset(obj.getClass().getName() + ":user", String.valueOf(obj.getRatedUserId()), JSONUtil.Serialize(get));
+
             if (result) {
                 //Step 3: put job gearman
                 short actionType = Const.RideSharing.ActionType.INSERT;
@@ -65,8 +76,16 @@ public class RatingDao {
 
             //remove in hashmap
             database.getRatingHashMap().remove(obj.getId());
+            // UserIdRFRatings = new HashMap<>();// <userId(ratedUserId),<id>>
+            HashSet<Long> get = database.getUserIdRFRatings().get(obj.getRatedUserId());
+            if (get == null) {
+                get = new HashSet<>();
+                database.getUserIdRFRatings().put(obj.getRatedUserId(), get);
+            }
+            get.remove((Long) obj.getId());
             //Step 2: remove redis
             result = cache.hdel(obj.getClass().getName(), String.valueOf(obj.getId()));
+            result &= cache.hset(obj.getClass().getName() + ":user", String.valueOf(obj.getRatedUserId()), JSONUtil.Serialize(get));
 
             if (result) {
                 //Step 3: put job gearman
