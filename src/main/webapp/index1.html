@@ -7,7 +7,10 @@
         <title>CloudBike</title>
         <link rel="shortcut icon" href="imgs/fav-icon.png">
         <!-- Bootstrap CSS -->
-        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
         <link href="css/cloudbike-style.css" rel="stylesheet">
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -94,32 +97,6 @@
     </head>
     <body>
 
-        <!--        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-                     Brand and toggle get grouped for better mobile display 
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="#home"><img src="imgs/logo-big.png" class="img-responsive" alt="Image" style="height: 42px; margin-top: -10px;"></a>
-                    </div>
-        
-                     Collect the nav links, forms, and other content for toggling 
-                    <div class="collapse navbar-collapse navbar-ex1-collapse">
-                        <ul class="nav navbar-nav navbar-right">
-                            <li><a href="#home">HOME</a></li>
-                            <li><a href="#feature">FEATURE</a></li>
-                            <li><a href="#about">ABOUT US</a></li>
-                            <li><a href="#join"><div class="bound">JOIN US!</div></a></li>
-                        </ul>
-                    </div> /.navbar-collapse 
-                </nav>-->
-        <div id="fullpage">
-
-        </div>
-
         <div id="floating-panel">
             <strong>Start:</strong>
             <input id = "start" class="form-control"  placeholder="Start location...">
@@ -129,7 +106,17 @@
             <br>
             <button id = "route" value = "Search"></button>
         </div>
-        <div id="right-panel"></div>
+        <div id="right-panel">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Khoi hanh </h3>
+                </div>
+                <div class="panel-body">
+                    Hoang van thu ==>> Nguyen kiem
+                </div>
+                <div class="panel-footer">Nguyen thanh An</div>
+            </div>
+        </div>
         <div id="map"></div>
         <script>
             function initMap() {
@@ -141,7 +128,7 @@
                     center: {lat: 41.85, lng: -87.65}
                 });
                 directionsDisplay.setMap(map);
-                directionsDisplay.setPanel(document.getElementById('right-panel'));
+//                directionsDisplay.setPanel(document.getElementById('right-panel'));
 
                 var control = document.getElementById('floating-panel');
                 control.style.display = 'block';
@@ -153,7 +140,6 @@
                 document.getElementById('start').addEventListener('change', onChangeHandler);
                 document.getElementById('end').addEventListener('change', onChangeHandler);
 
-// Try HTML5 geolocation.
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(function (position) {
                         var pos = {
@@ -173,19 +159,8 @@
                             destination: end,
                             travelMode: google.maps.TravelMode.DRIVING
                         }, function (response, status) {
-                            console.log(response);
                             if (status === google.maps.DirectionsStatus.OK) {
-                                $.ajax({
-                                    url: "AutoParingWhenSearchAPI",
-                                    type: "POST",
-                                    data: '{"creatorId":"fb_tester001","goTime":1442894414,"googleRoutingResult":"' + JSON.stringify(response).replace(/\\/g, '\\\\').replace(/\\\\\"/g, '\\\"').replace(/\"/g, '\\"').replace(/\\\\/g, '\\') + '","hasHelmet":true}',
-                                    success: function (data, textStatus, jqXHR) {
-                                        alert(data);
-                                    },
-                                    error: function (jqXHR, textStatus, errorThrown) {
-
-                                    }
-                                });
+                                getTrip(start, end);
                                 directionsDisplay.setDirections(response);
                             } else {
                                 window.alert('Directions request failed due to ' + status);
@@ -199,6 +174,51 @@
                     handleLocationError(false, infoWindow, map.getCenter());
                 }
             }
+            function getTrip(start, end)
+            {
+                $.ajax({
+                    url: "GetGoogleRoutingResult?start=" + start + "&end=" + end,
+                    type: "POST",
+                    success: function (data, textStatus, jqXHR) {
+                        var result = JSON.parse(data);
+                        console.log(result);
+                        $("#right-panel").html();
+                        if (result["messageCode"] === 1)
+                        {
+                            var tt = "";
+                            for (i in result["result"]["feeds"])
+                            {
+                                var feed = result["result"]["feeds"][i];
+                                var role = "";
+                                if (feed["tripDetail"]["role"] === 1)
+                                {
+                                    role = "muon cho";
+                                }
+                                else
+                                {
+                                    role = "muon di";
+                                }
+                                var html = '<div class="panel panel-primary">'
+                                        + '<div class="panel-heading"'
+                                        + '<h3 class="panel-title">Khoi hanh: ' + feed["tripDetail"]["goTime"] + '<br/> gia: ' + feed["tripDetail"]["unitPrice"] + ' </h3>'
+                                        + '</div>'
+                                        + '<div class="panel-body">'
+                                        + feed["tripDetail"]["startAddress"] + '==>>' + feed["tripDetail"]["endAddress"]
+                                        + '</div>'
+                                        + '<div class="panel-footer"><img src="' + feed["userDetail"]["profilePictureLink"] + '"/>' + feed["userDetail"]["firstName"] + '<br/><b>' + role + '</b><button>De nghi</button></div>'
+
+                                        + '</div>';
+                                tt += html;
+                                console.log(result["result"]["feeds"][i]);
+                            }
+                            $("#right-panel").html(tt);
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log(errorThrown);
+                    }
+                });
+            }
 
             function calculateAndDisplayRoute(directionsService, directionsDisplay) {
                 var start = document.getElementById('start').value;
@@ -209,6 +229,7 @@
                     travelMode: google.maps.TravelMode.DRIVING
                 }, function (response, status) {
                     if (status === google.maps.DirectionsStatus.OK) {
+                        getTrip(start, end);
                         directionsDisplay.setDirections(response);
                     } else {
                         window.alert('Directions request failed due to ' + status);
@@ -244,8 +265,7 @@
 
         <!-- jQuery -->
         <script src="js/jquery-1.11.3.min.js"></script>
-        <!-- Bootstrap JavaScript -->
-        <script src="js/bootstrap.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
         <script>
 
         </script>
