@@ -67,7 +67,7 @@ public class TripController {
 //        trip.setRealDistance(PolyLineProcess.getDistanceFromPolyLine(request.getTripTrailPolyLine()));
         trip.setEndTime(DateTimeUtil.now());
         trip.setSensitiveLocationId(request.getEndLocation());
-        trip.setTripStatus(Trip.FINISHED_TRIP_WITH_OUT_RATING);
+        trip.setTripStatus(Trip.FINISHED_TRIP_WITHOUT_RATING);
 
         if (dao.update(trip)) {
             try {

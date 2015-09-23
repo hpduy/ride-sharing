@@ -85,7 +85,7 @@ public class Temp implements Runnable {
 
     public void cau3() {
         int dem = 0;
-        int n = 1000000;
+        int n = 10000;
         int [] arrSumUocSo = new int[n];
         for(int i = 1; i < n ; i++){
             arrSumUocSo[i] = TinhTongUocSo(i);
@@ -93,8 +93,10 @@ public class Temp implements Runnable {
         for (int q = 1; q < n; q++) {
             if(arrSumUocSo[q] < q){
                 int p = arrSumUocSo[q];
-                if(arrSumUocSo[p] == q)
+                if(arrSumUocSo[p] == q) {
                     dem++;
+                    System.out.print("p:"+p+"-"+arrSumUocSo[p]+"##  q:"+q+"-"+arrSumUocSo[q]);
+                }
             }
         }
         System.out.println("Cau 3: " + dem);
@@ -186,8 +188,10 @@ public class Temp implements Runnable {
     public int TinhTongUocSo(int k) {
         int sum = 0;
         for (int i = 2; i <= k / 2; i++)
-            if (k % i == 0)
+            if (k % i == 0) {
                 sum += i;
+                System.out.println(i);
+            }
         return sum + 1;
     }
 }

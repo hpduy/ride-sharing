@@ -53,7 +53,11 @@ public class RatingController {
         if (dao.insert(rating)) {
             Trip trip = database.getTripHashMap().get(rating.getTripId());
             if (trip != null) {
-                trip.setTripStatus(Trip.COMPLETED_TRIP);
+                trip.getRatedUser().add(request.getRatingUserId());
+                if (trip.getRatedUser().size() == 1)
+                    trip.setTripStatus(Trip.FINISHED_TRIP_HALF_RATING);
+                else
+                    trip.setTripStatus(Trip.COMPLETED_TRIP);
                 new TripDao().update(trip);
             }
             return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
@@ -65,7 +69,7 @@ public class RatingController {
         HashSet<Long> ratingIds = database.getUserIdRFRatings().get(userId);
         double sum = 0;
         int count = 0;
-        if(ratingIds != null) {
+        if (ratingIds != null) {
             for (long id : ratingIds) {
                 Rating rating = database.getRatingHashMap().get(id);
                 if (null != rating) {
@@ -74,7 +78,7 @@ public class RatingController {
                 }
             }
             return sum / count;
-        }else {
+        } else {
             return 0;
         }
     }

@@ -110,7 +110,7 @@ public class TripCalendarController {
                         }
                     });
                     for (PlannedTrip t : trips) {
-                        if (t.getType() != PlannedTrip.REQUESTED_PLANNED_TRIP && !database.getRequestMakeTripHashMap().containsKey(t.getRequestId()))
+                        if (t.getType() != PlannedTrip.REQUESTED_PLANNED_TRIP || database.getRequestMakeTripHashMap().containsKey(t.getRequestId()))
                             tripByDay.add(new FeedController().convertPlannedTripToFeed(t, t.getCreatorId()));
                     }
                     response.setFeeds(tripByDay.toArray(new FeedResponse[tripByDay.size()]));

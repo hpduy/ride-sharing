@@ -65,14 +65,23 @@ public class PlannedTripShortDetailResponse extends TripInFeed {
                     this.status = READY_GO_BY_ME;
                     if (null != database.getPlannedTripIdRFTrips().get(that.getId())) {
                         long tripId = database.getPlannedTripIdRFTrips().get(that.getId());
-                        if (database.getTripHashMap().containsKey(tripId) && database.getTripHashMap().get(tripId).getTripStatus() == Trip.FINISHED_TRIP_WITH_OUT_RATING)
-                            this.status = COMPLETE_NON_RATING;
+                        if (database.getTripHashMap().containsKey(tripId)) {
+                            if ((database.getTripHashMap().get(tripId).getTripStatus() == Trip.FINISHED_TRIP_WITHOUT_RATING ||
+                                    database.getTripHashMap().get(tripId).getTripStatus() == Trip.FINISHED_TRIP_HALF_RATING
+                                            && !database.getTripHashMap().get(tripId).getRatedUser().contains(senderId))) {
+                                this.status = COMPLETE_NON_RATING;
+                            } else if ((database.getTripHashMap().get(tripId).getTripStatus() == Trip.COMPLETED_TRIP ||
+                                    database.getTripHashMap().get(tripId).getTripStatus() == Trip.FINISHED_TRIP_HALF_RATING
+                                            && database.getTripHashMap().get(tripId).getRatedUser().contains(senderId))) {
+                                this.status = COMPLETE;
+                            }
+                        }
                     }
                 } else {
                     this.status = READY_GO;
                     if (null != database.getPlannedTripIdRFTrips().get(that.getId())) {
                         long tripId = database.getPlannedTripIdRFTrips().get(that.getId());
-                        if (database.getTripHashMap().containsKey(tripId) && database.getTripHashMap().get(tripId).getTripStatus() == Trip.FINISHED_TRIP_WITH_OUT_RATING)
+                        if (database.getTripHashMap().containsKey(tripId))
                             this.status = COMPLETE;
                     }
                 }
