@@ -137,7 +137,7 @@ public class RatingDao {
                 logger.error(String.format("Can't not update redis with key=%s, field=%s, value=%s",
                         obj.getClass().getName(), String.valueOf(obj.getId()), JSONUtil.Serialize(obj)));
             }
-        } catch (Exception ex) {
+        } catch (Exception ex) { 
 
             logger.error(ex.getStackTrace());
             ex.printStackTrace();

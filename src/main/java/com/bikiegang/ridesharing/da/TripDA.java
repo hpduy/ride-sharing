@@ -9,6 +9,7 @@ import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.annn.framework.dbconn.ClientManager;
 import com.bikiegang.ridesharing.annn.framework.dbconn.ManagerIF;
 import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
+import com.bikiegang.ridesharing.annn.framework.util.StringUtils;
 import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.pojo.PojoBase;
 import com.bikiegang.ridesharing.pojo.Trip;
@@ -73,6 +74,7 @@ public class TripDA implements IDA {
                 stmt.setLong(13, value.getPassengerPlannedTripId());
                 stmt.setString(14, value.getTripTrailPolyLine());
                 stmt.setInt(15, value.getTripStatus());
+                stmt.setString(16, StringUtils.join(value.getRatedUser(), ","));
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {
@@ -111,7 +113,8 @@ public class TripDA implements IDA {
                 stmt.setLong(13, value.getPassengerPlannedTripId());
                 stmt.setString(14, value.getTripTrailPolyLine());
                 stmt.setInt(15, value.getTripStatus());
-                stmt.setLong(16, value.getId());
+                stmt.setString(16, StringUtils.join(value.getRatedUser(), ","));
+                stmt.setLong(17, value.getId());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {
