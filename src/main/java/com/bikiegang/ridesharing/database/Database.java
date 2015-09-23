@@ -70,6 +70,7 @@ public class Database {
     private HashMap<Long, HashSet<Long>> groupIdRFPlannedTrips = new HashMap<>(); // <groupId,<plannedTripId>>
     private HashMap<Long, HashMap<Long, Long>> routeRFPlannedTripsByDay = new HashMap<>();// <routeId,<epochday, plannedTrip>
 
+
     /**
      * TRIP
      */
