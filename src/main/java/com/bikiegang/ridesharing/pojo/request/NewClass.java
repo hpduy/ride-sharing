@@ -16,7 +16,7 @@ import com.bikiegang.ridesharing.pojo.static_object.TripPattern;
 public class NewClass {
 
     public static void main(String[] args) {
-        AutoSearchParingRequest a = new AutoSearchParingRequest("", 0, "", true);
+        RequestPhoneNumberRequest a = new RequestPhoneNumberRequest("", "");
         System.out.println(JSONUtil.Serialize(a));
     }
 }

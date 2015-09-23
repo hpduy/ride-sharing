@@ -1,5 +1,6 @@
 package com.bikiegang.ridesharing.pojo.request;
 
+import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -26,4 +27,19 @@ public class RequestPhoneNumberRequest {
     public void setReceiverId(String receiverId) {
         this.receiverId = receiverId;
     }
+
+    public RequestPhoneNumberRequest() {
+    }
+
+    public RequestPhoneNumberRequest(String senderId, String receiverId) {
+        this.senderId = senderId;
+        this.receiverId = receiverId;
+    }
+
+    
+    @Override
+    public String toString() {
+        return JSONUtil.Serialize(this);
+    }
+
 }

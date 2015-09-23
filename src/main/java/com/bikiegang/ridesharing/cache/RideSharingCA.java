@@ -674,6 +674,14 @@ public class RideSharingCA {
                 database.getRatingHashMap().put(ConvertUtils.toLong(key), (Rating) JSONUtil.DeSerialize(value, Rating.class));
             }
 
+            hgetAll = hgetAll(Rating.class.getName() + ":user");
+            for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+                database.getUserIdRFRatings().put(key, (HashSet<Long>) JSONUtil.DeSerialize(value, new TypeToken<HashSet<Long>>() {
+                }.getType()));
+            }
+
             result = true;
         } catch (Exception ex) {
             _logger.error(ex.getMessage());
