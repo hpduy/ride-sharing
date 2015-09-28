@@ -15,7 +15,7 @@ import java.util.*;
  */
 public class Pairing {
 
-    private final double ACCEPTABLE_TIME = 24 * DateTimeUtil.HOURS;
+    private final double ACCEPTABLE_TIME = DateTimeUtil.HOURS;
     private final double REMOVEABLE_TIME = DateTimeUtil.DAYS;
     private Database database = Database.getInstance();
     /*
