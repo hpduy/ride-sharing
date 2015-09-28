@@ -131,6 +131,8 @@ public class Pairing {
                                         // check helmet
                                         if (plannedTrip.isHasHelmet() || driverPlannedTrip.isHasHelmet()) {
                                             listDriverPlannedTripResult.add(driverPlannedTrip);
+                                        }else {
+                                            listDriverPlannedTripResult.add(driverPlannedTrip);
                                         }
                                     }
                                 }
@@ -193,7 +195,7 @@ public class Pairing {
             PlannedTrip passengerPlannedTrip = database.getPlannedTripHashMap().get(passengerPlannedTripId);
             // plannedTrip is not null and not own by driver and not requested
             if (passengerPlannedTrip != null && !plannedTrip.getCreatorId().equals(passengerPlannedTrip.getCreatorId()) && passengerPlannedTrip.getRequestId() == 0) {
-                List<Long> passengerPlannedTripLinkedLocationIds = database.getPlannedTripIdRFLinkedLocations().get(passengerPlannedTrip.getId());
+                List<Long> passengerPlannedTripLinkedLocationIds = database.getPlannedTripIdRFLinkedLocations().get(passengerPlannedTrip.getRouteId());
                 if (passengerPlannedTripLinkedLocationIds != null && passengerPlannedTripLinkedLocationIds.size() >= 2) {
                     LinkedLocation srcPassengerLocation = null;
                     LinkedLocation desPassengerLocation = null;
@@ -242,6 +244,8 @@ public class Pairing {
                                             if (DateTimeUtil.timeDistance(timeDriveReachNearSrcLocation, passengerGoTime) <= ACCEPTABLE_TIME) {
                                                 if (!listPassengerPlannedTripResult.contains(passengerPlannedTrip)) {
                                                     if (plannedTrip.isHasHelmet() || passengerPlannedTrip.isHasHelmet()) {
+                                                        listPassengerPlannedTripResult.add(passengerPlannedTrip);
+                                                    }else{
                                                         listPassengerPlannedTripResult.add(passengerPlannedTrip);
                                                     }
                                                 }

@@ -2,6 +2,7 @@ package com.bikiegang.ridesharing.pojo.response;
 
 import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.PopularLocation;
+import com.bikiegang.ridesharing.utilities.Path;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -23,7 +24,7 @@ public class PopularLocationResponse extends LatLng {
         this.id = that.getId();
         this.name = that.getName();
         this.address = that.getAddress();
-        this.backgroundImageLink = that.getBackgroundImageLink();
+        this.backgroundImageLink = Path.getUrlFromPath(that.getBackgroundImageLink()+"x.jpg");
     }
 
     public String getName() {

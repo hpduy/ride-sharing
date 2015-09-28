@@ -7,6 +7,9 @@ import java.io.*;
  * Created by hpduy17 on 3/28/15.
  */
 public class UploadImageUtil {
+
+    public static final int popularLocation_BgImageWidth = 360;
+    public static final int popularLocation_BgImageHeight = 136;
     public String upload(String fileName, String path, Part filePart) throws IOException {
         OutputStream out = null;
         InputStream fileContent = null;
@@ -71,7 +74,7 @@ public class UploadImageUtil {
             fileName += "." + getExtension(filePart);
             String filePath = StringProcessUtil.removeAccent(Path.getImagePath() + File.separator + fileName).replaceAll(" ", "");
             fileContent = filePart.getInputStream();
-            ImageProcessUtil.smartCropAndWriteFile(fileContent, 340, 340, getExtension(filePart), new File(filePath));
+            new ImageProcessUtil().smartCropAndWriteFile(fileContent, 340, 340, getExtension(filePart), new File(filePath));
             return filePath;
         } catch (Exception fne) {
             return "";
@@ -88,7 +91,7 @@ public class UploadImageUtil {
             fileName += "." + getExtension(filePart);
             String filePath = StringProcessUtil.removeAccent(Path.getImagePath() + File.separator + fileName).replaceAll(" ", "");
             fileContent = filePart.getInputStream();
-            ImageProcessUtil.smartCropAndWriteFile(fileContent, width, height, getExtension(filePart), new File(filePath));
+            new ImageProcessUtil().smartCropAndWriteFile(fileContent, width, height, getExtension(filePart), new File(filePath));
             return filePath;
         } catch (Exception fne) {
             return "";
@@ -111,4 +114,42 @@ public class UploadImageUtil {
         }
 
     }
+    private String getExtension(final String urlString) {
+        try {
+            String fileName = urlString.substring(
+                    urlString.lastIndexOf(".") + 1).trim();
+            return fileName;
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+
+    }
+
+    public String downloadPopularLocationIMGWithManySize(String urlString, String fileName) throws IOException {
+        String extension = getExtension(urlString);
+        fileName = fileName.replaceAll(File.separator,"");
+        for(int x = 1; x <= 3 ; x++) {
+            String filePath = StringProcessUtil.removeAccent(Path.getImagePath() + File.separator + fileName).replaceAll(" ", "");
+            switch (x){
+                case 1:
+                    filePath += "x."+extension;
+                    break;
+                case 2:
+                    filePath += "xx."+extension;
+                    break;
+                case 3:
+                    filePath += "xxx."+extension;
+                    break;
+                default:
+            }
+            File file = new File(filePath);
+            if (!file.exists()) {
+                new ImageProcessUtil().smartCropAndWriteFile(urlString, popularLocation_BgImageWidth * x, popularLocation_BgImageHeight * x, getExtension(urlString), file);
+            }
+        }
+        return StringProcessUtil.removeAccent(Path.getImagePath() + File.separator + fileName).replaceAll(" ", "");
+    }
+
+
 }

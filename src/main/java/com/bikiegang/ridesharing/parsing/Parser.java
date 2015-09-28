@@ -96,9 +96,17 @@ public class Parser {
         return toJson(result);
     }
 
+    public static JSONObject ObjectToJSonObject(Object result) throws JsonProcessingException {
+        return toJsonObject(result);
+    }
+
     private static String toJson(Object o) throws JsonProcessingException {
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
         return ow.writeValueAsString(o);
+    }
+
+    private static JSONObject toJsonObject(Object o) throws JsonProcessingException {
+        return new JSONObject(toJson(o));
     }
 
     public static Object JSonToObject(String src, Class type) throws IOException {

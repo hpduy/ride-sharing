@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.URL;
 
 /**
  * Created by hpduy17 on 5/5/15.
@@ -55,7 +56,7 @@ public class ImageProcessUtil {
 
         return baos;
     }
-    public static void smartCropAndWriteFile(InputStream bais, int width, int height,String extension,File outFile) throws IOException {
+    public void smartCropAndWriteFile(InputStream bais, int width, int height,String extension,File outFile) throws IOException {
         BufferedImage src = ImageIO.read(bais);
 
         Float scale;
@@ -76,6 +77,30 @@ public class ImageProcessUtil {
         temp = crop(temp, width, height);
         ImageIO.write(temp, extension, outFile);
     }
+    public void smartCropAndWriteFile(String urlString, int width, int height,String extension,File outFile) throws IOException {
+        URL url = new URL(urlString);
+        InputStream fileContent = new BufferedInputStream(url.openStream());
+        BufferedImage src = ImageIO.read(fileContent);
+        Float scale;
+        if (src.getWidth() > src.getHeight()) {
+            scale = Float.valueOf(height) / Float.valueOf(src.getHeight());
+            if (src.getWidth() * scale < width) {
+                scale = Float.valueOf(width) / Float.valueOf(src.getWidth());
+            }
+        } else {
+            scale = Float.valueOf(width) / Float.valueOf(src.getWidth());
+            if (src.getHeight() * scale < height) {
+                scale = Float.valueOf(height) / Float.valueOf(src.getHeight());
+            }
+        }
+        BufferedImage temp = scale(src, Float.valueOf(src.getWidth() * scale).intValue(),
+                Float.valueOf(src.getHeight() * scale).intValue());
+
+        temp = crop(temp, width, height);
+        ImageIO.write(temp, extension, outFile);
+        fileContent.close();
+
+    }
     public static ByteArrayOutputStream scale(ByteArrayInputStream bais, int width, int height) throws IOException {
         BufferedImage src = ImageIO.read(bais);
         BufferedImage dest = scale(src, width, height);
@@ -93,4 +118,5 @@ public class ImageProcessUtil {
         g.drawRenderedImage(src, at);
         return dest;
     }
+
 }
