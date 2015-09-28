@@ -375,9 +375,9 @@ public class ConfigInfo {
                 + "`searcher`,\n"
                 + "`lat`,\n"
                 + "`lng`,\n"
-                + "`time`)\n"
+                + "`time`, `type`)\n"
                 + "VALUES\n"
-                + "(?,?,?,?,?,?,?,?);";
+                + "(?,?,?,?,?,?,?,?,?);";
         POPULARLOCATION_GROUP_UPDATE_QUERY = "UPDATE `ridesharing_db`.`PopularLocation`\n"
                 + "SET\n"
                 + "`id` = ?,\n"
@@ -387,7 +387,7 @@ public class ConfigInfo {
                 + "`searcher` = ?,\n"
                 + "`lat` = ?,\n"
                 + "`lng` = ?,\n"
-                + "`time` = ?\n"
+                + "`time` = ?, `type` = ?\n"
                 + "WHERE `id` = ?;";
         POPULARLOCATION_GROUP_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`PopularLocation`\n"
                 + "WHERE `id` = ?;";

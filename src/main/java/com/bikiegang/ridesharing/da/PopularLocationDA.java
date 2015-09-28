@@ -66,6 +66,7 @@ public class PopularLocationDA implements IDA {
                 stmt.setDouble(6, value.getLat());
                 stmt.setDouble(7, value.getLng());
                 stmt.setLong(8, value.getTime());
+                stmt.setInt(9, value.getType());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {
@@ -97,7 +98,8 @@ public class PopularLocationDA implements IDA {
                 stmt.setDouble(6, value.getLat());
                 stmt.setDouble(7, value.getLng());
                 stmt.setLong(8, value.getTime());
-                stmt.setLong(9, value.getId());
+                stmt.setInt(9, value.getType());
+                stmt.setLong(10, value.getId());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {
