@@ -1,5 +1,7 @@
 package com.bikiegang.ridesharing.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.HashSet;
 
 /**
@@ -11,6 +13,12 @@ public class PopularLocation extends LatLng implements PojoBase {
     private String address;
     private String backgroundImageLink = "";
     private HashSet<String> searcher = new HashSet<>();
+    private int type;
+
+    @JsonIgnore
+    public static final int POPULAR_LOCATION = 0;
+    @JsonIgnore
+    public static final int EVENT_LOCATION = 1;
 
     public PopularLocation() {
     }
@@ -19,13 +27,23 @@ public class PopularLocation extends LatLng implements PojoBase {
         super(coordinate);
     }
 
-    public PopularLocation(LatLng that, long id, String name, String address, HashSet<String> searcher,String backgroundImageLink) {
+    public PopularLocation(LatLng that, long id, String name, String address, HashSet<String> searcher, String backgroundImageLink) {
         super(that);
         this.id = id;
         this.name = name;
         this.address = address;
         this.searcher = searcher;
         this.backgroundImageLink = backgroundImageLink;
+    }
+
+    public PopularLocation(LatLng that, long id, String name, String address, String backgroundImageLink, HashSet<String> searcher, int type) {
+        super(that);
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.backgroundImageLink = backgroundImageLink;
+        this.searcher = searcher;
+        this.type = type;
     }
 
     public PopularLocation(PopularLocation that) {
@@ -35,6 +53,7 @@ public class PopularLocation extends LatLng implements PojoBase {
         this.address = that.address;
         this.searcher = that.searcher;
         this.backgroundImageLink = that.backgroundImageLink;
+        this.type = that.type;
     }
 
     public String getName() {
@@ -75,5 +94,13 @@ public class PopularLocation extends LatLng implements PojoBase {
 
     public void setBackgroundImageLink(String backgroundImageLink) {
         this.backgroundImageLink = backgroundImageLink;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }

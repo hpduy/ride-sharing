@@ -2,6 +2,7 @@ package com.bikiegang.ridesharing.pojo.response;
 
 import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.PopularLocation;
+import com.bikiegang.ridesharing.utilities.Path;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -13,6 +14,7 @@ public class PopularLocationResponse extends LatLng {
     private String name;
     private String address;
     private String backgroundImageLink = "";
+    private int type;
 
     public PopularLocationResponse() {
     }
@@ -23,7 +25,8 @@ public class PopularLocationResponse extends LatLng {
         this.id = that.getId();
         this.name = that.getName();
         this.address = that.getAddress();
-        this.backgroundImageLink = that.getBackgroundImageLink();
+        this.backgroundImageLink = Path.getUrlFromPath(that.getBackgroundImageLink() + "x.jpg");
+        this.type = that.getType();
     }
 
     public String getName() {
@@ -56,5 +59,13 @@ public class PopularLocationResponse extends LatLng {
 
     public void setBackgroundImageLink(String backgroundImageLink) {
         this.backgroundImageLink = backgroundImageLink;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }

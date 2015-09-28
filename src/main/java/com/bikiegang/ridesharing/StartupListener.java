@@ -2,6 +2,7 @@ package com.bikiegang.ridesharing;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.controller.AngelGroupController;
+import com.bikiegang.ridesharing.controller.PopularLocationController;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.utilities.FakeGroup.FakeUser;
 import com.bikiegang.ridesharing.utilities.Path;
@@ -47,6 +48,7 @@ public class StartupListener implements ServletContextListener, HttpSessionListe
                 new AngelGroupController();
                 System.out.println("Group size after:"+Database.getInstance().getAngelGroupHashMap().size());
             }
+            new PopularLocationController();
             logger.info("CLOUD BIKE WAKED UP");
         } catch (Exception ex) {
             ex.printStackTrace();

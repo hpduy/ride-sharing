@@ -93,7 +93,7 @@ public class GCMBroadcast extends HttpServlet {
                 if(null != broadcastIds){
                     for(String id : broadcastIds) {
                         Broadcast broadcast = database.getBroadcastHashMap().get(id);
-                        if(null != broadcast){
+                        if(null != broadcast && broadcast.getOs() == Broadcast.ANDROID){
                             regIds.add(broadcast.getRegId());
                         }
                     }

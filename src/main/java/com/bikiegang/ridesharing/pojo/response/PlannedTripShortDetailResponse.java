@@ -60,8 +60,8 @@ public class PlannedTripShortDetailResponse extends TripInFeed {
         this.status = NON_REQUEST;
         try {
             if (database.getRequestMakeTripHashMap().containsKey(that.getRequestId())) {
-                if (!database.getRequestMakeTripHashMap().get(that.getRequestId()).getSenderId().equals(senderId)
-                        && !database.getRequestMakeTripHashMap().get(that.getRequestId()).getSenderId().equals(senderId)) {
+                if (database.getRequestMakeTripHashMap().get(that.getRequestId()).getSenderId().equals(senderId)
+                        || database.getRequestMakeTripHashMap().get(that.getRequestId()).getReceiverId().equals(senderId)) {
                     this.status = READY_GO_BY_ME;
                     if (null != database.getPlannedTripIdRFTrips().get(that.getId())) {
                         long tripId = database.getPlannedTripIdRFTrips().get(that.getId());

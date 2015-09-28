@@ -68,9 +68,8 @@ public class GetUserDetailResponse {
             }
         }
         this.certificates = cerList.toArray(new VerifiedCertificate[cerList.size()]);
-        if (user.getPhoneViewer().contains(viewerId) || user.getId().equals(viewerId)) {
-            this.canViewPhoneNumber = true;
-        }
+        this.canViewPhoneNumber = new UserController().canViewPhone(user.getId(),viewerId);
+
     }
 
     public VerifiedCertificate[] getCertificates() {

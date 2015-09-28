@@ -5,10 +5,7 @@ import com.bikiegang.ridesharing.dao.UserDao;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.geocoding.PolyLineProcess;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.LatLng;
-import com.bikiegang.ridesharing.pojo.PlannedTrip;
-import com.bikiegang.ridesharing.pojo.Trip;
-import com.bikiegang.ridesharing.pojo.User;
+import com.bikiegang.ridesharing.pojo.*;
 import com.bikiegang.ridesharing.pojo.request.*;
 import com.bikiegang.ridesharing.pojo.response.*;
 import com.bikiegang.ridesharing.pojo.response.angel.GetAngelsInGroupResponse;
@@ -21,6 +18,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -594,18 +592,33 @@ public class UserController {
 
     public ExPartnerInfoResponse getExPartners(String userId) {
         ExPartnerInfoResponse response = new ExPartnerInfoResponse();
+        List<String> partners = getExPartnerIds(userId);
+        Collections.shuffle(partners);
+        List<String> userPictureLinks = new ArrayList<>();
+        for (String id : partners) {
+            if (userPictureLinks.size() == 3)
+                break;
+            try {
+                userPictureLinks.add(Path.getUrlFromPath(database.getUserHashMap().get(id).getProfilePictureLink()));
+            } catch (Exception ignored) {
+            }
+        }
+        response.setNumberOfExPartner(partners.size());
+        response.setPartnerPictureLinks(userPictureLinks.toArray(new String[userPictureLinks.size()]));
+        return response;
+    }
+
+    public List<String> getExPartnerIds(String userId) {
         HashSet<Long> driverTrip = database.getDriverIdRFTrips().get(userId);
         HashSet<Long> passengerTrip = database.getPassengerIdRFTrips().get(userId);
-        List<String> userPictureLinks = new ArrayList<>();
-        int size = 0;
+        List<String> partnerList = new ArrayList<>();
         if (driverTrip != null && !driverTrip.isEmpty()) {
             for (long tId : driverTrip) {
                 Trip trip = database.getTripHashMap().get(tId);
                 if (null != trip) {
                     User partner = database.getUserHashMap().get(trip.getPassengerId());
-                    if (null != partner.getProfilePictureLink() && !partner.getProfilePictureLink().equals("") && !userPictureLinks.contains(partner.getProfilePictureLink())) {
-                        userPictureLinks.add(Path.getUrlFromPath(partner.getProfilePictureLink()));
-                        size++;
+                    if (null != partner.getProfilePictureLink() && !partner.getProfilePictureLink().equals("") && !partnerList.contains(partner.getId())) {
+                        partnerList.add(partner.getId());
                     }
                 }
             }
@@ -616,20 +629,38 @@ public class UserController {
                 Trip trip = database.getTripHashMap().get(tId);
                 if (null != trip) {
                     User partner = database.getUserHashMap().get(trip.getDriverId());
-                    if (null != partner.getProfilePictureLink() && !partner.getProfilePictureLink().equals("") && !userPictureLinks.contains(partner.getProfilePictureLink())) {
-                        userPictureLinks.add(Path.getUrlFromPath(partner.getProfilePictureLink()));
-                        size++;
+                    if (null != partner.getProfilePictureLink() && !partner.getProfilePictureLink().equals("") && !partnerList.contains(partner.getId())) {
+                        partnerList.add(partner.getId());
                     }
                 }
             }
-            size += passengerTrip.size();
         }
+        return partnerList;
+    }
 
-        response.setNumberOfExPartner(size);
-        response.setPartnerPictureLinks(userPictureLinks.size() > 3 ? new String[]{userPictureLinks.get(0), userPictureLinks.get(1), userPictureLinks.get(2)}
-                : userPictureLinks.toArray(new String[userPictureLinks.size()]));
-        return response;
-
+    public boolean canViewPhone(String userId, String viewerId) {
+        if (database.getSenderRequestsBox().containsKey(viewerId)) {
+            for (long ptId : database.getSenderRequestsBox().get(viewerId).keySet()) {
+                long requestId = database.getSenderRequestsBox().get(viewerId).get(ptId);
+                RequestMakeTrip requestMakeTrip = database.getRequestMakeTripHashMap().get(requestId);
+                if (requestMakeTrip != null && requestMakeTrip.getReceiverId().equals(userId) && requestMakeTrip.getStatus() == RequestMakeTrip.ACCEPT) {
+                    // TODO check expired time later
+                    return true;
+                }
+            }
+        }
+        if (database.getReceiverRequestsBox().containsKey(viewerId)) {
+            for (long ptId : database.getReceiverRequestsBox().get(viewerId).keySet()) {
+                for (long requestId : database.getReceiverRequestsBox().get(viewerId).get(ptId)) {
+                    RequestMakeTrip requestMakeTrip = database.getRequestMakeTripHashMap().get(requestId);
+                    if (requestMakeTrip != null && requestMakeTrip.getSenderId().equals(userId) && requestMakeTrip.getStatus() == RequestMakeTrip.ACCEPT) {
+                        // TODO check expired time later
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     public String getUserDetail(GetUserDetailRequest request) throws JsonProcessingException {

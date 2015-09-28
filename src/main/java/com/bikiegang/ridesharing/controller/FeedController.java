@@ -126,7 +126,8 @@ public class FeedController {
         List<FeedResponse> responses = new ArrayList<>();
         for (PlannedTrip plannedTrip : plannedTrips) {
             FeedResponse response = convertPlannedTripToFeed(plannedTrip, requesterId);
-            responses.add(response);
+            if (response != null)
+                responses.add(response);
 
         }
         return responses.toArray(new FeedResponse[responses.size()]);
@@ -143,6 +144,8 @@ public class FeedController {
             response.setPartnerInfo(partnerInfoResponse);
             response.setUserDetail(userShortDetailResponse);
             response.setTripDetail(new PlannedTripDetailResponse(plannedTrip, requesterId));
+        } else {
+            return null;
         }
         // get partner info
         if (database.getRequestMakeTripHashMap().containsKey(plannedTrip.getRequestId())) {

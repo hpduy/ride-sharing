@@ -268,7 +268,7 @@ public class RequestMakeTripController {
 
     }
 
-    public String getListRequestMakeTrip(GetListRequestMakeTripRequest request) throws JsonProcessingException {
+    public String getListRequestMakeTrip(GetListRequestMakeTripRequest request) throws IOException {
         if (null == request.getUserId() || request.getUserId().equals("")) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
         }
@@ -288,7 +288,7 @@ public class RequestMakeTripController {
                                     break;
                                 }
                             }
-                            if (requestMakeTrip.getStatus() == RequestMakeTrip.WAITING) {
+                            if (requestMakeTrip.getStatus() == RequestMakeTrip.WAITING || requestMakeTrip.getStatus() == RequestMakeTrip.ACCEPT) {
                                 RequestMakeTripDetailResponse response = new RequestMakeTripDetailResponse(requestMakeTrip);
                                 responses.add(i, response);
                             }

@@ -36,8 +36,10 @@ public class Temp implements Runnable {
 //        while (!(run1&&run2&&run3&&run4)){
 //
 //        }
+//       System.out.print(new Temp().TongCacChuSo(1));
         new Temp().cau1();
     }
+
 
     @Override
     public void run() {
@@ -63,8 +65,9 @@ public class Temp implements Runnable {
 
     public void cau1() {
         int count = 0;
-        for (int i = 1; i < 100000000; i++) {
-            if (LaSoNguyenTo(i)) {
+        for (int i = 1; i < 100; i++) {
+            if (LaSoNguyenTo(i) && LaSoNguyenTo(TongCacChuSo(i))) {
+                System.out.println(i);
                 count++;
             }
         }
@@ -166,7 +169,7 @@ public class Temp implements Runnable {
             return false;
         if (k == 2)
             return true;
-        for (int i = 3; i <= Math.sqrt(k); i++) {
+        for (int i = 2; i <= Math.sqrt(k); i++) {
             if (k % i == 0)
                 return false;
         }

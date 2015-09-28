@@ -55,15 +55,13 @@ public class ApiDocumentGenerator {
                     "GetPartnerLocationAPI # Get your partner current location to observe where he is\n" +
                     "GetNewFeedAPI # Get user's new feed \n" +
                     "CreateSocial # Create you free trip (social trip) \n" +
-                    "CreateCertificateAPI # Create your certificate"
-
-    ;
+                    "CreateCertificateAPI # Create your certificate";
 
 
     public static void generate() throws NoSuchFieldException, ClassNotFoundException, IllegalAccessException, InstantiationException {
-        if(apiDescriptions.isEmpty()){
+        if (apiDescriptions.isEmpty()) {
             String[] apiDesLines = descriptions.split("\\n");
-            for( String line : apiDesLines ){
+            for (String line : apiDesLines) {
                 String[] apiDes = line.split("#");
                 apiDescriptions.put(apiDes[0].trim(), apiDes[1].trim());
             }
@@ -77,12 +75,13 @@ public class ApiDocumentGenerator {
             HttpServlet api = (HttpServlet) Class.forName(cls.getName()).newInstance();
             String[] names = cls.getName().split("[.]");
             String apiName = names[names.length - 1];
+            System.out.println(apiName);
             String apiDescription = apiDescriptions.get(cls.getSimpleName());
             Class requestClass = (Class<?>) cls.getField("requestClass").get(api);
             Class responseClass = (Class<?>) cls.getField("responseClass").get(api);
             boolean responseIsArray = cls.getField("responseIsArray").getBoolean(api);
             ApiDocument apiDocument = new ApiDocument(apiName, requestClass, responseClass, apiDescription, responseIsArray);
-            System.out.println(apiName);
+
             apiDocument.generate();
             apiDocs.put(apiDocument.getName(), apiDocument);
         }
