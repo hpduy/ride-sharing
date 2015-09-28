@@ -194,9 +194,9 @@ public class ConfigInfo {
                 + "`dangerTrip`,\n"
                 + "`driverPlannedTripId`,\n"
                 + "`passengerPlannedTripId`,\n"
-                + "`tripTrailPolyLine`, `tripStatus`)\n"
+                + "`tripTrailPolyLine`, `tripStatus`, `ratedUser`)\n"
                 + "VALUES\n"
-                + "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                + "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
         TRIP_UPDATE_QUERY = "UPDATE `ridesharing_db`.`Trip`\n"
                 + "SET\n"
                 + "`id` = ?,\n"
@@ -212,7 +212,7 @@ public class ConfigInfo {
                 + "`dangerTrip` = ?,\n"
                 + "`driverPlannedTripId` = ?,\n"
                 + "`passengerPlannedTripId` = ?,\n"
-                + "`tripTrailPolyLine` = ?, `tripStatus` = ?\n"
+                + "`tripTrailPolyLine` = ?, `tripStatus` = ?, `ratedUser` = ?\n"
                 + "WHERE `id` = ?;";
         TRIP_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`Trip`\n"
                 + "WHERE `id` = ?;";
