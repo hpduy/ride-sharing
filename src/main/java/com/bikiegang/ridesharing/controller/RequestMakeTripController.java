@@ -288,7 +288,8 @@ public class RequestMakeTripController {
                                     break;
                                 }
                             }
-                            if (requestMakeTrip.getStatus() == RequestMakeTrip.WAITING || requestMakeTrip.getStatus() == RequestMakeTrip.ACCEPT) {
+                            PlannedTrip pt = database.getPlannedTripHashMap().get(requestMakeTrip.getDriverPlannedTripId());
+                            if (pt.getDepartureTime() > DateTimeUtil.now() - DateTimeUtil.HOURS) {
                                 RequestMakeTripDetailResponse response = new RequestMakeTripDetailResponse(requestMakeTrip);
                                 responses.add(i, response);
                             }

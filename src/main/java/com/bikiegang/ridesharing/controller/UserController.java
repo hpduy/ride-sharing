@@ -60,6 +60,14 @@ public class UserController {
             String id = database.getFacebookRFUserId().get(registerRequest.getFacebookId());
             User existUser = database.getUserHashMap().get(id);
             if (existUser != null) {
+                if (null != registerRequest.getPhone() && !registerRequest.getPhone().replaceAll(" ","").equals("")) {
+                    existUser.setPhone(registerRequest.getPhone());
+                    try {
+                        dao.update(existUser);
+                    }catch (Exception ignored){
+
+                    }
+                }
                 return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new UserResponse(existUser));
             }
         }
@@ -115,6 +123,14 @@ public class UserController {
             String id = database.getGoogleRFUserId().get(registerRequest.getGoogleId());
             User existUser = database.getUserHashMap().get(id);
             if (existUser != null) {
+                if (null != registerRequest.getPhone() && !registerRequest.getPhone().replaceAll(" ","").equals("")) {
+                    existUser.setPhone(registerRequest.getPhone());
+                    try {
+                        dao.update(existUser);
+                    }catch (Exception ignored){
+
+                    }
+                }
                 return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new UserResponse(existUser));
             }
         }
@@ -149,6 +165,14 @@ public class UserController {
             String id = database.getTwitterRFUserId().get(registerRequest.getTwitterId());
             User existUser = database.getUserHashMap().get(id);
             if (existUser != null) {
+                if (null != registerRequest.getPhone() && !registerRequest.getPhone().replaceAll(" ","").equals("")) {
+                    existUser.setPhone(registerRequest.getPhone());
+                    try {
+                        dao.update(existUser);
+                    }catch (Exception ignored){
+
+                    }
+                }
                 return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new UserResponse(existUser));
             }
         }
@@ -183,6 +207,14 @@ public class UserController {
             String id = database.getLinkedInRFUserId().get(registerRequest.getLinkedInId());
             User existUser = database.getUserHashMap().get(id);
             if (existUser != null) {
+                if (null != registerRequest.getPhone() && !registerRequest.getPhone().replaceAll(" ","").equals("")) {
+                    existUser.setPhone(registerRequest.getPhone());
+                    try {
+                        dao.update(existUser);
+                    }catch (Exception ignored){
+
+                    }
+                }
                 return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new UserResponse(existUser));
             }
         }

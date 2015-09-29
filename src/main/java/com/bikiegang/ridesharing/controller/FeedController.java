@@ -81,9 +81,33 @@ public class FeedController {
                                 if (database.getTripHashMap().containsKey(tripId) && database.getTripHashMap().get(tripId).getTripStatus() != Trip.UNFINISHED_TRIP)
                                     continue;
                             }
-                            tif = new PlannedTripDetailResponse(database.getPlannedTripHashMap().get(feed.getRefId()), request.getUserId());
-                            if (feed.getCreatedTime() != database.getPlannedTripHashMap().get(feed.getRefId()).getDepartureTime()) {
+                            PlannedTrip plannedTrip = database.getPlannedTripHashMap().get(feed.getRefId());
+                            tif = new PlannedTripDetailResponse(plannedTrip, request.getUserId());
+                            if (feed.getCreatedTime() != plannedTrip.getDepartureTime()) {
                                 System.out.println("Weird Time:" + feed.getRefId());
+                            }
+                            // get partner info
+                            if (database.getRequestMakeTripHashMap().containsKey(plannedTrip.getRequestId())) {
+                                RequestMakeTrip requestMakeTrip = database.getRequestMakeTripHashMap().get(plannedTrip.getRequestId());
+                                String partnerId = "";
+                                long partnerTripId = 0;
+                                if (tif.getCreatorId().equals(requestMakeTrip.getSenderId())) {
+                                    partnerId = requestMakeTrip.getReceiverId();
+                                } else {
+                                    partnerId = requestMakeTrip.getSenderId();
+                                }
+                                User partner = database.getUserHashMap().get(partnerId);
+                                if (partner != null) {
+                                    response.setPartnerDetail(new UserDetailResponse(partner));
+                                }
+                                if (plannedTrip.getRole() == User.DRIVER) {
+                                    partnerTripId = requestMakeTrip.getPassengerPlannedTripId();
+                                } else {
+                                    partnerTripId = requestMakeTrip.getDriverPlannedTripId();
+                                }
+                                if (database.getPlannedTripHashMap().containsKey(partnerTripId)) {
+                                    response.setPartnerTripDetail(new PlannedTripDetailResponse(database.getPlannedTripHashMap().get(partnerTripId), tif.getCreatorId()));
+                                }
                             }
                             break;
                         case Feed.SOCIAL_TRIP:
@@ -100,6 +124,7 @@ public class FeedController {
                             response.setTripDetail(tif);
                             responses.add(response);
                         }
+
                     }
                 } catch (Exception ignored) {
                 }
