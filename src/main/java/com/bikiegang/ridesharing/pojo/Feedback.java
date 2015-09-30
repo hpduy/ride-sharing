@@ -6,6 +6,8 @@ import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
  * Created by hpduy17 on 9/29/15.
  */
 public class Feedback {
+
+    private long id;
     private String userId = "";
     private String email = "";
     private String content = "";
@@ -20,11 +22,20 @@ public class Feedback {
         this.content = content;
         this.createdTime = createdTime;
     }
+
     public Feedback(Feedback that) {
         this.userId = that.userId;
         this.email = that.email;
         this.content = that.content;
         this.createdTime = that.createdTime;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getUserId() {

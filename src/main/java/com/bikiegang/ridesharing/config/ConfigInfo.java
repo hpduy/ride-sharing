@@ -72,6 +72,9 @@ public class ConfigInfo {
     public static String ROUTE_DELETE_QUERY;
     public static String ROUTE_UPDATE_QUERY;
     public static String ROUTE_INSERT_QUERY;
+    public static String FEEDBACK_GROUP_INSERT_QUERY;
+    public static String FEEDBACK_GROUP_UPDATE_QUERY;
+    public static String FEEDBACK_GROUP_DELETE_QUERY;
 
     static {
         RIDESHARING_DB = "ridesharing_db";
@@ -507,6 +510,24 @@ public class ConfigInfo {
                 + "`title` = ?, `role` = ?\n"
                 + "WHERE `id` = ?;";
         ROUTE_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`Route`\n"
+                + "WHERE `id` = ?;";
+        FEEDBACK_GROUP_INSERT_QUERY = "INSERT INTO `ridesharing_db`.`Feedback`\n"
+                + "(`id`,\n"
+                + "`userId`,\n"
+                + "`email`,\n"
+                + "`content`,\n"
+                + "`createdTime`)\n"
+                + "VALUES\n"
+                + "(?,?,?,?,?);";
+        FEEDBACK_GROUP_UPDATE_QUERY = "UPDATE `ridesharing_db`.`Feedback`\n"
+                + "SET\n"
+                + "`id` = ?,\n"
+                + "`userId` = ?,\n"
+                + "`email` = ?,\n"
+                + "`content` = ?,\n"
+                + "`createdTime` = ?\n"
+                + "WHERE `id` = ?;";
+        FEEDBACK_GROUP_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`Feedback`\n"
                 + "WHERE `id` = ?;";
     }
 
