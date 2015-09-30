@@ -41,7 +41,7 @@ public class Database {
     private HashMap<Long, VerifiedCertificate> verifiedCertificateHashMap = new HashMap<>();
     private HashMap<Long, AngelGroup> angelGroupHashMap = new HashMap<>();
     private HashMap<Long, AngelGroupMember> angelGroupMemberHashMap = new HashMap<>();
-    private HashMap<Long, PopularLocation> popularLocationHashMap = new HashMap<>();
+    private LinkedHashMap<Long, PopularLocation> popularLocationHashMap = new LinkedHashMap<>();
     private HashMap<Long, SocialTrip> socialTripHashMap = new HashMap<>();
     private LinkedHashMap<Long, Feed> feedHashMap = new LinkedHashMap<>();
     private HashMap<Long, Rating> ratingHashMap = new LinkedHashMap<>();
@@ -95,7 +95,7 @@ public class Database {
     /**
      * LINKED LOCATION
      */
-    private HashMap<Long, List<Long>> plannedTripIdRFLinkedLocations = new HashMap<>(); //<routeId,<LinkedLocationId>>
+    private HashMap<Long, List<Long>> routeIdRFLinkedLocations = new HashMap<>(); //<routeId,<LinkedLocationId>>
     /**
      * ANGEL GROUP
      */
@@ -125,7 +125,7 @@ public class Database {
     /**
      * RATING
      */
-    private HashMap<String,HashSet<Long>> UserIdRFRatings = new HashMap<>();// <userId(ratedUserId),<ratingIds>>
+    private HashMap<String, HashSet<Long>> UserIdRFRatings = new HashMap<>();// <userId(ratedUserId),<ratingIds>>
 
 
     /**
@@ -195,7 +195,7 @@ public class Database {
         return angelGroupHashMap;
     }
 
-    public HashMap<Long, PopularLocation> getPopularLocationHashMap() {
+    public LinkedHashMap<Long, PopularLocation> getPopularLocationHashMap() {
         return popularLocationHashMap;
     }
 
@@ -280,8 +280,8 @@ public class Database {
         return passengerIdRFTrips;
     }
 
-    public HashMap<Long, List<Long>> getPlannedTripIdRFLinkedLocations() {
-        return plannedTripIdRFLinkedLocations;
+    public HashMap<Long, List<Long>> getRouteIdRFLinkedLocations() {
+        return routeIdRFLinkedLocations;
     }
 
     public HashMap<Integer, HashSet<Long>> getRoleRFPlannedTrips() {

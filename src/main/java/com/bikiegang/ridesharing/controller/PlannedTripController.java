@@ -1,6 +1,7 @@
 package com.bikiegang.ridesharing.controller;
 
 import com.bikiegang.ridesharing.dao.PlannedTripDao;
+import com.bikiegang.ridesharing.dao.RequestMakeTripDao;
 import com.bikiegang.ridesharing.dao.RouteDao;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.database.IdGenerator;
@@ -11,6 +12,7 @@ import com.bikiegang.ridesharing.pojo.*;
 import com.bikiegang.ridesharing.pojo.request.*;
 import com.bikiegang.ridesharing.pojo.response.*;
 import com.bikiegang.ridesharing.pojo.static_object.TripPattern;
+import com.bikiegang.ridesharing.utilities.BroadcastCenterUtil;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -289,10 +291,29 @@ public class PlannedTripController {
         }
         // remove planned trip
         long routeId = plannedTrip.getRouteId();
+        long requestId = plannedTrip.getRequestId();
         if (dao.delete(plannedTrip)) {
             if (null == database.getRouteRFPlannedTripsByDay().get(routeId) || database.getRouteRFPlannedTripsByDay().get(routeId).isEmpty()) {
                 Route route = database.getRouteHashMap().get(routeId);
                 new RouteDao().delete(route);
+            }
+            // remove Request Make Trip
+            if (database.getRequestMakeTripHashMap().containsKey(requestId)) {
+                RequestMakeTrip requestMakeTrip = database.getRequestMakeTripHashMap().get(requestId);
+                User user = database.getUserHashMap().get(request.getUserId());
+                if (user != null) {
+                    new BroadcastCenterUtil().pushNotification(Parser.ObjectToNotification(MessageMappingUtil.Notification_ReplyMakeTrip_Deny, user), requestMakeTrip.getSenderId());
+                }
+                long partnerPlannedTripId = requestMakeTrip.getSenderRole() == User.DRIVER ? requestMakeTrip.getDriverPlannedTripId() : requestMakeTrip.getPassengerPlannedTripId();
+                if (new RequestMakeTripDao().delete(requestMakeTrip)) {
+                    // update partner
+                    PlannedTrip partnerPlannedTrip = database.getPlannedTripHashMap().get(partnerPlannedTripId);
+                    if (partnerPlannedTrip != null) {
+                        partnerPlannedTrip.setRequestId(0);
+                        dao.update(partnerPlannedTrip);
+                    }
+                }
+
             }
             return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
         }

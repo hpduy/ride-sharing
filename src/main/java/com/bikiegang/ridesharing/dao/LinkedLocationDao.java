@@ -37,10 +37,10 @@ public class LinkedLocationDao {
             //Step 1: put in hashmap
             database.getLinkedLocationHashMap().put(obj.getId(), obj);
             //plannedTripIdRFLinkedLocations = new HashMap<>(); //<routeId,<LinkedLocationId>>
-            List<Long> linkedLocationIds = database.getPlannedTripIdRFLinkedLocations().get(obj.getRefId());
+            List<Long> linkedLocationIds = database.getRouteIdRFLinkedLocations().get(obj.getRefId());
             if (linkedLocationIds == null) {
                 linkedLocationIds = new ArrayList<>();
-                database.getPlannedTripIdRFLinkedLocations().put(obj.getRefId(), linkedLocationIds);
+                database.getRouteIdRFLinkedLocations().put(obj.getRefId(), linkedLocationIds);
             }
             linkedLocationIds.add(obj.getId());
             // more (put to geocell)
@@ -113,10 +113,10 @@ public class LinkedLocationDao {
             //Step 1: put in hashmap
             database.getLinkedLocationHashMap().remove(obj.getId());
             //plannedTripIdRFLinkedLocations = new HashMap<>(); //<routeId,<LinkedLocationId>>
-            List<Long> linkedLocationIds = database.getPlannedTripIdRFLinkedLocations().get(obj.getRefId());
+            List<Long> linkedLocationIds = database.getRouteIdRFLinkedLocations().get(obj.getRefId());
             if (linkedLocationIds == null) {
                 linkedLocationIds = new ArrayList<>();
-                database.getPlannedTripIdRFLinkedLocations().put(obj.getRefId(), linkedLocationIds);
+                database.getRouteIdRFLinkedLocations().put(obj.getRefId(), linkedLocationIds);
             }
             linkedLocationIds.remove((Long) obj.getId());
 

@@ -317,7 +317,7 @@ public class RideSharingCA {
         boolean result = false;
         try {
             database.getLinkedLocationHashMap().clear();
-            database.getPlannedTripIdRFLinkedLocations().clear();
+            database.getRouteIdRFLinkedLocations().clear();
             Map<String, String> hgetAll = hgetAll(LinkedLocation.class.getName());
             for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
                 String key = entrySet.getKey();
@@ -345,7 +345,7 @@ public class RideSharingCA {
                 String key = entrySet.getKey();
                 String value = entrySet.getValue();
 
-                database.getPlannedTripIdRFLinkedLocations().put(ConvertUtils.toLong(key), (List<Long>) JSONUtil.DeSerialize(value, new TypeToken<List<Long>>() {
+                database.getRouteIdRFLinkedLocations().put(ConvertUtils.toLong(key), (List<Long>) JSONUtil.DeSerialize(value, new TypeToken<List<Long>>() {
                 }.getType()));
             }
             result = true;

@@ -67,7 +67,7 @@ public class Pairing {
      * DRIVER ------------------------------------------------------------
      * */
     private List<PlannedTrip> getDriversCompatible(PlannedTrip plannedTrip, boolean ignoredTime) throws Exception {
-        List<Long> locationIds = database.getPlannedTripIdRFLinkedLocations().get(plannedTrip.getRouteId());
+        List<Long> locationIds = database.getRouteIdRFLinkedLocations().get(plannedTrip.getRouteId());
         if (null == locationIds || locationIds.size() < 2) {
             throw new Exception("List location is null or less than 2 location");
         }
@@ -195,7 +195,7 @@ public class Pairing {
             PlannedTrip passengerPlannedTrip = database.getPlannedTripHashMap().get(passengerPlannedTripId);
             // plannedTrip is not null and not own by driver and not requested
             if (passengerPlannedTrip != null && !plannedTrip.getCreatorId().equals(passengerPlannedTrip.getCreatorId()) && passengerPlannedTrip.getRequestId() == 0) {
-                List<Long> passengerPlannedTripLinkedLocationIds = database.getPlannedTripIdRFLinkedLocations().get(passengerPlannedTrip.getRouteId());
+                List<Long> passengerPlannedTripLinkedLocationIds = database.getRouteIdRFLinkedLocations().get(passengerPlannedTrip.getRouteId());
                 if (passengerPlannedTripLinkedLocationIds != null && passengerPlannedTripLinkedLocationIds.size() >= 2) {
                     LinkedLocation srcPassengerLocation = null;
                     LinkedLocation desPassengerLocation = null;
@@ -268,7 +268,7 @@ public class Pairing {
     }
 
     private List<PlannedTrip> getPassengersCompatible(PlannedTrip plannedTrip, boolean ignoredTime) throws Exception {
-        List<Long> driverPlannedTripLinkedLocationIds = database.getPlannedTripIdRFLinkedLocations().get(plannedTrip.getRouteId());
+        List<Long> driverPlannedTripLinkedLocationIds = database.getRouteIdRFLinkedLocations().get(plannedTrip.getRouteId());
         List<LinkedLocation> linkedLocations = new ArrayList<>();
         for (long llId : driverPlannedTripLinkedLocationIds) {
             LinkedLocation location = database.getLinkedLocationHashMap().get(llId);
