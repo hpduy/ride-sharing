@@ -223,6 +223,8 @@
             function calculateAndDisplayRoute(directionsService, directionsDisplay) {
                 var start = document.getElementById('start').value;
                 var end = document.getElementById('end').value;
+                if(start === '' || end === '')
+                    return;
                 directionsService.route({
                     origin: start,
                     destination: end,

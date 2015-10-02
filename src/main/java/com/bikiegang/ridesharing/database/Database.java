@@ -48,6 +48,8 @@ public class Database {
     private HashMap<Long, SocialTripAttendance> socialTripAttendanceHashMap = new LinkedHashMap<>();
     private HashMap<Long, TripCalendar> tripCalendarHashMap = new LinkedHashMap<>();
     private HashMap<Long, Route> routeHashMap = new HashMap<>();
+    private HashMap<Long, Feedback> feedbackHashMap = new HashMap<>();
+
     //REFERENCE
     /**
      * USER
@@ -69,7 +71,6 @@ public class Database {
     private HashMap<Integer, HashSet<Long>> roleRFPlannedTrips = new HashMap<>(); // <role,<plannedTripId>>
     private HashMap<Long, HashSet<Long>> groupIdRFPlannedTrips = new HashMap<>(); // <groupId,<plannedTripId>>
     private HashMap<Long, HashMap<Long, Long>> routeRFPlannedTripsByDay = new HashMap<>();// <routeId,<epochday, plannedTrip>
-
 
     /**
      * TRIP
@@ -127,7 +128,6 @@ public class Database {
      */
     private HashMap<String, HashSet<Long>> UserIdRFRatings = new HashMap<>();// <userId(ratedUserId),<ratingIds>>
 
-
     /**
      * GEOCELL
      */
@@ -157,6 +157,14 @@ public class Database {
 
     public void setUserIdRFCertificates(HashMap<String, HashSet<Long>> userIdRFCertificates) {
         this.userIdRFCertificates = userIdRFCertificates;
+    }
+
+    public HashMap<Long, Feedback> getFeedbackHashMap() {
+        return feedbackHashMap;
+    }
+
+    public void setFeedbackHashMap(HashMap<Long, Feedback> feedbackHashMap) {
+        this.feedbackHashMap = feedbackHashMap;
     }
 
     public HashMap<String, Broadcast> getBroadcastHashMap() {

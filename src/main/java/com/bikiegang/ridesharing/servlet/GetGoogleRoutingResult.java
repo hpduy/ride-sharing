@@ -60,7 +60,7 @@ public class GetGoogleRoutingResult extends HttpServlet {
 //                out.println(inputLine);
                 buff.append(inputLine);
             }
-            AutoSearchParingRequest autoSearchParingRequest = new AutoSearchParingRequest("tester001", 1442914142, buff.toString(), true);
+            AutoSearchParingRequest autoSearchParingRequest = new AutoSearchParingRequest("tester001", System.currentTimeMillis() / 1000, buff.toString(), true);
             PlannedTripController.isCreatingFake = false;
             PlannedTripController controller = new PlannedTripController();
             String result = controller.autoSearchParing(autoSearchParingRequest);
