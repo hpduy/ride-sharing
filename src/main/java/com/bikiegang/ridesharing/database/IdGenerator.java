@@ -153,7 +153,7 @@ public class IdGenerator {
     }
 
     public static synchronized long getGroupAngelGroupId() {
-        Set<Long> idSet = database.getGroupIdRFAngelGroups().keySet();
+        Set<Long> idSet = database.getOrganizationIdRFAngelGroups().keySet();
         long groupAngelGroupId;
         do {
             groupAngelGroupId = RandomUtils.nextLong();

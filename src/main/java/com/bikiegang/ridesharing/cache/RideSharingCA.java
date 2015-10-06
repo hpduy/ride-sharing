@@ -221,7 +221,7 @@ public class RideSharingCA {
                 String key = entrySet.getKey();
                 String value = entrySet.getValue();
 
-                database.getGroupIdRFAngelGroups().put(ConvertUtils.toLong(key),
+                database.getOrganizationIdRFAngelGroups().put(ConvertUtils.toLong(key),
                         (HashSet<Long>) JSONUtil.DeSerialize(value, new TypeToken<HashSet<Long>>() {
                         }.getType()));
             }

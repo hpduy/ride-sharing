@@ -49,6 +49,8 @@ public class Database {
     private HashMap<Long, TripCalendar> tripCalendarHashMap = new LinkedHashMap<>();
     private HashMap<Long, Route> routeHashMap = new HashMap<>();
     private HashMap<Long, Feedback> feedbackHashMap = new HashMap<>();
+    private HashMap<Long, Event> eventHashMap = new HashMap<>();
+    private HashMap<Long, Organization> organizationHashMap = new HashMap<>();
 
     //REFERENCE
     /**
@@ -59,6 +61,7 @@ public class Database {
     private HashMap<String, String> twitterRFUserId = new HashMap<>();//<twId, userId>
     private HashMap<String, String> emailRFUserId = new HashMap<>();//<email, userId>
     private HashMap<String, String> linkedInRFUserId = new HashMap<>();//<lkId, userId>
+    private HashMap<Long, String> organizationRFUserId = new HashMap<>(); //<organizationId, userId>
     /**
      * BROADCAST
      */
@@ -100,7 +103,7 @@ public class Database {
     /**
      * ANGEL GROUP
      */
-    private HashMap<Long, HashSet<Long>> groupIdRFAngelGroups = new HashMap<>(); // <groupId,<AngelGroupId>>
+    private HashMap<Long, HashSet<Long>> organizationIdRFAngelGroups = new HashMap<>(); // <groupId,<AngelGroupId>>
     /**
      * ANGEL GROUP MEMBER
      */
@@ -235,6 +238,14 @@ public class Database {
         return routeHashMap;
     }
 
+    public HashMap<Long, Event> getEventHashMap() {
+        return eventHashMap;
+    }
+
+    public HashMap<Long, Organization> getOrganizationHashMap() {
+        return organizationHashMap;
+    }
+
     /*REFERENCE GET-SET*/
     public HashMap<String, String> getFacebookRFUserId() {
         return facebookRFUserId;
@@ -348,8 +359,8 @@ public class Database {
         this.orderedPopularLocation = orderedPopularLocation;
     }
 
-    public HashMap<Long, HashSet<Long>> getGroupIdRFAngelGroups() {
-        return groupIdRFAngelGroups;
+    public HashMap<Long, HashSet<Long>> getOrganizationIdRFAngelGroups() {
+        return organizationIdRFAngelGroups;
     }
 
     public HashMap<Long, HashMap<Long, Long>> getRouteRFPlannedTripsByDay() {
@@ -362,6 +373,10 @@ public class Database {
 
     public HashMap<Long, Long> getPlannedTripIdRFTrips() {
         return plannedTripIdRFTrips;
+    }
+
+    public HashMap<Long, String> getOrganizationRFUserId() {
+        return organizationRFUserId;
     }
 
     /*GEOCELL GET-SET*/

@@ -33,10 +33,10 @@ public class AngelGroupDao {
             //put hashmap
             database.getAngelGroupHashMap().put(obj.getId(), obj);
             //groupIdRFAngelGroups = new HashMap<>(); // <groupId,<AngelGroupId>>
-            HashSet<Long> angelGroupIds = database.getGroupIdRFAngelGroups().get(obj.getGroupId());
+            HashSet<Long> angelGroupIds = database.getOrganizationIdRFAngelGroups().get(obj.getGroupId());
             if (angelGroupIds == null) {
                 angelGroupIds = new HashSet<>();
-                database.getGroupIdRFAngelGroups().put(obj.getGroupId(), angelGroupIds);
+                database.getOrganizationIdRFAngelGroups().put(obj.getGroupId(), angelGroupIds);
             }
             angelGroupIds.add(obj.getId());
 
@@ -77,10 +77,10 @@ public class AngelGroupDao {
             //remove in hashmap
             database.getAngelGroupHashMap().remove(obj.getId());
             //groupIdRFAngelGroups = new HashMap<>(); // <groupId,<AngelGroupId>>
-            HashSet<Long> angelGroupIds = database.getGroupIdRFAngelGroups().get(obj.getGroupId());
+            HashSet<Long> angelGroupIds = database.getOrganizationIdRFAngelGroups().get(obj.getGroupId());
             if (angelGroupIds == null) {
                 angelGroupIds = new HashSet<>();
-                database.getGroupIdRFAngelGroups().put(obj.getGroupId(), angelGroupIds);
+                database.getOrganizationIdRFAngelGroups().put(obj.getGroupId(), angelGroupIds);
             }
             angelGroupIds.remove((Long) obj.getId());
 

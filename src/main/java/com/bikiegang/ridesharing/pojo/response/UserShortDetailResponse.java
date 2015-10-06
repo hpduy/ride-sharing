@@ -1,5 +1,6 @@
 package com.bikiegang.ridesharing.pojo.response;
 
+import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.utilities.Path;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -34,6 +35,14 @@ public class UserShortDetailResponse {
             this.email = user.getEmail();
         }
     }
+    public static String getExample(){
+        try{
+            return Parser.ObjectToJSon(true);
+        }catch (Exception ex){
+            return "";
+        }
+    }
+    public static final String example = getExample() ;
 
     public String getId() {
         return id;
@@ -106,5 +115,6 @@ public class UserShortDetailResponse {
     public void setEmail(String email) {
         this.email = email;
     }
+
 
 }
