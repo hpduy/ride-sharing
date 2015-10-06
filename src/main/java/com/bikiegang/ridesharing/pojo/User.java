@@ -12,7 +12,7 @@ public class User implements PojoBase {
 
     private String id = "";
     private String email = "";
-    private String password = RandomStringUtils.randomAlphabetic(10);
+    private String password = RandomStringUtils.randomAlphanumeric(10);
     private String facebookId = "";
     private String googleId = "";
     private String twitterId = "";
@@ -30,6 +30,7 @@ public class User implements PojoBase {
     private String selfIntro = "";
     private int privacy;
     private String job = "";
+    private long organizationId;
     @JsonIgnore
     private HashSet<String> phoneViewer = new HashSet<>();
     // final field & dont print to JSON;
@@ -286,7 +287,14 @@ public class User implements PojoBase {
     public void setPhoneViewer(HashSet<String> phoneViewer) {
         this.phoneViewer = phoneViewer;
     }
-    
+
+    public long getOrganizationId() {
+        return organizationId;
+    }
+
+    public void setOrganizationId(long organizationId) {
+        this.organizationId = organizationId;
+    }
 }
 /**
  * Change log

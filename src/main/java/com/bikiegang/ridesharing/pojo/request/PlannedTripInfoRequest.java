@@ -12,7 +12,7 @@ public class PlannedTripInfoRequest {
     private String creatorId;
     private int role;
     private long goTime;
-    private double price = -1;
+    private double unitPrice = -1;
     private String googleRoutingResult;
     private boolean hasHelmet;
     @JsonIgnore
@@ -31,7 +31,7 @@ public class PlannedTripInfoRequest {
         this.creatorId = creatorId;
         this.role = role;
         this.goTime = goTime;
-        this.price = price;
+        this.unitPrice = price;
         this.googleRoutingResult = googleRoutingResult;
         this.hasHelmet = hasHelmet;
         this.isParing = isParing;
@@ -56,6 +56,14 @@ public class PlannedTripInfoRequest {
         this.role = role;
     }
 
+    public double getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(double unitPrice) {
+        this.unitPrice = unitPrice;
+    }
+
     public long getGoTime() {
         return goTime;
     }
@@ -65,11 +73,11 @@ public class PlannedTripInfoRequest {
     }
 
     public double getPrice() {
-        return price;
+        return unitPrice;
     }
 
     public void setPrice(double price) {
-        this.price = price;
+        this.unitPrice = price;
     }
 
     public String getGoogleRoutingResult() {

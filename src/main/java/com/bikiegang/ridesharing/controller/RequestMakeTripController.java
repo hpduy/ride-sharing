@@ -98,7 +98,7 @@ public class RequestMakeTripController {
             } catch (Exception ignored) {
             }
             ptR.setIsParing(false);// no paring
-            ptR.setPrice(-1);// default price
+            ptR.setPrice(request.getPrice());
             CreatePlannedTripRequest createRequest = new CreatePlannedTripRequest(ptR);
             String response = new PlannedTripController().createSingleFuturePlannedTrip(createRequest);
             Parser parser = Parser.JSonToParser(response, CreateSingleFuturePlannedTripResponse.class);

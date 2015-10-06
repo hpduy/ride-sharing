@@ -17,6 +17,7 @@ public class AngelGroup implements PojoBase {
     private String address = "";
     private long groupId;
     private long createdTime = DateTimeUtil.now();
+    private long organizationId;
 
     public AngelGroup() {
 
@@ -112,5 +113,12 @@ public class AngelGroup implements PojoBase {
     public void setGroupId(long groupId) {
         this.groupId = groupId;
     }
-    
+
+    public long getOrganizationId() {
+        return organizationId;
+    }
+
+    public void setOrganizationId(long organizationId) {
+        this.organizationId = organizationId;
+    }
 }
