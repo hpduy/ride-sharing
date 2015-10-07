@@ -32,7 +32,7 @@ public class FakeCertificate {
         certificateDetail.setRegoDay("20060101");
         certificateDetail.setType(idx + 1);
         if (idx == 3) {
-            certificateDetail.setOrganizationId(3);
+            certificateDetail.setOrganizationId("3");
         }
         CreateCertificateRequest request = new CreateCertificateRequest();
         request.setUserId(userId);

@@ -30,7 +30,7 @@ public class User implements PojoBase {
     private String selfIntro = "";
     private int privacy;
     private String job = "";
-    private long organizationId;
+    private String organizationId;
     @JsonIgnore
     private HashSet<String> phoneViewer = new HashSet<>();
     // final field & dont print to JSON;
@@ -288,11 +288,11 @@ public class User implements PojoBase {
         this.phoneViewer = phoneViewer;
     }
 
-    public long getOrganizationId() {
+    public String getOrganizationId() {
         return organizationId;
     }
 
-    public void setOrganizationId(long organizationId) {
+    public void setOrganizationId(String organizationId) {
         this.organizationId = organizationId;
     }
 }

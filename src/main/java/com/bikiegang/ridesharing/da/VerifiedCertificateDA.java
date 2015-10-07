@@ -69,7 +69,7 @@ public class VerifiedCertificateDA implements IDA {
                 stmt.setString(10, value.getExpiryDay());
                 stmt.setString(11, StringUtils.join(value.getImageLinks(), ","));
                 stmt.setInt(12, value.getType());
-                stmt.setLong(13, value.getOrganizationId());
+                stmt.setString(13, value.getOrganizationId());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {
@@ -105,7 +105,7 @@ public class VerifiedCertificateDA implements IDA {
                 stmt.setString(10, value.getExpiryDay());
                 stmt.setString(11, StringUtils.join(value.getImageLinks(), ","));
                 stmt.setInt(12, value.getType());
-                stmt.setLong(13, value.getOrganizationId());
+                stmt.setString(13, value.getOrganizationId());
                 stmt.setLong(14, value.getId());
 
                 int row = stmt.executeUpdate();

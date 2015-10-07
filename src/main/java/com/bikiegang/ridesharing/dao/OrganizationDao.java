@@ -29,9 +29,9 @@ public class OrganizationDao {
             }
             RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.INSERT);
             //put hashmap
-            database.getOrganizationHashMap().put(obj.getId(), obj);
+            database.getOrganizationHashMap().put(obj.getOrganizationId(), obj);
             //Step 2: put redis
-            result = cache.hset(obj.getClass().getName(), String.valueOf(obj.getId()), JSONUtil.Serialize(obj));
+            result = cache.hset(obj.getClass().getName(), String.valueOf(obj.getOrganizationId()), JSONUtil.Serialize(obj));
             if (result) {
                 //Step 3: put job gearman
                 short actionType = Const.RideSharing.ActionType.INSERT;
@@ -45,7 +45,7 @@ public class OrganizationDao {
                 }
             } else {
                 logger.error(String.format("Can't not insert redis with key=%s, field=%s, value=%s",
-                        obj.getClass().getName(), String.valueOf(obj.getId()), JSONUtil.Serialize(obj)));
+                        obj.getClass().getName(), String.valueOf(obj.getOrganizationId()), JSONUtil.Serialize(obj)));
             }
         } catch (Exception ex) {
             logger.error(ex.getStackTrace());
@@ -62,9 +62,9 @@ public class OrganizationDao {
             }
             RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.DELETE);
             //remove in hashmap
-            database.getOrganizationHashMap().remove(obj.getId());
+            database.getOrganizationHashMap().remove(obj.getOrganizationId());
             //Step 2: remove redis
-            result = cache.hdel(obj.getClass().getName(), String.valueOf(obj.getId()));
+            result = cache.hdel(obj.getClass().getName(), String.valueOf(obj.getOrganizationId()));
 
             if (result) {
                 //Step 3: put job gearman
@@ -79,7 +79,7 @@ public class OrganizationDao {
                 }
             } else {
                 logger.error(String.format("Can't not delete redis with key=%s, field=%s, value=%s",
-                        obj.getClass().getName(), String.valueOf(obj.getId()), JSONUtil.Serialize(obj)));
+                        obj.getClass().getName(), String.valueOf(obj.getOrganizationId()), JSONUtil.Serialize(obj)));
             }
         } catch (Exception ex) {
 
@@ -97,9 +97,9 @@ public class OrganizationDao {
             }
             RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.UPDATE);
             //Update hashmap
-            database.getOrganizationHashMap().put(obj.getId(), obj);
+            database.getOrganizationHashMap().put(obj.getOrganizationId(), obj);
             //Step 2: Update redis
-            result = cache.hset(obj.getClass().getName(), String.valueOf(obj.getId()), JSONUtil.Serialize(obj));
+            result = cache.hset(obj.getClass().getName(), String.valueOf(obj.getOrganizationId()), JSONUtil.Serialize(obj));
             if (result) {
                 //Step 3: put job gearman
                 short actionType = Const.RideSharing.ActionType.UPDATE;
@@ -113,7 +113,7 @@ public class OrganizationDao {
                 }
             } else {
                 logger.error(String.format("Can't not update redis with key=%s, field=%s, value=%s",
-                        obj.getClass().getName(), String.valueOf(obj.getId()), JSONUtil.Serialize(obj)));
+                        obj.getClass().getName(), String.valueOf(obj.getOrganizationId()), JSONUtil.Serialize(obj)));
             }
         } catch (Exception ex) {
 

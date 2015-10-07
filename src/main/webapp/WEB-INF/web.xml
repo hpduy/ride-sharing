@@ -466,6 +466,14 @@
         <servlet-name>AddPopularLocationAPI</servlet-name>
         <url-pattern>/AddPopularLocationAPI</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>GetOrganizationsAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.GetOrganizationsAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetOrganizationsAPI</servlet-name>
+        <url-pattern>/GetOrganizationsAPI</url-pattern>
+    </servlet-mapping>
     <!--** ANGEL GROUP**-->
     <servlet>
         <servlet-name>GetAlphabetAngelGroupsAPI</servlet-name>

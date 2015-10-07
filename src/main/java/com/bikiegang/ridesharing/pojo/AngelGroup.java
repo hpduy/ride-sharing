@@ -16,7 +16,7 @@ public class AngelGroup implements PojoBase {
     private String canonicalName = "";
     private String address = "";
     private long createdTime = DateTimeUtil.now();
-    private long organizationId;
+    private String organizationId;
 
     public AngelGroup() {
 
@@ -93,11 +93,11 @@ public class AngelGroup implements PojoBase {
         this.address = address;
     }
 
-    public long getOrganizationId() {
+    public String getOrganizationId() {
         return organizationId;
     }
 
-    public void setOrganizationId(long organizationId) {
+    public void setOrganizationId(String organizationId) {
         this.organizationId = organizationId;
     }
 }

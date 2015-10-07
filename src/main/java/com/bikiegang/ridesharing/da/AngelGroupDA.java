@@ -6,17 +6,18 @@
 package com.bikiegang.ridesharing.da;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
-import com.bikiegang.ridesharing.config.ConfigInfo;
-import com.bikiegang.ridesharing.pojo.PojoBase;
-import com.bikiegang.ridesharing.utilities.Const;
 import com.bikiegang.ridesharing.annn.framework.dbconn.ClientManager;
 import com.bikiegang.ridesharing.annn.framework.dbconn.ManagerIF;
 import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
 import com.bikiegang.ridesharing.annn.framework.util.StringUtils;
+import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.pojo.AngelGroup;
+import com.bikiegang.ridesharing.pojo.PojoBase;
+import com.bikiegang.ridesharing.utilities.Const;
+import org.apache.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import org.apache.log4j.Logger;
 
 /**
  *
@@ -64,7 +65,7 @@ public class AngelGroupDA implements IDA {
                 stmt.setString(4, value.getCanonicalName());
                 stmt.setString(5, value.getAddress());
                 stmt.setLong(6, value.getCreatedTime());
-                stmt.setLong(7, value.getOrganizationId());
+                stmt.setString(7, value.getOrganizationId());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {
@@ -94,7 +95,7 @@ public class AngelGroupDA implements IDA {
                 stmt.setString(4, value.getCanonicalName());
                 stmt.setString(5, value.getAddress());
                 stmt.setLong(6, value.getCreatedTime());
-                stmt.setLong(7, value.getOrganizationId());
+                stmt.setString(7, value.getOrganizationId());
                 stmt.setLong(8, value.getId());
 
                 int row = stmt.executeUpdate();

@@ -50,7 +50,7 @@ public class Database {
     private HashMap<Long, Route> routeHashMap = new HashMap<>();
     private HashMap<Long, Feedback> feedbackHashMap = new HashMap<>();
     private HashMap<Long, Event> eventHashMap = new HashMap<>();
-    private HashMap<Long, Organization> organizationHashMap = new HashMap<>();
+    private HashMap<String, Organization> organizationHashMap = new HashMap<>();
 
     //REFERENCE
     /**
@@ -61,7 +61,7 @@ public class Database {
     private HashMap<String, String> twitterRFUserId = new HashMap<>();//<twId, userId>
     private HashMap<String, String> emailRFUserId = new HashMap<>();//<email, userId>
     private HashMap<String, String> linkedInRFUserId = new HashMap<>();//<lkId, userId>
-    private HashMap<Long, String> organizationRFUserId = new HashMap<>(); //<organizationId, userId>
+    private HashMap<String, List<String>> organizationRFUserIds = new HashMap<>(); //<organizationId, userId>
     /**
      * BROADCAST
      */
@@ -103,7 +103,7 @@ public class Database {
     /**
      * ANGEL GROUP
      */
-    private HashMap<Long, HashSet<Long>> organizationIdRFAngelGroups = new HashMap<>(); // <groupId,<AngelGroupId>>
+    private HashMap<String, HashSet<Long>> organizationIdRFAngelGroups = new HashMap<>(); // <organizationCode,<AngelGroupId>>
     /**
      * ANGEL GROUP MEMBER
      */
@@ -242,7 +242,7 @@ public class Database {
         return eventHashMap;
     }
 
-    public HashMap<Long, Organization> getOrganizationHashMap() {
+    public HashMap<String, Organization> getOrganizationHashMap() {
         return organizationHashMap;
     }
 
@@ -359,7 +359,7 @@ public class Database {
         this.orderedPopularLocation = orderedPopularLocation;
     }
 
-    public HashMap<Long, HashSet<Long>> getOrganizationIdRFAngelGroups() {
+    public HashMap<String, HashSet<Long>> getOrganizationIdRFAngelGroups() {
         return organizationIdRFAngelGroups;
     }
 
@@ -375,16 +375,8 @@ public class Database {
         return plannedTripIdRFTrips;
     }
 
-    public HashMap<Long, String> getOrganizationRFUserId() {
-        return organizationRFUserId;
-    }
-
-    public void setOrganizationHashMap(HashMap<Long, Organization> organizationHashMap) {
-        this.organizationHashMap = organizationHashMap;
-    }
-
-    public void setOrganizationRFUserId(HashMap<Long, String> organizationRFUserId) {
-        this.organizationRFUserId = organizationRFUserId;
+    public HashMap<String, List<String>> getOrganizationRFUserIds() {
+        return organizationRFUserIds;
     }
 
     /*GEOCELL GET-SET*/

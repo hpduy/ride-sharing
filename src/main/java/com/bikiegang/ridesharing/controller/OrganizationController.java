@@ -1,7 +1,7 @@
 package com.bikiegang.ridesharing.controller;
 
+import com.bikiegang.ridesharing.dao.OrganizationDao;
 import com.bikiegang.ridesharing.database.Database;
-import com.bikiegang.ridesharing.database.IdGenerator;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.Organization;
 import com.bikiegang.ridesharing.pojo.response.GetOrganizationsResponse;
@@ -12,13 +12,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
  */
 public class OrganizationController {
     private Database database = Database.getInstance();
-    //TODO import dao
+    private OrganizationDao dao = new OrganizationDao();
 
     public void createOrganization(String name, String logo, String code) {
         try {
-            Organization organization = new Organization(IdGenerator.getOrganizationId(), name, logo, code);
-                            
-        }catch (Exception ex){
+            Organization organization = new Organization( name, logo, code);
+            database.getOrganizationHashMap().put(code, organization);
+            //dao.insert(organization);
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }

@@ -152,15 +152,6 @@ public class IdGenerator {
         return socialTripAttendance;
     }
 
-    public static synchronized long getGroupAngelGroupId() {
-        Set<Long> idSet = database.getOrganizationIdRFAngelGroups().keySet();
-        long groupAngelGroupId;
-        do {
-            groupAngelGroupId = RandomUtils.nextLong();
-        }
-        while (idSet.contains(groupAngelGroupId));
-        return groupAngelGroupId;
-    }
 
     public static synchronized long getTripCalendarId() {
         Set<Long> idSet = database.getTripCalendarHashMap().keySet();
@@ -202,13 +193,4 @@ public class IdGenerator {
         return id;
     }
 
-    public static synchronized long getOrganizationId() {
-        Set<Long> idSet = database.getOrganizationHashMap().keySet();
-        long id;
-        do {
-            id = RandomUtils.nextLong();
-        }
-        while (idSet.contains(id));
-        return id;
-    }
 }

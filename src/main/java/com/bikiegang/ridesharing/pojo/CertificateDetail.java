@@ -15,7 +15,7 @@ public class CertificateDetail {
     protected String expiryDay = "";
     protected String[] imageLinks;
     protected int type;
-    protected long organizationId;
+    protected String organizationId;
     @JsonIgnore
     public static final int VISA = 1;
     @JsonIgnore
@@ -101,11 +101,11 @@ public class CertificateDetail {
         this.type = type;
     }
 
-    public long getOrganizationId() {
+    public String getOrganizationId() {
         return organizationId;
     }
 
-    public void setOrganizationId(long organizationId) {
+    public void setOrganizationId(String organizationId) {
         this.organizationId = organizationId;
     }
 }

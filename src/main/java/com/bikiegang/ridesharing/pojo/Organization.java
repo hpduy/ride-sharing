@@ -6,28 +6,18 @@ import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
  * Created by hpduy17 on 10/6/15.
  */
 public class Organization  implements PojoBase {
-    private long id;
     private String name;
     private String logoImageLink;
-    private String code;
+    private String organizationId;
     private long createdTime = DateTimeUtil.now();
 
     public Organization() {
     }
 
-    public Organization(long id, String name, String logoImageLink, String code) {
-        this.id = id;
+    public Organization( String name, String logoImageLink, String organizationId) {
         this.name = name;
         this.logoImageLink = logoImageLink;
-        this.code = code;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
+        this.organizationId = organizationId;
     }
 
     public String getName() {
@@ -54,11 +44,11 @@ public class Organization  implements PojoBase {
         this.createdTime = createdTime;
     }
 
-    public String getCode() {
-        return code;
+    public String getOrganizationId() {
+        return organizationId;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setOrganizationId(String organizationId) {
+        this.organizationId = organizationId;
     }
 }

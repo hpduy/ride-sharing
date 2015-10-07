@@ -221,7 +221,7 @@ public class RideSharingCA {
                 String key = entrySet.getKey();
                 String value = entrySet.getValue();
 
-                database.getOrganizationIdRFAngelGroups().put(ConvertUtils.toLong(key),
+                database.getOrganizationIdRFAngelGroups().put(ConvertUtils.toString(key),
                         (HashSet<Long>) JSONUtil.DeSerialize(value, new TypeToken<HashSet<Long>>() {
                         }.getType()));
             }
@@ -520,7 +520,7 @@ public class RideSharingCA {
             database.getTwitterRFUserId().clear();
             database.getEmailRFUserId().clear();
             database.getLinkedInRFUserId().clear();
-            database.getOrganizationRFUserId().clear();
+            database.getOrganizationRFUserIds().clear();
 
             //Normal
             Map<String, String> hgetAll = hgetAll(User.class.getName());
@@ -549,7 +549,7 @@ public class RideSharingCA {
             for (Map.Entry<String, String> entrySet : organizationFR.entrySet()) {
                 String key = entrySet.getKey();
                 String value = entrySet.getValue();
-                database.getOrganizationRFUserId().put(ConvertUtils.toLong(key), value);
+                database.getOrganizationRFUserIds().put(ConvertUtils.toString(key), value);
             }
 
             result = true;
@@ -777,7 +777,7 @@ public class RideSharingCA {
             for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
                 String key = entrySet.getKey();
                 String value = entrySet.getValue();
-                database.getOrganizationHashMap().put(ConvertUtils.toLong(key), (Organization) JSONUtil.DeSerialize(value, Organization.class));
+                database.getOrganizationHashMap().put(key, (Organization) JSONUtil.DeSerialize(value, Organization.class));
             }
 
             result = true;

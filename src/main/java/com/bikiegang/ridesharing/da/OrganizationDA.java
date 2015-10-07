@@ -6,15 +6,16 @@
 package com.bikiegang.ridesharing.da;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
-import com.bikiegang.ridesharing.config.ConfigInfo;
-import com.bikiegang.ridesharing.pojo.PojoBase;
-import com.bikiegang.ridesharing.utilities.Const;
 import com.bikiegang.ridesharing.annn.framework.dbconn.ClientManager;
 import com.bikiegang.ridesharing.annn.framework.dbconn.ManagerIF;
+import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.pojo.Organization;
+import com.bikiegang.ridesharing.pojo.PojoBase;
+import com.bikiegang.ridesharing.utilities.Const;
+import org.apache.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import org.apache.log4j.Logger;
 
 /**
  *
@@ -56,10 +57,10 @@ public class OrganizationDA implements IDA {
         try {
             String query = ConfigInfo.ORGANIZATION_INSERT_QUERY;
             try (PreparedStatement stmt = cnn.prepareStatement(query)) {
-                stmt.setLong(1, value.getId());
+                stmt.setString(1, value.getOrganizationId());
                 stmt.setString(2, value.getName());
                 stmt.setString(3, value.getLogoImageLink());
-                stmt.setString(4, value.getCode());
+                stmt.setString(4, value.getOrganizationId());
                 stmt.setLong(5, value.getCreatedTime());
 
                 int row = stmt.executeUpdate();
@@ -84,12 +85,12 @@ public class OrganizationDA implements IDA {
         try {
             String query = ConfigInfo.ORGANIZATION_UPDATE_QUERY;
             try (PreparedStatement stmt = cnn.prepareStatement(query)) {
-                stmt.setLong(1, value.getId());
+                stmt.setString(1, value.getOrganizationId());
                 stmt.setString(2, value.getName());
                 stmt.setString(3, value.getLogoImageLink());
-                stmt.setString(4, value.getCode());
+                stmt.setString(4, value.getOrganizationId());
                 stmt.setLong(5, value.getCreatedTime());
-                stmt.setLong(6, value.getId());
+                stmt.setString(6, value.getOrganizationId());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {
@@ -113,7 +114,7 @@ public class OrganizationDA implements IDA {
         try {
             String query = ConfigInfo.ORGANIZATION_DELETE_QUERY;
             try (PreparedStatement stmt = cnn.prepareStatement(query)) {
-                stmt.setLong(1, value.getId());
+                stmt.setString(1, value.getOrganizationId());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {

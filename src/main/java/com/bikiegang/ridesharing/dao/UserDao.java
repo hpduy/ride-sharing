@@ -12,6 +12,9 @@ import com.bikiegang.ridesharing.utilities.Const;
 import com.bikiegang.ridesharing.utilities.RequestLogger;
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by hpduy17 on 6/26/15.
  */
@@ -42,7 +45,11 @@ public class UserDao {
             //linkedInRFUserId = new HashMap<>();//<lkId, userId>
             database.getLinkedInRFUserId().put(obj.getLinkedInId(), obj.getId());
             //organizationRFUserId = new HashMap<>(); //<organizationId, userId>
-            database.getOrganizationRFUserId().put(obj.getOrganizationId(), obj.getId());
+            List<String> userIds = database.getOrganizationRFUserIds().get(obj.getOrganizationId());
+            if (userIds == null) {
+                userIds = new ArrayList<>();
+            }
+            userIds.add(obj.getId());
 
             //Step 2: put redis
             result = cache.hset(obj.getClass().getName(), String.valueOf(obj.getId()), JSONUtil.Serialize(obj));
@@ -99,7 +106,10 @@ public class UserDao {
             //linkedInRFUserId = new HashMap<>();//<lkId, userId>
             database.getLinkedInRFUserId().remove(obj.getLinkedInId());
             //organizationRFUserId = new HashMap<>(); //<organizationId, userId>
-            database.getOrganizationRFUserId().remove(obj.getOrganizationId());
+            List<String> userIds = database.getOrganizationRFUserIds().get(obj.getOrganizationId());
+            if (userIds != null) {
+                userIds.remove(obj.getId());
+            }
 
             //Step 2: put redis
             result = cache.hdel(obj.getClass().getName(), String.valueOf(obj.getId()));
@@ -156,8 +166,11 @@ public class UserDao {
             //linkedInRFUserId = new HashMap<>();//<lkId, userId>
             database.getLinkedInRFUserId().put(obj.getLinkedInId(), obj.getId());
             //organizationRFUserId = new HashMap<>(); //<organizationId, userId>
-            database.getOrganizationRFUserId().put(obj.getOrganizationId(), obj.getId());
-
+            List<String> userIds = database.getOrganizationRFUserIds().get(obj.getOrganizationId());
+            if (userIds == null) {
+                userIds = new ArrayList<>();
+            }
+            userIds.add(obj.getId());
             //Step 2: put redis
             result = cache.hset(obj.getClass().getName(), String.valueOf(obj.getId()), JSONUtil.Serialize(obj));
             result &= cache.hset(obj.getClass().getName() + ":facebook", String.valueOf(obj.getFacebookId()), obj.getId());

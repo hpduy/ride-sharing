@@ -98,7 +98,10 @@ public class PlannedTripController {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'googleRoutingResult'");
         }
         //create route
-        Route route = new RouteController().createRoute(request.getPlannedTrip().getGoogleRoutingResult(), request.getPlannedTrip().getCreatorId(), request.getPlannedTrip().getRole(), request.getPlannedTrip().getTitle(), request.getPlannedTrip().getWaypoints());
+        Route route = new RouteController().createRoute(request.getPlannedTrip().getGoogleRoutingResult(),
+                request.getPlannedTrip().getCreatorId(), request.getPlannedTrip().getRole(),
+                request.getPlannedTrip().getTitle(), request.getPlannedTrip().getWaypoints(),
+                request.getPlannedTrip().getStartAddress(), request.getPlannedTrip().getEndAddress());
         if (route != null) {
             PlannedTrip plannedTrip = new PlannedTrip();
             plannedTrip.setId(IdGenerator.getPlannedTripId());
@@ -154,7 +157,10 @@ public class PlannedTripController {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'googleRoutingResult'");
         }
         //create route
-        Route route = new RouteController().createRoute(request.getPlannedTrip().getGoogleRoutingResult(), request.getPlannedTrip().getCreatorId(), request.getPlannedTrip().getRole(), request.getPlannedTrip().getTitle(), request.getPlannedTrip().getWaypoints());
+        Route route = new RouteController().createRoute(request.getPlannedTrip().getGoogleRoutingResult(),
+                request.getPlannedTrip().getCreatorId(), request.getPlannedTrip().getRole(),
+                request.getPlannedTrip().getTitle(), request.getPlannedTrip().getWaypoints(),
+                request.getPlannedTrip().getStartAddress(), request.getPlannedTrip().getEndAddress());
         if (route != null) {
             PlannedTrip plannedTrip = new PlannedTrip();
             plannedTrip.setId(IdGenerator.getPlannedTripId());
@@ -202,7 +208,10 @@ public class PlannedTripController {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'googleRoutingResult'");
         }
         long groupId = IdGenerator.getGroupPlannedTripId();
-        Route route = new RouteController().createRoute(request.getPlannedTrip().getGoogleRoutingResult(), request.getPlannedTrip().getCreatorId(), request.getPlannedTrip().getRole(), request.getPlannedTrip().getTitle(), request.getPlannedTrip().getWaypoints());
+        Route route = new RouteController().createRoute(request.getPlannedTrip().getGoogleRoutingResult(),
+                request.getPlannedTrip().getCreatorId(), request.getPlannedTrip().getRole(),
+                request.getPlannedTrip().getTitle(), request.getPlannedTrip().getWaypoints(),
+                request.getPlannedTrip().getStartAddress(), request.getPlannedTrip().getEndAddress());
         if (route != null) {
             for (TripPattern pattern : request.getPatterns()) {
                 List<Long> timePattern = new DateTimeUtil().getTimePattern(pattern.getStartDay(), pattern.getDayOfWeek(), pattern.getEndDay());
