@@ -171,8 +171,39 @@ public class IdGenerator {
         while (idSet.contains(tripCalendarId));
         return tripCalendarId;
     }
+
     public static synchronized long getRouteId() {
         Set<Long> idSet = database.getRouteHashMap().keySet();
+        long id;
+        do {
+            id = RandomUtils.nextLong();
+        }
+        while (idSet.contains(id));
+        return id;
+    }
+
+    public static synchronized long getFeedbackId() {
+        Set<Long> idSet = database.getFeedbackHashMap().keySet();
+        long id;
+        do {
+            id = RandomUtils.nextLong();
+        }
+        while (idSet.contains(id));
+        return id;
+    }
+
+    public static synchronized long getEventId() {
+        Set<Long> idSet = database.getEventHashMap().keySet();
+        long id;
+        do {
+            id = RandomUtils.nextLong();
+        }
+        while (idSet.contains(id));
+        return id;
+    }
+
+    public static synchronized long getOrganizationId() {
+        Set<Long> idSet = database.getOrganizationHashMap().keySet();
         long id;
         do {
             id = RandomUtils.nextLong();
