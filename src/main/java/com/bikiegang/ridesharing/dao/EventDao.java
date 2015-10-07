@@ -7,44 +7,31 @@ import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
 import com.bikiegang.ridesharing.cache.RideSharingCA;
 import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.database.Database;
-import com.bikiegang.ridesharing.pojo.AngelGroup;
+import com.bikiegang.ridesharing.pojo.Event;
 import com.bikiegang.ridesharing.utilities.Const;
 import com.bikiegang.ridesharing.utilities.RequestLogger;
-import java.util.HashSet;
 import org.apache.log4j.Logger;
 
 /**
  * Created by hpduy17 on 6/26/15.
  */
-public class AngelGroupDao {
+public class EventDao {
 
     Logger logger = LogUtil.getLogger(this.getClass());
-    private Database database = Database.getInstance();
+    private final Database database = Database.getInstance();
     RideSharingCA cache = RideSharingCA.getInstance(ConfigInfo.REDIS_SERVER);
 
-    public boolean insert(AngelGroup obj) {
+    public boolean insert(Event obj) {
         boolean result = false;
         try {
             if (obj == null) {
                 return false;
             }
-
             RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.INSERT);
             //put hashmap
-            database.getAngelGroupHashMap().put(obj.getId(), obj);
-            //groupIdRFAngelGroups = new HashMap<>(); // <groupId,<AngelGroupId>>
-            HashSet<Long> angelGroupIds = database.getOrganizationIdRFAngelGroups().get(obj.getOrganizationId());
-            if (angelGroupIds == null) {
-                angelGroupIds = new HashSet<>();
-                database.getOrganizationIdRFAngelGroups().put(obj.getOrganizationId(), angelGroupIds);
-            }
-            angelGroupIds.add(obj.getId());
-
+            database.getEventHashMap().put(obj.getId(), obj);
             //Step 2: put redis
             result = cache.hset(obj.getClass().getName(), String.valueOf(obj.getId()), JSONUtil.Serialize(obj));
-            result &= cache.hset(obj.getClass().getName() + ":angelgroup", String.valueOf(obj.getOrganizationId()),
-                    JSONUtil.Serialize(angelGroupIds));
-
             if (result) {
                 //Step 3: put job gearman
                 short actionType = Const.RideSharing.ActionType.INSERT;
@@ -54,7 +41,7 @@ public class AngelGroupDao {
                 if (!result) {
                     logger.error(String.format("Can't not insert DB with value=%s", JSONUtil.Serialize(obj)));
                 } else {
-                    logger.info(String.format("Insert AngelGroup success with value=%s", JSONUtil.Serialize(obj)));
+                    logger.info(String.format("Insert Event success with value=%s", JSONUtil.Serialize(obj)));
                 }
             } else {
                 logger.error(String.format("Can't not insert redis with key=%s, field=%s, value=%s",
@@ -67,7 +54,7 @@ public class AngelGroupDao {
         return result;
     }
 
-    public boolean delete(AngelGroup obj) {
+    public boolean delete(Event obj) {
         boolean result = false;
         try {
             if (obj == null) {
@@ -75,19 +62,10 @@ public class AngelGroupDao {
             }
             RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.DELETE);
             //remove in hashmap
-            database.getAngelGroupHashMap().remove(obj.getId());
-            //groupIdRFAngelGroups = new HashMap<>(); // <OrganizationId,<AngelGroupId>>
-            HashSet<Long> angelGroupIds = database.getOrganizationIdRFAngelGroups().get(obj.getOrganizationId());
-            if (angelGroupIds == null) {
-                angelGroupIds = new HashSet<>();
-                database.getOrganizationIdRFAngelGroups().put(obj.getOrganizationId(), angelGroupIds);
-            }
-            angelGroupIds.remove((Long) obj.getId());
-
+            database.getEventHashMap().remove(obj.getId());
             //Step 2: remove redis
             result = cache.hdel(obj.getClass().getName(), String.valueOf(obj.getId()));
-            result &= cache.hset(obj.getClass().getName() + ":angelgroup", String.valueOf(obj.getOrganizationId()),
-                    JSONUtil.Serialize(angelGroupIds));
+
             if (result) {
                 //Step 3: put job gearman
                 short actionType = Const.RideSharing.ActionType.DELETE;
@@ -97,7 +75,7 @@ public class AngelGroupDao {
                 if (!result) {
                     logger.error(String.format("Can't not delete DB with value=%s", JSONUtil.Serialize(obj)));
                 } else {
-                    logger.info(String.format("Delete Angel success with value=%s", JSONUtil.Serialize(obj)));
+                    logger.info(String.format("Delete Event success with value=%s", JSONUtil.Serialize(obj)));
                 }
             } else {
                 logger.error(String.format("Can't not delete redis with key=%s, field=%s, value=%s",
@@ -111,7 +89,7 @@ public class AngelGroupDao {
         return result;
     }
 
-    public boolean update(AngelGroup obj) {
+    public boolean update(Event obj) {
         boolean result = false;
         try {
             if (obj == null) {
@@ -119,7 +97,7 @@ public class AngelGroupDao {
             }
             RequestLogger.getInstance().info(obj, (short) Const.RideSharing.ActionType.UPDATE);
             //Update hashmap
-            database.getAngelGroupHashMap().put(obj.getId(), obj);
+            database.getEventHashMap().put(obj.getId(), obj);
             //Step 2: Update redis
             result = cache.hset(obj.getClass().getName(), String.valueOf(obj.getId()), JSONUtil.Serialize(obj));
             if (result) {
@@ -129,9 +107,9 @@ public class AngelGroupDao {
                         System.currentTimeMillis(), "", JSONUtil.Serialize(obj), "", "");
                 result &= GClientManager.getInstance(ConfigInfo.RIDESHARING_WORKER_GEARMAN).push(job);
                 if (!result) {
-                    logger.error(String.format("Can't not update DB with value=%s", JSONUtil.Serialize(obj)));
+                    logger.error(String.format("Can't not update DB with value=%s", obj));
                 } else {
-                    logger.info(String.format("Update Angel with value=%s", JSONUtil.Serialize(obj)));
+                    logger.info(String.format("Update Event with value=%s", JSONUtil.Serialize(obj)));
                 }
             } else {
                 logger.error(String.format("Can't not update redis with key=%s, field=%s, value=%s",
@@ -144,5 +122,4 @@ public class AngelGroupDao {
         }
         return result;
     }
-
 }

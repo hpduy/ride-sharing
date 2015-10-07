@@ -75,9 +75,59 @@ public class ConfigInfo {
     public static String FEEDBACK_GROUP_INSERT_QUERY;
     public static String FEEDBACK_GROUP_UPDATE_QUERY;
     public static String FEEDBACK_GROUP_DELETE_QUERY;
+    public static String EVENT_DELETE_QUERY;
+    public static String EVENT_UPDATE_QUERY;
+    public static String EVENT_INSERT_QUERY;
+    public static String ORGANIZATION_DELETE_QUERY;
+    public static String ORGANIZATION_INSERT_QUERY;
+    public static String ORGANIZATION_UPDATE_QUERY;
 
     static {
         RIDESHARING_DB = "ridesharing_db";
+        EVENT_INSERT_QUERY = "INSERT INTO `ridesharing_db`.`Event`\n"
+                + "(`id`,\n"
+                + "`name`,\n"
+                + "`address`,\n"
+                + "`backgroundImageLink`,\n"
+                + "`searcher`,\n"
+                + "`type`,\n"
+                + "`eventSocialId`,\n"
+                + "`showTime`,\n"
+                + "`referenceLink`)\n"
+                + "VALUES\n"
+                + "(?,?,?,?,?,?,?,?,?);";
+        EVENT_UPDATE_QUERY = "UPDATE `ridesharing_db`.`Event`\n"
+                + "SET\n"
+                + "`id` = ?,\n"
+                + "`name` = ?,\n"
+                + "`address` = ?,\n"
+                + "`backgroundImageLink` = ?,\n"
+                + "`searcher` = ?,\n"
+                + "`type` = ?,\n"
+                + "`eventSocialId` = ?,\n"
+                + "`showTime` = ?,\n"
+                + "`referenceLink` = ?\n"
+                + "WHERE `id` = ?;";
+        EVENT_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`Event`\n"
+                + "WHERE <{where_expression}>;";
+        ORGANIZATION_INSERT_QUERY = "INSERT INTO `ridesharing_db`.`Organization`\n"
+                + "(`id`,\n"
+                + "`name`,\n"
+                + "`logoImageLink`,\n"
+                + "`code`,\n"
+                + "`createdTime`)\n"
+                + "VALUES\n"
+                + "(?,?,?,?,?);";
+        ORGANIZATION_UPDATE_QUERY = "UPDATE `ridesharing_db`.`Organization`\n"
+                + "SET\n"
+                + "`id` = ?,\n"
+                + "`name` = ?,\n"
+                + "`logoImageLink` = ?,\n"
+                + "`code` = ?,\n"
+                + "`createdTime` = ?\n"
+                + "WHERE `id` = ?;";
+        ORGANIZATION_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`Organization`\n"
+                + "WHERE `id` = ?;";
         BROADCAST_INSERT_QUERY = "INSERT INTO `ridesharing_db`.`Broadcast`\n"
                 + "(`id`,\n"
                 + "`userId`,\n"
@@ -238,9 +288,9 @@ public class ConfigInfo {
                 + "`currentRole`,\n"
                 + "`linkedInId`,\n"
                 + "`selfIntro`, \n"
-                + "`privacy`, `job`, `phoneViewer`)\n"
+                + "`privacy`, `job`, `phoneViewer`, `organizationId`)\n"
                 + "VALUES\n"
-                + "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                + "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
         USER_UPDATE_QUERY = "UPDATE `ridesharing_db`.`User`\n"
                 + "SET\n"
                 + "`id` = ?,\n"
@@ -262,7 +312,7 @@ public class ConfigInfo {
                 + "`linkedInId` = ?,\n"
                 + "`selfIntro` = ?,\n"
                 + "`privacy` = ?,\n"
-                + "`job` = ?, `phoneViewer` = ?\n"
+                + "`job` = ?, `phoneViewer` = ?, `organizationId` = ?\n"
                 + "WHERE `id` = ?;";
         USER_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`User`\n"
                 + "WHERE `id` = ?;";
@@ -324,7 +374,7 @@ public class ConfigInfo {
                 + "`tagName`,\n"
                 + "`canonicalName`,\n"
                 + "`address`,\n"
-                + "`createdTime`, `groupId`)\n"
+                + "`createdTime`, `organizationId`)\n"
                 + "VALUES\n"
                 + "(?,?,?,?,?,?,?);";
         ANGEL_GROUP_UPDATE_QUERY = "UPDATE `ridesharing_db`.`AngelGroup`\n"
@@ -334,7 +384,7 @@ public class ConfigInfo {
                 + "`tagName` = ?,\n"
                 + "`canonicalName` = ?,\n"
                 + "`address` = ?,\n"
-                + "`createdTime` = ?, `groupId` = ?\n"
+                + "`createdTime` = ?, `organizationId` = ?\n"
                 + "WHERE `id` = ?;";
         ANGEL_GROUP_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`AngelGroup`\n"
                 + "WHERE `id` = ?;";

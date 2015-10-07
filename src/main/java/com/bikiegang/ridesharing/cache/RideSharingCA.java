@@ -520,6 +520,7 @@ public class RideSharingCA {
             database.getTwitterRFUserId().clear();
             database.getEmailRFUserId().clear();
             database.getLinkedInRFUserId().clear();
+            database.getOrganizationRFUserId().clear();
 
             //Normal
             Map<String, String> hgetAll = hgetAll(User.class.getName());
@@ -543,6 +544,14 @@ public class RideSharingCA {
             //Linked
             Map<String, String> linkedFR = hgetAll(User.class.getName() + ":linked");
             database.setLinkedInRFUserId((HashMap<String, String>) linkedFR);
+            //Organization
+            Map<String, String> organizationFR = hgetAll(User.class.getName() + ":organization");
+            for (Map.Entry<String, String> entrySet : organizationFR.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+                database.getOrganizationRFUserId().put(ConvertUtils.toLong(key), value);
+            }
+
             result = true;
         } catch (Exception ex) {
             _logger.error(ex.getMessage());
@@ -739,6 +748,46 @@ public class RideSharingCA {
         return result;
     }
 
+    public boolean RestoreEvent() {
+        boolean result = false;
+        try {
+            database.getEventHashMap().clear();
+
+            Map<String, String> hgetAll = hgetAll(Event.class.getName());
+            for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+                database.getEventHashMap().put(ConvertUtils.toLong(key), (Event) JSONUtil.DeSerialize(value, Event.class));
+            }
+
+            result = true;
+        } catch (Exception ex) {
+            _logger.error(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
+    public boolean RestoreOrganization() {
+        boolean result = false;
+        try {
+            database.getOrganizationHashMap().clear();
+
+            Map<String, String> hgetAll = hgetAll(Organization.class.getName());
+            for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+                database.getOrganizationHashMap().put(ConvertUtils.toLong(key), (Organization) JSONUtil.DeSerialize(value, Organization.class));
+            }
+
+            result = true;
+        } catch (Exception ex) {
+            _logger.error(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
     public boolean RestoreDatabase() {
         boolean result = false;
         result = RestoreUser();
@@ -758,6 +807,9 @@ public class RideSharingCA {
         result &= RestoreTripCalendar();
         result &= RestoreRoute();
         result &= RestoreLinkedLocation();
+        result &= RestoreEvent();
+        result &= RestoreOrganization();
+
         return result;
     }
 

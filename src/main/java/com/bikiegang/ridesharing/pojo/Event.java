@@ -3,7 +3,7 @@ package com.bikiegang.ridesharing.pojo;
 /**
  * Created by hpduy17 on 10/6/15.
  */
-public class Event extends PopularLocation {
+public class Event extends PopularLocation  implements PojoBase {
     private String eventSocialId;
     private String showTime;
     private String referenceLink;
