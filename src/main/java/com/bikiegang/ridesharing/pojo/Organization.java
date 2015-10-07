@@ -5,7 +5,7 @@ import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 /**
  * Created by hpduy17 on 10/6/15.
  */
-public class Organization {
+public class Organization  implements PojoBase {
     private long id;
     private String name;
     private String logoImageLink;

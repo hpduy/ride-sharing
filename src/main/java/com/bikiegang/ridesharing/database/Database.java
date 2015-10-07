@@ -379,6 +379,14 @@ public class Database {
         return organizationRFUserId;
     }
 
+    public void setOrganizationHashMap(HashMap<Long, Organization> organizationHashMap) {
+        this.organizationHashMap = organizationHashMap;
+    }
+
+    public void setOrganizationRFUserId(HashMap<Long, String> organizationRFUserId) {
+        this.organizationRFUserId = organizationRFUserId;
+    }
+
     /*GEOCELL GET-SET*/
     public GeoCell<Long> getGeoCellDriver() {
         return geoCellDriver;
