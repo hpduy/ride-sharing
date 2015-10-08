@@ -111,19 +111,17 @@ public class ConfigInfo {
         EVENT_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`Event`\n"
                 + "WHERE <{where_expression}>;";
         ORGANIZATION_INSERT_QUERY = "INSERT INTO `ridesharing_db`.`Organization`\n"
-                + "(`id`,\n"
+                + "(`organizationId`,\n"
                 + "`name`,\n"
                 + "`logoImageLink`,\n"
-                + "`code`,\n"
                 + "`createdTime`)\n"
                 + "VALUES\n"
-                + "(?,?,?,?,?);";
+                + "(?,?,?,?);";
         ORGANIZATION_UPDATE_QUERY = "UPDATE `ridesharing_db`.`Organization`\n"
                 + "SET\n"
-                + "`id` = ?,\n"
+                + "`organizationId` = ?,\n"
                 + "`name` = ?,\n"
                 + "`logoImageLink` = ?,\n"
-                + "`code` = ?,\n"
                 + "`createdTime` = ?\n"
                 + "WHERE `id` = ?;";
         ORGANIZATION_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`Organization`\n"

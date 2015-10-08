@@ -60,8 +60,7 @@ public class OrganizationDA implements IDA {
                 stmt.setString(1, value.getOrganizationId());
                 stmt.setString(2, value.getName());
                 stmt.setString(3, value.getLogoImageLink());
-                stmt.setString(4, value.getOrganizationId());
-                stmt.setLong(5, value.getCreatedTime());
+                stmt.setLong(4, value.getCreatedTime());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {
@@ -88,9 +87,8 @@ public class OrganizationDA implements IDA {
                 stmt.setString(1, value.getOrganizationId());
                 stmt.setString(2, value.getName());
                 stmt.setString(3, value.getLogoImageLink());
-                stmt.setString(4, value.getOrganizationId());
-                stmt.setLong(5, value.getCreatedTime());
-                stmt.setString(6, value.getOrganizationId());
+                stmt.setLong(4, value.getCreatedTime());
+                stmt.setString(5, value.getOrganizationId());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {

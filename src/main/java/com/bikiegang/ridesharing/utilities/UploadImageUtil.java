@@ -1,7 +1,10 @@
 package com.bikiegang.ridesharing.utilities;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.Part;
+import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.URL;
 
 /**
  * Created by hpduy17 on 3/28/15.
@@ -150,6 +153,18 @@ public class UploadImageUtil {
         }
         return StringProcessUtil.removeAccent(Path.getImagePath() + File.separator + fileName).replaceAll(" ", "");
     }
-
+    public String downloadLogoIMG(String urlString, String fileName) throws IOException {
+        String extension = getExtension(urlString);
+        fileName = fileName.replaceAll(File.separator,"");
+        String filePath = StringProcessUtil.removeAccent(Path.getImagePath() + File.separator + fileName).replaceAll(" ", "");
+        File file = new File(filePath);
+        if (!file.exists()) {
+            URL url = new URL(urlString);
+            InputStream fileContent = new BufferedInputStream(url.openStream());
+            BufferedImage src = ImageIO.read(fileContent);
+            ImageIO.write(src, extension, file);
+        }
+        return filePath;
+    }
 
 }
