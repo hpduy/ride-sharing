@@ -12,8 +12,7 @@ import com.bikiegang.ridesharing.utilities.Const;
 import com.bikiegang.ridesharing.utilities.RequestLogger;
 import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 
 /**
  * Created by hpduy17 on 6/26/15.
@@ -45,9 +44,9 @@ public class UserDao {
             //linkedInRFUserId = new HashMap<>();//<lkId, userId>
             database.getLinkedInRFUserId().put(obj.getLinkedInId(), obj.getId());
             //organizationRFUserId = new HashMap<>(); //<organizationId, userId>
-            List<String> userIds = database.getOrganizationRFUserIds().get(obj.getOrganizationId());
+            HashSet<String> userIds = database.getOrganizationRFUserIds().get(obj.getOrganizationId());
             if (userIds == null) {
-                userIds = new ArrayList<>();
+                userIds = new HashSet<>();
             }
             userIds.add(obj.getId());
 
@@ -106,7 +105,7 @@ public class UserDao {
             //linkedInRFUserId = new HashMap<>();//<lkId, userId>
             database.getLinkedInRFUserId().remove(obj.getLinkedInId());
             //organizationRFUserId = new HashMap<>(); //<organizationId, userId>
-            List<String> userIds = database.getOrganizationRFUserIds().get(obj.getOrganizationId());
+            HashSet<String> userIds = database.getOrganizationRFUserIds().get(obj.getOrganizationId());
             if (userIds != null) {
                 userIds.remove(obj.getId());
             }
@@ -166,9 +165,9 @@ public class UserDao {
             //linkedInRFUserId = new HashMap<>();//<lkId, userId>
             database.getLinkedInRFUserId().put(obj.getLinkedInId(), obj.getId());
             //organizationRFUserId = new HashMap<>(); //<organizationId, userId>
-            List<String> userIds = database.getOrganizationRFUserIds().get(obj.getOrganizationId());
+            HashSet<String> userIds = database.getOrganizationRFUserIds().get(obj.getOrganizationId());
             if (userIds == null) {
-                userIds = new ArrayList<>();
+                userIds = new HashSet<>();
             }
             userIds.add(obj.getId());
             //Step 2: put redis

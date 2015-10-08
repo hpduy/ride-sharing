@@ -378,10 +378,10 @@ public class UserController {
         LatLng center = new LatLng(request.getCenterLat(), request.getCenterLng());
         List<String> userIds = database.getGeoCellCurrentLocation().getIdsInFrame(center, request.getRadius());
         List<User> users = getUsersFromUserIds(userIds);
-        List<UserShortDetailResponse> userDetails = new ArrayList<>();
+        List<UserDetailResponse> userDetails = new ArrayList<>();
         for (User user : users) {
             if (!filterByAngel || user.getStatus() == User.ANGEL) {
-                UserShortDetailResponse detail = new UserShortDetailResponse(user);
+                UserDetailResponse detail = new UserDetailResponse(user);
                 userDetails.add(detail);
             }
         }

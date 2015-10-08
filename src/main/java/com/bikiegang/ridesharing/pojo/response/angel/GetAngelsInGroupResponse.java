@@ -1,6 +1,6 @@
 package com.bikiegang.ridesharing.pojo.response.angel;
 
-import com.bikiegang.ridesharing.pojo.response.UserShortDetailResponse;
+import com.bikiegang.ridesharing.pojo.response.UserDetailResponse;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.List;
@@ -10,21 +10,21 @@ import java.util.List;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GetAngelsInGroupResponse {
-    UserShortDetailResponse[] angels;
+    UserDetailResponse[] angels;
 
-    public GetAngelsInGroupResponse(UserShortDetailResponse[] angels) {
+    public GetAngelsInGroupResponse(UserDetailResponse[] angels) {
         this.angels = angels;
     }
 
-    public GetAngelsInGroupResponse(List<UserShortDetailResponse> angels) {
-        this.angels = angels.toArray(new UserShortDetailResponse[angels.size()]);
+    public GetAngelsInGroupResponse(List<UserDetailResponse> angels) {
+        this.angels = angels.toArray(new UserDetailResponse[angels.size()]);
     }
 
-    public UserShortDetailResponse[] getAngels() {
+    public UserDetailResponse[] getAngels() {
         return angels;
     }
 
-    public void setAngels(UserShortDetailResponse[] angels) {
+    public void setAngels(UserDetailResponse[] angels) {
         this.angels = angels;
     }
 }

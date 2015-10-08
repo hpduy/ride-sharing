@@ -61,7 +61,7 @@ public class Database {
     private HashMap<String, String> twitterRFUserId = new HashMap<>();//<twId, userId>
     private HashMap<String, String> emailRFUserId = new HashMap<>();//<email, userId>
     private HashMap<String, String> linkedInRFUserId = new HashMap<>();//<lkId, userId>
-    private HashMap<String, List<String>> organizationRFUserIds = new HashMap<>(); //<organizationId, userId>
+    private HashMap<String, HashSet<String>> organizationRFUserIds = new HashMap<>(); //<organizationId, userId>
     /**
      * BROADCAST
      */
@@ -375,7 +375,7 @@ public class Database {
         return plannedTripIdRFTrips;
     }
 
-    public HashMap<String, List<String>> getOrganizationRFUserIds() {
+    public HashMap<String, HashSet<String>> getOrganizationRFUserIds() {
         return organizationRFUserIds;
     }
 

@@ -549,7 +549,8 @@ public class RideSharingCA {
             for (Map.Entry<String, String> entrySet : organizationFR.entrySet()) {
                 String key = entrySet.getKey();
                 String value = entrySet.getValue();
-                database.getOrganizationRFUserIds().put(ConvertUtils.toString(key), value);
+                database.getOrganizationRFUserIds().put(ConvertUtils.toString(key), (HashSet<String>) JSONUtil.DeSerialize(value, new TypeToken<HashSet<String>>() {
+                }.getType()));
             }
 
             result = true;

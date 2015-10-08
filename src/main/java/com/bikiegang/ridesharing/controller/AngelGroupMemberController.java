@@ -9,7 +9,7 @@ import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.angel.ExitGroupRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.GetAngelInGroupRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.JoinGroupRequest;
-import com.bikiegang.ridesharing.pojo.response.UserShortDetailResponse;
+import com.bikiegang.ridesharing.pojo.response.UserDetailResponse;
 import com.bikiegang.ridesharing.pojo.response.angel.GetAngelsInGroupResponse;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
@@ -38,12 +38,12 @@ public class AngelGroupMemberController {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found,""+request.getGroupId());
         }
         HashSet<String> angelList = database.getAngelGroupIdRFUsers().get(request.getGroupId());
-        List<UserShortDetailResponse> responses = new ArrayList<>();
+        List<UserDetailResponse> responses = new ArrayList<>();
         if(angelList != null) {
             for (String id : angelList) {
                 User user = database.getUserHashMap().get(id);
                 if (null != user) {
-                    responses.add(new UserShortDetailResponse(user));
+                    responses.add(new UserDetailResponse(user));
                 }
             }
         }
