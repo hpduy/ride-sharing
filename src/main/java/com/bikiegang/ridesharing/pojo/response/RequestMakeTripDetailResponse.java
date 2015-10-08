@@ -28,13 +28,27 @@ public class RequestMakeTripDetailResponse {
         if (user != null)
             this.userDetail = new UserDetailResponse(user);
         RequestMakeTrip requestMakeTrip = database.getRequestMakeTripHashMap().get(requestId);
-        if(requestMakeTrip != null){
+        if (requestMakeTrip != null) {
             PlannedTrip pt = database.getPlannedTripHashMap()
-                    .get( requestMakeTrip.getSenderRole() == User.DRIVER ? requestMakeTrip.getDriverPlannedTripId() : requestMakeTrip.getPassengerPlannedTripId());
-            if(pt != null){
+                    .get(requestMakeTrip.getSenderRole() == User.DRIVER ? requestMakeTrip.getDriverPlannedTripId() : requestMakeTrip.getPassengerPlannedTripId());
+            if (pt != null) {
                 this.feed = new FeedController().convertPlannedTripToFeed(pt, requestMakeTrip.getReceiverId());
+                String partnerId = requestMakeTrip.getReceiverId();
+                long partnerTripId = 0;
+                User partner = database.getUserHashMap().get(partnerId);
+                if (partner != null) {
+                    this.feed.setPartnerDetail(new UserDetailResponse(partner));
+                }
+                if (requestMakeTrip.getSenderRole() == User.DRIVER) {
+                    partnerTripId = requestMakeTrip.getPassengerPlannedTripId();
+                } else {
+                    partnerTripId = requestMakeTrip.getDriverPlannedTripId();
+                }
+                if (database.getPlannedTripHashMap().containsKey(partnerTripId)) {
+                    this.feed.setPartnerTripDetail(new PlannedTripDetailResponse(database.getPlannedTripHashMap().get(partnerTripId), requestMakeTrip.getReceiverId()));
+                }
             }
-            if(requestMakeTrip.getStatus() == RequestMakeTrip.ACCEPT)
+            if (requestMakeTrip.getStatus() == RequestMakeTrip.ACCEPT)
                 this.accepted = true;
         }
     }

@@ -534,6 +534,9 @@ public class UserController {
                 if (database.getFacebookRFUserId().containsKey(request.getSocialNetworkId())) {
                     User user = database.getUserHashMap().get(database.getFacebookRFUserId().get(request.getSocialNetworkId()));
                     user.setStatus(User.ANGEL);
+                    if (!dao.update(user)) {
+                        return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
+                    }
                 } else {
                     database.getFacebookRFUserId().put(request.getSocialNetworkId(), angel.getId());
                 }
@@ -544,6 +547,9 @@ public class UserController {
                 if (database.getGoogleRFUserId().containsKey(request.getSocialNetworkId())) {
                     User user = database.getUserHashMap().get(database.getGoogleRFUserId().get(request.getSocialNetworkId()));
                     user.setStatus(User.ANGEL);
+                    if (!dao.update(user)) {
+                        return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
+                    }
                 } else {
                     database.getGoogleRFUserId().put(request.getSocialNetworkId(), angel.getId());
                 }
@@ -554,6 +560,9 @@ public class UserController {
                 if (database.getTwitterRFUserId().containsKey(request.getSocialNetworkId())) {
                     User user = database.getUserHashMap().get(database.getTwitterRFUserId().get(request.getSocialNetworkId()));
                     user.setStatus(User.ANGEL);
+                    if (!dao.update(user)) {
+                        return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
+                    }
                 } else {
                     database.getTwitterRFUserId().put(request.getSocialNetworkId(), angel.getId());
                 }
@@ -564,6 +573,9 @@ public class UserController {
                 if (database.getLinkedInRFUserId().containsKey(request.getSocialNetworkId())) {
                     User user = database.getUserHashMap().get(database.getLinkedInRFUserId().get(request.getSocialNetworkId()));
                     user.setStatus(User.ANGEL);
+                    if (!dao.update(user)) {
+                        return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
+                    }
                 } else {
                     database.getLinkedInRFUserId().put(request.getSocialNetworkId(), angel.getId());
                 }

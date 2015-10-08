@@ -47,9 +47,9 @@ public class GeoCell<T> {
         List<String> cellcodes = new ArrayList<>();
         for (LatLng ll : latLngs) {
             String cellcode = getCellCodeFromLatLng(ll);
-            if (!cellcodes.contains(cellcode)) {
+          if(cellcodes.isEmpty()||!cellcodes.get(cellcodes.size()-1).equals(cellcode))
+            //if(!cellcodes.contains(cellcode))
                 cellcodes.add(cellcode);
-            }
         }
         return cellcodes;
     }

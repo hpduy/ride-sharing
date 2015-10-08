@@ -79,6 +79,7 @@ public class Pairing {
 
     private List<PlannedTrip> getDriversCompatible(PlannedTrip plannedTrip, Route route, LinkedLocation src, LinkedLocation des, boolean ignoredTime) throws Exception {
         List<PlannedTrip> listDriverPlannedTripResult = new ArrayList<>();
+        HashSet<Long> checkExist = new HashSet<>();
         // you are passenger -> get start and end location of passenger
         GeoCell<Long> geoCell = database.getGeoCellDriver();
         long passengerEpochday = plannedTrip.getDepartureTime() / DateTimeUtil.SECONDS_PER_DAY;
@@ -113,7 +114,9 @@ public class Pairing {
                         PlannedTrip driverPlannedTrip = database.getPlannedTripHashMap().get(driverPlannedTripId);
 
                         // plannedTrip is not null and not own by passenger
-                        if (null != driverPlannedTrip && !driverPlannedTrip.getCreatorId().equals(plannedTrip.getCreatorId()) && driverPlannedTrip.getRequestId() == 0) {
+                        if (null != driverPlannedTrip && !driverPlannedTrip.getCreatorId().equals(plannedTrip.getCreatorId())
+                                && driverPlannedTrip.getRequestId() == 0 && !checkExist.contains(driverPlannedTripId)) {
+
                             long plannedTripGoTime = plannedTrip.getDepartureTime();
                             long driverTripGoTime = driverPlannedTrip.getDepartureTime();
                             // get time driver reach a location near passenger
@@ -122,6 +125,7 @@ public class Pairing {
                             if (ignoredTime) {
                                 if (timeDriveReachNearSrcLocation > DateTimeUtil.now() - ACCEPTABLE_TIME) {
                                     listDriverPlannedTripResult.add(driverPlannedTrip);
+                                    checkExist.add(driverPlannedTripId);
                                 }
                             } else {
                                 // check this time in acceptable time?
@@ -134,6 +138,7 @@ public class Pairing {
                                         }else {
                                             listDriverPlannedTripResult.add(driverPlannedTrip);
                                         }
+                                        checkExist.add(driverPlannedTripId);
                                     }
                                 }
                             }
@@ -168,6 +173,7 @@ public class Pairing {
      */
     private List<PlannedTrip> getPassengersCompatible(PlannedTrip plannedTrip, Route route, List<LinkedLocation> linkedLocations, boolean ignoredTime) throws Exception {
         List<PlannedTrip> listPassengerPlannedTripResult = new ArrayList<>();
+        HashSet<Long> checkExist = new HashSet<>();
         long driverEpochday = plannedTrip.getDepartureTime() / DateTimeUtil.SECONDS_PER_DAY;
         GeoCell<Long> geoCellPassenger = database.getGeoCellPassenger();
         // get list cell code of driver plannedTrip
@@ -194,7 +200,8 @@ public class Pairing {
         for (long passengerPlannedTripId : passengerPlannedTripIds) {
             PlannedTrip passengerPlannedTrip = database.getPlannedTripHashMap().get(passengerPlannedTripId);
             // plannedTrip is not null and not own by driver and not requested
-            if (passengerPlannedTrip != null && !plannedTrip.getCreatorId().equals(passengerPlannedTrip.getCreatorId()) && passengerPlannedTrip.getRequestId() == 0) {
+            if (passengerPlannedTrip != null && !plannedTrip.getCreatorId().equals(passengerPlannedTrip.getCreatorId())
+                    && passengerPlannedTrip.getRequestId() == 0 && !checkExist.contains(passengerPlannedTripId)) {
                 List<Long> passengerPlannedTripLinkedLocationIds = database.getRouteIdRFLinkedLocations().get(passengerPlannedTrip.getRouteId());
                 if (passengerPlannedTripLinkedLocationIds != null && passengerPlannedTripLinkedLocationIds.size() >= 2) {
                     LinkedLocation srcPassengerLocation = null;
@@ -239,6 +246,7 @@ public class Pairing {
                                         if (ignoredTime) {
                                             if (passengerGoTime > DateTimeUtil.now() - ACCEPTABLE_TIME) {
                                                 listPassengerPlannedTripResult.add(passengerPlannedTrip);
+                                                checkExist.add(passengerPlannedTripId);
                                             }
                                         } else {
                                             if (DateTimeUtil.timeDistance(timeDriveReachNearSrcLocation, passengerGoTime) <= ACCEPTABLE_TIME) {
@@ -248,6 +256,7 @@ public class Pairing {
                                                     }else{
                                                         listPassengerPlannedTripResult.add(passengerPlannedTrip);
                                                     }
+                                                    checkExist.add(passengerPlannedTripId);
                                                 }
                                             }
                                         }

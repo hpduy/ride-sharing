@@ -1,10 +1,12 @@
 package com.bikiegang.ridesharing.controller;
 
+import com.bikiegang.ridesharing.dao.UserDao;
 import com.bikiegang.ridesharing.dao.VerifiedCertificateDao;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.database.IdGenerator;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.Broadcast;
+import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.VerifiedCertificate;
 import com.bikiegang.ridesharing.pojo.request.GetInformationUsingUserIdRequest;
 import com.bikiegang.ridesharing.pojo.request.angel.CreateCertificateRequest;
@@ -59,6 +61,23 @@ public class VerifiedCertificateController {
         certificate.setEndorserId(request.getUserId());
         certificate.setCreatedTime(DateTimeUtil.now());
         if (dao.update(certificate)) {
+            User user = database.getUserHashMap().get(certificate.getOwnerId());
+            if(user != null) {
+                int count = 0;
+                if(database.getUserIdRFCertificates().get(certificate.getOwnerId()).size() >= 2){
+                    for(long cid : database.getUserIdRFCertificates().get(certificate.getOwnerId())){
+                        VerifiedCertificate vc = database.getVerifiedCertificateHashMap().get(cid);
+                        if(vc.getStatus() == VerifiedCertificate.AVAILABLE){
+                            count++;
+                        }
+                    }
+
+                    if(count >= 2){
+                        user.setStatus(User.VERIFIED);
+                        new UserDao().update(user);
+                    }
+                }
+            }
             new BroadcastCenterUtil().pushNotification(Parser.ObjectToNotification(MessageMappingUtil.Notification_VerifyCertificate_Success, database.getUserHashMap().get(request.getUserId())), certificate.getOwnerId(), Broadcast.ANGEL_APP);
             return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
         }
