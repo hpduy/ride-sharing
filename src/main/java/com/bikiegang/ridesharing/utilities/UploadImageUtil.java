@@ -156,13 +156,13 @@ public class UploadImageUtil {
     public String downloadLogoIMG(String urlString, String fileName) throws IOException {
         String extension = getExtension(urlString);
         fileName = fileName.replaceAll(File.separator,"");
-        String filePath = StringProcessUtil.removeAccent(Path.getImagePath() + File.separator + fileName).replaceAll(" ", "");
+        String filePath = StringProcessUtil.removeAccent(Path.getLogoPath() + File.separator + fileName).replaceAll(" ", "")+"."+extension;
         File file = new File(filePath);
         if (!file.exists()) {
             URL url = new URL(urlString);
             InputStream fileContent = new BufferedInputStream(url.openStream());
             BufferedImage src = ImageIO.read(fileContent);
-            ImageIO.write(src, extension, file);
+            ImageIO.write(src, extension == null ?"png":extension, file);
         }
         return filePath;
     }

@@ -18,7 +18,7 @@ public class Path {
     private static final String serverPort = "8080";
     private static final String appName = "RideSharing";
 
-    private static String dataPath, imagePath, logPath;
+    private static String dataPath, imagePath, logPath, logoPath;
     private static String serverAddress = "";
     private static String defaultAvatar = "";
 
@@ -30,15 +30,20 @@ public class Path {
             root = dbPathRootUNIX;
         dataPath = root + File.separator + "data";
         imagePath = root + File.separator + "images";
+        logoPath = imagePath + File.separator + "logos";
         logPath = dataPath + File.separator + "log";
         File fileData = new File(dataPath);
         File fileImages = new File(imagePath);
+        File fileLogos = new File(logoPath);
         File fileLog = new File(logPath);
         if (!fileData.exists()) {
             fileData.mkdirs();
         }
         if (!fileImages.exists()) {
             fileImages.mkdirs();
+        }
+        if (!fileLogos.exists()) {
+            fileLogos.mkdirs();
         }
         if (!fileLog.exists()) {
             fileLog.mkdirs();
@@ -91,5 +96,13 @@ public class Path {
     public static void setServerAddress(String serverAddress) {
 
         Path.serverAddress = "http://" + serverAddress + ":" + serverPort + "/" + appName;
+    }
+
+    public static String getLogoPath() {
+        return logoPath;
+    }
+
+    public static void setLogoPath(String logoPath) {
+        Path.logoPath = logoPath;
     }
 }

@@ -40,7 +40,7 @@ public class RouteController {
             }
             Route route = new Route();
             route.setId(IdGenerator.getRouteId());
-            route.setRawRoutingResult(isChange ? googleRoutingResult : Parser.ObjectToJSon(routingResult));
+            route.setRawRoutingResult(isChange ? Parser.ObjectToJSon(routingResult) : googleRoutingResult);
             route.setCreatedTime(DateTimeUtil.now());
             route.setCreatorId(creatorId);
             route.setTitle(title);

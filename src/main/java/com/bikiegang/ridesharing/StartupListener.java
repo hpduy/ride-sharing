@@ -49,6 +49,7 @@ public class StartupListener implements ServletContextListener, HttpSessionListe
                 System.out.println("Group size after:"+Database.getInstance().getAngelGroupHashMap().size());
             }
             new PopularLocationController();
+            new AngelGroupController();
             logger.info("CLOUD BIKE WAKED UP");
         } catch (Exception ex) {
             ex.printStackTrace();

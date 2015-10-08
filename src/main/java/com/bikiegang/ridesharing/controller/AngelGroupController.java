@@ -203,7 +203,7 @@ public class AngelGroupController {
             "169#Viện đào tạo quốc tế HUTECH#10.798572,106.705944#HUTECH#http://vantuong.edu.vn/upload/editor_new/logohutech.jpg#276 Điện Biên Phủ, Hồ Chí Minh").split("\\n");
 
     public AngelGroupController() throws IOException {
-        if (static_data_created) {
+        if (!static_data_created) {
             int ogId = 0;
             for (String r : rawData) {
                 String[] element = r.split("#");
@@ -223,7 +223,7 @@ public class AngelGroupController {
                     new OrganizationController().createOrganization(element[1],logoUrl,element[3]);
                 }
                 try {
-                    dao.insert(angelGroup);
+                    database.getAngelGroupHashMap().put(angelGroup.getId(),angelGroup);
                 } catch (Exception ignored) {
                 }
             }
