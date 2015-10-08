@@ -326,17 +326,18 @@ public class RideSharingCA {
                 database.getLinkedLocationHashMap().put(ConvertUtils.toLong(key), obj);
                 // more (put to geocell)
                 Route route = database.getRouteHashMap().get(obj.getRefId());
-                GeoCell geoCell = null;
-                if (route.getRole() == User.DRIVER) {
-                    geoCell = database.getGeoCellDriver();
+                if (route != null) {
+                    GeoCell geoCell = null;
+                    if (route.getRole() == User.DRIVER) {
+                        geoCell = database.getGeoCellDriver();
+                    }
+                    if (route.getRole() == User.PASSENGER) {
+                        geoCell = database.getGeoCellPassenger();
+                    }
+                    if (null != geoCell) {
+                        geoCell.putToCell(obj, obj.getId());
+                    }
                 }
-                if (route.getRole() == User.PASSENGER) {
-                    geoCell = database.getGeoCellPassenger();
-                }
-                if (null != geoCell) {
-                    geoCell.putToCell(obj, obj.getId());
-                }
-
             }
 
             //plannedTrip => linklocation
