@@ -27,7 +27,7 @@ public class PlannedTripController {
 
     private PlannedTripDao dao = new PlannedTripDao();
     private Database database = Database.getInstance();
-    public static final double DEFAULT_PRICE = 3; //3000 vnd/km -> 3 vnd/m
+    public static final double DEFAULT_PRICE = 2; //2000 vnd/km -> 2 vnd/m
     public static boolean isCreatingFake = false;
 
     /**
@@ -97,6 +97,9 @@ public class PlannedTripController {
         if (null == request.getPlannedTrip().getGoogleRoutingResult() || request.getPlannedTrip().getGoogleRoutingResult().equals("")) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'googleRoutingResult'");
         }
+        if(!database.getUserHashMap().containsKey(request.getPlannedTrip().getCreatorId())){
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "'User'");
+        }
         //create route
         Route route = new RouteController().createRoute(request.getPlannedTrip().getGoogleRoutingResult(),
                 request.getPlannedTrip().getCreatorId(), request.getPlannedTrip().getRole(),
@@ -156,6 +159,9 @@ public class PlannedTripController {
         if (null == request.getPlannedTrip().getGoogleRoutingResult() || request.getPlannedTrip().getGoogleRoutingResult().equals("")) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'googleRoutingResult'");
         }
+        if(!database.getUserHashMap().containsKey(request.getPlannedTrip().getCreatorId())){
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "'User'");
+        }
         //create route
         Route route = new RouteController().createRoute(request.getPlannedTrip().getGoogleRoutingResult(),
                 request.getPlannedTrip().getCreatorId(), request.getPlannedTrip().getRole(),
@@ -206,6 +212,9 @@ public class PlannedTripController {
         }
         if (null == request.getPlannedTrip().getGoogleRoutingResult() || request.getPlannedTrip().getGoogleRoutingResult().equals("")) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'googleRoutingResult'");
+        }
+        if(!database.getUserHashMap().containsKey(request.getPlannedTrip().getCreatorId())){
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "'User'");
         }
         long groupId = IdGenerator.getGroupPlannedTripId();
         Route route = new RouteController().createRoute(request.getPlannedTrip().getGoogleRoutingResult(),
