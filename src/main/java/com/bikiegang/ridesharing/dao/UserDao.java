@@ -47,6 +47,7 @@ public class UserDao {
             HashSet<String> userIds = database.getOrganizationRFUserIds().get(obj.getOrganizationId());
             if (userIds == null) {
                 userIds = new HashSet<>();
+                database.getOrganizationRFUserIds().put(obj.getOrganizationId(), userIds);
             }
             userIds.add(obj.getId());
 

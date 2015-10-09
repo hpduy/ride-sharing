@@ -326,7 +326,7 @@ public class RideSharingCA {
                 database.getLinkedLocationHashMap().put(ConvertUtils.toLong(key), obj);
                 // more (put to geocell)
                 Route route = database.getRouteHashMap().get(obj.getRefId());
-                if (route != null) {
+                if (route != null) {//Nguy hiem o cho nay
                     GeoCell geoCell = null;
                     if (route.getRole() == User.DRIVER) {
                         geoCell = database.getGeoCellDriver();

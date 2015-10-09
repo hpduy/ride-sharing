@@ -42,14 +42,14 @@ public class StartupListener implements ServletContextListener, HttpSessionListe
             Path.buildRoot();
             Database.getInstance().restore();
             if (Database.databaseStatus == Database.TESTING) {
-                System.out.println("Group size before:"+Database.getInstance().getAngelGroupHashMap().size());
+                System.out.println("Group size before:" + Database.getInstance().getAngelGroupHashMap().size());
                 FakeUser.createAngel();
                 FakeUser.createTester();
                 new AngelGroupController();
-                System.out.println("Group size after:"+Database.getInstance().getAngelGroupHashMap().size());
+                System.out.println("Group size after:" + Database.getInstance().getAngelGroupHashMap().size());
             }
             new PopularLocationController();
-            new AngelGroupController();
+//            new AngelGroupController();
             logger.info("CLOUD BIKE WAKED UP");
         } catch (Exception ex) {
             ex.printStackTrace();
