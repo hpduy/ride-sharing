@@ -198,12 +198,12 @@ public class AngelGroupController {
             "164#TC Kỹ thuật và Công nghệ Cửu Long#10.751681,106.670798#CUULONG#http://www.thongtintuyensinh.vn/upload/tccuulong_16800.jpg#61-63, Nguyen Van Dung street, Ward 6, District 5, Ho Chi Minh City\n" +
             "165#TC Mai Linh#10.804221,106.686688#MPC#http://huongnghiep.icando.edu.vn/stores/news_dataimages/phongdq@icando.vn/022013/04/13/medium/TC_Mai_Linh.jpg#Số 3 Nguyễn Văn Đậu, phường 5, Hồ Chí Minh\n" +
             "166#TC nghề Củ Chi#10.972397,106.491297#CUCHI#http://trungcapnghecuchi.edu.vn/images/logo%20tcn%20C%E1%BB%A7%20Chi.jpg#Nguyễn Đại Năng, Củ Chi\n" +
-            "167#TC Phương Nam cơ sở Gò Vấp#10.819469,106.682722#PHUONGNAM#http://vieclam.24h.com.vn/upload/files_cua_nguoi_dung/logo/2015/03/18/1426669004_logo_đẹpdùng_được_1.jpg#Nguyễn Thái Sơn, Phường 3, Hồ Chí Minh\n" +
-            "168#TC Tây Nam Á#10.750385,106.642417#TAYNAMA#http://www.huongnghiepvietnam.vn/attachment/Logo_Chuan.jpg#76-78-80 Minh Phụng, Phường 5\n" +
-            "169#Viện đào tạo quốc tế HUTECH#10.798572,106.705944#HUTECH#http://vantuong.edu.vn/upload/editor_new/logohutech.jpg#276 Điện Biên Phủ, Hồ Chí Minh").split("\\n");
+            "167#TC Tây Nam Á#10.750385,106.642417#TAYNAMA#http://www.huongnghiepvietnam.vn/attachment/Logo_Chuan.jpg#76-78-80 Minh Phụng, Phường 5\n" +
+            "168#Viện đào tạo quốc tế HUTECH#10.798572,106.705944#HUTECH#http://vantuong.edu.vn/upload/editor_new/logohutech.jpg#276 Điện Biên Phủ, Hồ Chí Minh").split("\\n");
 
     public AngelGroupController() throws IOException {
         if (!static_data_created) {
+            static_data_created = true;
             int ogId = 0;
             for (String r : rawData) {
                 String[] element = r.split("#");
@@ -227,7 +227,7 @@ public class AngelGroupController {
                 } catch (Exception ignored) {
                 }
             }
-            static_data_created = true;
+
         }
 
     }

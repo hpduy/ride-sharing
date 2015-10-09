@@ -53,6 +53,7 @@ public class PopularLocationController {
     public PopularLocationController() {
         try {
             if (!static_data_created) {
+                static_data_created = true;
                 for (String line : static_data) {
                     String[] element = line.split("#");
                     PopularLocation popularLocation = new PopularLocation(element[3]);
@@ -63,7 +64,7 @@ public class PopularLocationController {
                     database.getPopularLocationHashMap().put(popularLocation.getId(), popularLocation);
                     database.getPopularLocationHashMap().put(popularLocation.getId(), popularLocation);
                 }
-                static_data_created = true;
+
             }
         } catch (Exception ex) {
             ex.printStackTrace();
