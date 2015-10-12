@@ -190,10 +190,12 @@ public class Pairing {
         for (Long locationId : passengersRouteLinkedLocationIds) {
             // parse to long
             LinkedLocation location = database.getLinkedLocationHashMap().get(locationId);
-            if (location != null && null != database.getRouteRFPlannedTripsByDay().get(location.getRefId()).get(driverEpochday)) {
-                long passengerPlannedTripId = database.getRouteRFPlannedTripsByDay().get(location.getRefId()).get(driverEpochday);
-                passengerPlannedTripIds.add(passengerPlannedTripId);
-            }
+            try {
+                if (location != null && null != database.getRouteRFPlannedTripsByDay().get(location.getRefId()).get(driverEpochday)) {
+                    long passengerPlannedTripId = database.getRouteRFPlannedTripsByDay().get(location.getRefId()).get(driverEpochday);
+                    passengerPlannedTripIds.add(passengerPlannedTripId);
+                }
+            }catch (Exception ignored){};
         }
 
         //TODO START TO PARE

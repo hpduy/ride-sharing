@@ -26,7 +26,7 @@ public class AngelGroupMemberController {
     private AngelGroupMemberDao dao = new AngelGroupMemberDao();
     private Database database = Database.getInstance();
 
-    private String combineKey(String userId, long groupId) {
+    public String combineKey(String userId, long groupId) {
         return userId + "#" + groupId;
     }
 

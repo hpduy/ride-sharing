@@ -97,7 +97,7 @@ public class PlannedTripController {
         if (null == request.getPlannedTrip().getGoogleRoutingResult() || request.getPlannedTrip().getGoogleRoutingResult().equals("")) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'googleRoutingResult'");
         }
-        if(!database.getUserHashMap().containsKey(request.getPlannedTrip().getCreatorId())){
+        if (!database.getUserHashMap().containsKey(request.getPlannedTrip().getCreatorId())) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "'User'");
         }
         //create route
@@ -159,7 +159,7 @@ public class PlannedTripController {
         if (null == request.getPlannedTrip().getGoogleRoutingResult() || request.getPlannedTrip().getGoogleRoutingResult().equals("")) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'googleRoutingResult'");
         }
-        if(!database.getUserHashMap().containsKey(request.getPlannedTrip().getCreatorId())){
+        if (!database.getUserHashMap().containsKey(request.getPlannedTrip().getCreatorId())) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "'User'");
         }
         //create route
@@ -213,7 +213,7 @@ public class PlannedTripController {
         if (null == request.getPlannedTrip().getGoogleRoutingResult() || request.getPlannedTrip().getGoogleRoutingResult().equals("")) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'googleRoutingResult'");
         }
-        if(!database.getUserHashMap().containsKey(request.getPlannedTrip().getCreatorId())){
+        if (!database.getUserHashMap().containsKey(request.getPlannedTrip().getCreatorId())) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "'User'");
         }
         long groupId = IdGenerator.getGroupPlannedTripId();
@@ -446,4 +446,26 @@ public class PlannedTripController {
         return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, response);
     }
 
+    public boolean updateRouteOfPlannedTrip(long plannedTripId, String googleRoutingResult, String startAddress, String endAddress) {
+        try {
+            PlannedTrip plannedTrip = database.getPlannedTripHashMap().get(plannedTripId);
+            if (plannedTrip == null)
+                return false;
+            Route oldRoute = database.getRouteHashMap().get(plannedTrip.getRouteId());
+            if (oldRoute == null)
+                return false;
+            Route route = new RouteController().createRoute(googleRoutingResult,
+                    oldRoute.getCreatorId(), oldRoute.getRole(),
+                    oldRoute.getTitle(), oldRoute.getWaypoints(),
+                    startAddress, endAddress);
+            plannedTrip.setRouteId(route.getId());
+            if(dao.update(plannedTrip)){
+                return new RouteDao().delete(oldRoute);
+            }
+            return false;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
 }

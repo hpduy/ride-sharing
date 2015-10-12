@@ -54,9 +54,17 @@ public class RequestMakeTripController {
                     if (dao.update(requestMakeTrip)) {
                         RequestMakeTripResponse requestMakeTripResponse = new RequestMakeTripResponse();
                         requestMakeTripResponse.setRequestId(requestMakeTrip.getId());
-                        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, requestMakeTripResponse);
+                        long plannedTripId;
+                        if (requestMakeTrip.getSenderRole() == User.DRIVER)
+                            plannedTripId = requestMakeTrip.getDriverPlannedTripId();
+                        else
+                            plannedTripId = requestMakeTrip.getPassengerPlannedTripId();
+                        if (new PlannedTripController().updateRouteOfPlannedTrip(plannedTripId, request.getGoogleRoutingResult(), null, null)) {
+                            return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, requestMakeTripResponse);
+                        }
                     }
                     return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
+
                 }
             }
 

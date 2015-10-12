@@ -7,6 +7,7 @@ import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.utilities.FakeGroup.FakeUser;
 import com.bikiegang.ridesharing.utilities.Path;
 import org.apache.log4j.Logger;
+import org.json.JSONObject;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 import java.net.InetAddress;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 
 public class StartupListener implements ServletContextListener, HttpSessionListener, HttpSessionAttributeListener {
 
@@ -53,7 +55,9 @@ public class StartupListener implements ServletContextListener, HttpSessionListe
                 public void run() {
                     new PopularLocationController();
                     try {
-                        new AngelGroupController();
+                        new AngelGroupController().promoteAngel();
+                        // PROMOTE ANGEL
+
                     } catch (Exception ignored) {
                         ignored.printStackTrace();
                     }
@@ -62,6 +66,9 @@ public class StartupListener implements ServletContextListener, HttpSessionListe
             base_data_run.start();
 
             logger.info("CLOUD BIKE WAKED UP");
+            JSONObject jsObject = new JSONObject();
+            jsObject.put("a","Moá bực bội à");
+            logger.info(new ArrayList<>(Database.getInstance().getUserHashMap().values()).get(62).getFirstName());
         } catch (Exception ex) {
             ex.printStackTrace();
         }

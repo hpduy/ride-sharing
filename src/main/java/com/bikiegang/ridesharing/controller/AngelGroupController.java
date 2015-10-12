@@ -1,11 +1,13 @@
 package com.bikiegang.ridesharing.controller;
 
 import com.bikiegang.ridesharing.dao.AngelGroupDao;
+import com.bikiegang.ridesharing.dao.UserDao;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.database.IdGenerator;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.AngelGroup;
 import com.bikiegang.ridesharing.pojo.LatLng;
+import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.GetInformationUsingUserIdRequest;
 import com.bikiegang.ridesharing.pojo.request.GetUsersAroundFromMeRequest;
 import com.bikiegang.ridesharing.pojo.request.MergeGroupRequest;
@@ -218,12 +220,12 @@ public class AngelGroupController {
 
                 //done
                 AngelGroup angelGroup = new AngelGroup(Long.parseLong(element[ogId]), new LatLng(element[2]), tagNames, DateTimeUtil.now(), element[5]);
-                if(!database.getOrganizationHashMap().containsKey(element[3])){
-                    String logoUrl = new UploadImageUtil().downloadLogoIMG(element[4], element[1].replaceAll(" ","")+"_logo");
-                    new OrganizationController().createOrganization(element[1],logoUrl,element[3]);
+                if (!database.getOrganizationHashMap().containsKey(element[3])) {
+                    String logoUrl = new UploadImageUtil().downloadLogoIMG(element[4], element[1].replaceAll(" ", "") + "_logo");
+                    new OrganizationController().createOrganization(element[1], logoUrl, element[3]);
                 }
                 try {
-                    database.getAngelGroupHashMap().put(angelGroup.getId(),angelGroup);
+                    database.getAngelGroupHashMap().put(angelGroup.getId(), angelGroup);
                 } catch (Exception ignored) {
                 }
             }
@@ -325,6 +327,46 @@ public class AngelGroupController {
             }
         }
         return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new GetAlphabetAngelGroupsResponse(responses));
+    }
+
+    public void promoteAngel() {
+        String[] gangs = {
+                "fb_1119948731350574",//duy big
+                "gg_104511978063048563987", // an nguyen
+                "fb_796315037151408",// an nguyen
+                "e_pumie.hoan2010@gmail.com", // thi
+                "fb_1036274976385529", // thi
+                "fb_968496846533933",// duyCT
+                "gg_100887638771064551141",// duyCT
+                "fb_120364848303139",// cloudbike
+                "fb_929818660424600",// TaiL
+                "fb_1149718978377938",// TaiNG
+                "fb_10152850663931856",// TungLe
+
+        };
+        // promote angel
+        for (String uid : gangs) {
+            User user = database.getUserHashMap().get(uid);
+            if (user != null && user.getStatus() != User.VERIFIED) {
+                user.setStatus(User.VERIFIED);
+                try {
+                    new UserDao().update(user);
+//                    // joinGroup
+//                    for (long id : database.getAngelGroupHashMap().keySet()) {
+//                        if (!database.getAngelGroupHashMap().containsKey(id)) {
+//                            return;
+//                        }
+//                        if (!database.getUserAndGroupRFAngelGroupMember().containsKey(new AngelGroupMemberController().combineKey(uid, id))) {
+//                            AngelGroupMember groupMember = new AngelGroupMember(IdGenerator.getAngelGroupMemberId(), id, uid, DateTimeUtil.now());Broadca
+//                            new AngelGroupMemberDao().insert(groupMember);
+//                        }
+//                    }
+                } catch (Exception ignored) {
+
+                }
+            }
+        }
+
     }
 
 
