@@ -46,11 +46,15 @@ public class MessageController {
     public String getMessagesHistory(GetMessagesHistoryRequest request) throws JsonProcessingException {
         long conversationId = request.getConversationId();
         if (!database.getConversationHashMap().containsKey(conversationId)) {
-            if (!database.getHistoryRFHashMap().containsKey(request.getOwnerId() + "#" + request.getPartnerId())) {
+            String key = request.getOwnerId();
+            for (String p : request.getPartnerIds()) {
+                key += "#" + p;
+            }
+            if (!database.getHistoryRFHashMap().containsKey(key)) {
                 Conversation conversation = new Conversation();
                 conversation.setCreatedTime(DateTimeUtil.now());
                 conversation.setOwnerId(request.getOwnerId());
-                conversation.setPartnerIds(new String[]{request.getPartnerId()});
+                conversation.setPartnerIds(request.getPartnerIds());
                 if (new ConversationDao().insert(conversation)) {
                     MessagesCommon response = new MessagesCommon();
                     response.setConversationId(conversation.getId());
@@ -59,7 +63,7 @@ public class MessageController {
                 }
                 return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
             }
-            conversationId = database.getHistoryRFHashMap().get(request.getOwnerId() + "#" + request.getPartnerId());
+            conversationId = database.getHistoryRFHashMap().get(request.getOwnerId() + "#" + request.getPartnerIds());
         }
         List<String> messageIds = database.getConversationIdRFMessages().get(conversationId);
         List<Message> messages = new ArrayList<>();

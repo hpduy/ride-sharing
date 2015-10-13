@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class GetMessagesHistoryRequest {
     private long conversationId;
     private String ownerId;
-    private String partnerId;
+    private String[] partnerIds;
     private long timeInMillis;
 
     public long getConversationId() {
@@ -28,12 +28,12 @@ public class GetMessagesHistoryRequest {
         this.ownerId = ownerId;
     }
 
-    public String getPartnerId() {
-        return partnerId;
+    public String[] getPartnerIds() {
+        return partnerIds;
     }
 
-    public void setPartnerId(String partnerId) {
-        this.partnerId = partnerId;
+    public void setPartnerIds(String[] partnerIds) {
+        this.partnerIds = partnerIds;
     }
 
     public long getTimeInMillis() {

@@ -7,7 +7,7 @@ public class Conversation {
     private long id;
     private String ownerId;
     private String[] partnerIds;
-    private long createdTime;
+    private long createdTime; // in second
 
     public long getId() {
         return id;
