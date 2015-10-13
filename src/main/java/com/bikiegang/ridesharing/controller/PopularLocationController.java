@@ -24,7 +24,7 @@ public class PopularLocationController {
     private Database database = Database.getInstance();
     private static boolean static_data_created = false;
     // image processing
-    private final String[] static_data = ("Welcome day HSU#8 Nguyễn Văn Tráng, phường Bến Thành, quận 1, thành phố Hồ Chí Minh#http://www.hoasen.edu.vn/sites/default/files/chaotsv_hoasen.jpg#10.770307, 106.692742#Đại học Hoa Sen, HSU, Hoa Sen Univeristy\n"+
+    private final String[] static_data = ("Đại học Ngoại Thương cơ sở 2#15 D5, phường 25, quận Bình Thạnh, thành phố Hồ Chí Minh#http://cp.tuyensinh247.vn/tuyensinh/backend//document_thumbnails/d8a3f6f1e5de77264090e5ad9421d449.jpg#10.806614,106.712979#Đại học Ngoại Thương, FTU, Foreign Trade University\n"+
             "Quảng trường đi bộ Nguyễn Huệ#Nguyễn Huệ, phường Bến Nghé, quận 1, thành phố Hồ Chí Minh#http://img.v3.news.zdn.vn/Uploaded/lerl/2015_04_29/pho_di_bo_1_1.jpg#10.774033, 106.703653#Phố đi bộ, tượng đài Bác Hồ, Phúc Long Nguyễn Huệ, quãng trường đi bộ\n" +
             "Công viên 30/4#Lê Duẩn, phường Bến Nghé, quận 1, thành phố Hồ Chí Minh#http://static.panoramio.com/photos/large/8155768.jpg#10.779259, 106.697486#Bệt, công viên nhà thờ đức bà, công viên 30/4, cafe Bệt\n" +
             "Hồ Con Rùa#Công Trường Quốc Tế, phường 6, quận 3, thành phố Hồ Chí Minh#http://afamily1.vcmedia.vn/k:thumb_w/600/0HzD8x7Ji6Y8HKVCVbd50GbQjUk1Bp/Image/2014/09/Ho-con-rua-1-174d0/khi-nguoi-tre-to-mau-dep-tuyet-cho-sai-gon.jpg#10.782699, 106.695933#Hồ Con Rùa, công trường quốc tế\n" +

@@ -8,6 +8,7 @@ public class Conversation {
     private String ownerId;
     private String[] partnerIds;
     private long createdTime; // in second
+    private int lastMessageIndex ;
 
     public long getId() {
         return id;
@@ -39,5 +40,13 @@ public class Conversation {
 
     public void setCreatedTime(long createdTime) {
         this.createdTime = createdTime;
+    }
+
+    public int getLastMessageIndex() {
+        return lastMessageIndex;
+    }
+
+    public void setLastMessageIndex(int lastMessageIndex) {
+        this.lastMessageIndex = lastMessageIndex;
     }
 }

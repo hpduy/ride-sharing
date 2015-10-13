@@ -8,6 +8,7 @@ import com.bikiegang.ridesharing.pojo.Conversation;
 import com.bikiegang.ridesharing.pojo.Message;
 import com.bikiegang.ridesharing.pojo.request.GetMessagesHistoryRequest;
 import com.bikiegang.ridesharing.pojo.request.MessagesCommon;
+import com.bikiegang.ridesharing.pojo.response.MessageDetail;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -46,10 +47,7 @@ public class MessageController {
     public String getMessagesHistory(GetMessagesHistoryRequest request) throws JsonProcessingException {
         long conversationId = request.getConversationId();
         if (!database.getConversationHashMap().containsKey(conversationId)) {
-            String key = request.getOwnerId();
-            for (String p : request.getPartnerIds()) {
-                key += "#" + p;
-            }
+            String key = new ConversationController().combineUsersKey(request.getOwnerId(),request.getPartnerIds());
             if (!database.getHistoryRFHashMap().containsKey(key)) {
                 Conversation conversation = new Conversation();
                 conversation.setCreatedTime(DateTimeUtil.now());
@@ -58,21 +56,21 @@ public class MessageController {
                 if (new ConversationDao().insert(conversation)) {
                     MessagesCommon response = new MessagesCommon();
                     response.setConversationId(conversation.getId());
-                    response.setMessages(new Message[0]);
+                    response.setMessages(new MessageDetail[0]);
                     return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, response);
                 }
                 return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
             }
-            conversationId = database.getHistoryRFHashMap().get(request.getOwnerId() + "#" + request.getPartnerIds());
+            conversationId = database.getHistoryRFHashMap().get(key);
         }
         List<String> messageIds = database.getConversationIdRFMessages().get(conversationId);
-        List<Message> messages = new ArrayList<>();
+        List<MessageDetail> messages = new ArrayList<>();
         int count = 0;
         if (messageIds != null && !messageIds.isEmpty()) {
             for (int i = messageIds.size() - 1; i > 0; i--) {
                 Message message = database.getMessageLinkedHashMap().get(messageIds.get(i));
                 if (message != null && message.getTimestampInMillis() < request.getTimeInMillis()) {
-                    messages.add(message);
+                    messages.add(new MessageDetail(message));
                     count++;
                 }
                 if (count == numberOfMessage)
@@ -90,7 +88,7 @@ public class MessageController {
         }
         MessagesCommon response = new MessagesCommon();
         response.setConversationId(conversationId);
-        response.setMessages(messages.toArray(new Message[messages.size()]));
+        response.setMessages(messages.toArray(new MessageDetail[messages.size()]));
         return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, response);
 
     }
@@ -99,12 +97,12 @@ public class MessageController {
         try {
             List<String> messageIds = database.getConversationIdRFMessages().get(conversationId);
             if (messageIds != null && !messageIds.isEmpty()) {
-
+                List<Message> messages = new ArrayList<>(database.getMessageLinkedHashMap().values());
                 int idx = messageIds.size() - 1;
-                Message message = database.getMessageLinkedHashMap().get(idx);
+                Message message = messages.get(idx);
                 while (message == null && idx > 0) {
                     idx--;
-                    message = database.getMessageLinkedHashMap().get(idx);
+                    message = messages.get(idx);
                 }
                 if (message != null)
                     return message.getTimestampInMillis();

@@ -16,6 +16,8 @@ public class MessageDao {
     private final Database database = Database.getInstance();
     RideSharingCA cache = RideSharingCA.getInstance(ConfigInfo.REDIS_SERVER);
 
+    //TODO: khi add nho add reference cho tung thang, vd message sender la A , receiver laf B,C,D thi cung add messageId vao list conversation cua A, B , C, D, conversationId lay bang cach conbime key (lay o conversation controller)
+    // vd ta co sender A, receivers: B,C,D thi key se lan luot la A#B#C#D | B#A#C#D | C#A#B#D | D#A#B#C
     public boolean insert(Message obj) {
         boolean result = false;
         try {

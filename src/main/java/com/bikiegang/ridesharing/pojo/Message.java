@@ -11,6 +11,17 @@ public class Message {
     private long timestampInMillis;
     private long conversationId;
 
+    public Message() {
+    }
+
+    public Message(Message that) {
+        this.msgId = that.msgId;
+        this.mContent = that.mContent;
+        this.senderId = that.senderId;
+        this.receiveIds = that.receiveIds;
+        this.timestampInMillis = that.timestampInMillis;
+        this.conversationId = that.conversationId;
+    }
 
     public String getMsgId() {
         return msgId;

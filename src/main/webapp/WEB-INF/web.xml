@@ -576,7 +576,14 @@
         <servlet-name>SaveMessagesAPI</servlet-name>
         <url-pattern>/SaveMessagesAPI</url-pattern>
     </servlet-mapping>
-
+    <servlet>
+        <servlet-name>UpdateReadConversationAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.UpdateReadConversationAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UpdateReadConversationAPI</servlet-name>
+        <url-pattern>/UpdateReadConversationAPI</url-pattern>
+    </servlet-mapping>
 
     <listener>
         <listener-class>com.bikiegang.ridesharing.StartupListener</listener-class>
