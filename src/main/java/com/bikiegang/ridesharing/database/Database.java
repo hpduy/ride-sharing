@@ -52,6 +52,10 @@ public class Database {
     private HashMap<Long, Event> eventHashMap = new HashMap<>();
     private HashMap<String, Organization> organizationHashMap = new HashMap<>();
 
+    private LinkedHashMap<String, Message> messageLinkedHashMap = new LinkedHashMap<>();
+    private HashMap<Long, Conversation> conversationHashMap = new HashMap<>();
+
+
     //REFERENCE
     /**
      * USER
@@ -130,6 +134,17 @@ public class Database {
      * RATING
      */
     private HashMap<String, HashSet<Long>> UserIdRFRatings = new HashMap<>();// <userId(ratedUserId),<ratingIds>>
+
+    /**
+     * MESSAGE
+     */
+    private HashMap<Long, List<String>> conversationIdRFMessages = new HashMap<>();
+
+    /**
+     * CONVERSATION
+     */
+    private HashMap<String,Long> historyRFHashMap = new HashMap<>(); // <ownerId#partnerId, conversationId>
+    private HashMap<String,HashSet<Long>> userIdRFConsersations = new HashMap<>(); //<userId,<conversationId>>
 
     /**
      * GEOCELL
@@ -244,6 +259,14 @@ public class Database {
 
     public HashMap<String, Organization> getOrganizationHashMap() {
         return organizationHashMap;
+    }
+
+    public LinkedHashMap<String, Message> getMessageLinkedHashMap() {
+        return messageLinkedHashMap;
+    }
+
+    public HashMap<Long, Conversation> getConversationHashMap() {
+        return conversationHashMap;
     }
 
     /*REFERENCE GET-SET*/
@@ -377,6 +400,18 @@ public class Database {
 
     public HashMap<String, HashSet<String>> getOrganizationRFUserIds() {
         return organizationRFUserIds;
+    }
+
+    public HashMap<Long, List<String>> getConversationIdRFMessages() {
+        return conversationIdRFMessages;
+    }
+
+    public HashMap<String, Long> getHistoryRFHashMap() {
+        return historyRFHashMap;
+    }
+
+    public HashMap<String, HashSet<Long>> getUserIdRFConsersations() {
+        return userIdRFConsersations;
     }
 
     /*GEOCELL GET-SET*/
