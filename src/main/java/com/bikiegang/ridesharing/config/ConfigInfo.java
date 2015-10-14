@@ -81,9 +81,54 @@ public class ConfigInfo {
     public static String ORGANIZATION_DELETE_QUERY;
     public static String ORGANIZATION_INSERT_QUERY;
     public static String ORGANIZATION_UPDATE_QUERY;
+    public static String CONVERSATION_UPDATE_QUERY;
+    public static String CONVERSATION_INSERT_QUERY;
+    public static String CONVERSATION_DELETE_QUERY;
+    public static String MESSAGE_INSERT_QUERY;
+    public static String MESSAGE_UPDATE_QUERY;
+    public static String MESSAGE_DELETE_QUERY;
 
     static {
         RIDESHARING_DB = "ridesharing_db";
+
+        CONVERSATION_INSERT_QUERY = "INSERT INTO `ridesharing_db`.`Conversation`\n"
+                + "(`id`,\n"
+                + "`ownerId`,\n"
+                + "`partnerIds`,\n"
+                + "`createdTime`,\n"
+                + "`lastMessageIndex`)\n"
+                + "VALUES\n"
+                + "(?,?,?,?,?);";
+        CONVERSATION_UPDATE_QUERY = "UPDATE `ridesharing_db`.`Conversation`\n"
+                + "SET\n"
+                + "`id` = ?,\n"
+                + "`ownerId` = ?,\n"
+                + "`partnerIds` = ?,\n"
+                + "`createdTime` = ?,\n"
+                + "`lastMessageIndex` = ?\n"
+                + "WHERE `id` = ?;";
+        CONVERSATION_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`Conversation`\n"
+                + "WHERE `id` = ?;";
+        MESSAGE_INSERT_QUERY = "INSERT INTO `ridesharing_db`.`Message`\n"
+                + "(`msgId`,\n"
+                + "`mContent`,\n"
+                + "`senderId`,\n"
+                + "`receiveIds`,\n"
+                + "`timestampInMillis`,\n"
+                + "`conversationId`)\n"
+                + "VALUES\n"
+                + "(?,?,?,?,?,?);";
+        MESSAGE_UPDATE_QUERY = "UPDATE `ridesharing_db`.`Message`\n"
+                + "SET\n"
+                + "`msgId` = ?,\n"
+                + "`mContent` = ?,\n"
+                + "`senderId` = ?,\n"
+                + "`receiveIds` = ?,\n"
+                + "`timestampInMillis` = ?,\n"
+                + "`conversationId` = ?\n"
+                + "WHERE `msgId` = ?;";
+        MESSAGE_DELETE_QUERY = "DELETE FROM `ridesharing_db`.`Message`\n"
+                + "WHERE `msgId` = ?;";
         EVENT_INSERT_QUERY = "INSERT INTO `ridesharing_db`.`Event`\n"
                 + "(`id`,\n"
                 + "`name`,\n"

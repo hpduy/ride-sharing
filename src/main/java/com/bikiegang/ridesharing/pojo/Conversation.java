@@ -3,12 +3,24 @@ package com.bikiegang.ridesharing.pojo;
 /**
  * Created by hpduy17 on 10/12/15.
  */
-public class Conversation {
+public class Conversation implements PojoBase {
+
     private long id;
     private String ownerId;
     private String[] partnerIds;
     private long createdTime; // in second
-    private int lastMessageIndex ;
+    private int lastMessageIndex;
+
+    public Conversation() {
+    }
+
+    public Conversation(long id, String ownerId, String[] partnerIds, long createdTime, int lastMessageIndex) {
+        this.id = id;
+        this.ownerId = ownerId;
+        this.partnerIds = partnerIds;
+        this.createdTime = createdTime;
+        this.lastMessageIndex = lastMessageIndex;
+    }
 
     public long getId() {
         return id;

@@ -12,10 +12,14 @@ import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
 import com.bikiegang.ridesharing.da.AngelGroupDA;
 import com.bikiegang.ridesharing.da.AngelGroupMemberDA;
 import com.bikiegang.ridesharing.da.BroadcastDA;
+import com.bikiegang.ridesharing.da.ConversationDA;
+import com.bikiegang.ridesharing.da.EventDA;
 import com.bikiegang.ridesharing.da.FeedDA;
 import com.bikiegang.ridesharing.da.FeedbackDA;
 import com.bikiegang.ridesharing.da.IDA;
 import com.bikiegang.ridesharing.da.LinkedLocationDA;
+import com.bikiegang.ridesharing.da.MessageDA;
+import com.bikiegang.ridesharing.da.OrganizationDA;
 import com.bikiegang.ridesharing.da.PlannedTripDA;
 import com.bikiegang.ridesharing.da.PopularLocationDA;
 import com.bikiegang.ridesharing.da.RatingDA;
@@ -28,12 +32,16 @@ import com.bikiegang.ridesharing.da.TripCalendarDA;
 import com.bikiegang.ridesharing.da.TripDA;
 import com.bikiegang.ridesharing.da.UserDA;
 import com.bikiegang.ridesharing.da.VerifiedCertificateDA;
-import com.bikiegang.ridesharing.dao.FeedbackDao;
 import com.bikiegang.ridesharing.pojo.AngelGroup;
 import com.bikiegang.ridesharing.pojo.AngelGroupMember;
 import com.bikiegang.ridesharing.pojo.Broadcast;
+import com.bikiegang.ridesharing.pojo.Conversation;
+import com.bikiegang.ridesharing.pojo.Event;
 import com.bikiegang.ridesharing.pojo.Feed;
+import com.bikiegang.ridesharing.pojo.Feedback;
 import com.bikiegang.ridesharing.pojo.LinkedLocation;
+import com.bikiegang.ridesharing.pojo.Message;
+import com.bikiegang.ridesharing.pojo.Organization;
 import com.bikiegang.ridesharing.pojo.PlannedTrip;
 import com.bikiegang.ridesharing.pojo.PojoBase;
 import com.bikiegang.ridesharing.pojo.PopularLocation;
@@ -145,9 +153,25 @@ public class RideSharingWorkerProcess extends AbstractGearmanFunction {
                     _value = JSONUtil.DeSerialize(job.Data, Route.class);
                     _rideSharingDA = new RouteDA();
                     break;
-                case "com.bikiegang.ridesharing.pojo.FeedbackDao":
-                    _value = JSONUtil.DeSerialize(job.Data, FeedbackDao.class);
+                case "com.bikiegang.ridesharing.pojo.Feedback":
+                    _value = JSONUtil.DeSerialize(job.Data, Feedback.class);
                     _rideSharingDA = new FeedbackDA();
+                    break;
+                case "com.bikiegang.ridesharing.pojo.Conversation":
+                    _value = JSONUtil.DeSerialize(job.Data, Conversation.class);
+                    _rideSharingDA = new ConversationDA();
+                    break;
+                case "com.bikiegang.ridesharing.pojo.Message":
+                    _value = JSONUtil.DeSerialize(job.Data, Message.class);
+                    _rideSharingDA = new MessageDA();
+                    break;
+                case "com.bikiegang.ridesharing.pojo.Organization":
+                    _value = JSONUtil.DeSerialize(job.Data, Organization.class);
+                    _rideSharingDA = new OrganizationDA();
+                    break;
+                case "com.bikiegang.ridesharing.pojo.Event":
+                    _value = JSONUtil.DeSerialize(job.Data, Event.class);
+                    _rideSharingDA = new EventDA();
                     break;
             }
             chk = _rideSharingDA.DoAction(_value, job.ActionType);

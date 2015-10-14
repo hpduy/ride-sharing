@@ -3,7 +3,8 @@ package com.bikiegang.ridesharing.pojo;
 /**
  * Created by hpduy17 on 10/12/15.
  */
-public class Message {
+public class Message implements PojoBase {
+
     private String msgId;
     private String mContent;
     private String senderId;
@@ -12,6 +13,15 @@ public class Message {
     private long conversationId;
 
     public Message() {
+    }
+
+    public Message(String msgId, String mContent, String senderId, String[] receiveIds, long timestampInMillis, long conversationId) {
+        this.msgId = msgId;
+        this.mContent = mContent;
+        this.senderId = senderId;
+        this.receiveIds = receiveIds;
+        this.timestampInMillis = timestampInMillis;
+        this.conversationId = conversationId;
     }
 
     public Message(Message that) {
