@@ -14,7 +14,7 @@ public class ConversationDetail {
     private long conversationId;
     private MessageDetail lastMessage;
     private int numberOfUnread;
-    private UserDetailResponse[] partnersDetail;
+    private UserDetailResponse[] chatUsers;
 
     public ConversationDetail() {
     }
@@ -34,7 +34,7 @@ public class ConversationDetail {
                 receivers.add(new UserDetailResponse(r));
             }
         }
-        partnersDetail = receivers.toArray(new UserDetailResponse[receivers.size()]);
+        chatUsers = receivers.toArray(new UserDetailResponse[receivers.size()]);
 
     }
 
@@ -54,12 +54,12 @@ public class ConversationDetail {
         this.lastMessage = lastMessage;
     }
 
-    public UserDetailResponse[] getPartnersDetail() {
-        return partnersDetail;
+    public UserDetailResponse[] getChatUsers() {
+        return chatUsers;
     }
 
-    public void setPartnersDetail(UserDetailResponse[] partnersDetail) {
-        this.partnersDetail = partnersDetail;
+    public void setChatUsers(UserDetailResponse[] chatUsers) {
+        this.chatUsers = chatUsers;
     }
 
     public int getNumberOfUnread() {

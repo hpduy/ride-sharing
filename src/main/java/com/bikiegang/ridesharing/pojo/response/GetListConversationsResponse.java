@@ -1,6 +1,5 @@
 package com.bikiegang.ridesharing.pojo.response;
 
-import com.bikiegang.ridesharing.pojo.Conversation;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -8,13 +7,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GetListConversationsResponse {
-    private Conversation[] conversations;
+    private ConversationDetail[] conversations;
 
-    public Conversation[] getConversations() {
+    public ConversationDetail[] getConversations() {
         return conversations;
     }
 
-    public void setConversations(Conversation[] conversations) {
+    public void setConversations(ConversationDetail[] conversations) {
         this.conversations = conversations;
     }
 }

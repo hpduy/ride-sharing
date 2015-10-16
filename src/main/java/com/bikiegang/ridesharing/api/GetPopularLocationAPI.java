@@ -9,6 +9,7 @@ package com.bikiegang.ridesharing.api;
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
 import com.bikiegang.ridesharing.controller.PopularLocationController;
 import com.bikiegang.ridesharing.parsing.Parser;
+import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.response.GetPopularLocationResponse;
 import com.bikiegang.ridesharing.utilities.ApiDocumentGenerator;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
@@ -18,13 +19,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
 
 public class GetPopularLocationAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
-    public Class requestClass = null;
+    public Class requestClass = LatLng.class;
     public Class responseClass = GetPopularLocationResponse.class;
     public boolean responseIsArray = false;
 
@@ -43,9 +45,21 @@ public class GetPopularLocationAPI extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         try {
-
+            StringBuffer jsonData = new StringBuffer();
+            String line;
+            BufferedReader reader = request.getReader();
+            while ((line = reader.readLine()) != null) {
+                jsonData.append(line);
+            }
+            logger.info(jsonData.toString());
+            LatLng latLng;
+            try {
+                latLng = (LatLng) Parser.JSonToObject(jsonData.toString(), LatLng.class);
+            } catch (Exception ex) {
+                latLng = new LatLng(10.762622, 106.660172);
+            }
             PopularLocationController controller = new PopularLocationController();
-            String result = controller.getPopularLocationList();
+            String result = controller.getPopularLocationList(latLng);
             logger.info(result);
             out.print(result);
         } catch (Exception ex) {

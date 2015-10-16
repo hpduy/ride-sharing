@@ -155,6 +155,7 @@ public class Database {
     private GeoCell<Long> geoCellStartLocation = new GeoCell<>(GeoCell.CELL_LEN_OF_PT_START_LOCATION);
     private GeoCell<Long> geoCellAngelGroup = new GeoCell<>(GeoCell.CELL_LEN_OF_ANGEL_GROUP);
     private GeoCell<Long> geoCellSocialTrip = new GeoCell<>(GeoCell.CELL_LEN_OF_PT_START_LOCATION);
+    private GeoCell<Long> geoCellPopularLocation = new GeoCell<>(GeoCell.CELL_LEN_OF_POPULAR_LOCATION);
 
     //    /*PERSONAL FUNCTION*/
     public void restore() {
@@ -461,5 +462,13 @@ public class Database {
 
     public void setFeedHashMap(LinkedHashMap<Long, Feed> feedHashMap) {
         this.feedHashMap = feedHashMap;
+    }
+
+    public GeoCell<Long> getGeoCellPopularLocation() {
+        return geoCellPopularLocation;
+    }
+
+    public void setGeoCellPopularLocation(GeoCell<Long> geoCellPopularLocation) {
+        this.geoCellPopularLocation = geoCellPopularLocation;
     }
 }

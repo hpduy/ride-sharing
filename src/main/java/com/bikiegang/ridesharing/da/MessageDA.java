@@ -60,7 +60,7 @@ public class MessageDA implements IDA {
                 stmt.setString(1, value.getMsgId());
                 stmt.setString(2, value.getmContent());
                 stmt.setString(3, value.getSenderId());
-                stmt.setString(4, StringUtils.join(value.getReceiveIds(), ","));
+                stmt.setString(4, StringUtils.join(value.getReceiverIds(), ","));
                 stmt.setLong(5, value.getTimestampInMillis());
                 stmt.setLong(6, value.getConversationId());
 
@@ -89,7 +89,7 @@ public class MessageDA implements IDA {
                 stmt.setString(1, value.getMsgId());
                 stmt.setString(2, value.getmContent());
                 stmt.setString(3, value.getSenderId());
-                stmt.setString(4, StringUtils.join(value.getReceiveIds(), ","));
+                stmt.setString(4, StringUtils.join(value.getReceiverIds(), ","));
                 stmt.setLong(5, value.getTimestampInMillis());
                 stmt.setLong(6, value.getConversationId());
                 stmt.setString(7, value.getMsgId());

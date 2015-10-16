@@ -26,7 +26,7 @@ public class MessageDetail extends Message {
             senderDetail = new UserDetailResponse(sender);
         }
         List<UserDetailResponse> receivers = new ArrayList<>();
-        for(String id : that.getReceiveIds()){
+        for(String id : that.getReceiverIds()){
             User r = database.getUserHashMap().get(id);
             if(r != null){
                receivers.add(new UserDetailResponse(r));

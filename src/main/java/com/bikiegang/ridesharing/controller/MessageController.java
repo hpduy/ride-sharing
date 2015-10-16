@@ -1,16 +1,14 @@
 package com.bikiegang.ridesharing.controller;
 
-import com.bikiegang.ridesharing.dao.ConversationDao;
 import com.bikiegang.ridesharing.dao.MessageDao;
 import com.bikiegang.ridesharing.database.Database;
+import com.bikiegang.ridesharing.database.IdGenerator;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.Conversation;
 import com.bikiegang.ridesharing.pojo.Message;
 import com.bikiegang.ridesharing.pojo.request.GetMessagesHistoryRequest;
 import com.bikiegang.ridesharing.pojo.request.MessagesCommon;
 import com.bikiegang.ridesharing.pojo.response.MessageDetail;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
-import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.ArrayList;
@@ -49,13 +47,10 @@ public class MessageController {
         if (!database.getConversationHashMap().containsKey(conversationId)) {
             String key = new ConversationController().combineUsersKey(request.getOwnerId(),request.getPartnerIds());
             if (!database.getHistoryRFHashMap().containsKey(key)) {
-                Conversation conversation = new Conversation();
-                conversation.setCreatedTime(DateTimeUtil.now());
-                conversation.setOwnerId(request.getOwnerId());
-                conversation.setPartnerIds(request.getPartnerIds());
-                if (new ConversationDao().insert(conversation)) {
+                conversationId = IdGenerator.getConversationId();
+                if (new ConversationController().insertConversation(conversationId,request.getOwnerId(),request.getPartnerIds())) {
                     MessagesCommon response = new MessagesCommon();
-                    response.setConversationId(conversation.getId());
+                    response.setConversationId(conversationId);
                     response.setMessages(new MessageDetail[0]);
                     return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, response);
                 }

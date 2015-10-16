@@ -8,18 +8,18 @@ public class Message implements PojoBase {
     private String msgId;
     private String mContent;
     private String senderId;
-    private String[] receiveIds;
+    private String[] receiverIds;
     private long timestampInMillis;
     private long conversationId;
 
     public Message() {
     }
 
-    public Message(String msgId, String mContent, String senderId, String[] receiveIds, long timestampInMillis, long conversationId) {
+    public Message(String msgId, String mContent, String senderId, String[] receiverIds, long timestampInMillis, long conversationId) {
         this.msgId = msgId;
         this.mContent = mContent;
         this.senderId = senderId;
-        this.receiveIds = receiveIds;
+        this.receiverIds = receiverIds;
         this.timestampInMillis = timestampInMillis;
         this.conversationId = conversationId;
     }
@@ -28,7 +28,7 @@ public class Message implements PojoBase {
         this.msgId = that.msgId;
         this.mContent = that.mContent;
         this.senderId = that.senderId;
-        this.receiveIds = that.receiveIds;
+        this.receiverIds = that.receiverIds;
         this.timestampInMillis = that.timestampInMillis;
         this.conversationId = that.conversationId;
     }
@@ -57,12 +57,12 @@ public class Message implements PojoBase {
         this.senderId = senderId;
     }
 
-    public String[] getReceiveIds() {
-        return receiveIds;
+    public String[] getReceiverIds() {
+        return receiverIds;
     }
 
-    public void setReceiveIds(String[] receiveIds) {
-        this.receiveIds = receiveIds;
+    public void setReceiverIds(String[] receiverIds) {
+        this.receiverIds = receiverIds;
     }
 
     public long getTimestampInMillis() {

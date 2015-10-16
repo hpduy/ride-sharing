@@ -192,5 +192,14 @@ public class IdGenerator {
         while (idSet.contains(id));
         return id;
     }
+    public static synchronized long getConversationId() {
+        Set<Long> idSet = database.getConversationHashMap().keySet();
+        long id;
+        do {
+            id = RandomUtils.nextLong();
+        }
+        while (idSet.contains(id));
+        return id;
+    }
 
 }

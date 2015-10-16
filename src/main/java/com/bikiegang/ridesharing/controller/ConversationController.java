@@ -6,8 +6,10 @@ import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.Conversation;
 import com.bikiegang.ridesharing.pojo.request.GetInformationUsingUserIdRequest;
 import com.bikiegang.ridesharing.pojo.request.UpdateReadConversationRequest;
+import com.bikiegang.ridesharing.pojo.response.ConversationDetail;
 import com.bikiegang.ridesharing.pojo.response.GetListConversationsResponse;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
+import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.*;
@@ -24,28 +26,28 @@ public class ConversationController {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "userId");
         }
         // get list conversation
-        List<Conversation> result = new ArrayList<>();
+        List<ConversationDetail> result = new ArrayList<>();
         HashSet<Long> conversationIds = database.getUserIdRFConsersations().get(request.getUserId());
         if (conversationIds != null) {
             for (long id : conversationIds) {
                 if (database.getConversationHashMap().containsKey(id)) {
-                    result.add(database.getConversationHashMap().get(id));
+                    result.add(new ConversationDetail(database.getConversationHashMap().get(id)));
                 }
             }
         }
 
         // sort by last message Time
         final MessageController controller = new MessageController();
-        Collections.sort(result, new Comparator<Conversation>() {
+        Collections.sort(result, new Comparator<ConversationDetail>() {
             @Override
-            public int compare(Conversation o1, Conversation o2) {
-                if (controller.getLastMessageTime(o1.getId()) < controller.getLastMessageTime(o2.getId()))
+            public int compare(ConversationDetail o1, ConversationDetail o2) {
+                if (o1.getLastMessage().getTimestampInMillis() < o2.getLastMessage().getTimestampInMillis())
                     return -1;
                 return 1;
             }
         });
         GetListConversationsResponse response = new GetListConversationsResponse();
-        response.setConversations(result.toArray(new Conversation[result.size()]));
+        response.setConversations(result.toArray(new ConversationDetail[result.size()]));
         return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, response);
     }
 
@@ -69,5 +71,13 @@ public class ConversationController {
             key += "#" + p;
         }
         return key;
+    }
+
+    public boolean insertConversation(long conversationId, String ownerId, String[] partnerIds){
+        Conversation conversation = new Conversation();
+        conversation.setCreatedTime(DateTimeUtil.now());
+        conversation.setOwnerId(ownerId);
+        conversation.setPartnerIds(partnerIds);
+        return dao.insert(conversation) ;
     }
 }

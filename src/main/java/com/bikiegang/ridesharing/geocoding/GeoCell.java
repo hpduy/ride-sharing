@@ -20,6 +20,7 @@ public class GeoCell<T> {
     public static final double CELL_LEN_OF_PLANNED_TRIP = 0.005;
     public static final double CELL_LEN_OF_PT_START_LOCATION = 0.01;
     public static final double CELL_LEN_OF_ANGEL_GROUP = 0.01;
+    public static final double CELL_LEN_OF_POPULAR_LOCATION = 0.1;
 
     /**
      * @param cellLengthInDegree length of cell

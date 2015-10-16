@@ -25,7 +25,7 @@ import java.io.PrintWriter;
 
 public class UpdateReadConversationAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
-    public Class requestClass = UpdateReadConversationAPI.class;
+    public Class requestClass = UpdateReadConversationRequest.class;
     public Class responseClass = null;
     public boolean responseIsArray = false;
 
