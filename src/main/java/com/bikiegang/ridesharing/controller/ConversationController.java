@@ -78,6 +78,7 @@ public class ConversationController {
         conversation.setCreatedTime(DateTimeUtil.now());
         conversation.setOwnerId(ownerId);
         conversation.setPartnerIds(partnerIds);
+        conversation.setId(conversationId);
         return dao.insert(conversation) ;
     }
 }

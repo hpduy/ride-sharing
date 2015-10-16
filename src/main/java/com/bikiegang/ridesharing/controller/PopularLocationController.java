@@ -13,6 +13,7 @@ import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import com.bikiegang.ridesharing.utilities.UploadImageUtil;
 import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.apache.commons.collections.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +61,7 @@ public class PopularLocationController {
             "Chùa Trấn Quốc#Thanh Niên, Trúc Bạch, Ba Đình, Hà Nội#https://upload.wikimedia.org/wikipedia/commons/e/e5/Ch%C3%B9a_Tr%E1%BA%A5n_Qu%E1%BB%91c,_H%C3%A0_N%E1%BB%99i.jpg#21.048109, 105.836750#Chùa Trấn Quốc\n" +
             "Sấn vận động Mỹ Đình#Lê Đức Thọ, Mỹ Đình, Từ Liêm, Hà Nội#http://media.foody.vn/res/g12/110036/prof/s640x400/foody-mobile-my-dinh2-jpg-918-635551909386878022.jpg#21.020534, 105.763932#Mỹ Đình\n" +
             "hồ Trúc Bạch#quận Ba Đình, Hà Nội#http://img1.qunarzz.com/travel/poi/201208/15/dd9cb99bec2e12d1ddb12cfb.jpg_r_1024x683x95_b15f211d.jpg#21.045872, 105.838585#hồ Trúc Bạch\n" +
-            "Nhà thờ Cửa Bắc#Phan Đình Phùng, Quán Thánh, Ba Đình, Hà Nội#http://s225.photobucket.com/user/bangcool/media/DiTich1.jpg.html#21.040938, 105.840520#nhà thờ Cửa Bắc\n" +
+            "Nhà thờ Cửa Bắc#Phan Đình Phùng, Quán Thánh, Ba Đình, Hà Nội#http://c0.f33.img.vnecdn.net/2013/12/11/vov-5910-1386749355.jpg#21.040938, 105.840520#nhà thờ Cửa Bắc\n" +
             "Cầu sông Hàn#Hải Châu, Đà Nẵng#https://cdn3.ivivu.com/2014/06/cau-song-han-ivivu.jpg#16.072107, 108.226715#cầu sông Hàn\n" +
             "Bàn đảo Sơn Trà#Sơn Trà, Đà Nẵng#http://kitehuetravel.com/wp-content/uploads/2015/01/son-tra-4.jpg#16.117575, 108.272946#bán đảo Sơn Trà\n" +
             "Ngũ Hành Sơn#phường Hòa Hải, quận Ngũ Hành Sơn, Đà Nẵng#http://www.danangcity.gov.vn/images/danang/image/Phong%20c%E1%BA%A3nh%20VN/dia%20danh/ngu%20hanh%20son(1).jpg#16.001317, 108.262139#Ngũ Hành Sơn\n" +
@@ -85,6 +86,7 @@ public class PopularLocationController {
                     popularLocation.setBackgroundImageLink(new UploadImageUtil().downloadPopularLocationIMGWithManySize(element[2], popularLocation.getName()));
                     database.getPopularLocationHashMap().put(popularLocation.getId(), popularLocation);
                     database.getGeoCellPopularLocation().putToCell(popularLocation.getLat(), popularLocation.getLng(), popularLocation.getId());
+
                 }
             }
         } catch (Exception ex) {
@@ -151,7 +153,7 @@ public class PopularLocationController {
 
     public String getPopularLocationList(LatLng latLng) throws JsonProcessingException {
         List<Long> locationsId = database.getGeoCellPopularLocation().getIdsInCell(latLng.getLat(), latLng.getLng());
-        if (locationsId == null) {
+        if (CollectionUtils.isEmpty(locationsId)) {
             locationsId = new ArrayList<>(database.getPopularLocationHashMap().keySet());
         }
         List<PopularLocation> locations = new ArrayList<>();

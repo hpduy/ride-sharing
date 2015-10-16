@@ -6,12 +6,14 @@ import com.bikiegang.ridesharing.annn.framework.gearman.JobEnt;
 import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
 import com.bikiegang.ridesharing.cache.RideSharingCA;
 import com.bikiegang.ridesharing.config.ConfigInfo;
+import com.bikiegang.ridesharing.controller.ConversationController;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.Conversation;
 import com.bikiegang.ridesharing.utilities.Const;
 import com.bikiegang.ridesharing.utilities.RequestLogger;
-import java.util.HashSet;
 import org.apache.log4j.Logger;
+
+import java.util.HashSet;
 
 /**
  * Created by hpduy17 on 6/26/15.
@@ -34,9 +36,8 @@ public class ConversationDao {
             //private HashMap<String,Long> historyRFHashMap = new HashMap<>(); // <ownerId#partnerId, conversationId>
             String[] partnerIds = obj.getPartnerIds();
             if (partnerIds != null) {
-                for (String item : partnerIds) {
-                    database.getHistoryRFHashMap().put(obj.getOwnerId() + "#" + item, obj.getId());
-                }
+                database.getHistoryRFHashMap()
+                        .put(new ConversationController().combineUsersKey(obj.getOwnerId(),obj.getPartnerIds()), obj.getId());
             }
             //private HashMap<String,HashSet<Long>> userIdRFConsersations = new HashMap<>(); //<userId,<conversationId>>
             HashSet<Long> get = database.getUserIdRFConsersations().get(obj.getOwnerId());
