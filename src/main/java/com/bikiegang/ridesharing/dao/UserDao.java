@@ -58,7 +58,7 @@ public class UserDao {
             result &= cache.hset(obj.getClass().getName() + ":twitter", String.valueOf(obj.getTwitterId()), obj.getId());
             result &= cache.hset(obj.getClass().getName() + ":email", String.valueOf(obj.getEmail()), obj.getId());
             result &= cache.hset(obj.getClass().getName() + ":linked", String.valueOf(obj.getLinkedInId()), obj.getId());
-            result &= cache.hset(obj.getClass().getName() + ":organization", String.valueOf(obj.getOrganizationId()), obj.getId());
+            result &= cache.hset(obj.getClass().getName() + ":organization", String.valueOf(obj.getOrganizationId()), JSONUtil.Serialize(userIds));
 
             if (result) {
                 //Step 3: put job gearman
@@ -107,10 +107,11 @@ public class UserDao {
             database.getLinkedInRFUserId().remove(obj.getLinkedInId());
             //organizationRFUserId = new HashMap<>(); //<organizationId, userId>
             HashSet<String> userIds = database.getOrganizationRFUserIds().get(obj.getOrganizationId());
-            if (userIds != null) {
-                userIds.remove(obj.getId());
+            if (userIds == null) {
+                userIds = new HashSet<>();
+                database.getOrganizationRFUserIds().put(obj.getOrganizationId(), userIds);
             }
-
+            userIds.remove(obj.getId());
             //Step 2: put redis
             result = cache.hdel(obj.getClass().getName(), String.valueOf(obj.getId()));
             result &= cache.hdel(obj.getClass().getName() + ":facebook", obj.getFacebookId());
@@ -118,7 +119,7 @@ public class UserDao {
             result &= cache.hdel(obj.getClass().getName() + ":twitter", obj.getTwitterId());
             result &= cache.hdel(obj.getClass().getName() + ":email", obj.getEmail());
             result &= cache.hdel(obj.getClass().getName() + ":linked", obj.getLinkedInId());
-            result &= cache.hdel(obj.getClass().getName() + ":organization", String.valueOf(obj.getOrganizationId()));
+            result &= cache.hset(obj.getClass().getName() + ":organization", String.valueOf(obj.getOrganizationId()), JSONUtil.Serialize(userIds));
 
             if (result) {
                 //Step 3: put job gearman
@@ -165,12 +166,7 @@ public class UserDao {
             database.getEmailRFUserId().put(obj.getEmail(), obj.getId());
             //linkedInRFUserId = new HashMap<>();//<lkId, userId>
             database.getLinkedInRFUserId().put(obj.getLinkedInId(), obj.getId());
-            //organizationRFUserId = new HashMap<>(); //<organizationId, userId>
-            HashSet<String> userIds = database.getOrganizationRFUserIds().get(obj.getOrganizationId());
-            if (userIds == null) {
-                userIds = new HashSet<>();
-            }
-            userIds.add(obj.getId());
+
             //Step 2: put redis
             result = cache.hset(obj.getClass().getName(), String.valueOf(obj.getId()), JSONUtil.Serialize(obj));
             result &= cache.hset(obj.getClass().getName() + ":facebook", String.valueOf(obj.getFacebookId()), obj.getId());
@@ -178,7 +174,6 @@ public class UserDao {
             result &= cache.hset(obj.getClass().getName() + ":twitter", String.valueOf(obj.getTwitterId()), obj.getId());
             result &= cache.hset(obj.getClass().getName() + ":email", String.valueOf(obj.getEmail()), obj.getId());
             result &= cache.hset(obj.getClass().getName() + ":linked", String.valueOf(obj.getLinkedInId()), obj.getId());
-            result &= cache.hset(obj.getClass().getName() + ":organization", String.valueOf(obj.getOrganizationId()), obj.getId());
 
             if (result) {
                 //Step 3: put job gearman
