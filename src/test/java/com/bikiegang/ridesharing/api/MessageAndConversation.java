@@ -40,5 +40,19 @@ public class MessageAndConversation  {
         messagesHistoryRequest.setOwnerId("fb_10152850663931856");
         messagesHistoryRequest.setPartnerIds(new String[]{"fb_120364848303139","fb_796315037151408"});
         new MessageController().getMessagesHistory(messagesHistoryRequest);
+
+        messagesHistoryRequest = new GetMessagesHistoryRequest();
+        messagesHistoryRequest.setTimeInMillis(System.currentTimeMillis());
+        messagesHistoryRequest.setOwnerId("fb_10152850663931856");
+        messagesHistoryRequest.setPartnerIds(new String[]{"fb_120364848303139"});
+        new MessageController().getMessagesHistory(messagesHistoryRequest);
+
+        messagesHistoryRequest = new GetMessagesHistoryRequest();
+        messagesHistoryRequest.setTimeInMillis(System.currentTimeMillis());
+        messagesHistoryRequest.setOwnerId("fb_10152850663931856");
+        messagesHistoryRequest.setPartnerIds(new String[]{"fb_796315037151408"});
+        new MessageController().getMessagesHistory(messagesHistoryRequest);
+
+        // save message
     }
 }
