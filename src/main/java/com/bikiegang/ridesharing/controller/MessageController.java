@@ -25,7 +25,7 @@ public class MessageController {
     private final int numberOfMessage = 10;
 
     public String saveMessage(MessagesCommon request) throws JsonProcessingException {
-        if (database.getConversationHashMap().containsKey(request.getConversationId())) {
+        if (!database.getConversationHashMap().containsKey(request.getConversationId())) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "conversationId");
         }
         if (request.getMessages() == null) {
