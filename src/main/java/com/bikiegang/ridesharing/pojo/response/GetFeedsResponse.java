@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GetFeedsResponse {
-    private FeedResponse[] feeds;
+    private FeedResponse[] feeds = new FeedResponse[0];
 
     public FeedResponse[] getFeeds() {
         return feeds;
