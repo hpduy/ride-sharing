@@ -40,8 +40,7 @@ public class MessageDao {
             List<String> chaters = new ArrayList<>();
             chaters.add(obj.getSenderId());
             chaters.addAll(Arrays.asList(obj.getReceiverIds()));
-            for (int i = 0; i < chaters.size(); i++) {
-                String owner = chaters.get(i);
+            for (String owner : chaters) {
                 List<String> temp = new ArrayList<>(chaters);
                 temp.remove(owner);
                 String[] partners = temp.toArray(new String[temp.size()]);
@@ -49,11 +48,12 @@ public class MessageDao {
                 long conversationId;
                 try {
                     conversationId = database.getHistoryRFHashMap().get(key);
-                    if(conversationId == 0)
+                    if (conversationId == 0) {
                         throw new Exception();
+                    }
                 } catch (Exception ex) {
                     conversationId = IdGenerator.getConversationId();
-                    new ConversationController().insertConversation(conversationId,owner,partners);
+                    new ConversationController().insertConversation(conversationId, owner, partners);
                 }
                 List<String> get = database.getConversationIdRFMessages().get(conversationId);
                 if (get == null) {
@@ -63,7 +63,7 @@ public class MessageDao {
                 get.add(obj.getMsgId());
                 //Step 2: put redis
                 result = cache.hset(obj.getClass().getName(), String.valueOf(obj.getMsgId()), JSONUtil.Serialize(obj));
-                result &= cache.hset(obj.getClass().getName() + ":conversation", String.valueOf(obj.getConversationId()), JSONUtil.Serialize(get));
+                result &= cache.hset(obj.getClass().getName() + ":conversation", String.valueOf(conversationId), JSONUtil.Serialize(get));
 
                 if (result) {
                     //Step 3: put job gearman
