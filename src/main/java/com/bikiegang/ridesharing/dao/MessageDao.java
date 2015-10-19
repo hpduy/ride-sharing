@@ -10,6 +10,7 @@ import com.bikiegang.ridesharing.controller.ConversationController;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.database.IdGenerator;
 import com.bikiegang.ridesharing.pojo.Message;
+import com.bikiegang.ridesharing.pojo.response.MessageDetail;
 import com.bikiegang.ridesharing.utilities.Const;
 import com.bikiegang.ridesharing.utilities.RequestLogger;
 import org.apache.log4j.Logger;
@@ -27,7 +28,7 @@ public class MessageDao {
     private final Database database = Database.getInstance();
     RideSharingCA cache = RideSharingCA.getInstance(ConfigInfo.REDIS_SERVER);
 
-    public boolean insert(Message obj) {
+    public boolean insert(MessageDetail obj) {
         boolean result = false;
         try {
             if (obj == null) {
@@ -89,7 +90,7 @@ public class MessageDao {
         return result;
     }
 
-    public boolean delete(Message obj) {
+    public boolean delete(MessageDetail obj) {
         boolean result = false;
         try {
             if (obj == null) {
@@ -132,7 +133,7 @@ public class MessageDao {
         return result;
     }
 
-    public boolean update(Message obj) {
+    public boolean update(MessageDetail obj) {
         boolean result = false;
         try {
             if (obj == null) {

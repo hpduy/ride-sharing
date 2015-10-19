@@ -55,6 +55,7 @@ import com.bikiegang.ridesharing.pojo.Trip;
 import com.bikiegang.ridesharing.pojo.TripCalendar;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.VerifiedCertificate;
+import com.bikiegang.ridesharing.pojo.response.MessageDetail;
 import java.util.concurrent.atomic.AtomicLong;
 import org.apache.log4j.Logger;
 import org.gearman.client.GearmanJobResult;
@@ -161,8 +162,8 @@ public class RideSharingWorkerProcess extends AbstractGearmanFunction {
                     _value = JSONUtil.DeSerialize(job.Data, Conversation.class);
                     _rideSharingDA = new ConversationDA();
                     break;
-                case "com.bikiegang.ridesharing.pojo.Message":
-                    _value = JSONUtil.DeSerialize(job.Data, Message.class);
+                case "com.bikiegang.ridesharing.pojo.MessageDetail":
+                    _value = JSONUtil.DeSerialize(job.Data, MessageDetail.class);
                     _rideSharingDA = new MessageDA();
                     break;
                 case "com.bikiegang.ridesharing.pojo.Organization":
