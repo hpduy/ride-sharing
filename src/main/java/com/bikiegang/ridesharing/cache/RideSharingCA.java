@@ -14,6 +14,7 @@ import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.geocoding.GeoCell;
 import com.bikiegang.ridesharing.pojo.*;
+import com.bikiegang.ridesharing.pojo.response.MessageDetail;
 import com.google.gson.reflect.TypeToken;
 import org.apache.log4j.Logger;
 
@@ -790,6 +791,72 @@ public class RideSharingCA {
         return result;
     }
 
+    public boolean RestoreConversation() {
+        boolean result = false;
+        try {
+            database.getConversationHashMap().clear();
+            database.getHistoryRFHashMap().clear();
+            database.getUserIdRFConsersations().clear();
+
+            Map<String, String> hgetAll = hgetAll(Conversation.class.getName());
+            for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+                database.getConversationHashMap().put(ConvertUtils.toLong(key), (Conversation) JSONUtil.DeSerialize(value, Conversation.class));
+            }
+
+            hgetAll = hgetAll(Conversation.class.getName() + ":history");
+
+            for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+                database.getHistoryRFHashMap().put(key, ConvertUtils.toLong(value));
+            }
+
+            hgetAll = hgetAll(Conversation.class.getName() + ":user");
+
+            for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+                database.getUserIdRFConsersations().put(key, (HashSet<Long>) JSONUtil.DeSerialize(value, new TypeToken<HashSet<Long>>() {
+                }.getType()));
+            }
+            result = true;
+        } catch (Exception ex) {
+            _logger.error(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
+    public boolean RestoreMessage() {
+        boolean result = false;
+        try {
+            database.getMessageLinkedHashMap().clear();
+            database.getConversationIdRFMessages().clear();
+
+            Map<String, String> hgetAll = hgetAll(MessageDetail.class.getName());
+            for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+                database.getMessageLinkedHashMap().put(key, (MessageDetail) JSONUtil.DeSerialize(value, MessageDetail.class));
+            }
+            hgetAll = hgetAll(MessageDetail.class.getName() + ":conversation");
+            for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
+                String key = entrySet.getKey();
+                String value = entrySet.getValue();
+                database.getConversationIdRFMessages().put(ConvertUtils.toLong(key),
+                        (List<String>) JSONUtil.DeSerialize(value, new TypeToken<List<String>>() {
+                        }.getType()));
+            }
+            result = true;
+        } catch (Exception ex) {
+            _logger.error(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
     public boolean RestoreDatabase() {
         boolean result = false;
         result = RestoreUser();
@@ -811,6 +878,8 @@ public class RideSharingCA {
         result &= RestoreLinkedLocation();
         result &= RestoreEvent();
         result &= RestoreOrganization();
+        result &= RestoreConversation();
+        result &= RestoreMessage();
 
         return result;
     }

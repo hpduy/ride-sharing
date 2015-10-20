@@ -37,7 +37,7 @@ public class ConversationDao {
             String[] partnerIds = obj.getPartnerIds();
             if (partnerIds != null) {
                 database.getHistoryRFHashMap()
-                        .put(new ConversationController().combineUsersKey(obj.getOwnerId(),obj.getPartnerIds()), obj.getId());
+                        .put(new ConversationController().combineUsersKey(obj.getOwnerId(), obj.getPartnerIds()), obj.getId());
             }
             //private HashMap<String,HashSet<Long>> userIdRFConsersations = new HashMap<>(); //<userId,<conversationId>>
             HashSet<Long> get = database.getUserIdRFConsersations().get(obj.getOwnerId());
@@ -49,9 +49,7 @@ public class ConversationDao {
             //Step 2: put redis
             result = cache.hset(obj.getClass().getName(), String.valueOf(obj.getId()), JSONUtil.Serialize(obj));
             if (partnerIds != null) {
-                for (String item : partnerIds) {
-                    result &= cache.hset(obj.getClass().getName() + ":history", obj.getOwnerId() + "#" + item, String.valueOf(obj.getId()));
-                }
+                result &= cache.hset(obj.getClass().getName() + ":history", new ConversationController().combineUsersKey(obj.getOwnerId(), obj.getPartnerIds()), String.valueOf(obj.getId()));
             }
             result &= cache.hset(obj.getClass().getName() + ":user", String.valueOf(obj.getOwnerId()), JSONUtil.Serialize(get));
 
