@@ -32,9 +32,10 @@ public class MessageController {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "messages");
         }
         for (MessageDetail msg : request.getMessages()) {
+            Message message = new Message(msg);
             if (!database.getMessageLinkedHashMap().containsKey(msg.getMsgId())) {
-                msg.setConversationId(request.getConversationId());
-                if (!dao.insert(msg)) {
+                message.setConversationId(request.getConversationId());
+                if (!dao.insert(message)) {
                     return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
                 }
             }

@@ -1,11 +1,13 @@
 package com.bikiegang.ridesharing.controller;
 
 import com.bikiegang.ridesharing.dao.AngelGroupDao;
+import com.bikiegang.ridesharing.dao.AngelGroupMemberDao;
 import com.bikiegang.ridesharing.dao.UserDao;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.database.IdGenerator;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.AngelGroup;
+import com.bikiegang.ridesharing.pojo.AngelGroupMember;
 import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.pojo.request.GetInformationUsingUserIdRequest;
@@ -347,27 +349,25 @@ public class AngelGroupController {
         // promote angel
         for (String uid : gangs) {
             User user = database.getUserHashMap().get(uid);
-            if (user != null && user.getStatus() != User.VERIFIED) {
-                user.setStatus(User.VERIFIED);
+            if (user != null && user.getStatus() != User.ANGEL) {
+                user.setStatus(User.ANGEL);
                 try {
                     new UserDao().update(user);
 //                    // joinGroup
-//                    for (long id : database.getAngelGroupHashMap().keySet()) {
-//                        if (!database.getAngelGroupHashMap().containsKey(id)) {
-//                            return;
-//                        }
-//                        if (!database.getUserAndGroupRFAngelGroupMember().containsKey(new AngelGroupMemberController().combineKey(uid, id))) {
-//                            AngelGroupMember groupMember = new AngelGroupMember(IdGenerator.getAngelGroupMemberId(), id, uid, DateTimeUtil.now());Broadca
-//                            new AngelGroupMemberDao().insert(groupMember);
-//                        }
-//                    }
+                    for (long id : database.getAngelGroupHashMap().keySet()) {
+                        if (!database.getAngelGroupHashMap().containsKey(id)) {
+                            return;
+                        }
+                        if (!database.getUserAndGroupRFAngelGroupMember().containsKey(new AngelGroupMemberController().combineKey(uid, id))) {
+                            AngelGroupMember groupMember = new AngelGroupMember(IdGenerator.getAngelGroupMemberId(), id, uid, DateTimeUtil.now());
+                            new AngelGroupMemberDao().insert(groupMember);
+                        }
+                    }
                 } catch (Exception ignored) {
 
                 }
             }
         }
-
     }
-
 
 }
