@@ -110,8 +110,12 @@ public class TripCalendarController {
                         }
                     });
                     for (PlannedTrip t : trips) {
-                        if (t.getType() != PlannedTrip.REQUESTED_PLANNED_TRIP || database.getRequestMakeTripHashMap().containsKey(t.getRequestId()))
-                            tripByDay.add(new FeedController().convertPlannedTripToFeed(t, t.getCreatorId()));
+                        if (t.getType() != PlannedTrip.REQUESTED_PLANNED_TRIP || database.getRequestMakeTripHashMap().containsKey(t.getRequestId())) {
+                            FeedResponse feed = new FeedController().convertPlannedTripToFeed(t, t.getCreatorId());
+                            feed.setRequests(new RequestMakeTripController().getListRequestMakeTripToArray(t.getCreatorId(),t.getId()));
+                            tripByDay.add(feed);
+
+                        }
                     }
                     response.setFeeds(tripByDay.toArray(new FeedResponse[tripByDay.size()]));
                 }

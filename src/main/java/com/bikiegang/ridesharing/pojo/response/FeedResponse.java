@@ -13,6 +13,9 @@ public class FeedResponse {
     private TripInFeed tripDetail;
     private UserDetailResponse partnerDetail;
     private TripInFeed partnerTripDetail;
+    // addition
+    private RequestMakeTripDetailResponse[] requests;
+
 
 
     public ExPartnerInfoResponse getPartnerInfo() {
@@ -62,5 +65,13 @@ public class FeedResponse {
 
     public void setFeedId(long feedId) {
         this.feedId = feedId;
+    }
+
+    public RequestMakeTripDetailResponse[] getRequests() {
+        return requests;
+    }
+
+    public void setRequests(RequestMakeTripDetailResponse[] requests) {
+        this.requests = requests;
     }
 }

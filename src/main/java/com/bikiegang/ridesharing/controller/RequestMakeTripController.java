@@ -280,6 +280,11 @@ public class RequestMakeTripController {
         if (null == request.getUserId() || request.getUserId().equals("")) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
         }
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new GetListRequestMakeTripDetailResponse(getListRequestMakeTripToArray(request)));
+
+    }
+
+    public RequestMakeTripDetailResponse[] getListRequestMakeTripToArray(GetListRequestMakeTripRequest request) throws IOException {
         HashMap<Long, List<Long>> requestIdsByPlannedTripId = database.getReceiverRequestsBox().get(request.getUserId());
         List<RequestMakeTripDetailResponse> responses = new ArrayList<>();
         if (requestIdsByPlannedTripId != null) {
@@ -307,9 +312,35 @@ public class RequestMakeTripController {
                 }
             }
         }
+        return responses.toArray(new RequestMakeTripDetailResponse[responses.size()]);
+    }
 
-        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new GetListRequestMakeTripDetailResponse(responses.toArray(new RequestMakeTripDetailResponse[responses.size()])));
-
+    public RequestMakeTripDetailResponse[] getListRequestMakeTripToArray(String userId, Long plannedTripId) throws IOException {
+        HashMap<Long, List<Long>> requestIdsByPlannedTripId = database.getReceiverRequestsBox().get(userId);
+        List<RequestMakeTripDetailResponse> responses = new ArrayList<>();
+        if (requestIdsByPlannedTripId != null) {
+                List<Long> ids = requestIdsByPlannedTripId.get(plannedTripId);
+                if (ids != null) {
+                    // insert sort
+                    for (long id : ids) {
+                        RequestMakeTrip requestMakeTrip = database.getRequestMakeTripHashMap().get(id);
+                        if (requestMakeTrip != null && requestMakeTrip.getStatus() != RequestMakeTrip.DENY) {
+                            int i;
+                            for (i = 0; i < responses.size(); i++) {
+                                if (requestMakeTrip.getCreatedTime() > responses.get(i).getCreatedTime()) {
+                                    break;
+                                }
+                            }
+                            PlannedTrip pt = database.getPlannedTripHashMap().get(requestMakeTrip.getDriverPlannedTripId());
+                            if (pt.getDepartureTime() > DateTimeUtil.now() - DateTimeUtil.HOURS) {
+                                RequestMakeTripDetailResponse response = new RequestMakeTripDetailResponse(requestMakeTrip);
+                                responses.add(i, response);
+                            }
+                        }
+                    }
+                }
+        }
+        return responses.toArray(new RequestMakeTripDetailResponse[responses.size()]);
     }
 
     public String getListRequestMakeTripOfMe(GetListRequestMakeTripRequest request) throws IOException {
