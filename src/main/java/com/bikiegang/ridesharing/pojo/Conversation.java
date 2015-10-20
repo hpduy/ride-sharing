@@ -9,7 +9,7 @@ public class Conversation implements PojoBase {
     private String ownerId;
     private String[] partnerIds;
     private long createdTime; // in second
-    private int lastMessageIndex;
+    private int lastMessageIndex = -1;
 
     public Conversation() {
     }

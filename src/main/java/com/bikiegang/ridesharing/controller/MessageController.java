@@ -63,7 +63,7 @@ public class MessageController {
         List<MessageDetail> messages = new ArrayList<>();
         int count = 0;
         if (messageIds != null && !messageIds.isEmpty()) {
-            for (int i = messageIds.size() - 1; i > 0; i--) {
+            for (int i = messageIds.size() - 1; i >= 0; i--) {
                 Message message = database.getMessageLinkedHashMap().get(messageIds.get(i));
                 if (message != null && message.getTimestampInMillis() < request.getTimeInMillis()) {
                     messages.add(new MessageDetail(message));

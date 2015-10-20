@@ -21,7 +21,7 @@ public class ConversationController {
     private ConversationDao dao = new ConversationDao();
     private Database database = Database.getInstance();
 
-    public String getConversaions(GetInformationUsingUserIdRequest request) throws JsonProcessingException {
+    public String getConversations(GetInformationUsingUserIdRequest request) throws JsonProcessingException {
         if (request.getUserId() == null || !database.getUserHashMap().containsKey(request.getUserId())) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "userId");
         }
@@ -31,7 +31,10 @@ public class ConversationController {
         if (conversationIds != null) {
             for (long id : conversationIds) {
                 if (database.getConversationHashMap().containsKey(id)) {
-                    result.add(new ConversationDetail(database.getConversationHashMap().get(id)));
+                    ConversationDetail detail = new ConversationDetail(database.getConversationHashMap().get(id));
+                    if(detail.getLastMessage() != null) {
+                        result.add(detail);
+                    }
                 }
             }
         }
@@ -57,7 +60,7 @@ public class ConversationController {
         }
         Conversation conversation = database.getConversationHashMap().get(request.getConversationId());
         List<String> messageId = database.getConversationIdRFMessages().get(request.getConversationId());
-        conversation.setLastMessageIndex(messageId == null ? 0 : messageId.size() - 1);
+        conversation.setLastMessageIndex(messageId == null ? -1 : messageId.size() - 1);
         if (dao.update(conversation)) {
             return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
         }

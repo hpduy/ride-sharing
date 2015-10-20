@@ -15,6 +15,7 @@ import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -159,6 +160,25 @@ public class StringProcessUtil {
 
     public String getStringValue(String input) {
         return input == null ? "" : input;
+    }
+
+
+    public List<String> getTagNames(String string) {
+        String temp = new String(string);
+        List<String> tagNames = new ArrayList<>();
+        tagNames.add(new String(temp));
+        for (String s : string.split(" ")) {
+            tagNames.add(s);
+        }
+        temp = removeAccent(temp);
+        tagNames.add(temp);
+        for (String s : string.split(" ")) {
+            tagNames.add(s);
+        }
+        temp.replaceAll("DH","").replaceAll("CD","").replaceAll("TC", "");
+        String standFor = getFirstChar(temp);
+        tagNames.add(standFor);
+        return tagNames;
     }
 
     /**

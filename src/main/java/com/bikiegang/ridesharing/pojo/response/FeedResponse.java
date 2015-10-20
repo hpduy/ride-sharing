@@ -14,7 +14,7 @@ public class FeedResponse {
     private UserDetailResponse partnerDetail;
     private TripInFeed partnerTripDetail;
     // addition
-    private RequestMakeTripDetailResponse[] requests;
+    private RequestMakeTripDetailResponse[] requests = new RequestMakeTripDetailResponse[0];
 
 
 

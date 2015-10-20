@@ -14,9 +14,9 @@ public class OrganizationController {
     private Database database = Database.getInstance();
     private OrganizationDao dao = new OrganizationDao();
 
-    public void createOrganization(String name, String logo, String code) {
+    public void createOrganization(String name, String logo, String code, String[] tagNames) {
         try {
-            Organization organization = new Organization( name, logo, code);
+            Organization organization = new Organization( name, logo, code,tagNames);
             database.getOrganizationHashMap().put(code, organization);
             //dao.insert(organization);
         } catch (Exception ex) {

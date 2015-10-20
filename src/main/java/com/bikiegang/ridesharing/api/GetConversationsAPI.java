@@ -54,7 +54,7 @@ public class GetConversationsAPI extends HttpServlet {
             logger.info(jsonData.toString());
             GetInformationUsingUserIdRequest getInformationUsingUserIdRequest = (GetInformationUsingUserIdRequest) Parser.JSonToObject(jsonData.toString(), GetInformationUsingUserIdRequest.class);
             ConversationController controller = new ConversationController();
-            String result = controller.getConversaions(getInformationUsingUserIdRequest);
+            String result = controller.getConversations(getInformationUsingUserIdRequest);
             logger.info(result);
             out.print(result);
         } catch (Exception ex) {

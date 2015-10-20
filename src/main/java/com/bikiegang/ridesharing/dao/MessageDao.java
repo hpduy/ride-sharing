@@ -58,7 +58,7 @@ public class MessageDao {
                 List<String> get = database.getConversationIdRFMessages().get(conversationId);
                 if (get == null) {
                     get = new ArrayList<>();
-                    database.getConversationIdRFMessages().put(obj.getConversationId(), get);
+                    database.getConversationIdRFMessages().put(conversationId, get);
                 }
                 get.add(obj.getMsgId());
                 //Step 2: put redis

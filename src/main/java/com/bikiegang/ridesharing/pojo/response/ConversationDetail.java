@@ -24,8 +24,9 @@ public class ConversationDetail {
         this.conversationId = that.getId();
         List<String> messIds = database.getConversationIdRFMessages().get(this.conversationId);
         if (messIds != null && !messIds.isEmpty()) {
-            this.numberOfUnread = messIds.size() - that.getLastMessageIndex();
+            this.numberOfUnread = messIds.size() - 1 - that.getLastMessageIndex();
             this.lastMessage = new MessageDetail(database.getMessageLinkedHashMap().get(messIds.get(messIds.size() - 1)));
+
         }
         List<UserDetailResponse> receivers = new ArrayList<>();
         for (String id : that.getPartnerIds()) {

@@ -14,7 +14,6 @@ import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.geocoding.GeoCell;
 import com.bikiegang.ridesharing.pojo.*;
-import com.bikiegang.ridesharing.pojo.response.MessageDetail;
 import com.google.gson.reflect.TypeToken;
 import org.apache.log4j.Logger;
 
@@ -835,13 +834,13 @@ public class RideSharingCA {
             database.getMessageLinkedHashMap().clear();
             database.getConversationIdRFMessages().clear();
 
-            Map<String, String> hgetAll = hgetAll(MessageDetail.class.getName());
+            Map<String, String> hgetAll = hgetAll(Message.class.getName());
             for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
                 String key = entrySet.getKey();
                 String value = entrySet.getValue();
-                database.getMessageLinkedHashMap().put(key, (MessageDetail) JSONUtil.DeSerialize(value, MessageDetail.class));
+                database.getMessageLinkedHashMap().put(key, (Message) JSONUtil.DeSerialize(value, Message.class));
             }
-            hgetAll = hgetAll(MessageDetail.class.getName() + ":conversation");
+            hgetAll = hgetAll(Message.class.getName() + ":conversation");
             for (Map.Entry<String, String> entrySet : hgetAll.entrySet()) {
                 String key = entrySet.getKey();
                 String value = entrySet.getValue();

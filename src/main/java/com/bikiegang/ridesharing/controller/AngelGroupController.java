@@ -19,6 +19,7 @@ import com.bikiegang.ridesharing.pojo.response.angel.AngelGroupDetailResponse;
 import com.bikiegang.ridesharing.pojo.response.angel.GetAlphabetAngelGroupsResponse;
 import com.bikiegang.ridesharing.search.SearchAngelGroup;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
+import com.bikiegang.ridesharing.utilities.StringProcessUtil;
 import com.bikiegang.ridesharing.utilities.UploadImageUtil;
 import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -212,19 +213,14 @@ public class AngelGroupController {
             for (String r : rawData) {
                 String[] element = r.split("#");
                 // process tagNames
-                List<String> tagNames = new ArrayList<>();
+                List<String> tagNames = new StringProcessUtil().getTagNames(element[1]);
                 tagNames.add(element[3]); // code
-                tagNames.add(element[1]); // name
-                tagNames.add(element[1].replaceAll("ĐH ", "").replaceAll("CĐ ", "").replaceAll("TC ", ""));
-                for (String t : element[1].split(" ")) {
-                    tagNames.add(t);
-                }
 
                 //done
                 AngelGroup angelGroup = new AngelGroup(Long.parseLong(element[ogId]), new LatLng(element[2]), tagNames, DateTimeUtil.now(), element[5]);
                 if (!database.getOrganizationHashMap().containsKey(element[3])) {
                     String logoUrl = new UploadImageUtil().downloadLogoIMG(element[4], element[1].replaceAll(" ", "") + "_logo");
-                    new OrganizationController().createOrganization(element[1], logoUrl, element[3]);
+                    new OrganizationController().createOrganization(element[1], logoUrl, element[3], tagNames.toArray(new String[tagNames.size()]));
                 }
                 try {
                     database.getAngelGroupHashMap().put(angelGroup.getId(), angelGroup);
