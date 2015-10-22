@@ -8,6 +8,7 @@ import com.bikiegang.ridesharing.pojo.request.GetInformationUsingUserIdRequest;
 import com.bikiegang.ridesharing.pojo.request.UpdateReadConversationRequest;
 import com.bikiegang.ridesharing.pojo.response.ConversationDetail;
 import com.bikiegang.ridesharing.pojo.response.GetListConversationsResponse;
+import com.bikiegang.ridesharing.pojo.response.GetUnreadNumberResponse;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -51,6 +52,30 @@ public class ConversationController {
         });
         GetListConversationsResponse response = new GetListConversationsResponse();
         response.setConversations(result.toArray(new ConversationDetail[result.size()]));
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, response);
+    }
+
+
+    public String getUnreadNumber(GetInformationUsingUserIdRequest request) throws JsonProcessingException {
+        if (request.getUserId() == null || !database.getUserHashMap().containsKey(request.getUserId())) {
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "userId");
+        }
+        GetUnreadNumberResponse response = new GetUnreadNumberResponse();
+        // get list conversation
+        HashSet<Long> conversationIds = database.getUserIdRFConsersations().get(request.getUserId());
+        int number= 0;
+        if (conversationIds != null) {
+            for (long id : conversationIds) {
+                if (database.getConversationHashMap().containsKey(id)) {
+                    Conversation conversation = database.getConversationHashMap().get(id);
+                    List<String> messIds = database.getConversationIdRFMessages().get(id);
+                    if (messIds != null && !messIds.isEmpty()) {
+                         number += messIds.size() - 1 - conversation.getLastMessageIndex();
+                    }
+                }
+            }
+        }
+        response.setNumber(number);
         return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, response);
     }
 

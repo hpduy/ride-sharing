@@ -7,6 +7,7 @@ import com.bikiegang.ridesharing.pojo.Broadcast;
 import com.bikiegang.ridesharing.pojo.static_object.GCMTransferMessage;
 import com.google.android.gcm.server.Message;
 import com.google.android.gcm.server.MulticastResult;
+import com.google.android.gcm.server.Result;
 import com.google.android.gcm.server.Sender;
 import org.apache.log4j.Logger;
 
@@ -29,7 +30,7 @@ public class GCMBroadcast extends HttpServlet {
 
     // The SENDER_ID here is the "Browser Key" that was generated when I
     // created the API keys for my Google APIs project.
-    private String SENDER_ID = "AIzaSyCLMZnnCx00PKpYkrjFCfKExCFGRhVdoqA";
+    private String SENDER_ID = "AIzaSyBVT4c1Ogp373WDixLd6zTIVVxqCy3Zq9w";
 
     // This is a *cheat*  It is a hard-coded registration ID from an Android device
     // that registered itself with GCM using the same project id shown above.
@@ -84,7 +85,6 @@ public class GCMBroadcast extends HttpServlet {
             collapseKey =  gcmTransferMessage.getCollapseKey();
             userIds = gcmTransferMessage.getUserIds();
             int type  = gcmTransferMessage.getType();
-            SENDER_ID = gcmTransferMessage.getSenderId();
             // add all device each user into each android target list
             for (int i = 0; i < userIds.size(); i++) {
                 // get list RegId
@@ -99,6 +99,9 @@ public class GCMBroadcast extends HttpServlet {
                     }
                 }
                 //
+                if(gcmTransferMessage.getCollapseKey().equals("Test")) {
+                    regIds.add("cZ9D0zMIViM:APA91bF4mK_0yS-RP1_-ffD_O-kshpB3TpTGdD7wgs3lv0bO4J7VeK9WfzmmRISyfdwKZP9AdtxFS__T9iVQZJjmwsBFz_IkmJ0QgMMHXyQ9zyjDJnpVGK7p1YkSWxMbOcz-U0xWyYFZ");
+                }
                 List<String> target = new ArrayList<>();
                 target.addAll(regIds);
                 androidTargets.add(target);
@@ -115,6 +118,7 @@ public class GCMBroadcast extends HttpServlet {
                 lstMessage.add(message);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             logger.error(e.getStackTrace());
             return;
         }
@@ -145,6 +149,10 @@ public class GCMBroadcast extends HttpServlet {
                 } else {
                     int error = result.getFailure();
                     logger.error("Broadcast to " + userIds.get(i) + "  failure: " + error);
+                }
+                System.out.println(result.toString());
+                for(Result r : result.getResults()){
+                    System.out.println(r.getCanonicalRegistrationId()+" : "+r.getMessageId());
                 }
             }
         } catch (Exception e) {

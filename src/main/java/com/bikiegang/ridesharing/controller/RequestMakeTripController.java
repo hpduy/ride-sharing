@@ -54,13 +54,16 @@ public class RequestMakeTripController {
                     if (dao.update(requestMakeTrip)) {
                         RequestMakeTripResponse requestMakeTripResponse = new RequestMakeTripResponse();
                         requestMakeTripResponse.setRequestId(requestMakeTrip.getId());
-                        long plannedTripId;
-                        if (requestMakeTrip.getSenderRole() == User.DRIVER)
-                            plannedTripId = requestMakeTrip.getDriverPlannedTripId();
-                        else
-                            plannedTripId = requestMakeTrip.getPassengerPlannedTripId();
-                        if (new PlannedTripController().updateRouteOfPlannedTrip(plannedTripId, request.getGoogleRoutingResult(), null, null)) {
+
+                        if (requestMakeTrip.getSenderRole() == User.DRIVER) {
+                            new BroadcastCenterUtil().pushNotification(Parser.ObjectToNotification(MessageMappingUtil.Notification_RequestMakeTrip, sender), requestMakeTrip.getReceiverId());
                             return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, requestMakeTripResponse);
+                        } else {
+                            long plannedTripId = requestMakeTrip.getPassengerPlannedTripId();
+                            if (new PlannedTripController().updateRouteOfPlannedTrip(plannedTripId, request.getGoogleRoutingResult(), null, null)) {
+                                new BroadcastCenterUtil().pushNotification(Parser.ObjectToNotification(MessageMappingUtil.Notification_RequestMakeTrip, sender), requestMakeTrip.getReceiverId());
+                                return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, requestMakeTripResponse);
+                            }
                         }
                     }
                     return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
@@ -319,26 +322,26 @@ public class RequestMakeTripController {
         HashMap<Long, List<Long>> requestIdsByPlannedTripId = database.getReceiverRequestsBox().get(userId);
         List<RequestMakeTripDetailResponse> responses = new ArrayList<>();
         if (requestIdsByPlannedTripId != null) {
-                List<Long> ids = requestIdsByPlannedTripId.get(plannedTripId);
-                if (ids != null) {
-                    // insert sort
-                    for (long id : ids) {
-                        RequestMakeTrip requestMakeTrip = database.getRequestMakeTripHashMap().get(id);
-                        if (requestMakeTrip != null && requestMakeTrip.getStatus() != RequestMakeTrip.DENY) {
-                            int i;
-                            for (i = 0; i < responses.size(); i++) {
-                                if (requestMakeTrip.getCreatedTime() > responses.get(i).getCreatedTime()) {
-                                    break;
-                                }
+            List<Long> ids = requestIdsByPlannedTripId.get(plannedTripId);
+            if (ids != null) {
+                // insert sort
+                for (long id : ids) {
+                    RequestMakeTrip requestMakeTrip = database.getRequestMakeTripHashMap().get(id);
+                    if (requestMakeTrip != null && requestMakeTrip.getStatus() != RequestMakeTrip.DENY) {
+                        int i;
+                        for (i = 0; i < responses.size(); i++) {
+                            if (requestMakeTrip.getCreatedTime() > responses.get(i).getCreatedTime()) {
+                                break;
                             }
-                            PlannedTrip pt = database.getPlannedTripHashMap().get(requestMakeTrip.getDriverPlannedTripId());
-                            if (pt.getDepartureTime() > DateTimeUtil.now() - DateTimeUtil.HOURS) {
-                                RequestMakeTripDetailResponse response = new RequestMakeTripDetailResponse(requestMakeTrip);
-                                responses.add(i, response);
-                            }
+                        }
+                        PlannedTrip pt = database.getPlannedTripHashMap().get(requestMakeTrip.getDriverPlannedTripId());
+                        if (pt.getDepartureTime() > DateTimeUtil.now() - DateTimeUtil.HOURS) {
+                            RequestMakeTripDetailResponse response = new RequestMakeTripDetailResponse(requestMakeTrip);
+                            responses.add(i, response);
                         }
                     }
                 }
+            }
         }
         return responses.toArray(new RequestMakeTripDetailResponse[responses.size()]);
     }

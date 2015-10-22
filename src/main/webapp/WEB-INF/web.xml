@@ -584,6 +584,14 @@
         <servlet-name>UpdateReadConversationAPI</servlet-name>
         <url-pattern>/UpdateReadConversationAPI</url-pattern>
     </servlet-mapping>
+<servlet>
+        <servlet-name>GetUnreadNumberAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.GetUnreadNumberAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetUnreadNumberAPI</servlet-name>
+        <url-pattern>/GetUnreadNumberAPI</url-pattern>
+    </servlet-mapping>
 
     <listener>
         <listener-class>com.bikiegang.ridesharing.StartupListener</listener-class>
