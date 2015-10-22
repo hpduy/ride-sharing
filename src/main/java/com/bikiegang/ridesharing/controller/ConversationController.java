@@ -41,13 +41,12 @@ public class ConversationController {
         }
 
         // sort by last message Time
-        final MessageController controller = new MessageController();
         Collections.sort(result, new Comparator<ConversationDetail>() {
             @Override
             public int compare(ConversationDetail o1, ConversationDetail o2) {
                 if (o1.getLastMessage().getTimestampInMillis() < o2.getLastMessage().getTimestampInMillis())
-                    return -1;
-                return 1;
+                    return 1;
+                return -1;
             }
         });
         GetListConversationsResponse response = new GetListConversationsResponse();
