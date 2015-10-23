@@ -246,7 +246,7 @@ public class Pairing {
                                         // if same direction => check time
                                         //check ignored time -> get all planned trip from now -acceptable
                                         if (ignoredTime) {
-                                            if (passengerGoTime > DateTimeUtil.now() - ACCEPTABLE_TIME) {
+                                            if (passengerGoTime > DateTimeUtil.now() - ACCEPTABLE_TIME && !checkExist.contains(passengerPlannedTripId)) {
                                                 listPassengerPlannedTripResult.add(passengerPlannedTrip);
                                                 checkExist.add(passengerPlannedTripId);
                                             }
