@@ -45,9 +45,25 @@
                             </div>
                             <button type="submit" class="btn btn-success" onclick='generate()'>Generate</button>
                         </div>
-                        <div align="center" id="resultDiv">
+                    </div>
 
+                    <div class='box box-success'>
+                        <div class='box-header'>
+                            <h3 class='box-title'>Push Notifications</h3>
                         </div>
+                        <!-- /.box-header -->
+                        <div class='box-body pad' align="center">
+                            <div class="form-group has-success">
+                                <label class="control-label" for="numberOfCode"><i class="fa fa-check"></i>Content:</label>
+                                <input type="text" class="form-control" id="content" placeholder="Enter content"/>
+                                <label class="control-label" for="numberOfCode"><i class="fa fa-check"></i>Dates:</label>
+                                <input type="text" class="form-control" id="stringDate" placeholder='Enter date with format dd/MM/yyyy , insert multi with ","'/>
+                            </div>
+                            <button type="submit" class="btn btn-success" onclick='pushNotification()'>Push</button>
+                        </div>
+                    </div>
+                    <div align="center" id="resultDiv">
+
                     </div>
 
                 </div>
@@ -65,6 +81,23 @@
     function generate() {
         var jsonData = '{"numberOfCode":' + document.getElementById('numberOfCode').value + '}';
         var apiName = "GetAngelActiveCodesForWebAPI";
+        $.ajax({
+            url: apiName,
+            data: jsonData,
+            type: 'POST',
+            error: function () {
+                alert("error occured!!!");
+            },
+            success: function (response) {
+                console.log(response);
+                $('#resultDiv').html(response)
+            }
+        });
+    }
+
+    function pushNotification() {
+        var jsonData = '{"content":' + document.getElementById('content').value + ',"dates":"'+document.getElementById('stringDate').value+'"}';
+        var apiName = "PushNotificationAPI";
         $.ajax({
             url: apiName,
             data: jsonData,

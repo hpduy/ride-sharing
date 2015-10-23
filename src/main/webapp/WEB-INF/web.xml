@@ -584,13 +584,29 @@
         <servlet-name>UpdateReadConversationAPI</servlet-name>
         <url-pattern>/UpdateReadConversationAPI</url-pattern>
     </servlet-mapping>
-<servlet>
+    <servlet>
         <servlet-name>GetUnreadNumberAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.GetUnreadNumberAPI</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>GetUnreadNumberAPI</servlet-name>
         <url-pattern>/GetUnreadNumberAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>GetNotificationsAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.GetNotificationsAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetNotificationsAPI</servlet-name>
+        <url-pattern>/GetNotificationsAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>PushNotificationAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.PushNotificationAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PushNotificationAPI</servlet-name>
+        <url-pattern>/PushNotificationAPI</url-pattern>
     </servlet-mapping>
 
     <listener>

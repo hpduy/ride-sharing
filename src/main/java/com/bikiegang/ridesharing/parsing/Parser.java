@@ -90,6 +90,14 @@ public class Parser {
             throw ex;
         }
     }
+    public static String ObjectToNotification(int messageCode, String senderId, String name, String content) throws JsonProcessingException {
+        try {
+            Notification notification = new Notification(name, senderId);
+            return toJson(new Parser(true, messageCode, content, notification));
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
 
     public static String ObjectToNotification(int messageCode, User sender, long objectId) throws JsonProcessingException {
         try {

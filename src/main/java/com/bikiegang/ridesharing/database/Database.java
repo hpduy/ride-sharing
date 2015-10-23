@@ -147,6 +147,10 @@ public class Database {
     private HashMap<String,HashSet<Long>> userIdRFConsersations = new HashMap<>(); //<userId,<conversationId>>
 
     /**
+     * Notification Manage
+     */
+    private LinkedHashMap<Long,List<String>> notificationCenter= new LinkedHashMap<>(); // <epochDay, Notification> after parse
+    /**
      * GEOCELL
      */
     private GeoCell<Long> geoCellDriver = new GeoCell<>(GeoCell.CELL_LEN_OF_PLANNED_TRIP); // for route
@@ -413,6 +417,14 @@ public class Database {
 
     public HashMap<String, HashSet<Long>> getUserIdRFConsersations() {
         return userIdRFConsersations;
+    }
+
+    public LinkedHashMap<Long, List<String>> getNotificationCenter() {
+        return notificationCenter;
+    }
+
+    public void setNotificationCenter(LinkedHashMap<Long, List<String>> notificationCenter) {
+        this.notificationCenter = notificationCenter;
     }
 
     /*GEOCELL GET-SET*/
