@@ -45,6 +45,9 @@ public class MessageController {
 
     public String getMessagesHistory(GetMessagesHistoryRequest request) throws JsonProcessingException {
         long conversationId = request.getConversationId();
+        long pivotTime = request.getTimeInMillis();
+        if(pivotTime < 0)
+            pivotTime = System.currentTimeMillis();
         if (!database.getConversationHashMap().containsKey(conversationId)) {
             String key = new ConversationController().combineUsersKey(request.getOwnerId(),request.getPartnerIds());
             if (!database.getHistoryRFHashMap().containsKey(key)) {
@@ -65,7 +68,7 @@ public class MessageController {
         if (messageIds != null && !messageIds.isEmpty()) {
             for (int i = messageIds.size() - 1; i >= 0; i--) {
                 Message message = database.getMessageLinkedHashMap().get(messageIds.get(i));
-                if (message != null && message.getTimestampInMillis() < request.getTimeInMillis()) {
+                if (message != null && message.getTimestampInMillis() < pivotTime) {
                     messages.add(new MessageDetail(message));
                     count++;
                 }
@@ -76,8 +79,8 @@ public class MessageController {
                 @Override
                 public int compare(Message o1, Message o2) {
                     if (o1.getTimestampInMillis() < o2.getTimestampInMillis())
-                        return 1;
-                    return -1;
+                        return -1;
+                    return 1;
                 }
             });
 
