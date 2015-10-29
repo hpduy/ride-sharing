@@ -16,6 +16,7 @@ public class UpdateProfileRequest {
     private String phone ;
     private String birthDay;
     private String job;
+    private String organizationId;
     private int gender = -1;
     private int privacy = -1;
 
@@ -97,6 +98,14 @@ public class UpdateProfileRequest {
 
     public void setPrivacy(int privacy) {
         this.privacy = privacy;
+    }
+
+    public String getOrganizationId() {
+        return organizationId;
+    }
+
+    public void setOrganizationId(String organizationId) {
+        this.organizationId = organizationId;
     }
 
     public UpdateProfileRequest() {

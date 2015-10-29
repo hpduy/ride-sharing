@@ -86,6 +86,8 @@ public class UserController {
             user.setLastName(registerRequest.getLastName());
         if (null != registerRequest.getSelfIntro())
             user.setSelfIntro(registerRequest.getSelfIntro());
+        if (null != registerRequest.getOrganizationId())
+            user.setOrganizationId(registerRequest.getOrganizationId());
         user.setGender(registerRequest.getGender());
         if (null != registerRequest.getBirthDay())
             user.setBirthDay(registerRequest.getBirthDay());
@@ -149,6 +151,8 @@ public class UserController {
             user.setLastName(registerRequest.getLastName());
         if (null != registerRequest.getSelfIntro())
             user.setSelfIntro(registerRequest.getSelfIntro());
+        if (null != registerRequest.getOrganizationId())
+            user.setOrganizationId(registerRequest.getOrganizationId());
         user.setGender(registerRequest.getGender());
         user.setBirthDay(registerRequest.getBirthDay());
         if (dao.insert(user)) {
@@ -191,6 +195,8 @@ public class UserController {
             user.setLastName(registerRequest.getLastName());
         if (null != registerRequest.getSelfIntro())
             user.setSelfIntro(registerRequest.getSelfIntro());
+        if (null != registerRequest.getOrganizationId())
+            user.setOrganizationId(registerRequest.getOrganizationId());
         user.setGender(registerRequest.getGender());
         user.setBirthDay(registerRequest.getBirthDay());
         if (dao.insert(user)) {
@@ -233,6 +239,8 @@ public class UserController {
             user.setLastName(registerRequest.getLastName());
         if (null != registerRequest.getSelfIntro())
             user.setSelfIntro(registerRequest.getSelfIntro());
+        if (null != registerRequest.getOrganizationId())
+            user.setOrganizationId(registerRequest.getOrganizationId());
         user.setGender(registerRequest.getGender());
         user.setBirthDay(registerRequest.getBirthDay());
         if (dao.insert(user)) {
@@ -510,6 +518,8 @@ public class UserController {
             user.setBirthDay(request.getBirthDay());
         if (request.getPrivacy() >= 0)
             user.setPrivacy(request.getPrivacy());
+        if (null != request.getOrganizationId())
+            user.setOrganizationId(request.getOrganizationId());
         if (dao.update(user)) {
             return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
         }
