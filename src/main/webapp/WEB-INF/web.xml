@@ -592,7 +592,15 @@
         <servlet-name>SendFeedbackAPI</servlet-name>
         <url-pattern>/SendFeedbackAPI</url-pattern>
     </servlet-mapping>
-<servlet>
+    <servlet>
+        <servlet-name>RepeatPlannedTripAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.RepeatPlannedTripAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RepeatPlannedTripAPI</servlet-name>
+        <url-pattern>/RepeatPlannedTripAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
         <servlet-name>GetUnreadNumberAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.GetUnreadNumberAPI</servlet-class>
     </servlet>
