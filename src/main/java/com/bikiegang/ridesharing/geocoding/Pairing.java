@@ -245,25 +245,27 @@ public class Pairing {
                                         long timeDriveReachNearSrcLocation = plannedTripGoTime + nearPassengerSrcLocation.getEstimatedTime();
                                         // if same direction => check time
                                         //check ignored time -> get all planned trip from now -acceptable
-                                        if (ignoredTime) {
-                                            if (passengerGoTime > DateTimeUtil.now() - ACCEPTABLE_TIME && !checkExist.contains(passengerPlannedTripId)) {
-                                                listPassengerPlannedTripResult.add(passengerPlannedTrip);
-                                                checkExist.add(passengerPlannedTripId);
-                                            }
-                                        } else {
-                                            if (DateTimeUtil.timeDistance(timeDriveReachNearSrcLocation, passengerGoTime) <= ACCEPTABLE_TIME) {
-                                                if (!listPassengerPlannedTripResult.contains(passengerPlannedTrip)) {
-                                                    if (plannedTrip.isHasHelmet() || passengerPlannedTrip.isHasHelmet()) {
-                                                        listPassengerPlannedTripResult.add(passengerPlannedTrip);
-                                                    }else{
-                                                        listPassengerPlannedTripResult.add(passengerPlannedTrip);
-                                                    }
+                                        if(!checkExist.contains(passengerPlannedTripId)) {
+                                            if (ignoredTime) {
+                                                if (passengerGoTime > DateTimeUtil.now() - ACCEPTABLE_TIME) {
+                                                    listPassengerPlannedTripResult.add(passengerPlannedTrip);
                                                     checkExist.add(passengerPlannedTripId);
                                                 }
+                                            } else {
+                                                if (DateTimeUtil.timeDistance(timeDriveReachNearSrcLocation, passengerGoTime) <= ACCEPTABLE_TIME) {
+                                                    if (!listPassengerPlannedTripResult.contains(passengerPlannedTrip)) {
+                                                        if (plannedTrip.isHasHelmet() || passengerPlannedTrip.isHasHelmet()) {
+                                                            listPassengerPlannedTripResult.add(passengerPlannedTrip);
+                                                        } else {
+                                                            listPassengerPlannedTripResult.add(passengerPlannedTrip);
+                                                        }
+                                                        checkExist.add(passengerPlannedTripId);
+                                                    }
+                                                }
                                             }
-                                        }
-                                        if (passengerGoTime - DateTimeUtil.now() > REMOVEABLE_TIME) {
-                                            //TODO REMOVE ALL LOCATION IN GEOCELL
+                                            if (passengerGoTime - DateTimeUtil.now() > REMOVEABLE_TIME) {
+                                                //TODO REMOVE ALL LOCATION IN GEOCELL
+                                            }
                                         }
                                     }
                                 }

@@ -53,7 +53,7 @@ public class StartupListener implements ServletContextListener, HttpSessionListe
                 public void run() {
                     new PopularLocationController();
                     try {
-                        new AngelGroupController();
+                        new AngelGroupController().promoteAngel();
                         // PROMOTE ANGEL
 
                     } catch (Exception ignored) {

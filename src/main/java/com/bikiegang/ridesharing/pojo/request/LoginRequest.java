@@ -9,9 +9,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LoginRequest {
-    private String userId;
+    private String email;
     private String password ;
-    private int type;
+    private int type = 1;
     //final field
     @JsonIgnore
     public static final int EMAIL = 1;
@@ -24,12 +24,13 @@ public class LoginRequest {
     @JsonIgnore
     public static final int LINKEDIN = 5;
 
-    public String getUserId() {
-        return userId;
+
+    public String getEmail() {
+        return email;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -52,7 +53,7 @@ public class LoginRequest {
     }
 
     public LoginRequest(String userId, String password, int type) {
-        this.userId = userId;
+        this.email = userId;
         this.password = password;
         this.type = type;
     }
