@@ -18,6 +18,7 @@ public class UserShortDetailResponse {
     private int verifyStatus;
     private String job;
     private String email;
+    private String organizationId;
     private int privacy;
     public UserShortDetailResponse() {
     }
@@ -33,6 +34,7 @@ public class UserShortDetailResponse {
             this.verifyStatus = user.getStatus();
             this.privacy = user.getPrivacy();
             this.email = user.getEmail();
+            this.organizationId = user.getOrganizationId();
         }
     }
     public static String getExample(){
@@ -116,5 +118,11 @@ public class UserShortDetailResponse {
         this.email = email;
     }
 
+    public String getOrganizationId() {
+        return organizationId;
+    }
 
+    public void setOrganizationId(String organizationId) {
+        this.organizationId = organizationId;
+    }
 }

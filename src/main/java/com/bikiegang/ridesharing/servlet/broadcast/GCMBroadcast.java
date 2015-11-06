@@ -100,7 +100,7 @@ public class GCMBroadcast extends HttpServlet {
                 }
                 //
                 if(gcmTransferMessage.getCollapseKey().equals("Test")) {
-                    regIds.add("cZ9D0zMIViM:APA91bF4mK_0yS-RP1_-ffD_O-kshpB3TpTGdD7wgs3lv0bO4J7VeK9WfzmmRISyfdwKZP9AdtxFS__T9iVQZJjmwsBFz_IkmJ0QgMMHXyQ9zyjDJnpVGK7p1YkSWxMbOcz-U0xWyYFZ");
+                    regIds.add("cYG85f4HB3w:APA91bGzbO9f2sKqE09zOpu5-3pM7b6K-ZSmFzGORxuf6fZTYJvbM9j3i3qtdEcMq2YfcolMARigOmf6WixjpE9SwSry3ZWPYgTgNufQQYdqSvuWGOR0-fXfMEW9f7-U60dyOwqrq94Q");
                 }
                 List<String> target = new ArrayList<>();
                 target.addAll(regIds);

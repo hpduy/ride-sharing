@@ -489,11 +489,11 @@ public class PlannedTripController {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         for (long ept : request.getRepeatTimes()) {
             PlannedTrip pt = new PlannedTrip(plannedTrip);
+            pt.setId(IdGenerator.getPlannedTripId());
             pt.setDepartureTime(ept);
-            if (dao.insert(plannedTrip) || Database.databaseStatus == Database.TESTING) {
-                new TripCalendarController().putToCalendar(plannedTrip.getDepartureTime(), plannedTrip.getId(), plannedTrip.getCreatorId());
-                new FeedController().postNewFeed(plannedTrip.getId(), Feed.PLANNED_TRIP, plannedTrip.getDepartureTime());
-
+            if (dao.insert(pt)) {
+                new TripCalendarController().putToCalendar(pt.getDepartureTime(), pt.getId(), pt.getCreatorId());
+                new FeedController().postNewFeed(pt.getId(), Feed.PLANNED_TRIP, pt.getDepartureTime());
             } else {
                 mess += "Cannot repeat planned trip at" + simpleDateFormat.format(new Date(ept)) + "\n";
             }

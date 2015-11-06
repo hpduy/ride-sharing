@@ -60,7 +60,7 @@ public class GetPopularLocationAPI extends HttpServlet {
             }
             PopularLocationController controller = new PopularLocationController();
             String result = controller.getPopularLocationList(latLng);
-            logger.info(result);
+           // logger.info(result);
             out.print(result);
         } catch (Exception ex) {
             ex.printStackTrace();
