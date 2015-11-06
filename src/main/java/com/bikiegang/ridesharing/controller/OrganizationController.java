@@ -5,6 +5,7 @@ import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.Organization;
 import com.bikiegang.ridesharing.pojo.response.GetOrganizationsResponse;
+import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
@@ -25,6 +26,6 @@ public class OrganizationController {
     }
 
     public String getListOfOrganization() throws JsonProcessingException {
-        return Parser.ObjectToJSon(new GetOrganizationsResponse(database.getOrganizationHashMap().values()));
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully,new GetOrganizationsResponse(database.getOrganizationHashMap().values()));
     }
 }

@@ -22,6 +22,7 @@ public class RegisterRequest {
     private String profilePictureLink;
     private String phone;
     private String birthDay;
+    private String organizationId;
     private int gender;
     private int type;
     //final field
@@ -146,6 +147,15 @@ public class RegisterRequest {
 
     public void setSelfIntro(String selfIntro) {
         this.selfIntro = selfIntro;
+    }
+
+
+    public String getOrganizationId() {
+        return organizationId;
+    }
+
+    public void setOrganizationId(String organizationId) {
+        this.organizationId = organizationId;
     }
 
     public RegisterRequest() {

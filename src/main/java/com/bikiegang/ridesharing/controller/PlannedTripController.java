@@ -18,6 +18,7 @@ import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -459,7 +460,7 @@ public class PlannedTripController {
                     oldRoute.getTitle(), oldRoute.getWaypoints(),
                     startAddress, endAddress);
             plannedTrip.setRouteId(route.getId());
-            if(dao.update(plannedTrip)){
+            if (dao.update(plannedTrip)) {
                 return new RouteDao().delete(oldRoute);
             }
             return false;
@@ -467,5 +468,39 @@ public class PlannedTripController {
             ex.printStackTrace();
             return false;
         }
+    }
+
+    public String repeatPlannedTrip(RepeatPlannedTripRequest request) throws JsonProcessingException {
+        if (null == request.getUserId() || request.getUserId().equals("")) {
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
+        }
+        if (request.getPlannedTripId() <= 0) {
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'plannedTripId'");
+        }
+        PlannedTrip plannedTrip = database.getPlannedTripHashMap().get(request.getPlannedTripId());
+        if (plannedTrip == null) {
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "Planned Trip");
+        }
+        if (!plannedTrip.getCreatorId().equals(request.getUserId())) {
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_belong_to_you, "Planned Trip");
+        }
+        // repeat planned trip
+        String mess = "";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        for (long ept : request.getRepeatTimes()) {
+            PlannedTrip pt = new PlannedTrip(plannedTrip);
+            pt.setId(IdGenerator.getPlannedTripId());
+            pt.setDepartureTime(ept);
+            if (dao.insert(pt)) {
+                new TripCalendarController().putToCalendar(pt.getDepartureTime(), pt.getId(), pt.getCreatorId());
+                new FeedController().postNewFeed(pt.getId(), Feed.PLANNED_TRIP, pt.getDepartureTime());
+            } else {
+                mess += "Cannot repeat planned trip at" + simpleDateFormat.format(new Date(ept)) + "\n";
+            }
+        }
+        if (mess.equals(""))
+            return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Fail, mess);
+
     }
 }

@@ -20,7 +20,7 @@ import java.util.TimeZone;
 public class FeedbackController {
     private FeedbackDao dao = new FeedbackDao();
     private Database database = Database.getInstance();
-    private String[] admin_emails = {"hpduy17@gmail.com", "luongducduy.cantho@gmail.com", "saulnguyen@gmail.com", "tung@cloudbike.net", "choconlangthang@gmail.com"};
+    private String[] admin_emails = {"hpduy17@gmail.com", "luongducduy.cantho@gmail.com", "saulnguyen@gmail.com", "service@pinride.me", "choconlangthang@gmail.com"};
 
     public String sendFeedback(Feedback feedback) throws UnsupportedEncodingException, JsonProcessingException {
         String userName = feedback.getUserId();

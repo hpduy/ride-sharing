@@ -60,14 +60,26 @@ public class UserController {
             String id = database.getFacebookRFUserId().get(registerRequest.getFacebookId());
             User existUser = database.getUserHashMap().get(id);
             if (existUser != null) {
-                if (null != registerRequest.getPhone() && !registerRequest.getPhone().replaceAll(" ","").equals("")) {
+                boolean flag = false;
+                if (null != registerRequest.getPhone() && !registerRequest.getPhone().replaceAll(" ", "").equals("")) {
                     existUser.setPhone(registerRequest.getPhone());
-                    try {
-                        dao.update(existUser);
-                    }catch (Exception ignored){
-
-                    }
+                    flag = true;
                 }
+                if (null != registerRequest.getSelfIntro() && !registerRequest.getSelfIntro().replaceAll(" ", "").equals("")) {
+                    existUser.setSelfIntro(registerRequest.getSelfIntro());
+                    flag = true;
+                }
+                if (null != registerRequest.getOrganizationId() && database.getOrganizationHashMap().containsKey(registerRequest.getOrganizationId())) {
+                    existUser.setOrganizationId(registerRequest.getOrganizationId());
+                    flag = true;
+                }
+                try {
+                    if (flag)
+                        dao.update(existUser);
+                } catch (Exception ignored) {
+
+                }
+
                 return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new UserResponse(existUser));
             }
         }
@@ -86,6 +98,8 @@ public class UserController {
             user.setLastName(registerRequest.getLastName());
         if (null != registerRequest.getSelfIntro())
             user.setSelfIntro(registerRequest.getSelfIntro());
+        if (null != registerRequest.getOrganizationId())
+            user.setOrganizationId(registerRequest.getOrganizationId());
         user.setGender(registerRequest.getGender());
         if (null != registerRequest.getBirthDay())
             user.setBirthDay(registerRequest.getBirthDay());
@@ -109,6 +123,23 @@ public class UserController {
         user.setId("e_" + registerRequest.getEmail());
         user.setEmail(new StringProcessUtil().EncryptText(registerRequest.getEmail()));
         user.setPassword(registerRequest.getPassword());
+        if (null != registerRequest.getProfilePictureLink())
+            user.setProfilePictureLink(registerRequest.getProfilePictureLink());
+        if (null != registerRequest.getEmail())
+            user.setEmail(registerRequest.getEmail());
+        if (null != registerRequest.getPhone())
+            user.setPhone(registerRequest.getPhone());
+        if (null != registerRequest.getFirstName())
+            user.setFirstName(registerRequest.getFirstName());
+        if (null != registerRequest.getLastName())
+            user.setLastName(registerRequest.getLastName());
+        if (null != registerRequest.getSelfIntro())
+            user.setSelfIntro(registerRequest.getSelfIntro());
+        if (null != registerRequest.getOrganizationId())
+            user.setOrganizationId(registerRequest.getOrganizationId());
+        if (null != registerRequest.getBirthDay())
+            user.setBirthDay(registerRequest.getBirthDay());
+        user.setGender(registerRequest.getGender());
         if (dao.insert(user)) {
             return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new UserResponse(user));
         }
@@ -123,11 +154,11 @@ public class UserController {
             String id = database.getGoogleRFUserId().get(registerRequest.getGoogleId());
             User existUser = database.getUserHashMap().get(id);
             if (existUser != null) {
-                if (null != registerRequest.getPhone() && !registerRequest.getPhone().replaceAll(" ","").equals("")) {
+                if (null != registerRequest.getPhone() && !registerRequest.getPhone().replaceAll(" ", "").equals("")) {
                     existUser.setPhone(registerRequest.getPhone());
                     try {
                         dao.update(existUser);
-                    }catch (Exception ignored){
+                    } catch (Exception ignored) {
 
                     }
                 }
@@ -149,6 +180,8 @@ public class UserController {
             user.setLastName(registerRequest.getLastName());
         if (null != registerRequest.getSelfIntro())
             user.setSelfIntro(registerRequest.getSelfIntro());
+        if (null != registerRequest.getOrganizationId())
+            user.setOrganizationId(registerRequest.getOrganizationId());
         user.setGender(registerRequest.getGender());
         user.setBirthDay(registerRequest.getBirthDay());
         if (dao.insert(user)) {
@@ -165,11 +198,11 @@ public class UserController {
             String id = database.getTwitterRFUserId().get(registerRequest.getTwitterId());
             User existUser = database.getUserHashMap().get(id);
             if (existUser != null) {
-                if (null != registerRequest.getPhone() && !registerRequest.getPhone().replaceAll(" ","").equals("")) {
+                if (null != registerRequest.getPhone() && !registerRequest.getPhone().replaceAll(" ", "").equals("")) {
                     existUser.setPhone(registerRequest.getPhone());
                     try {
                         dao.update(existUser);
-                    }catch (Exception ignored){
+                    } catch (Exception ignored) {
 
                     }
                 }
@@ -191,6 +224,8 @@ public class UserController {
             user.setLastName(registerRequest.getLastName());
         if (null != registerRequest.getSelfIntro())
             user.setSelfIntro(registerRequest.getSelfIntro());
+        if (null != registerRequest.getOrganizationId())
+            user.setOrganizationId(registerRequest.getOrganizationId());
         user.setGender(registerRequest.getGender());
         user.setBirthDay(registerRequest.getBirthDay());
         if (dao.insert(user)) {
@@ -207,11 +242,11 @@ public class UserController {
             String id = database.getLinkedInRFUserId().get(registerRequest.getLinkedInId());
             User existUser = database.getUserHashMap().get(id);
             if (existUser != null) {
-                if (null != registerRequest.getPhone() && !registerRequest.getPhone().replaceAll(" ","").equals("")) {
+                if (null != registerRequest.getPhone() && !registerRequest.getPhone().replaceAll(" ", "").equals("")) {
                     existUser.setPhone(registerRequest.getPhone());
                     try {
                         dao.update(existUser);
-                    }catch (Exception ignored){
+                    } catch (Exception ignored) {
 
                     }
                 }
@@ -233,6 +268,8 @@ public class UserController {
             user.setLastName(registerRequest.getLastName());
         if (null != registerRequest.getSelfIntro())
             user.setSelfIntro(registerRequest.getSelfIntro());
+        if (null != registerRequest.getOrganizationId())
+            user.setOrganizationId(registerRequest.getOrganizationId());
         user.setGender(registerRequest.getGender());
         user.setBirthDay(registerRequest.getBirthDay());
         if (dao.insert(user)) {
@@ -250,41 +287,41 @@ public class UserController {
         switch (loginRequest.getType()) {
             case LoginRequest.EMAIL:
                 return loginEmail(loginRequest);
-            case LoginRequest.FACEBOOK:
-                return loginFacebook(loginRequest);
-            case LoginRequest.GOOGLE:
-                return loginGoogle(loginRequest);
-            case LoginRequest.TWITTER:
-                return loginTwitter(loginRequest);
-            case LoginRequest.LINKEDIN:
-                return loginLinkedIn(loginRequest);
+//            case LoginRequest.FACEBOOK:
+//                return loginFacebook(loginRequest);
+//            case LoginRequest.GOOGLE:
+//                return loginGoogle(loginRequest);
+//            case LoginRequest.TWITTER:
+//                return loginTwitter(loginRequest);
+//            case LoginRequest.LINKEDIN:
+//                return loginLinkedIn(loginRequest);
         }
         return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'type'");
     }
 
-    private String loginFacebook(LoginRequest loginRequest) throws JsonProcessingException {
-        if (null == loginRequest.getUserId() || loginRequest.getUserId().equals("")) {
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
-        }
-        String userId = database.getFacebookRFUserId().get(loginRequest.getUserId());
-        if (null == userId || userId.equals("")) {
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User");
-        }
-        User user = database.getUserHashMap().get(userId);
-        if (user == null) {
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User");
-        }
-        return Parser.ObjectToJSon(true, MessageMappingUtil.Object_is_not_found, new UserResponse(user));
-    }
+//    private String loginFacebook(LoginRequest loginRequest) throws JsonProcessingException {
+//        if (null == loginRequest.getUserId() || loginRequest.getUserId().equals("")) {
+//            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
+//        }
+//        String userId = database.getFacebookRFUserId().get(loginRequest.getUserId());
+//        if (null == userId || userId.equals("")) {
+//            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User");
+//        }
+//        User user = database.getUserHashMap().get(userId);
+//        if (user == null) {
+//            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User");
+//        }
+//        return Parser.ObjectToJSon(true, MessageMappingUtil.Object_is_not_found, new UserResponse(user));
+//    }
 
     private String loginEmail(LoginRequest loginRequest) throws JsonProcessingException {
-        if (null == loginRequest.getUserId() || loginRequest.getUserId().equals("")) {
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
+        if (null == loginRequest.getEmail() || loginRequest.getEmail().equals("")) {
+            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'email'");
         }
         if (null == loginRequest.getPassword() || loginRequest.getPassword().equals("")) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'password'");
         }
-        String userId = database.getEmailRFUserId().get(loginRequest.getUserId());
+        String userId = database.getEmailRFUserId().get(loginRequest.getEmail());
         if (null == userId || userId.equals("")) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User");
         }
@@ -292,56 +329,56 @@ public class UserController {
         if (user == null) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User is not found by userId");
         }
-        if (!user.getPassword().equals(new StringProcessUtil().EncryptText(loginRequest.getPassword()))) {
+        if (!user.getPassword().equals(loginRequest.getPassword())) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "password");
         }
         return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new UserResponse(user));
     }
 
-    private String loginGoogle(LoginRequest loginRequest) throws JsonProcessingException {
-        if (null == loginRequest.getUserId() || loginRequest.getUserId().equals("")) {
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
-        }
-        String userId = database.getGoogleRFUserId().get(loginRequest.getUserId());
-        if (null == userId || userId.equals("")) {
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User");
-        }
-        User user = database.getUserHashMap().get(userId);
-        if (user == null) {
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User");
-        }
-        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new UserResponse(user));
-    }
-
-    private String loginTwitter(LoginRequest loginRequest) throws JsonProcessingException {
-        if (null == loginRequest.getUserId() || loginRequest.getUserId().equals("")) {
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
-        }
-        String userId = database.getTwitterRFUserId().get(loginRequest.getUserId());
-        if (null == userId || userId.equals("")) {
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User");
-        }
-        User user = database.getUserHashMap().get(userId);
-        if (user == null) {
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User");
-        }
-        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new UserResponse(user));
-    }
-
-    private String loginLinkedIn(LoginRequest loginRequest) throws JsonProcessingException {
-        if (null == loginRequest.getUserId() || loginRequest.getUserId().equals("")) {
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
-        }
-        String userId = database.getLinkedInRFUserId().get(loginRequest.getUserId());
-        if (null == userId || userId.equals("")) {
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User");
-        }
-        User user = database.getUserHashMap().get(userId);
-        if (user == null) {
-            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User");
-        }
-        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new UserResponse(user));
-    }
+//    private String loginGoogle(LoginRequest loginRequest) throws JsonProcessingException {
+//        if (null == loginRequest.getUserId() || loginRequest.getUserId().equals("")) {
+//            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
+//        }
+//        String userId = database.getGoogleRFUserId().get(loginRequest.getUserId());
+//        if (null == userId || userId.equals("")) {
+//            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User");
+//        }
+//        User user = database.getUserHashMap().get(userId);
+//        if (user == null) {
+//            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User");
+//        }
+//        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new UserResponse(user));
+//    }
+//
+//    private String loginTwitter(LoginRequest loginRequest) throws JsonProcessingException {
+//        if (null == loginRequest.getUserId() || loginRequest.getUserId().equals("")) {
+//            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
+//        }
+//        String userId = database.getTwitterRFUserId().get(loginRequest.getUserId());
+//        if (null == userId || userId.equals("")) {
+//            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User");
+//        }
+//        User user = database.getUserHashMap().get(userId);
+//        if (user == null) {
+//            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User");
+//        }
+//        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new UserResponse(user));
+//    }
+//
+//    private String loginLinkedIn(LoginRequest loginRequest) throws JsonProcessingException {
+//        if (null == loginRequest.getUserId() || loginRequest.getUserId().equals("")) {
+//            return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
+//        }
+//        String userId = database.getLinkedInRFUserId().get(loginRequest.getUserId());
+//        if (null == userId || userId.equals("")) {
+//            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User");
+//        }
+//        User user = database.getUserHashMap().get(userId);
+//        if (user == null) {
+//            return Parser.ObjectToJSon(false, MessageMappingUtil.Object_is_not_found, "User");
+//        }
+//        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new UserResponse(user));
+//    }
 
     /**
      * GET USER INFO
@@ -510,6 +547,8 @@ public class UserController {
             user.setBirthDay(request.getBirthDay());
         if (request.getPrivacy() >= 0)
             user.setPrivacy(request.getPrivacy());
+        if (null != request.getOrganizationId())
+            user.setOrganizationId(request.getOrganizationId());
         if (dao.update(user)) {
             return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
         }

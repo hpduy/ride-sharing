@@ -72,7 +72,9 @@ public class PlannedTrip implements PojoBase {
         this.hasHelmet = that.hasHelmet;
         this.requestId = that.requestId;
         this.routeId = that.routeId;
+        this.note = that.note;
     }
+
 
     public long getArriveTime() {
         return arriveTime;

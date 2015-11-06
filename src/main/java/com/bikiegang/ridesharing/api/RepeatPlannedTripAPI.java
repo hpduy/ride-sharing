@@ -7,10 +7,9 @@
 package com.bikiegang.ridesharing.api;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
-import com.bikiegang.ridesharing.controller.PopularLocationController;
+import com.bikiegang.ridesharing.controller.PlannedTripController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.LatLng;
-import com.bikiegang.ridesharing.pojo.response.GetPopularLocationResponse;
+import com.bikiegang.ridesharing.pojo.request.RepeatPlannedTripRequest;
 import com.bikiegang.ridesharing.utilities.ApiDocumentGenerator;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import org.apache.log4j.Logger;
@@ -24,10 +23,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class GetPopularLocationAPI extends HttpServlet {
+public class RepeatPlannedTripAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
-    public Class requestClass = LatLng.class;
-    public Class responseClass = GetPopularLocationResponse.class;
+    public Class requestClass = RepeatPlannedTripRequest.class;
+    public Class responseClass = null;
     public boolean responseIsArray = false;
 
     /**
@@ -52,15 +51,10 @@ public class GetPopularLocationAPI extends HttpServlet {
                 jsonData.append(line);
             }
             logger.info(jsonData.toString());
-            LatLng latLng;
-            try {
-                latLng = (LatLng) Parser.JSonToObject(jsonData.toString(), LatLng.class);
-            } catch (Exception ex) {
-                latLng = new LatLng(10.762622, 106.660172);
-            }
-            PopularLocationController controller = new PopularLocationController();
-            String result = controller.getPopularLocationList(latLng);
-           // logger.info(result);
+            RepeatPlannedTripRequest repeatPlannedTripRequest = (RepeatPlannedTripRequest) Parser.JSonToObject(jsonData.toString(), RepeatPlannedTripRequest.class);
+            PlannedTripController controller = new PlannedTripController();
+            String result = controller.repeatPlannedTrip(repeatPlannedTripRequest);
+            logger.info(result);
             out.print(result);
         } catch (Exception ex) {
             ex.printStackTrace();
