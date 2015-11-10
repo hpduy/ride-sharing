@@ -14,7 +14,7 @@ public class PopularLocation extends LatLng implements PojoBase {
     private String backgroundImageLink = "";
     private HashSet<String> searcher = new HashSet<>();
     private int type;
-
+    private long eventId;
     @JsonIgnore
     public static final int POPULAR_LOCATION = 0;
     @JsonIgnore
@@ -102,5 +102,13 @@ public class PopularLocation extends LatLng implements PojoBase {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public long getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(long eventId) {
+        this.eventId = eventId;
     }
 }

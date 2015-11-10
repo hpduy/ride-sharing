@@ -179,6 +179,9 @@ public class PlannedTripController {
             plannedTrip.setRouteId(route.getId());
             plannedTrip.setNote(request.getPlannedTrip().getNote());
             plannedTrip.setOwnerPrice(request.getPlannedTrip().getPrice() < 0 ? DEFAULT_PRICE : request.getPlannedTrip().getPrice());
+            if(database.getEventHashMap().containsKey(request.getPlannedTrip().getEventId())){
+                plannedTrip.setEventId(request.getPlannedTrip().getEventId());
+            }
             if (dao.insert(plannedTrip) || Database.databaseStatus == Database.TESTING) {
                 // insert calendar
                 new TripCalendarController().putToCalendar(plannedTrip.getDepartureTime(), plannedTrip.getId(), plannedTrip.getCreatorId());

@@ -1,5 +1,6 @@
 package com.bikiegang.ridesharing.pojo.response;
 
+import com.bikiegang.ridesharing.pojo.Event;
 import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.PopularLocation;
 import com.bikiegang.ridesharing.utilities.Path;
@@ -15,6 +16,7 @@ public class PopularLocationResponse extends LatLng {
     private String address;
     private String backgroundImageLink = "";
     private int type;
+    private Event eventData;
 
     public PopularLocationResponse() {
     }
@@ -27,6 +29,7 @@ public class PopularLocationResponse extends LatLng {
         this.address = that.getAddress();
         this.backgroundImageLink = Path.getUrlFromPath(that.getBackgroundImageLink() + "x.jpg");
         this.type = that.getType();
+        this.eventData = that.getEventData();
     }
 
     public String getName() {
@@ -67,5 +70,13 @@ public class PopularLocationResponse extends LatLng {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public Event getEventData() {
+        return eventData;
+    }
+
+    public void setEventData(Event eventData) {
+        this.eventData = eventData;
     }
 }

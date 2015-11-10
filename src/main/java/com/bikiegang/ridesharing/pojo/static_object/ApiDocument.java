@@ -50,9 +50,13 @@ public class ApiDocument {
             } else {
                 if (field.getType().getCanonicalName().contains("[]")) {
                     String childClassPath = field.getType().getCanonicalName().replaceAll("\\[\\]", "");
-                    Field[] allChildFields = getFieldExceptFinalAndStatic(Class.forName(childClassPath));
-                    generate(allChildFields, apiParameter.childParameter);
-                    apiParameter.dataType = field.getType();
+                    if (isPrimaryType(childClassPath))
+                        apiParameter.dataType = field.getType();
+                    else {
+                        Field[] allChildFields = getFieldExceptFinalAndStatic(Class.forName(childClassPath));
+                        generate(allChildFields, apiParameter.childParameter);
+                        apiParameter.dataType = field.getType();
+                    }
                 } else {
                     Field[] allChildFields = getFieldExceptFinalAndStatic(field.getType());
                     generate(allChildFields, apiParameter.childParameter);
@@ -156,10 +160,9 @@ public class ApiDocument {
             result += "\"" + paramName + "\"";
             //result += " - " + (param.isRequired ? "required" : "optional");
             if (!isPrimaryType(param.getDataType().getSimpleName()) && !param.getDataType().getSimpleName().equals("String")) {
-                if(param.getDataType().getCanonicalName().contains("[]")) {
+                if (param.getDataType().getCanonicalName().contains("[]")) {
                     result += " : [{" + toNiceString(param.getChildParameter()).replaceAll("\\n", "") + "}]";
-                }
-                else {
+                } else {
                     result += " : {" + toNiceString(param.getChildParameter()).replaceAll("\\n", "") + "}";
                 }
             } else {

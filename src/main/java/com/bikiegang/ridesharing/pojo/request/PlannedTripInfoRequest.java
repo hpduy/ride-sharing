@@ -23,6 +23,7 @@ public class PlannedTripInfoRequest {
     private String note;
     private String startAddress;
     private String endAddress;
+    private long eventId;
 
     public PlannedTripInfoRequest() {
     }
@@ -150,5 +151,13 @@ public class PlannedTripInfoRequest {
 
     public void setEndAddress(String endAddress) {
         this.endAddress = endAddress;
+    }
+
+    public long getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(long eventId) {
+        this.eventId = eventId;
     }
 }

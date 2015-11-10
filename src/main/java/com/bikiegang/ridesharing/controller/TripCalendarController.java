@@ -112,7 +112,7 @@ public class TripCalendarController {
                     for (PlannedTrip t : trips) {
                         if (t.getType() != PlannedTrip.REQUESTED_PLANNED_TRIP || database.getRequestMakeTripHashMap().containsKey(t.getRequestId())) {
                             FeedResponse feed = new FeedController().convertPlannedTripToFeed(t, t.getCreatorId());
-                            feed.setRequests(new RequestMakeTripController().getListRequestMakeTripToArray(t.getCreatorId(),t.getId()));
+//                            feed.setRequests(new RequestMakeTripController().getListRequestMakeTripToArray(t.getCreatorId(),t.getId()));
                             tripByDay.add(feed);
 
                         }

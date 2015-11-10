@@ -6,16 +6,16 @@
 package com.bikiegang.ridesharing.da;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
-import com.bikiegang.ridesharing.config.ConfigInfo;
-import com.bikiegang.ridesharing.pojo.PojoBase;
-import com.bikiegang.ridesharing.utilities.Const;
 import com.bikiegang.ridesharing.annn.framework.dbconn.ClientManager;
 import com.bikiegang.ridesharing.annn.framework.dbconn.ManagerIF;
-import com.bikiegang.ridesharing.annn.framework.util.JSONUtil;
+import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.pojo.Event;
+import com.bikiegang.ridesharing.pojo.PojoBase;
+import com.bikiegang.ridesharing.utilities.Const;
+import org.apache.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import org.apache.log4j.Logger;
 
 /**
  *
@@ -57,15 +57,15 @@ public class EventDA implements IDA {
         try {
             String query = ConfigInfo.EVENT_INSERT_QUERY;
             try (PreparedStatement stmt = cnn.prepareStatement(query)) {
-                stmt.setLong(1, value.getId());
-                stmt.setString(2, value.getName());
-                stmt.setString(3, value.getAddress());
-                stmt.setString(4, value.getBackgroundImageLink());
-                stmt.setString(5, JSONUtil.Serialize(value.getSearcher()));
-                stmt.setInt(6, value.getType());
-                stmt.setString(7, value.getEventSocialId());
-                stmt.setString(8, value.getShowTime());
-                stmt.setString(9, value.getReferenceLink());
+//                stmt.setLong(1, value.getId());
+//                stmt.setString(2, value.getName());
+//                stmt.setString(3, value.getAddress());
+//                stmt.setString(4, value.getBackgroundImageLink());
+//                stmt.setString(5, JSONUtil.Serialize(value.getSearcher()));
+//                stmt.setInt(6, value.getType());
+//                stmt.setString(7, value.getEventSocialId());
+//                stmt.setString(8, value.getShowTime());
+//                stmt.setString(9, value.getReferenceLink());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {
@@ -89,16 +89,16 @@ public class EventDA implements IDA {
         try {
             String query = ConfigInfo.EVENT_UPDATE_QUERY;
             try (PreparedStatement stmt = cnn.prepareStatement(query)) {
-                stmt.setLong(1, value.getId());
-                stmt.setString(2, value.getName());
-                stmt.setString(3, value.getAddress());
-                stmt.setString(4, value.getBackgroundImageLink());
-                stmt.setString(5, JSONUtil.Serialize(value.getSearcher()));
-                stmt.setInt(6, value.getType());
-                stmt.setString(7, value.getEventSocialId());
-                stmt.setString(8, value.getShowTime());
-                stmt.setString(9, value.getReferenceLink());
-                stmt.setLong(10, value.getId());
+//                stmt.setLong(1, value.getId());
+//                stmt.setString(2, value.getName());
+//                stmt.setString(3, value.getAddress());
+//                stmt.setString(4, value.getBackgroundImageLink());
+//                stmt.setString(5, JSONUtil.Serialize(value.getSearcher()));
+//                stmt.setInt(6, value.getType());
+//                stmt.setString(7, value.getEventSocialId());
+//                stmt.setString(8, value.getShowTime());
+//                stmt.setString(9, value.getReferenceLink());
+//                stmt.setLong(10, value.getId());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {
@@ -122,7 +122,7 @@ public class EventDA implements IDA {
         try {
             String query = ConfigInfo.EVENT_DELETE_QUERY;
             try (PreparedStatement stmt = cnn.prepareStatement(query)) {
-                stmt.setLong(1, value.getId());
+//                stmt.setLong(1, value.getId());
 
                 int row = stmt.executeUpdate();
                 if (row > 0) {

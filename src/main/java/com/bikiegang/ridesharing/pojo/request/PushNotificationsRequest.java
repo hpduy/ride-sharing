@@ -8,7 +8,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PushNotificationsRequest {
     private String content = "";
-    private String dates = "";
+    private String title = "";
+    private String dates = ""; //dd/MM/yyyy hh:mm:ss
 
     public String getContent() {
         return content;
@@ -24,5 +25,13 @@ public class PushNotificationsRequest {
 
     public void setDates(String dates) {
         this.dates = dates;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

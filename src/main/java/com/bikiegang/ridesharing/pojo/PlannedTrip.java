@@ -21,6 +21,7 @@ public class PlannedTrip implements PojoBase {
     private long requestId;
     private long routeId;
     private String note;
+    private long eventId;
     /**
      * PLANNED TRIP TYPE
      */
@@ -195,5 +196,13 @@ public class PlannedTrip implements PojoBase {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public long getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(long eventId) {
+        this.eventId = eventId;
     }
 }

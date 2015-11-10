@@ -4,6 +4,7 @@ import com.bikiegang.ridesharing.cache.RideSharingCA;
 import com.bikiegang.ridesharing.config.ConfigInfo;
 import com.bikiegang.ridesharing.geocoding.GeoCell;
 import com.bikiegang.ridesharing.pojo.*;
+import com.bikiegang.ridesharing.pojo.response.NotificationDetail;
 import com.bikiegang.ridesharing.utilities.MapUtil;
 
 import java.util.*;
@@ -149,7 +150,7 @@ public class Database {
     /**
      * Notification Manage
      */
-    private LinkedHashMap<Long,List<String>> notificationCenter= new LinkedHashMap<>(); // <epochDay, Notification> after parse
+    private LinkedHashMap<Long,List<NotificationDetail>> notificationCenter= new LinkedHashMap<>(); // <epochDay, Notification> after parse
     /**
      * GEOCELL
      */
@@ -419,11 +420,11 @@ public class Database {
         return userIdRFConsersations;
     }
 
-    public LinkedHashMap<Long, List<String>> getNotificationCenter() {
+    public LinkedHashMap<Long, List<NotificationDetail>> getNotificationCenter() {
         return notificationCenter;
     }
 
-    public void setNotificationCenter(LinkedHashMap<Long, List<String>> notificationCenter) {
+    public void setNotificationCenter(LinkedHashMap<Long, List<NotificationDetail>> notificationCenter) {
         this.notificationCenter = notificationCenter;
     }
 

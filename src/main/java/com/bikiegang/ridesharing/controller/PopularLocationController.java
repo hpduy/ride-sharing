@@ -78,6 +78,7 @@ public class PopularLocationController {
         try {
             if (!static_data_created) {
                 static_data_created = true;
+                new EventController();
                 for (String line : static_data) {
                     String[] element = line.split("#");
                     PopularLocation popularLocation = new PopularLocation(element[3]);
@@ -164,6 +165,5 @@ public class PopularLocationController {
         }
         return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new GetPopularLocationResponse(locations));
     }
-
 
 }

@@ -7,6 +7,7 @@ import com.bikiegang.ridesharing.pojo.response.GetFeedsResponse;
 import com.bikiegang.ridesharing.pojo.response.PlannedTripShortDetailResponse;
 import com.bikiegang.ridesharing.pojo.response.SocialTripResponse;
 import com.bikiegang.ridesharing.pojo.static_object.Notification;
+import com.bikiegang.ridesharing.utilities.Path;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -76,7 +77,7 @@ public class Parser {
 
     public static String ObjectToNotification(int messageCode, User sender) throws JsonProcessingException {
         try {
-            Notification notification = new Notification(sender.getFirstName() + " " + sender.getLastName(), sender.getId());
+            Notification notification = new Notification(sender.getFirstName() + " " + sender.getLastName(), sender.getId(), Path.getUrlFromPath(sender.getProfilePictureLink()));
             return toJson(new Parser(true, messageCode, notification));
         } catch (Exception ex) {
             throw ex;

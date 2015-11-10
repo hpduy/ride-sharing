@@ -1,7 +1,6 @@
 package com.bikiegang.ridesharing.utilities;
 
 import com.bikiegang.ridesharing.database.Database;
-import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.Broadcast;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -26,6 +25,13 @@ public class ParsePushNotificationCenterUtil implements Runnable {
     private List<String> receiverIds = new ArrayList<>();
     private JSONObject data = new JSONObject();
     private int app_type = 0;
+
+    public ParsePushNotificationCenterUtil(List<String> receiverIds, JSONObject data, int app_type) {
+        this.receiverIds = receiverIds;
+        this.data = data;
+        this.app_type = app_type;
+    }
+
     @Override
     public void run() {
         HashSet<String> regIds = new HashSet<>();
@@ -41,11 +47,11 @@ public class ParsePushNotificationCenterUtil implements Runnable {
             }
         }
         JSONObject content_data = new JSONObject();
-        content_data.put("channels", regIds);
+        content_data.put("channels", receiverIds);
         content_data.put("type","ios");
-        content_data.put("data", data);
+        content_data.put("data", new JSONObject().put("alert","test").put("content",data));
         try {
-            pushData(Parser.ObjectToJSon(content_data.toString()));
+            pushData(content_data.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -68,6 +74,7 @@ public class ParsePushNotificationCenterUtil implements Runnable {
         if (entity != null) {
             responseString = EntityUtils.toString(response.getEntity());
         }
+        System.out.println("PUSH NOTIFICATION: " + content_data);
         System.out.println("PUSH NOTIFICATION: " + responseString);
     }
 }

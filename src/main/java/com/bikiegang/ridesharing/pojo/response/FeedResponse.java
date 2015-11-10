@@ -13,8 +13,9 @@ public class FeedResponse {
     private TripInFeed tripDetail;
     private UserDetailResponse partnerDetail;
     private TripInFeed partnerTripDetail;
+    private String feedBanner;
     // addition
-    private RequestMakeTripDetailResponse[] requests = new RequestMakeTripDetailResponse[0];
+//    private RequestMakeTripDetailResponse[] requests = new RequestMakeTripDetailResponse[0];
 
 
 
@@ -67,11 +68,19 @@ public class FeedResponse {
         this.feedId = feedId;
     }
 
-    public RequestMakeTripDetailResponse[] getRequests() {
-        return requests;
+    public String getFeedBanner() {
+        return feedBanner;
     }
 
-    public void setRequests(RequestMakeTripDetailResponse[] requests) {
-        this.requests = requests;
+    public void setFeedBanner(String feedBanner) {
+        this.feedBanner = feedBanner;
     }
+
+    //    public RequestMakeTripDetailResponse[] getRequests() {
+//        return requests;
+//    }
+//
+//    public void setRequests(RequestMakeTripDetailResponse[] requests) {
+//        this.requests = requests;
+//    }
 }

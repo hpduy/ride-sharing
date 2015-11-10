@@ -3,6 +3,7 @@ package com.bikiegang.ridesharing.utilities;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.Broadcast;
 import com.bikiegang.ridesharing.pojo.static_object.GCMTransferMessage;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -63,7 +64,7 @@ public class BroadcastCenterUtil implements Runnable {
             }
             System.out.print(strBuffer.toString());
             in.close();
-
+            //
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -109,12 +110,16 @@ public class BroadcastCenterUtil implements Runnable {
     }
 
     public void pushNotification(String content, String userId, int type) {
+        //GCM
         List<String> contents = new ArrayList<>();
         List<String> userIds = new ArrayList<>();
         contents.add(content);
         userIds.add(userId);
         Thread pusher = new Thread(new BroadcastCenterUtil(contents, userIds, senderId, type));
         pusher.start();
+        //Parse
+        Thread parse = new Thread(new ParsePushNotificationCenterUtil(userIds, new JSONObject(content), type));
+        parse.start();
     }
 
     public void pushNotification(String content, String userId) {

@@ -8,6 +8,7 @@ import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 public class Notification {
     private long createdTime = DateTimeUtil.now();
     private String senderName = "";
+    private String senderProfilePictureLink = "";
     private String senderId = "";
     private long objectId;
 
@@ -19,6 +20,12 @@ public class Notification {
         this.senderName = senderName;
         this.senderId = senderId;
         this.objectId = objectId;
+    }
+
+    public Notification( String senderName, String senderId, String senderProfilePictureLink) {
+        this.senderName = senderName;
+        this.senderProfilePictureLink = senderProfilePictureLink;
+        this.senderId = senderId;
     }
 
     public Notification() {
@@ -54,5 +61,14 @@ public class Notification {
 
     public void setObjectId(long objectId) {
         this.objectId = objectId;
+    }
+
+
+    public String getSenderProfilePictureLink() {
+        return senderProfilePictureLink;
+    }
+
+    public void setSenderProfilePictureLink(String senderProfilePictureLink) {
+        this.senderProfilePictureLink = senderProfilePictureLink;
     }
 }

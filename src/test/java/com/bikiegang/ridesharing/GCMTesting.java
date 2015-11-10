@@ -3,17 +3,23 @@ package com.bikiegang.ridesharing;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.Broadcast;
+import com.bikiegang.ridesharing.pojo.User;
 import com.bikiegang.ridesharing.utilities.BroadcastCenterUtil;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
+import com.bikiegang.ridesharing.utilities.ParsePushNotificationCenterUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.json.JSONObject;
+import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.HashSet;
 
 /**
  * Created by hpduy17 on 7/30/15.
  */
 public class GCMTesting extends com.bikiegang.ridesharing.Test {
+
     String[] gangs = {
             "fb_1119948731350574",//duy big
             "gg_104511978063048563987", // an nguyen
@@ -28,7 +34,11 @@ public class GCMTesting extends com.bikiegang.ridesharing.Test {
             "fb_10152850663931856",// TungLe
 
     };
-
+    String [] temp = {"fb_929818660424600"};
+    @Before
+    public void setup(){
+        Database.getInstance().restore();
+    }
     @Test
     public void sendGCM() throws JsonProcessingException, InterruptedException {
         String senderId = "gg_104511978063048563987";
@@ -50,5 +60,15 @@ public class GCMTesting extends com.bikiegang.ridesharing.Test {
         broadcastIds.add(br.getId());
         new BroadcastCenterUtil().pushNotification(Parser.ObjectToNotification(MessageMappingUtil.Notification_RequestMakeTrip, senderId,"An Nghien"), receiverId);
         Thread.sleep(1000 * 60);
+    }
+
+
+    @Test
+    public void sendParse() throws JsonProcessingException, InterruptedException {
+        String senderId = "gg_104511978063048563987";
+        User sender = Database.getInstance().getUserHashMap().get(senderId);
+        Thread t = new Thread(new ParsePushNotificationCenterUtil(Arrays.asList(temp),new JSONObject(Parser.ObjectToNotification(MessageMappingUtil.Notification_RequestMakeTrip, sender)),0));
+        t.start();
+        Thread.sleep(1000 * 30);
     }
 }

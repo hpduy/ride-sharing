@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class EndTripRequest {
-
     private long tripId;
     private LatLng endLocation;
     private String tripTrailPolyLine;

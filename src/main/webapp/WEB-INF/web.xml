@@ -526,6 +526,14 @@
         <url-pattern>/GenerateApiDoccumentServlet</url-pattern>
     </servlet-mapping>
     <servlet>
+        <servlet-name>NotifyServlet</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.servlet.slack.NotifyServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>NotifyServlet</servlet-name>
+        <url-pattern>/NotifyServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
         <servlet-name>ForNewAndroidGuyAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.ForNewAndroidGuyAPI</servlet-class>
     </servlet>
