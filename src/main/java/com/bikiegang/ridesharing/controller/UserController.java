@@ -779,6 +779,18 @@ public class UserController {
         return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
     }
 
+    public String getUsers() throws JsonProcessingException {
+        List<UserDetailResponse> userDetailResponses = new ArrayList<>();
+        List<User> users =new ArrayList<>(database.getUserHashMap().values());
+        Collections.sort();
+        for (User u : database.getUserHashMap().values()) {
+            userDetailResponses.add(new UserDetailResponse(u));
+        }
+        GetUsersResponse response = new GetUsersResponse();
+        response.setUsers(userDetailResponses);
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, response);
+    }
+
     public String acceptViewPhoneNumber(RequestPhoneNumberRequest request) throws JsonProcessingException {
         if (null == request.getSenderId() || request.getSenderId().equals("")) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'senderId'");

@@ -148,6 +148,14 @@
         <url-pattern>/RequestViewPhoneNumberAPI</url-pattern>
     </servlet-mapping>
     <servlet>
+        <servlet-name>GetUsersAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.GetUsersAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetUsersAPI</servlet-name>
+        <url-pattern>/GetUsersAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
         <servlet-name>AcceptViewPhoneNumberAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.AcceptViewPhoneNumberAPI</servlet-class>
     </servlet>
