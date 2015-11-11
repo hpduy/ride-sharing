@@ -1,5 +1,6 @@
 package com.bikiegang.ridesharing.pojo.response;
 
+import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.Event;
 import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.PopularLocation;
@@ -11,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PopularLocationResponse extends LatLng {
+
     private long id;
     private String name;
     private String address;
@@ -21,7 +23,6 @@ public class PopularLocationResponse extends LatLng {
     public PopularLocationResponse() {
     }
 
-
     public PopularLocationResponse(PopularLocation that) {
         super(that);
         this.id = that.getId();
@@ -29,7 +30,9 @@ public class PopularLocationResponse extends LatLng {
         this.address = that.getAddress();
         this.backgroundImageLink = Path.getUrlFromPath(that.getBackgroundImageLink() + "x.jpg");
         this.type = that.getType();
-        this.eventData = that.getEventData();
+        if (Database.getInstance().getEventHashMap().containsKey(that.getEventId())) {
+            this.eventData = Database.getInstance().getEventHashMap().get(that.getEventId());
+        }
     }
 
     public String getName() {
