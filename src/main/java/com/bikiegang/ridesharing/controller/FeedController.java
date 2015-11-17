@@ -73,7 +73,6 @@ public class FeedController {
                 TripInFeed tif = null;
                 ExPartnerInfoResponse partnerInfoResponse = null;
                 UserDetailResponse userDetailResponse = null;
-                String feedBanner = null;
                 try {
                     switch (feed.getType()) {
                         case Feed.PLANNED_TRIP:
@@ -85,7 +84,9 @@ public class FeedController {
                             PlannedTrip plannedTrip = database.getPlannedTripHashMap().get(feed.getRefId());
                             tif = new PlannedTripDetailResponse(plannedTrip, request.getUserId());
                             if(database.getEventHashMap().containsKey(plannedTrip.getEventId())){
-                                feedBanner = database.getEventHashMap().get(plannedTrip.getEventId()).getFeedBannerLink();
+                                Event event = database.getEventHashMap().get(plannedTrip.getEventId());
+                                response.setFeedBanner(event.getFeedBannerLink());
+                                response.setHashTags(event.getHashTags());
                             }
                             if (feed.getCreatedTime() != plannedTrip.getDepartureTime()) {
                                 System.out.println("Weird Time:" + feed.getRefId());
@@ -118,7 +119,7 @@ public class FeedController {
                             tif = new SocialTripResponse(database.getSocialTripHashMap().get(feed.getRefId()));
                             break;
                     }
-                    response.setFeedBanner(feedBanner);
+
                     if (tif != null) {
                         User user = database.getUserHashMap().get(tif.getCreatorId());
                         if (user != null) {

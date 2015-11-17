@@ -48,8 +48,8 @@ public class GeoCell<T> {
         List<String> cellcodes = new ArrayList<>();
         for (LatLng ll : latLngs) {
             String cellcode = getCellCodeFromLatLng(ll);
-          if(cellcodes.isEmpty()||!cellcodes.get(cellcodes.size()-1).equals(cellcode))
-            //if(!cellcodes.contains(cellcode))
+            if (cellcodes.isEmpty() || !cellcodes.get(cellcodes.size() - 1).equals(cellcode))
+                //if(!cellcodes.contains(cellcode))
                 cellcodes.add(cellcode);
         }
         return cellcodes;
@@ -284,6 +284,21 @@ public class GeoCell<T> {
         locationList.addAll(getIdsInCell(cellDownRight));
 
         return new ArrayList<>(locationList);
+    }
+
+    public boolean isCovariated(String[] line1, String[] line2) {
+        int[] srcLine1 = {Integer.parseInt(line1[0].split("#")[0]), Integer.parseInt(line1[0].split("#")[1])};
+        int[] desLine1 = {Integer.parseInt(line1[1].split("#")[0]), Integer.parseInt(line1[1].split("#")[1])};
+        int[] srcLine2 = {Integer.parseInt(line2[0].split("#")[0]), Integer.parseInt(line2[0].split("#")[1])};
+        int[] desLine2 = {Integer.parseInt(line2[1].split("#")[0]), Integer.parseInt(line2[1].split("#")[1])};
+        double angle1 = Math.atan2(srcLine1[0] - desLine1[0], srcLine1[1] - desLine1[1]);
+        double angle2 = Math.atan2(srcLine2[0] - desLine2[0], srcLine2[1] - desLine2[1]);
+        double angel = Math.toDegrees(angle1 - angle2);
+        if (angel > 180) {
+            angel = 360 - angel;
+        }
+        System.out.println(angel);
+        return angel < 60;
     }
 
 

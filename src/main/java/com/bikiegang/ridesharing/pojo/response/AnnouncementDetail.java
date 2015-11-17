@@ -3,7 +3,7 @@ package com.bikiegang.ridesharing.pojo.response;
 /**
  * Created by hpduy17 on 10/13/15.
  */
-public class NotificationDetail {
+public class AnnouncementDetail {
     private String title;
     private String content;
     private long showtime;

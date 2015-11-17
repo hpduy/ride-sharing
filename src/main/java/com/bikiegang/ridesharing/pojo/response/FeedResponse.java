@@ -14,6 +14,7 @@ public class FeedResponse {
     private UserDetailResponse partnerDetail;
     private TripInFeed partnerTripDetail;
     private String feedBanner;
+    private String[] hashTags;
     // addition
 //    private RequestMakeTripDetailResponse[] requests = new RequestMakeTripDetailResponse[0];
 
@@ -74,6 +75,14 @@ public class FeedResponse {
 
     public void setFeedBanner(String feedBanner) {
         this.feedBanner = feedBanner;
+    }
+
+    public String[] getHashTags() {
+        return hashTags;
+    }
+
+    public void setHashTags(String[] hashTags) {
+        this.hashTags = hashTags;
     }
 
     //    public RequestMakeTripDetailResponse[] getRequests() {

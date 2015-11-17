@@ -156,6 +156,14 @@
         <url-pattern>/GetUsersAPI</url-pattern>
     </servlet-mapping>
     <servlet>
+        <servlet-name>GetInternalUsersAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.GetInternalUsersAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetInternalUsersAPI</servlet-name>
+        <url-pattern>/GetInternalUsersAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
         <servlet-name>AcceptViewPhoneNumberAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.AcceptViewPhoneNumberAPI</servlet-class>
     </servlet>
@@ -625,12 +633,12 @@
         <url-pattern>/GetUnreadNumberAPI</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>GetNotificationsAPI</servlet-name>
-        <servlet-class>com.bikiegang.ridesharing.api.GetNotificationsAPI</servlet-class>
+        <servlet-name>GetAnnouncementsAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.GetAnnouncementsAPI</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>GetNotificationsAPI</servlet-name>
-        <url-pattern>/GetNotificationsAPI</url-pattern>
+        <servlet-name>GetAnnouncementsAPI</servlet-name>
+        <url-pattern>/GetAnnouncementsAPI</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>PushNotificationAPI</servlet-name>

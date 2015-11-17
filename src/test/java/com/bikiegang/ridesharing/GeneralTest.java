@@ -1,5 +1,6 @@
 package com.bikiegang.ridesharing;
 
+import com.bikiegang.ridesharing.geocoding.GeoCell;
 import com.bikiegang.ridesharing.pojo.LatLng;
 import org.junit.Test;
 
@@ -24,6 +25,12 @@ public class GeneralTest {
         assert(ll.getLat() == 10.774033 && ll.getLng() == 106.703653);
         ll = new LatLng(type5);
         assert(ll.getLat() == 10.774033 && ll.getLng() == 106.703653);
+    }
+
+    @Test
+    public void isCovariated(){
+        assert(new GeoCell<Long>(0.002).isCovariated(new String[]{"1#1","2#1"},new String[]{"1#1","2#2"}));
+
     }
 
 }

@@ -45,7 +45,7 @@ public class GetInternalUsersAPI extends HttpServlet {
         try {
 
             UserController controller = new UserController();
-            String result = controller.getUsers();
+            String result = controller.getTeams();
             logger.info(result);
             out.print(result);
         } catch (Exception ex) {

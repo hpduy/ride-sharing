@@ -16,6 +16,7 @@ public class Event implements PojoBase {
     private String suggestMessage;
     private String infoLink;
     private String feedBannerLink;
+    private String[] hashTags;
     @JsonIgnore
     private long startTime;
     @JsonIgnore
@@ -98,5 +99,13 @@ public class Event implements PojoBase {
 
     public void setFeedBannerLink(String feedBannerLink) {
         this.feedBannerLink = feedBannerLink;
+    }
+
+    public String[] getHashTags() {
+        return hashTags;
+    }
+
+    public void setHashTags(String[] hashTags) {
+        this.hashTags = hashTags;
     }
 }

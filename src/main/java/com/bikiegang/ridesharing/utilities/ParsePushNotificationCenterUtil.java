@@ -1,7 +1,6 @@
 package com.bikiegang.ridesharing.utilities;
 
 import com.bikiegang.ridesharing.database.Database;
-import com.bikiegang.ridesharing.pojo.Broadcast;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -11,8 +10,9 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by hpduy17 on 9/14/15.
@@ -26,6 +26,22 @@ public class ParsePushNotificationCenterUtil implements Runnable {
     private JSONObject data = new JSONObject();
     private int app_type = 0;
 
+    private static Map<Integer, String> messageHashMap = new HashMap<Integer, String>();
+
+    static {
+        messageHashMap.put(MessageMappingUtil.Notification_AcceptPhoneNumber, "Agree to provide phone number");
+        messageHashMap.put(MessageMappingUtil.Notification_AlertTripComingUp, "Your trip will start soon");
+        messageHashMap.put(MessageMappingUtil.Notification_Announcement_From_Server, "Have an announcement from PinBike");
+        messageHashMap.put(MessageMappingUtil.Notification_End_Trip, "Has end your paired trip");
+        messageHashMap.put(MessageMappingUtil.Notification_ReplyMakeTrip_Accept, "Has accepted to go with you");
+        messageHashMap.put(MessageMappingUtil.Notification_ReplyMakeTrip_Deny, "Has canceled trip");
+        messageHashMap.put(MessageMappingUtil.Notification_RequestMakeTrip, "Wants to share a ride with you");
+        messageHashMap.put(MessageMappingUtil.Notification_RequestPhoneNumber, "Request your phone number");
+        messageHashMap.put(MessageMappingUtil.Notification_RequestVerify, "Request you verify");
+        messageHashMap.put(MessageMappingUtil.Notification_Start_Trip, "Has start your paired trip");
+        messageHashMap.put(MessageMappingUtil.Notification_VerifyCertificate_Success, "Verified successfully");
+    }
+
     public ParsePushNotificationCenterUtil(List<String> receiverIds, JSONObject data, int app_type) {
         this.receiverIds = receiverIds;
         this.data = data;
@@ -34,22 +50,29 @@ public class ParsePushNotificationCenterUtil implements Runnable {
 
     @Override
     public void run() {
-        HashSet<String> regIds = new HashSet<>();
-        for (int i = 0; i < receiverIds.size(); i++) {
-            HashSet<String> broadcastIds = database.getUserIdRFBroadcasts().get(receiverIds.get(i) + "#" + app_type);
-            if (null != broadcastIds) {
-                for (String id : broadcastIds) {
-                    Broadcast broadcast = database.getBroadcastHashMap().get(id);
-                    if (null != broadcast && broadcast.getOs() == Broadcast.IOS) {
-                        regIds.add(broadcast.getRegId());
-                    }
-                }
-            }
+//        HashSet<String> regIds = new HashSet<>();
+//        for (int i = 0; i < receiverIds.size(); i++) {
+//            HashSet<String> broadcastIds = database.getUserIdRFBroadcasts().get(receiverIds.get(i) + "#" + app_type);
+//            if (null != broadcastIds) {
+//                for (String id : broadcastIds) {
+//                    Broadcast broadcast = database.getBroadcastHashMap().get(id);
+//                    if (null != broadcast && broadcast.getOs() == Broadcast.IOS) {
+//                        regIds.add(broadcast.getRegId());
+//                    }
+//                }
+//            }
+//        }
+        int messageCode = data.getInt("messageCode");
+        String alertMess = messageHashMap.get(messageCode);
+        if (alertMess == null)
+            alertMess = "You have new notification from PinBike";
+        else {
+            alertMess = data.getJSONObject("result").getString("senderName") + " " + alertMess;
         }
         JSONObject content_data = new JSONObject();
         content_data.put("channels", receiverIds);
-        content_data.put("type","ios");
-        content_data.put("data", new JSONObject().put("alert","test").put("content",data));
+        content_data.put("type", "ios");
+        content_data.put("data", new JSONObject().put("alert", alertMess).put("content", data));
         try {
             pushData(content_data.toString());
         } catch (Exception e) {

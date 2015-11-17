@@ -3,16 +3,16 @@ package com.bikiegang.ridesharing.pojo.response;
 /**
  * Created by hpduy17 on 10/13/15.
  */
-public class GetNotificationsResponse {
-    private NotificationDetail[] notifications;
+public class GetAnnouncementsResponse {
+    private AnnouncementDetail[] announcement;
     private long nextPullTime;
 
-    public NotificationDetail[] getNotifications() {
-        return notifications;
+    public AnnouncementDetail[] getAnnouncement() {
+        return announcement;
     }
 
-    public void setNotifications(NotificationDetail[] notifications) {
-        this.notifications = notifications;
+    public void setAnnouncement(AnnouncementDetail[] announcement) {
+        this.announcement = announcement;
     }
 
     public long getNextPullTime() {

@@ -17,10 +17,7 @@ import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by hpduy17 on 6/26/15.
@@ -782,8 +779,55 @@ public class UserController {
     public String getUsers() throws JsonProcessingException {
         List<UserDetailResponse> userDetailResponses = new ArrayList<>();
         List<User> users =new ArrayList<>(database.getUserHashMap().values());
-        Collections.sort();
-        for (User u : database.getUserHashMap().values()) {
+        Collections.sort(users, new Comparator<User>() {
+            @Override
+            public int compare(User o1, User o2) {
+                String name1 = o1.getFirstName()+" "+o1.getLastName();
+                String name2 = o2.getFirstName()+" "+o2.getLastName();
+                return name1.compareTo(name2);
+            }
+        });
+
+        for (User u : users) {
+            userDetailResponses.add(new UserDetailResponse(u));
+        }
+        GetUsersResponse response = new GetUsersResponse();
+        response.setUsers(userDetailResponses);
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, response);
+    }
+    public String getTeams() throws JsonProcessingException {
+        String [] teams = {
+                "fb_1119948731350574",//duy big
+                "gg_104511978063048563987", // an nguyen
+                "fb_796315037151408",// an nguyen
+                "e_pumie.hoan2010@gmail.com", // thi
+                "fb_1036274976385529", // thi
+                "fb_968496846533933",// duyCT
+                "gg_100887638771064551141",// duyCT
+                "fb_120364848303139",// cloudbike
+                "fb_929818660424600",// TaiL
+                "fb_1149718978377938",// TaiNG
+                "fb_10152850663931856",// TungLe
+                "fb_100000195394815",
+                "fb_694736855"
+
+        };
+        List<UserDetailResponse> userDetailResponses = new ArrayList<>();
+        List<User> users =new ArrayList<>();
+        for(String id : teams){
+            if(database.getUserHashMap().containsKey(id))
+                users.add(database.getUserHashMap().get(id));
+        }
+        Collections.sort(users, new Comparator<User>() {
+            @Override
+            public int compare(User o1, User o2) {
+                String name1 = o1.getFirstName()+" "+o1.getLastName();
+                String name2 = o2.getFirstName()+" "+o2.getLastName();
+                return name1.compareTo(name2);
+            }
+        });
+
+        for (User u : users) {
             userDetailResponses.add(new UserDetailResponse(u));
         }
         GetUsersResponse response = new GetUsersResponse();

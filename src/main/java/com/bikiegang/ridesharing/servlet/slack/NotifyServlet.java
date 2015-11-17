@@ -7,7 +7,7 @@
 package com.bikiegang.ridesharing.servlet.slack;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
-import com.bikiegang.ridesharing.controller.NotificationCenterController;
+import com.bikiegang.ridesharing.controller.AnnouncementController;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.request.PushNotificationsRequest;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
@@ -52,10 +52,10 @@ public class NotifyServlet extends HttpServlet {
                         req.setContent(params[2].trim());
                         req.setTitle(params[3].trim());
                         req.setDates(params[1].trim());
-                        result += new NotificationCenterController().createNotification(req);
+                        result += new AnnouncementController().createNotification(req);
                         break;
                     case "setPullTime":
-                        result += "set pull time : " + new NotificationCenterController().setNextPullTime(params[1].trim());
+                        result += "set pull time : " + new AnnouncementController().setNextPullTime(params[1].trim());
                         break;
                     case "help":
                         result += "Split by \"#\"" +

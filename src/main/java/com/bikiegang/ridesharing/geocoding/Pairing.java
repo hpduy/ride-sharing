@@ -105,7 +105,7 @@ public class Pairing {
                 // check index -> that means check direction
                 // check same epoch day -> check time
                 try {
-                    if (nearSrcLocation.getRefId() == nearDesLocation.getRefId() && src.getIndex() < des.getIndex()
+                    if (nearSrcLocation.getRefId() == nearDesLocation.getRefId() && nearSrcLocation.getIndex() < nearDesLocation.getIndex()
                             && database.getRouteRFPlannedTripsByDay().get(nearSrcLocation.getRefId()) != null
                             && database.getRouteRFPlannedTripsByDay().get(nearSrcLocation.getRefId()).containsKey(passengerEpochday)) {
 
@@ -115,7 +115,9 @@ public class Pairing {
 
                         // plannedTrip is not null and not own by passenger
                         if (null != driverPlannedTrip && !driverPlannedTrip.getCreatorId().equals(plannedTrip.getCreatorId())
-                                && driverPlannedTrip.getRequestId() == 0 && !checkExist.contains(driverPlannedTripId)) {
+                                && driverPlannedTrip.getRequestId() == 0
+                                && driverPlannedTrip.getType() != PlannedTrip.REQUESTED_PLANNED_TRIP
+                                && !checkExist.contains(driverPlannedTripId)) {
 
                             long plannedTripGoTime = plannedTrip.getDepartureTime();
                             long driverTripGoTime = driverPlannedTrip.getDepartureTime();
@@ -135,7 +137,7 @@ public class Pairing {
                                         // check helmet
                                         if (plannedTrip.isHasHelmet() || driverPlannedTrip.isHasHelmet()) {
                                             listDriverPlannedTripResult.add(driverPlannedTrip);
-                                        }else {
+                                        } else {
                                             listDriverPlannedTripResult.add(driverPlannedTrip);
                                         }
                                         checkExist.add(driverPlannedTripId);
@@ -149,7 +151,7 @@ public class Pairing {
                         }
 
                     }
-                }catch (Exception ignored){
+                } catch (Exception ignored) {
                     ignored.printStackTrace();
                 }
             }
@@ -195,14 +197,18 @@ public class Pairing {
                     long passengerPlannedTripId = database.getRouteRFPlannedTripsByDay().get(location.getRefId()).get(driverEpochday);
                     passengerPlannedTripIds.add(passengerPlannedTripId);
                 }
-            }catch (Exception ignored){};
+            } catch (Exception ignored) {
+            }
+            ;
         }
 
         //TODO START TO PARE
         for (long passengerPlannedTripId : passengerPlannedTripIds) {
             PlannedTrip passengerPlannedTrip = database.getPlannedTripHashMap().get(passengerPlannedTripId);
             // plannedTrip is not null and not own by driver and not requested
-            if (passengerPlannedTrip != null && !plannedTrip.getCreatorId().equals(passengerPlannedTrip.getCreatorId())
+            if (passengerPlannedTrip != null
+                    && passengerPlannedTrip.getType() == PlannedTrip.REQUESTED_PLANNED_TRIP
+                    && !plannedTrip.getCreatorId().equals(passengerPlannedTrip.getCreatorId())
                     && passengerPlannedTrip.getRequestId() == 0 && !checkExist.contains(passengerPlannedTripId)) {
                 List<Long> passengerPlannedTripLinkedLocationIds = database.getRouteIdRFLinkedLocations().get(passengerPlannedTrip.getRouteId());
                 if (passengerPlannedTripLinkedLocationIds != null && passengerPlannedTripLinkedLocationIds.size() >= 2) {
@@ -223,15 +229,23 @@ public class Pairing {
                     }
                     // begin paring 2 plannedTrip
                     if (i < j && desPassengerLocation != null && srcPassengerLocation != null) {
-
                         //get passenger cell code and its neighbor
                         List<String> srcPassengerCellCodes = geoCellPassenger.getCellCodesNeighbor(srcPassengerLocation.getLat(), srcPassengerLocation.getLng());
                         List<String> desPassengerCellCodes = geoCellPassenger.getCellCodesNeighbor(desPassengerLocation.getLat(), desPassengerLocation.getLng());
-
+                        List<String> cellCodesDuplicate = new ArrayList<>(srcPassengerCellCodes);
+                        cellCodesDuplicate.retainAll(desPassengerCellCodes);
+                        System.out.println(cellCodesDuplicate.size());
                         // check have exist pair of cell code src and des in cell codes of driver plannedTrip ?
                         for (String srcPassengerCellCode : srcPassengerCellCodes) {
                             for (String desPassengerCellCode : desPassengerCellCodes) {
-
+                                // TODO check covariated?
+                                if(srcPassengerCellCodes.contains(desPassengerCellCode) && desPassengerCellCodes.contains(srcPassengerCellCode)){
+                                   String mainSrcPassCode = geoCellPassenger.getCellCodeFromLatLng(srcPassengerLocation.getLat(), srcPassengerLocation.getLng());
+                                   String mainDesPassCode = geoCellPassenger.getCellCodeFromLatLng(desPassengerLocation.getLat(), desPassengerLocation.getLng());
+                                    if(!geoCellPassenger.isCovariated(new String[]{srcPassengerCellCode,desPassengerCellCode},
+                                            new String[]{mainSrcPassCode,mainDesPassCode}))
+                                        continue;
+                                }
                                 // srcCellCode and desCellCode contained in driver cell code ,
                                 // that mean driver cell code through over 2 cell,
                                 if (driverPlannedTripCellCodes.contains(srcPassengerCellCode) && driverPlannedTripCellCodes.contains(desPassengerCellCode)) {
@@ -245,7 +259,7 @@ public class Pairing {
                                         long timeDriveReachNearSrcLocation = plannedTripGoTime + nearPassengerSrcLocation.getEstimatedTime();
                                         // if same direction => check time
                                         //check ignored time -> get all planned trip from now -acceptable
-                                        if(!checkExist.contains(passengerPlannedTripId)) {
+                                        if (!checkExist.contains(passengerPlannedTripId)) {
                                             if (ignoredTime) {
                                                 if (passengerGoTime > DateTimeUtil.now() - ACCEPTABLE_TIME) {
                                                     listPassengerPlannedTripResult.add(passengerPlannedTrip);

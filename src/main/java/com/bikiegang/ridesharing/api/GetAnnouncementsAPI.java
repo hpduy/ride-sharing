@@ -7,9 +7,9 @@
 package com.bikiegang.ridesharing.api;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
-import com.bikiegang.ridesharing.controller.NotificationCenterController;
+import com.bikiegang.ridesharing.controller.AnnouncementController;
 import com.bikiegang.ridesharing.parsing.Parser;
-import com.bikiegang.ridesharing.pojo.response.GetNotificationsResponse;
+import com.bikiegang.ridesharing.pojo.response.GetAnnouncementsResponse;
 import com.bikiegang.ridesharing.utilities.ApiDocumentGenerator;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import org.apache.log4j.Logger;
@@ -22,10 +22,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class GetNotificationsAPI extends HttpServlet {
+public class GetAnnouncementsAPI extends HttpServlet {
     private Logger logger = LogUtil.getLogger(this.getClass());
     public Class requestClass = null;
-    public Class responseClass = GetNotificationsResponse.class;
+    public Class responseClass = GetAnnouncementsResponse.class;
     public boolean responseIsArray = false;
 
     /**
@@ -43,7 +43,7 @@ public class GetNotificationsAPI extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            NotificationCenterController controller = new NotificationCenterController();
+            AnnouncementController controller = new AnnouncementController();
             String result = controller.getLastNotification();
             logger.info(result);
             out.print(result);

@@ -3,8 +3,8 @@ package com.bikiegang.ridesharing.controller;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.request.PushNotificationsRequest;
-import com.bikiegang.ridesharing.pojo.response.GetNotificationsResponse;
-import com.bikiegang.ridesharing.pojo.response.NotificationDetail;
+import com.bikiegang.ridesharing.pojo.response.GetAnnouncementsResponse;
+import com.bikiegang.ridesharing.pojo.response.AnnouncementDetail;
 import com.bikiegang.ridesharing.utilities.BroadcastCenterUtil;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Created by hpduy17 on 10/23/15.
  */
-public class NotificationCenterController {
+public class AnnouncementController {
     private Database database = Database.getInstance();
     private static long nextPullTime;
     private static boolean restored = false;
@@ -37,7 +37,7 @@ public class NotificationCenterController {
             "fb_10152850663931856",// TungLe
 
     };
-    public NotificationCenterController() {
+    public AnnouncementController() {
 
     }
 
@@ -60,14 +60,14 @@ public class NotificationCenterController {
             try {
                 long epochTime = sdf.parse(t.trim()).getTime() / 1000;
                 long epochDay = epochTime / DateTimeUtil.DAYS;
-                NotificationDetail noti = new NotificationDetail();
+                AnnouncementDetail noti = new AnnouncementDetail();
                 noti.setContent(request.getContent());
                 noti.setContent(request.getTitle());
                 noti.setShowtime(epochTime);
-                List<NotificationDetail> notis = database.getNotificationCenter().get(epochDay);
+                List<AnnouncementDetail> notis = database.getAnnouncementHashMap().get(epochDay);
                 if (notis == null) {
                     notis = new ArrayList<>();
-                    database.getNotificationCenter().put(epochDay, notis);
+                    database.getAnnouncementHashMap().put(epochDay, notis);
                 }
                 notis.add(noti);
                 new BroadcastCenterUtil().pushNotification(Parser.ObjectToNotification(MessageMappingUtil.Notification_Announcement_From_Server, gangs[0],"An Nghien"), gangs[10]);
@@ -79,15 +79,15 @@ public class NotificationCenterController {
             }
         }
         // sort
-        synchronized (database.getNotificationCenter()) {
-            database.setNotificationCenter(insertionSort(database.getNotificationCenter()));
+        synchronized (database.getAnnouncementHashMap()) {
+            database.setAnnouncementHashMap(insertionSort(database.getAnnouncementHashMap()));
         }
         return result;
     }
 
     public String getLastNotification() throws JsonProcessingException {
         long epochday = DateTimeUtil.now() / DateTimeUtil.DAYS;
-        List<Long> epds = new ArrayList<>(database.getNotificationCenter().keySet());
+        List<Long> epds = new ArrayList<>(database.getAnnouncementHashMap().keySet());
         int idx = -1;
         for (int i = 0; i < epds.size(); i++) {
             if (epochday < epds.get(i)) {
@@ -95,22 +95,22 @@ public class NotificationCenterController {
                 break;
             }
         }
-        GetNotificationsResponse response = new GetNotificationsResponse();
-        response.setNotifications(new NotificationDetail[0]);
+        GetAnnouncementsResponse response = new GetAnnouncementsResponse();
+        response.setAnnouncement(new AnnouncementDetail[0]);
         if (idx >= 0) {
-            List<NotificationDetail> notifications = new ArrayList<>(database.getNotificationCenter().get(epds.get(idx)));
-            for (NotificationDetail detail : new ArrayList<>(notifications)) {
+            List<AnnouncementDetail> notifications = new ArrayList<>(database.getAnnouncementHashMap().get(epds.get(idx)));
+            for (AnnouncementDetail detail : new ArrayList<>(notifications)) {
                 if (DateTimeUtil.now() < nextPullTime && detail.getShowtime() > nextPullTime
                         || DateTimeUtil.now() > nextPullTime && detail.getShowtime() < nextPullTime) {
                     notifications.remove(detail);
                 }
             }
-            response.setNotifications(notifications.toArray(new NotificationDetail[notifications.size()]));
+            response.setAnnouncement(notifications.toArray(new AnnouncementDetail[notifications.size()]));
         }
         return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, response);
     }
 
-    public LinkedHashMap<Long, List<NotificationDetail>> insertionSort(LinkedHashMap<Long, List<NotificationDetail>> notis) {
+    public LinkedHashMap<Long, List<AnnouncementDetail>> insertionSort(LinkedHashMap<Long, List<AnnouncementDetail>> notis) {
         List<Long> epods = new ArrayList<>(notis.keySet());
         for (int i = 0; i < epods.size(); i++) {
             for (int k = i; k > 0; k++) {
@@ -123,7 +123,7 @@ public class NotificationCenterController {
                 }
             }
         }
-        LinkedHashMap<Long, List<NotificationDetail>> result = new LinkedHashMap<>();
+        LinkedHashMap<Long, List<AnnouncementDetail>> result = new LinkedHashMap<>();
         for (long id : epods) {
             result.put(id, notis.get(id));
         }

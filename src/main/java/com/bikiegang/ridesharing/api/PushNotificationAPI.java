@@ -7,7 +7,7 @@
 package com.bikiegang.ridesharing.api;
 
 import com.bikiegang.ridesharing.annn.framework.common.LogUtil;
-import com.bikiegang.ridesharing.controller.NotificationCenterController;
+import com.bikiegang.ridesharing.controller.AnnouncementController;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.request.PushNotificationsRequest;
 import com.bikiegang.ridesharing.utilities.ApiDocumentGenerator;
@@ -52,7 +52,7 @@ public class PushNotificationAPI extends HttpServlet {
             }
             logger.info(jsonData.toString());
             PushNotificationsRequest pushNotificationsRequest = (PushNotificationsRequest) Parser.JSonToObject(jsonData.toString(), PushNotificationsRequest.class);
-            NotificationCenterController controller = new NotificationCenterController();
+            AnnouncementController controller = new AnnouncementController();
             String result = controller.createNotification(pushNotificationsRequest);
             logger.info(result);
             out.print(result);
