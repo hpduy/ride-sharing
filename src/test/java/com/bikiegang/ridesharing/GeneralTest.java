@@ -1,8 +1,13 @@
 package com.bikiegang.ridesharing;
 
+import com.bikiegang.ridesharing.controller.AnnouncementController;
 import com.bikiegang.ridesharing.geocoding.GeoCell;
 import com.bikiegang.ridesharing.pojo.LatLng;
+import com.bikiegang.ridesharing.pojo.request.PushNotificationsRequest;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.Test;
+
+import java.text.ParseException;
 
 /**
  * Created by hpduy17 on 9/18/15.
@@ -31,6 +36,20 @@ public class GeneralTest {
     public void isCovariated(){
         assert(new GeoCell<Long>(0.002).isCovariated(new String[]{"1#1","2#1"},new String[]{"1#1","2#2"}));
 
+    }
+
+    @Test
+    public void createAnnouncementTest() throws JsonProcessingException, ParseException {
+        PushNotificationsRequest request = new PushNotificationsRequest();
+        request.setContent("This is notification content");
+        request.setTitle("Create Announcement Test");
+        request.setDates("17/11/2015 14:00:00,18/11/2015 07:00:00");
+        new AnnouncementController().createAnnouncement(request);
+    }
+
+    @Test
+    public void setNextPullTime() throws ParseException {
+        assert (AnnouncementController.setNextPullTime("17/11/2015 14:00:00"));
     }
 
 }

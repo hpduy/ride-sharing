@@ -4,15 +4,15 @@ package com.bikiegang.ridesharing.pojo.response;
  * Created by hpduy17 on 10/13/15.
  */
 public class GetAnnouncementsResponse {
-    private AnnouncementDetail[] announcement;
+    private AnnouncementDetail[] announcements;
     private long nextPullTime;
 
-    public AnnouncementDetail[] getAnnouncement() {
-        return announcement;
+    public AnnouncementDetail[] getAnnouncements() {
+        return announcements;
     }
 
-    public void setAnnouncement(AnnouncementDetail[] announcement) {
-        this.announcement = announcement;
+    public void setAnnouncements(AnnouncementDetail[] announcements) {
+        this.announcements = announcements;
     }
 
     public long getNextPullTime() {

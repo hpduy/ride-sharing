@@ -42,7 +42,7 @@ public class FeedController {
     }
 
     public String getFeeds(GetFeedsRequest request) throws IOException {
-        if (null == request.getUserId() || request.getUserId().equals("")) {
+        if (null == request.getUserId()) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
         }
         if (request.getNumberOfFeed() <= 0) {
@@ -87,6 +87,7 @@ public class FeedController {
                                 Event event = database.getEventHashMap().get(plannedTrip.getEventId());
                                 response.setFeedBanner(event.getFeedBannerLink());
                                 response.setHashTags(event.getHashTags());
+                                response.setSharedContents(event.getSharedContents());
                             }
                             if (feed.getCreatedTime() != plannedTrip.getDepartureTime()) {
                                 System.out.println("Weird Time:" + feed.getRefId());
@@ -174,6 +175,12 @@ public class FeedController {
             response.setPartnerInfo(partnerInfoResponse);
             response.setUserDetail(userShortDetailResponse);
             response.setTripDetail(new PlannedTripDetailResponse(plannedTrip, requesterId));
+            if(database.getEventHashMap().containsKey(plannedTrip.getEventId())){
+                Event event = database.getEventHashMap().get(plannedTrip.getEventId());
+                response.setFeedBanner(event.getFeedBannerLink());
+                response.setHashTags(event.getHashTags());
+                response.setSharedContents(event.getSharedContents());
+            }
         } else {
             return null;
         }
@@ -197,7 +204,14 @@ public class FeedController {
                 partnerTripId = requestMakeTrip.getDriverPlannedTripId();
             }
             if (database.getPlannedTripHashMap().containsKey(partnerTripId)) {
-                response.setPartnerTripDetail(new PlannedTripDetailResponse(database.getPlannedTripHashMap().get(partnerTripId), requesterId));
+                PlannedTrip partnerPlannedTrip = database.getPlannedTripHashMap().get(partnerTripId);
+                response.setPartnerTripDetail(new PlannedTripDetailResponse(partnerPlannedTrip, requesterId));
+                if(database.getEventHashMap().containsKey(partnerPlannedTrip.getEventId())){
+                    Event event = database.getEventHashMap().get(partnerPlannedTrip.getEventId());
+                    response.setFeedBanner(event.getFeedBannerLink());
+                    response.setHashTags(event.getHashTags());
+                    response.setSharedContents(event.getSharedContents());
+                }
             }
         }
         return response;

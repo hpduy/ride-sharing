@@ -3,9 +3,8 @@ package com.bikiegang.ridesharing.controller;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.parsing.Parser;
 import com.bikiegang.ridesharing.pojo.request.PushNotificationsRequest;
-import com.bikiegang.ridesharing.pojo.response.GetAnnouncementsResponse;
 import com.bikiegang.ridesharing.pojo.response.AnnouncementDetail;
-import com.bikiegang.ridesharing.utilities.BroadcastCenterUtil;
+import com.bikiegang.ridesharing.pojo.response.GetAnnouncementsResponse;
 import com.bikiegang.ridesharing.utilities.MessageMappingUtil;
 import com.bikiegang.ridesharing.utilities.daytime.DateTimeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -22,7 +21,7 @@ import java.util.List;
 public class AnnouncementController {
     private Database database = Database.getInstance();
     private static long nextPullTime;
-    private static boolean restored = false;
+    public static boolean restored = false;
     private String[] gangs = {
             "fb_1119948731350574",//duy big
             "gg_104511978063048563987", // an nguyen
@@ -52,7 +51,7 @@ public class AnnouncementController {
         return true;
     }
 
-    public String createNotification(PushNotificationsRequest request) throws JsonProcessingException, ParseException {
+    public String createAnnouncement(PushNotificationsRequest request) throws JsonProcessingException, ParseException {
         String result = "Success";
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
         String[] epochTimes = request.getDates().split(",");
@@ -62,7 +61,7 @@ public class AnnouncementController {
                 long epochDay = epochTime / DateTimeUtil.DAYS;
                 AnnouncementDetail noti = new AnnouncementDetail();
                 noti.setContent(request.getContent());
-                noti.setContent(request.getTitle());
+                noti.setTitle(request.getTitle());
                 noti.setShowtime(epochTime);
                 List<AnnouncementDetail> notis = database.getAnnouncementHashMap().get(epochDay);
                 if (notis == null) {
@@ -70,7 +69,7 @@ public class AnnouncementController {
                     database.getAnnouncementHashMap().put(epochDay, notis);
                 }
                 notis.add(noti);
-                new BroadcastCenterUtil().pushNotification(Parser.ObjectToNotification(MessageMappingUtil.Notification_Announcement_From_Server, gangs[0],"An Nghien"), gangs[10]);
+                //new BroadcastCenterUtil().pushNotification(Parser.ObjectToNotification(MessageMappingUtil.Notification_Announcement_From_Server, gangs[0],"An Nghien"), gangs[10]);
             } catch (Exception ignored) {
                 if (result.equals("Success")) {
                     result = "Fail with errors:\n" + ignored.getMessage() + "\n";
@@ -90,13 +89,13 @@ public class AnnouncementController {
         List<Long> epds = new ArrayList<>(database.getAnnouncementHashMap().keySet());
         int idx = -1;
         for (int i = 0; i < epds.size(); i++) {
-            if (epochday < epds.get(i)) {
+            if (epochday <= epds.get(i)) {
                 idx = i;
                 break;
             }
         }
         GetAnnouncementsResponse response = new GetAnnouncementsResponse();
-        response.setAnnouncement(new AnnouncementDetail[0]);
+        response.setAnnouncements(new AnnouncementDetail[0]);
         if (idx >= 0) {
             List<AnnouncementDetail> notifications = new ArrayList<>(database.getAnnouncementHashMap().get(epds.get(idx)));
             for (AnnouncementDetail detail : new ArrayList<>(notifications)) {
@@ -105,8 +104,9 @@ public class AnnouncementController {
                     notifications.remove(detail);
                 }
             }
-            response.setAnnouncement(notifications.toArray(new AnnouncementDetail[notifications.size()]));
+            response.setAnnouncements(notifications.toArray(new AnnouncementDetail[notifications.size()]));
         }
+        response.setNextPullTime(nextPullTime);
         return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, response);
     }
 

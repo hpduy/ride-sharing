@@ -305,9 +305,11 @@ public class RequestMakeTripController {
                                 }
                             }
                             PlannedTrip pt = database.getPlannedTripHashMap().get(requestMakeTrip.getDriverPlannedTripId());
-                            if (pt.getDepartureTime() > DateTimeUtil.now() - DateTimeUtil.HOURS) {
-                                RequestMakeTripDetailResponse response = new RequestMakeTripDetailResponse(requestMakeTrip);
-                                responses.add(i, response);
+                            if(pt != null) {
+                                if (pt.getDepartureTime() > DateTimeUtil.now() - DateTimeUtil.HOURS) {
+                                    RequestMakeTripDetailResponse response = new RequestMakeTripDetailResponse(requestMakeTrip);
+                                    responses.add(i, response);
+                                }
                             }
                         }
 

@@ -52,7 +52,7 @@ public class NotifyServlet extends HttpServlet {
                         req.setContent(params[2].trim());
                         req.setTitle(params[3].trim());
                         req.setDates(params[1].trim());
-                        result += new AnnouncementController().createNotification(req);
+                        result += new AnnouncementController().createAnnouncement(req);
                         break;
                     case "setPullTime":
                         result += "set pull time : " + new AnnouncementController().setNextPullTime(params[1].trim());

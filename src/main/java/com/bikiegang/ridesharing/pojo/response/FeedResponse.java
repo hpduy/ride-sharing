@@ -1,5 +1,6 @@
 package com.bikiegang.ridesharing.pojo.response;
 
+import com.bikiegang.ridesharing.pojo.static_object.DefaultSetting;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -14,7 +15,8 @@ public class FeedResponse {
     private UserDetailResponse partnerDetail;
     private TripInFeed partnerTripDetail;
     private String feedBanner;
-    private String[] hashTags;
+    private String[] hashTags = DefaultSetting.defaultHashTags;
+    private String[] sharedContents =  DefaultSetting.defaultSharedContents;
     // addition
 //    private RequestMakeTripDetailResponse[] requests = new RequestMakeTripDetailResponse[0];
 
@@ -83,6 +85,14 @@ public class FeedResponse {
 
     public void setHashTags(String[] hashTags) {
         this.hashTags = hashTags;
+    }
+
+    public String[] getSharedContents() {
+        return sharedContents;
+    }
+
+    public void setSharedContents(String[] sharedContents) {
+        this.sharedContents = sharedContents;
     }
 
     //    public RequestMakeTripDetailResponse[] getRequests() {

@@ -38,6 +38,7 @@ public class StartupListener implements ServletContextListener, HttpSessionListe
          You can initialize servlet context related data here.
          */
         try {
+
             Path.setServerAddress(InetAddress.getLocalHost().getHostAddress());
             Path.buildRoot();
             Database.getInstance().restore();

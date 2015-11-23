@@ -1,8 +1,11 @@
 package com.bikiegang.ridesharing.pojo.response;
 
+import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.util.HashSet;
 
 /**
  * Created by hpduy17 on 7/8/15.
@@ -17,6 +20,7 @@ public class UserDetailResponse extends UserShortDetailResponse {
     private String googleId = "";
     private String twitterId = "";
     private String linkedInId = "";
+    private int numberOfPostedTrip;
 
     public UserDetailResponse() {
 
@@ -32,6 +36,9 @@ public class UserDetailResponse extends UserShortDetailResponse {
         this.phone = user.getPhone();
         this.selfIntro = user.getSelfIntro();
         this.currentLocation = user.getCurrentLocation();
+        HashSet<Long> plannedTripIds = Database.getInstance().getUserIdRFPlannedTrips().get(user.getId());
+        if (plannedTripIds != null)
+            this.numberOfPostedTrip = plannedTripIds.size();
     }
 
     public int getGender() {
@@ -96,5 +103,13 @@ public class UserDetailResponse extends UserShortDetailResponse {
 
     public void setLinkedInId(String linkedInId) {
         this.linkedInId = linkedInId;
+    }
+
+    public int getNumberOfPostedTrip() {
+        return numberOfPostedTrip;
+    }
+
+    public void setNumberOfPostedTrip(int numberOfPostedTrip) {
+        this.numberOfPostedTrip = numberOfPostedTrip;
     }
 }

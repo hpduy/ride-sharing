@@ -53,7 +53,7 @@ public class PushNotificationAPI extends HttpServlet {
             logger.info(jsonData.toString());
             PushNotificationsRequest pushNotificationsRequest = (PushNotificationsRequest) Parser.JSonToObject(jsonData.toString(), PushNotificationsRequest.class);
             AnnouncementController controller = new AnnouncementController();
-            String result = controller.createNotification(pushNotificationsRequest);
+            String result = controller.createAnnouncement(pushNotificationsRequest);
             logger.info(result);
             out.print(result);
         } catch (Exception ex) {
