@@ -4,6 +4,7 @@ import com.bikiegang.ridesharing.dao.PopularLocationDao;
 import com.bikiegang.ridesharing.database.Database;
 import com.bikiegang.ridesharing.database.IdGenerator;
 import com.bikiegang.ridesharing.parsing.Parser;
+import com.bikiegang.ridesharing.pojo.Event;
 import com.bikiegang.ridesharing.pojo.LatLng;
 import com.bikiegang.ridesharing.pojo.PopularLocation;
 import com.bikiegang.ridesharing.pojo.request.AddPopularLocationRequest;
@@ -161,6 +162,15 @@ public class PopularLocationController {
         List<PopularLocation> locations = new ArrayList<>();
         for (long id : locationsId) {
             PopularLocation popularLocation = database.getPopularLocationHashMap().get(id);
+            if (popularLocation == null) {
+                continue;
+            }
+            if (database.getEventHashMap().containsKey(popularLocation.getEventId())) {
+                Event event = database.getEventHashMap().get(popularLocation.getEventId());
+                if (event.getStartTime() > DateTimeUtil.now() || event.getEndTime() < DateTimeUtil.now()) {
+                    continue;
+                }
+            }
             locations.add(popularLocation);
         }
         return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, new GetPopularLocationResponse(locations));

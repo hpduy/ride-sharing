@@ -1,5 +1,6 @@
 package com.bikiegang.ridesharing.pojo.request;
 
+import com.bikiegang.ridesharing.pojo.response.AnnouncementDetail;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -10,6 +11,8 @@ public class PushNotificationsRequest {
     private String content = "";
     private String title = "";
     private String dates = ""; //dd/MM/yyyy hh:mm:ss
+    private String link = "";
+    private int type = AnnouncementDetail.Notification_App_Main;
 
     public String getContent() {
         return content;
@@ -33,5 +36,21 @@ public class PushNotificationsRequest {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }

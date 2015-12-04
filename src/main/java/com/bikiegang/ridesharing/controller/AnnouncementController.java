@@ -63,6 +63,8 @@ public class AnnouncementController {
                 noti.setContent(request.getContent());
                 noti.setTitle(request.getTitle());
                 noti.setShowtime(epochTime);
+                noti.setType(request.getType());
+                noti.setLink(request.getLink());
                 List<AnnouncementDetail> notis = database.getAnnouncementHashMap().get(epochDay);
                 if (notis == null) {
                     notis = new ArrayList<>();

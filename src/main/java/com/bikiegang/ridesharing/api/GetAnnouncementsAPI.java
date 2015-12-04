@@ -48,6 +48,7 @@ public class GetAnnouncementsAPI extends HttpServlet {
         try {
             if(!AnnouncementController.restored){
                 createAnnouncementTest();
+                setNextPullTime();
                 AnnouncementController.restored = true;
             }
 
@@ -66,13 +67,13 @@ public class GetAnnouncementsAPI extends HttpServlet {
         PushNotificationsRequest request = new PushNotificationsRequest();
         request.setContent("This is notification content");
         request.setTitle("Create Announcement Test");
-        request.setDates("20/11/2015 14:00:00,21/11/2015 07:00:00");
+        request.setDates("23/11/2015 21:30:00,23/11/2015 21:45:00,23/11/2015 22:00:00,23/11/2015 22:30:00,23/11/2015 23:00:00,23/11/2015 23:30:00,23/11/2015 23:50:00,");
         new AnnouncementController().createAnnouncement(request);
     }
 
 
     public void setNextPullTime() throws ParseException {
-        assert (AnnouncementController.setNextPullTime("17/11/2015 17:00:00"));
+        AnnouncementController.setNextPullTime("23/11/2015 23:45:00");
     }
     // <editor-fold default state="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 

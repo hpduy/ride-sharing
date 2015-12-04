@@ -88,7 +88,7 @@ public class UserController {
         if (null != registerRequest.getEmail())
             user.setEmail(registerRequest.getEmail());
         if (null != registerRequest.getPhone())
-            user.setPhone(registerRequest.getPhone());
+            user.setPhone(registerRequest.getPhone().replaceAll(" ", ""));
         if (null != registerRequest.getFirstName())
             user.setFirstName(registerRequest.getFirstName());
         if (null != registerRequest.getLastName())
@@ -125,7 +125,7 @@ public class UserController {
         if (null != registerRequest.getEmail())
             user.setEmail(registerRequest.getEmail());
         if (null != registerRequest.getPhone())
-            user.setPhone(registerRequest.getPhone());
+            user.setPhone(registerRequest.getPhone().replaceAll(" ", ""));
         if (null != registerRequest.getFirstName())
             user.setFirstName(registerRequest.getFirstName());
         if (null != registerRequest.getLastName())
@@ -170,7 +170,7 @@ public class UserController {
         if (null != registerRequest.getEmail())
             user.setEmail(registerRequest.getEmail());
         if (null != registerRequest.getPhone())
-            user.setPhone(registerRequest.getPhone());
+            user.setPhone(registerRequest.getPhone().replaceAll(" ", ""));
         if (null != registerRequest.getFirstName())
             user.setFirstName(registerRequest.getFirstName());
         if (null != registerRequest.getLastName())
@@ -214,7 +214,7 @@ public class UserController {
         if (null != registerRequest.getEmail())
             user.setEmail(registerRequest.getEmail());
         if (null != registerRequest.getPhone())
-            user.setPhone(registerRequest.getPhone());
+            user.setPhone(registerRequest.getPhone().replaceAll(" ", ""));
         if (null != registerRequest.getFirstName())
             user.setFirstName(registerRequest.getFirstName());
         if (null != registerRequest.getLastName())
@@ -258,7 +258,7 @@ public class UserController {
         if (null != registerRequest.getEmail())
             user.setEmail(registerRequest.getEmail());
         if (null != registerRequest.getPhone())
-            user.setPhone(registerRequest.getPhone());
+            user.setPhone(registerRequest.getPhone().replaceAll(" ",""));
         if (null != registerRequest.getFirstName())
             user.setFirstName(registerRequest.getFirstName());
         if (null != registerRequest.getLastName())
@@ -529,7 +529,7 @@ public class UserController {
         if (null != request.getProfilePictureLink())
             user.setProfilePictureLink(request.getProfilePictureLink());
         if (null != request.getPhone())
-            user.setPhone(request.getPhone());
+            user.setPhone(request.getPhone().replaceAll(" ",""));
         if (null != request.getJob())
             user.setJob(request.getJob());
         if (null != request.getFirstName())

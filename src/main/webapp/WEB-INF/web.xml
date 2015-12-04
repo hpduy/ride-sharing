@@ -648,6 +648,14 @@
         <servlet-name>PushNotificationAPI</servlet-name>
         <url-pattern>/PushNotificationAPI</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>GetPinBikeStructAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.GetPinBikeStructAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetPinBikeStructAPI</servlet-name>
+        <url-pattern>/GetPinBikeStructAPI</url-pattern>
+    </servlet-mapping>
 
     <listener>
         <listener-class>com.bikiegang.ridesharing.StartupListener</listener-class>

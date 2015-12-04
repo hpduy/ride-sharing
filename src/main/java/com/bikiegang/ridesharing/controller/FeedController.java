@@ -83,7 +83,7 @@ public class FeedController {
                             }
                             PlannedTrip plannedTrip = database.getPlannedTripHashMap().get(feed.getRefId());
                             tif = new PlannedTripDetailResponse(plannedTrip, request.getUserId());
-                            if(database.getEventHashMap().containsKey(plannedTrip.getEventId())){
+                            if (database.getEventHashMap().containsKey(plannedTrip.getEventId())) {
                                 Event event = database.getEventHashMap().get(plannedTrip.getEventId());
                                 response.setFeedBanner(event.getFeedBannerLink());
                                 response.setHashTags(event.getHashTags());
@@ -175,7 +175,7 @@ public class FeedController {
             response.setPartnerInfo(partnerInfoResponse);
             response.setUserDetail(userShortDetailResponse);
             response.setTripDetail(new PlannedTripDetailResponse(plannedTrip, requesterId));
-            if(database.getEventHashMap().containsKey(plannedTrip.getEventId())){
+            if (database.getEventHashMap().containsKey(plannedTrip.getEventId())) {
                 Event event = database.getEventHashMap().get(plannedTrip.getEventId());
                 response.setFeedBanner(event.getFeedBannerLink());
                 response.setHashTags(event.getHashTags());
@@ -206,7 +206,7 @@ public class FeedController {
             if (database.getPlannedTripHashMap().containsKey(partnerTripId)) {
                 PlannedTrip partnerPlannedTrip = database.getPlannedTripHashMap().get(partnerTripId);
                 response.setPartnerTripDetail(new PlannedTripDetailResponse(partnerPlannedTrip, requesterId));
-                if(database.getEventHashMap().containsKey(partnerPlannedTrip.getEventId())){
+                if (database.getEventHashMap().containsKey(partnerPlannedTrip.getEventId())) {
                     Event event = database.getEventHashMap().get(partnerPlannedTrip.getEventId());
                     response.setFeedBanner(event.getFeedBannerLink());
                     response.setHashTags(event.getHashTags());
