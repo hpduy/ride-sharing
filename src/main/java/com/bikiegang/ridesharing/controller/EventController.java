@@ -7,6 +7,7 @@ import com.bikiegang.ridesharing.pojo.PopularLocation;
 import com.bikiegang.ridesharing.utilities.UploadImageUtil;
 
 import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 
 /**
  * Created by hpduy17 on 6/29/15.
@@ -20,6 +21,7 @@ public class EventController {
             "Chung Kết UNIGAMES#Nhà Thi đấu Tân Bình, 488 Hoàng Văn Thụ, quận Tân Bình, tp.HCM#http://pinride.me:8080/RideSharing/cloudbike/images/UNIGAMESxxx.jpg#10.795059, 106.653886#Chung Kết UniGames, Nhà thi đấu Tân Bình, Nhà thi đấu Xuân Hồng, Nhảy cổ động, Cheer Dance#2#06/12/2015 14:00:00#02/12/2015 00:00:00#06/12/2015 23:00:00#https://www.facebook.com/UniGamesVN#http://pinride.me:8080/RideSharing/cloudbike/images/bg_card_header_unigame.jpg#aidituicho;pinbike;unigame#Ai đi tui cho quá giang nè;Ôm miễn phí nhưng cấm sờ nha" ).split("\\n");
 
     public EventController() {
+        sdf.setTimeZone(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
         try {
             if (!static_data_created) {
                 static_data_created = true;

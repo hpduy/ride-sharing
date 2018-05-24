@@ -258,7 +258,7 @@ public class UserController {
         if (null != registerRequest.getEmail())
             user.setEmail(registerRequest.getEmail());
         if (null != registerRequest.getPhone())
-            user.setPhone(registerRequest.getPhone().replaceAll(" ",""));
+            user.setPhone(registerRequest.getPhone().replaceAll(" ", ""));
         if (null != registerRequest.getFirstName())
             user.setFirstName(registerRequest.getFirstName());
         if (null != registerRequest.getLastName())
@@ -529,7 +529,7 @@ public class UserController {
         if (null != request.getProfilePictureLink())
             user.setProfilePictureLink(request.getProfilePictureLink());
         if (null != request.getPhone())
-            user.setPhone(request.getPhone().replaceAll(" ",""));
+            user.setPhone(request.getPhone().replaceAll(" ", ""));
         if (null != request.getJob())
             user.setJob(request.getJob());
         if (null != request.getFirstName())
@@ -778,12 +778,12 @@ public class UserController {
 
     public String getUsers() throws JsonProcessingException {
         List<UserDetailResponse> userDetailResponses = new ArrayList<>();
-        List<User> users =new ArrayList<>(database.getUserHashMap().values());
+        List<User> users = new ArrayList<>(database.getUserHashMap().values());
         Collections.sort(users, new Comparator<User>() {
             @Override
             public int compare(User o1, User o2) {
-                String name1 = o1.getFirstName()+" "+o1.getLastName();
-                String name2 = o2.getFirstName()+" "+o2.getLastName();
+                String name1 = o1.getFirstName() + " " + o1.getLastName();
+                String name2 = o2.getFirstName() + " " + o2.getLastName();
                 return name1.compareTo(name2);
             }
         });
@@ -795,8 +795,29 @@ public class UserController {
         response.setUsers(userDetailResponses);
         return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, response);
     }
+
+    public String getFbUsers() throws JsonProcessingException {
+        String fbUsersDetail = "<html><head><meta charset=\"UTF-8\">\n" +
+                "<meta name=\"description\" content=\"Free Web tutorials\">\n" +
+                "<meta name=\"keywords\" content=\"HTML,CSS,XML,JavaScript\">\n" +
+                "<meta name=\"author\" content=\"Hege Refsnes\">" +
+                "</head><body><table>";
+        List<User> users = new ArrayList<>(database.getUserHashMap().values());
+        for (User u : users) {
+            if (u.getFacebookId() == null || u.getFacebookId().isEmpty())
+                continue;
+            fbUsersDetail += "<tr>";
+            fbUsersDetail += "<td>name: " + u.getFirstName() + " " + u.getLastName() + "</td>";
+            fbUsersDetail += "<td>link: <a href ='http://www.facebook.com/" + u.getFacebookId() + "' target=\"_blank\"> " + u.getFacebookId() + "</a></td>";
+            fbUsersDetail += "<td><img src='" + Path.getUrlFromPath(u.getProfilePictureLink()) + "'height=\"60\" width=\"60\"/></td>";
+            fbUsersDetail += "</tr>";
+        }
+        fbUsersDetail += "</table></body><html>";
+        return fbUsersDetail;
+    }
+
     public String getTeams() throws JsonProcessingException {
-        String [] teams = {
+        String[] teams = {
                 "fb_1119948731350574",//duy big
                 "gg_104511978063048563987", // an nguyen
                 "fb_796315037151408",// an nguyen
@@ -809,20 +830,26 @@ public class UserController {
                 "fb_1149718978377938",// TaiNG
                 "fb_10152850663931856",// TungLe
                 "fb_100000195394815",
-                "fb_694736855"
+                "fb_694736855",
+                "fb_1092564914128325", // Kiet
+                "fb_871185629663514", // Ngan
+                "fb_929230870482860", // Tam
+                "fb_844254119016037", // Quang
+                "fb_1680651452177328", // Nhat
+                "fb_102086263489896" // customer services ( dich vu pin bike)
 
         };
         List<UserDetailResponse> userDetailResponses = new ArrayList<>();
-        List<User> users =new ArrayList<>();
-        for(String id : teams){
-            if(database.getUserHashMap().containsKey(id))
+        List<User> users = new ArrayList<>();
+        for (String id : teams) {
+            if (database.getUserHashMap().containsKey(id))
                 users.add(database.getUserHashMap().get(id));
         }
         Collections.sort(users, new Comparator<User>() {
             @Override
             public int compare(User o1, User o2) {
-                String name1 = o1.getFirstName()+" "+o1.getLastName();
-                String name2 = o2.getFirstName()+" "+o2.getLastName();
+                String name1 = o1.getFirstName() + " " + o1.getLastName();
+                String name2 = o2.getFirstName() + " " + o2.getLastName();
                 return name1.compareTo(name2);
             }
         });
@@ -857,4 +884,32 @@ public class UserController {
         }
         return Parser.ObjectToJSon(false, MessageMappingUtil.Interactive_with_database_fail);
     }
+
+    public String interestIn(InterestedInRequest request) throws JsonProcessingException {
+        if (database.getUserHashMap().containsKey(request.getViewerId()) &&
+                database.getUserHashMap().containsKey(request.getVieweeId())) {
+            User viewer = database.getUserHashMap().get(request.getViewerId());
+            new BroadcastCenterUtil().pushNotification(Parser.ObjectToNotification(MessageMappingUtil.Notification_Interested_In, viewer), request.getVieweeId());
+        } else {
+            return Parser.ObjectToJSon(true, MessageMappingUtil.Fail, "one of users is not exist in ourt system");
+        }
+        return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully);
+    }
+
+    public String parseUser2HTML(User user) {
+        String html = "<h3>UserDetail</h3><table>";
+        html += "<tr><td>Id: " + user.getId() + "<td><tr>";
+        html += "<tr><td>User Name: " + user.getFirstName() + " " + user.getLastName() + "<td><tr>";
+        html += "<tr><td>Birthday: " + user.getBirthDay() + "<td><tr>";
+        html += "<tr><td>Profile Picture: <img src=\"" + Path.getUrlFromPath(user.getProfilePictureLink()) + "\" height=\"60\" width=\"60\"/><td><tr>";
+        html += "<tr><td>Phone Number: " + user.getPhone() + "<td><tr>";
+        html += "<tr><td>Email: " + user.getEmail() + "<td><tr>";
+        html += "<tr><td>Gender: " + user.getGender() + "<td><tr>";
+        html += "<tr><td>Status: " + user.getStringStatus() + "<td><tr>";
+        html += "<tr><td>Facebook: link: <a href ='http://www.facebook.com/" + user.getFacebookId() + "' target=\"_blank\"> " + user.getFacebookId() + "</a> <td><tr>";
+        html += "</table>";
+        html += "<hr>";
+        return html;
+    }
+
 }

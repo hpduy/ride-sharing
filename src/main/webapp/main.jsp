@@ -31,13 +31,13 @@
         <!-- Main content -->
         <section class="content">
             <div class='row'>
-                <div class='col-md-12'>
+                <div class='col-md-6'>
                     <div class='box box-success'>
                         <div class='box-header'>
                             <h3 class='box-title'>Angel Active Code Generator</h3>
                         </div>
                         <!-- /.box-header -->
-                        <div class='box-body pad' align="center">
+                        <div class='box-body pad'>
                             <div class="form-group has-success">
                                 <label class="control-label" for="numberOfCode"><i class="fa fa-check"></i>Number of
                                     code:</label>
@@ -52,17 +52,30 @@
                             <h3 class='box-title'>Push Notifications</h3>
                         </div>
                         <!-- /.box-header -->
-                        <div class='box-body pad' align="center">
+                        <div class='box-body pad'>
                             <div class="form-group has-success">
-                                <label class="control-label" for="numberOfCode"><i class="fa fa-check"></i>Content:</label>
+                                <label class="control-label" for="numberOfCode"><i
+                                        class="fa fa-check"></i>Title:</label>
+                                <input type="text" class="form-control" id="title" placeholder="Enter title"/>
+                                <label class="control-label" for="numberOfCode"><i
+                                        class="fa fa-check"></i>Content:</label>
                                 <input type="text" class="form-control" id="content" placeholder="Enter content"/>
-                                <label class="control-label" for="numberOfCode"><i class="fa fa-check"></i>Dates:</label>
-                                <input type="text" class="form-control" id="stringDate" placeholder='Enter date with format dd/MM/yyyy , insert multi with ","'/>
+                                <label class="control-label" for="numberOfCode"><i class="fa fa-check"></i>Link:</label>
+                                <input type="text" class="form-control" id="link" placeholder="Enter link"/>
+                                <label class="control-label" for="numberOfCode"><i class="fa fa-check"></i>Date:</label>
+                                <input type="text" class="form-control" id="datetimepicker10"/>
+                                <label class="control-label" for="numberOfCode"><i class="fa fa-check"></i>Type:</label>
+                                <select id="type">
+                                    <option value="1" default="true">Web View</option>
+                                    <option value="2">Main Screen</option>
+                                    <option value="3">Chat Screen</option>
+                                    <option value="4">Profile Screen</option>
+                                </select>
                             </div>
                             <button type="submit" class="btn btn-success" onclick='pushNotification()'>Push</button>
                         </div>
                     </div>
-                    <div align="center" id="resultDiv">
+                    <div id="resultDiv">
 
                     </div>
 
@@ -77,7 +90,13 @@
 </div>
 <!-- ./wrapper -->
 <jsp:include page="footer.jsp"></jsp:include>
+<script src="js/jquery.js"></script>
+<script src="js/build/jquery.datetimepicker.full.js"></script>
 <script type="text/javascript">
+    $.datetimepicker.setLocale('en');
+    $('#datetimepicker10').datetimepicker({
+        step: 10
+    });
     function generate() {
         var jsonData = '{"numberOfCode":' + document.getElementById('numberOfCode').value + '}';
         var apiName = "GetAngelActiveCodesForWebAPI";
@@ -96,7 +115,13 @@
     }
 
     function pushNotification() {
-        var jsonData = '{"content":' + document.getElementById('content').value + ',"dates":"'+document.getElementById('stringDate').value+'"}';
+        var e = document.getElementById("type");
+        var type = e.options[e.selectedIndex].value;
+        var jsonData = '{"content":"' + document.getElementById('content').value +
+                '","dates":"' + document.getElementById('datetimepicker10').value +
+                '","link":"' + document.getElementById('link').value +
+                '","title":"' + document.getElementById('title').value +
+                '","type":' + type + '}';
         var apiName = "PushNotificationAPI";
         $.ajax({
             url: apiName,
@@ -110,6 +135,7 @@
                 $('#resultDiv').html(response)
             }
         });
+
     }
 </script>
 </body>

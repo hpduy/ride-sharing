@@ -252,6 +252,14 @@
         <url-pattern>/UpdateUserProfileAPI</url-pattern>
     </servlet-mapping>
     <servlet>
+        <servlet-name>GetFbUsersAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.GetFbUsersAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetFbUsersAPI</servlet-name>
+        <url-pattern>/GetFbUsersAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
         <servlet-name>UpdateUserSocialNetWorkAccountAPI</servlet-name>
         <servlet-class>com.bikiegang.ridesharing.api.UpdateUserSocialNetWorkAccountAPI</servlet-class>
     </servlet>
@@ -431,6 +439,14 @@
     <servlet-mapping>
         <servlet-name>ReplyVerifyAPI</servlet-name>
         <url-pattern>/ReplyVerifyAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>VerifyUserServlet</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.servlet.slack.VerifyUserServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>VerifyUserServlet</servlet-name>
+        <url-pattern>/VerifyUserServlet</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>CreateCertificateAPI</servlet-name>
@@ -655,6 +671,14 @@
     <servlet-mapping>
         <servlet-name>GetPinBikeStructAPI</servlet-name>
         <url-pattern>/GetPinBikeStructAPI</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>InterestedInAPI</servlet-name>
+        <servlet-class>com.bikiegang.ridesharing.api.InterestedInAPI</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>InterestedInAPI</servlet-name>
+        <url-pattern>/InterestedInAPI</url-pattern>
     </servlet-mapping>
 
     <listener>

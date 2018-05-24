@@ -43,6 +43,7 @@ public class MessageMappingUtil {
     public static final int Notification_Start_Trip = 508;
     public static final int Notification_End_Trip = 509;
     public static final int Notification_Announcement_From_Server = 510;
+    public static final int Notification_Interested_In = 511;
 
 
     // other final variable

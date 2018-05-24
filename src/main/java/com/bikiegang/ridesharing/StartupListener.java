@@ -42,6 +42,7 @@ public class StartupListener implements ServletContextListener, HttpSessionListe
             Path.setServerAddress(InetAddress.getLocalHost().getHostAddress());
             Path.buildRoot();
             Database.getInstance().restore();
+            new AngelGroupController();
             if (Database.databaseStatus == Database.TESTING) {
                 System.out.println("Group size before:" + Database.getInstance().getAngelGroupHashMap().size());
                 FakeUser.createAngel();

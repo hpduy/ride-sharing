@@ -48,8 +48,17 @@ public class FeedController {
         if (request.getNumberOfFeed() <= 0) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_invalid, "'numberOfFeed'");
         }
+        switch (request.getGetWay()) {
+            case GetFeedsRequest.NEW_FEED:
+                return getNewFeeds(request);
+            case GetFeedsRequest.HISTORY_FEED:
+                return getHistoryFeeds(request);
+        }
+        return getNewFeeds(request);
+    }
+
+    public String getNewFeeds(GetFeedsRequest request) throws IOException {
         int fromIdx = 0;
-        int toIdx = 0;
         List<FeedResponse> responses = new ArrayList<>();
         // to index process
         database.setFeedHashMap((LinkedHashMap<Long, Feed>) MapUtil.sortByValue(database.getFeedHashMap()));
@@ -141,15 +150,106 @@ public class FeedController {
         return Parser.FeedsToJSon(true, MessageMappingUtil.Successfully, feedsResponse);
     }
 
+    public String getHistoryFeeds(GetFeedsRequest request) throws IOException {
+        int fromIdx = 0;
+        int toLimited = 0;
+        List<FeedResponse> responses = new ArrayList<>();
+        // to index process
+        database.setFeedHashMap((LinkedHashMap<Long, Feed>) MapUtil.sortByValue(database.getFeedHashMap()));
+        List<Feed> feedList = new ArrayList<>(database.getFeedHashMap().values());
+        List<Long> feedId = new ArrayList<>(database.getFeedHashMap().keySet());
+        if (!database.getFeedHashMap().isEmpty()) {
+            fromIdx = feedList.size() - 1;
+            if (feedId.contains(request.getStartId())) {
+                fromIdx = feedId.indexOf(request.getStartId()) - 1;
+            }
+            for (; toLimited < feedList.size(); toLimited++) {
+                if (feedList.get(toLimited).getCreatedTime() > (DateTimeUtil.now() - DateTimeUtil.HOURS)) {
+                    break;
+                }
+            }
+            for (int i = fromIdx; i >= toLimited && responses.size() <= request.getNumberOfFeed(); i--) {
+                Feed feed = feedList.get(i);
+                FeedResponse response = new FeedResponse();
+                response.setFeedId(feed.getId());
+                TripInFeed tif = null;
+                ExPartnerInfoResponse partnerInfoResponse = null;
+                UserDetailResponse userDetailResponse = null;
+                try {
+                    switch (feed.getType()) {
+                        case Feed.PLANNED_TRIP:
+                            if (database.getPlannedTripIdRFTrips().containsKey(feed.getRefId())) {
+                                long tripId = database.getPlannedTripIdRFTrips().get(feed.getRefId());
+                                if (database.getTripHashMap().containsKey(tripId) && database.getTripHashMap().get(tripId).getTripStatus() != Trip.UNFINISHED_TRIP)
+                                    continue;
+                            }
+                            PlannedTrip plannedTrip = database.getPlannedTripHashMap().get(feed.getRefId());
+                            tif = new PlannedTripDetailResponse(plannedTrip, request.getUserId());
+                            if (database.getEventHashMap().containsKey(plannedTrip.getEventId())) {
+                                Event event = database.getEventHashMap().get(plannedTrip.getEventId());
+                                response.setFeedBanner(event.getFeedBannerLink());
+                                response.setHashTags(event.getHashTags());
+                                response.setSharedContents(event.getSharedContents());
+                            }
+                            if (feed.getCreatedTime() != plannedTrip.getDepartureTime()) {
+                                System.out.println("Weird Time:" + feed.getRefId());
+                            }
+                            // get partner info
+                            if (database.getRequestMakeTripHashMap().containsKey(plannedTrip.getRequestId())) {
+                                RequestMakeTrip requestMakeTrip = database.getRequestMakeTripHashMap().get(plannedTrip.getRequestId());
+                                String partnerId = "";
+                                long partnerTripId = 0;
+                                if (tif.getCreatorId().equals(requestMakeTrip.getSenderId())) {
+                                    partnerId = requestMakeTrip.getReceiverId();
+                                } else {
+                                    partnerId = requestMakeTrip.getSenderId();
+                                }
+                                User partner = database.getUserHashMap().get(partnerId);
+                                if (partner != null) {
+                                    response.setPartnerDetail(new UserDetailResponse(partner));
+                                }
+                                if (plannedTrip.getRole() == User.DRIVER) {
+                                    partnerTripId = requestMakeTrip.getPassengerPlannedTripId();
+                                } else {
+                                    partnerTripId = requestMakeTrip.getDriverPlannedTripId();
+                                }
+                                if (database.getPlannedTripHashMap().containsKey(partnerTripId)) {
+                                    response.setPartnerTripDetail(new PlannedTripDetailResponse(database.getPlannedTripHashMap().get(partnerTripId), tif.getCreatorId()));
+                                }
+                            }
+                            break;
+                        case Feed.SOCIAL_TRIP:
+                            tif = new SocialTripResponse(database.getSocialTripHashMap().get(feed.getRefId()));
+                            break;
+                    }
+
+                    if (tif != null) {
+                        User user = database.getUserHashMap().get(tif.getCreatorId());
+                        if (user != null) {
+                            userDetailResponse = new UserDetailResponse(user);
+                            partnerInfoResponse = new UserController().getExPartners(user.getId());
+                            response.setPartnerInfo(partnerInfoResponse);
+                            response.setUserDetail(userDetailResponse);
+                            response.setTripDetail(tif);
+                            responses.add(response);
+                        }
+                    }
+                } catch (Exception ignored) {
+                }
+            }
+        }
+        //TODO REVERSE ORDERED OF RESPONSE IF NEEDED
+        GetFeedsResponse feedsResponse = new GetFeedsResponse();
+        feedsResponse.setFeeds(responses.toArray(new FeedResponse[responses.size()]));
+        return Parser.FeedsToJSon(true, MessageMappingUtil.Successfully, feedsResponse);
+    }
+
+
     public String ForAndroidGuy(GetInformationUsingUserIdRequest request) throws IOException {
         if (null == request.getUserId() || request.getUserId().equals("")) {
             return Parser.ObjectToJSon(false, MessageMappingUtil.Element_is_not_found, "'userId'");
         }
         GetFeedsResponse response = new GetFeedsResponse();
-//        List<PlannedTrip> plannedTrips = new ArrayList<>(database.getPlannedTripHashMap().values());
-////        if (database.getPlannedTripHashMap().size() > 20)
-////            plannedTrips = plannedTrips.subList(0, 21);
-//        response.setFeeds(convertPlannedTripsToFeeds(plannedTrips, request.getUserId()));
         return Parser.ObjectToJSon(true, MessageMappingUtil.Successfully, response);
     }
 

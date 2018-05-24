@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Created by hpduy17 on 10/23/15.
@@ -22,6 +23,12 @@ public class AnnouncementController {
     private Database database = Database.getInstance();
     private static long nextPullTime;
     public static boolean restored = false;
+    private final long[] goldenTimes = {4 * DateTimeUtil.HOURS + 30 * DateTimeUtil.MINUTES,
+            10 * DateTimeUtil.HOURS + 30 * DateTimeUtil.MINUTES,
+            16 * DateTimeUtil.HOURS + 30 * DateTimeUtil.MINUTES,
+            22 * DateTimeUtil.HOURS + 30 * DateTimeUtil.MINUTES};
+
+    private final int offset = 7 * DateTimeUtil.SECONDS_PER_HOUR;
     private String[] gangs = {
             "fb_1119948731350574",//duy big
             "gg_104511978063048563987", // an nguyen
@@ -36,13 +43,15 @@ public class AnnouncementController {
             "fb_10152850663931856",// TungLe
 
     };
+
     public AnnouncementController() {
 
     }
 
 
     public static boolean setNextPullTime(String epochString) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        sdf.setTimeZone(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
         long epochTime = sdf.parse(epochString).getTime() / 1000;
         if (epochTime < DateTimeUtil.now()) {
             epochTime += DateTimeUtil.DAYS;
@@ -53,7 +62,8 @@ public class AnnouncementController {
 
     public String createAnnouncement(PushNotificationsRequest request) throws JsonProcessingException, ParseException {
         String result = "Success";
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+        sdf.setTimeZone(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
         String[] epochTimes = request.getDates().split(",");
         for (String t : epochTimes) {
             try {
@@ -87,6 +97,17 @@ public class AnnouncementController {
     }
 
     public String getLastNotification() throws JsonProcessingException {
+        long now = (DateTimeUtil.now()+ offset) % DateTimeUtil.SECONDS_PER_DAY; // + 7 hours offset
+        int flagGoldenTime;
+        if (now > goldenTimes[0] && now < goldenTimes[1]) {
+            flagGoldenTime = 2;
+        } else if (now > goldenTimes[1] && now < goldenTimes[2]) {
+            flagGoldenTime = 3;
+        } else if (now > goldenTimes[2] && now < goldenTimes[3]) {
+            flagGoldenTime = 4;
+        } else {
+            flagGoldenTime = 1;
+        }
         long epochday = DateTimeUtil.now() / DateTimeUtil.DAYS;
         List<Long> epds = new ArrayList<>(database.getAnnouncementHashMap().keySet());
         int idx = -1;
@@ -99,11 +120,30 @@ public class AnnouncementController {
         GetAnnouncementsResponse response = new GetAnnouncementsResponse();
         response.setAnnouncements(new AnnouncementDetail[0]);
         if (idx >= 0) {
-            List<AnnouncementDetail> notifications = new ArrayList<>(database.getAnnouncementHashMap().get(epds.get(idx)));
-            for (AnnouncementDetail detail : new ArrayList<>(notifications)) {
-                if (DateTimeUtil.now() < nextPullTime && detail.getShowtime() > nextPullTime
-                        || DateTimeUtil.now() > nextPullTime && detail.getShowtime() < nextPullTime) {
-                    notifications.remove(detail);
+            List<AnnouncementDetail> notifications = new ArrayList<>();
+            for (AnnouncementDetail detail : database.getAnnouncementHashMap().get(epds.get(idx))) {
+                long timeInDate = (detail.getShowtime()+ offset) % DateTimeUtil.SECONDS_PER_DAY;
+                switch (flagGoldenTime) {
+                    case 1:
+                        if (timeInDate >= goldenTimes[0] && timeInDate < goldenTimes[1]) {
+                            notifications.add(detail);
+                        }
+                        break;
+                    case 2:
+                        if (timeInDate >= goldenTimes[1] && timeInDate < goldenTimes[2]) {
+                            notifications.add(detail);
+                        }
+                        break;
+                    case 3:
+                        if (timeInDate >= goldenTimes[2] && timeInDate < goldenTimes[3]) {
+                            notifications.add(detail);
+                        }
+                        break;
+                    case 4:
+                        if (timeInDate < goldenTimes[0] || timeInDate >= goldenTimes[3]) {
+                            notifications.add(detail);
+                        }
+                        break;
                 }
             }
             response.setAnnouncements(notifications.toArray(new AnnouncementDetail[notifications.size()]));
@@ -115,7 +155,7 @@ public class AnnouncementController {
     public LinkedHashMap<Long, List<AnnouncementDetail>> insertionSort(LinkedHashMap<Long, List<AnnouncementDetail>> notis) {
         List<Long> epods = new ArrayList<>(notis.keySet());
         for (int i = 0; i < epods.size(); i++) {
-            for (int k = i; k > 0; k++) {
+            for (int k = i; k > 0; k--) {
                 if (epods.get(k) < epods.get(k - 1)) {
                     long temp = epods.get(k);
                     epods.set(k, epods.get(k - 1));

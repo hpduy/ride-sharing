@@ -76,6 +76,18 @@ public class User implements PojoBase {
 
     }
 
+    public String getStringStatus() {
+        switch (status) {
+            case VERIFIED:
+                return "VERIFIED";
+            case HALF_VERIFIED:
+                return "HALF VERIFIED";
+            case ANGEL:
+                return "ANGEL";
+        }
+        return "UNVERIFIED";
+    }
+
     public User(String id, String email, String password, String facebookId, String googleId, String twitterId, String linkedInId, String selfIntro, String firstName, String lastName, String profilePictureLink, String phone, String birthDay, int gender, int status, boolean isBusy) {
         this.id = id == null ? "" : id;
         this.email = email == null ? "" : email;

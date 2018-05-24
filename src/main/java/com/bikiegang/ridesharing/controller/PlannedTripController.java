@@ -490,6 +490,7 @@ public class PlannedTripController {
         // repeat planned trip
         String mess = "";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
         for (long ept : request.getRepeatTimes()) {
             PlannedTrip pt = new PlannedTrip(plannedTrip);
             pt.setId(IdGenerator.getPlannedTripId());

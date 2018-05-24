@@ -217,7 +217,11 @@ public class AngelGroupController {
                 //done
                 AngelGroup angelGroup = new AngelGroup(Long.parseLong(element[ogId]), new LatLng(element[2]), tagNames, DateTimeUtil.now(), element[5]);
                 if (!database.getOrganizationHashMap().containsKey(element[3])) {
-                    String logoUrl = new UploadImageUtil().downloadLogoIMG(element[4], element[1].replaceAll(" ", "") + "_logo");
+                    String logoUrl = "";
+                    try {
+                        logoUrl = new UploadImageUtil().downloadLogoIMG(element[4], element[1].replaceAll(" ", "") + "_logo");
+                    } catch (Exception ignored) {
+                    }
                     new OrganizationController().createOrganization(element[1], logoUrl, element[3], tagNames.toArray(new String[tagNames.size()]));
                 }
                 try {

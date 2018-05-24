@@ -46,11 +46,6 @@ public class GetAnnouncementsAPI extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            if(!AnnouncementController.restored){
-                createAnnouncementTest();
-                setNextPullTime();
-                AnnouncementController.restored = true;
-            }
 
             AnnouncementController controller = new AnnouncementController();
             String result = controller.getLastNotification();
@@ -59,21 +54,23 @@ public class GetAnnouncementsAPI extends HttpServlet {
         } catch (Exception ex) {
             ex.printStackTrace();
             logger.error(ex.getStackTrace());
-            out.print(Parser.ObjectToJSon(false, MessageMappingUtil.System_Exception,  ex.getMessage()));
+            out.print(Parser.ObjectToJSon(false, MessageMappingUtil.System_Exception, ex.getMessage()));
         }
     }
 
-    public void createAnnouncementTest() throws JsonProcessingException, ParseException {
+    public void createAnnouncementTest(int type, String date) throws JsonProcessingException, ParseException {
         PushNotificationsRequest request = new PushNotificationsRequest();
-        request.setContent("This is notification content");
+        request.setContent("This is notification content" + type);
         request.setTitle("Create Announcement Test");
-        request.setDates("23/11/2015 21:30:00,23/11/2015 21:45:00,23/11/2015 22:00:00,23/11/2015 22:30:00,23/11/2015 23:00:00,23/11/2015 23:30:00,23/11/2015 23:50:00,");
+        request.setDates(date);
+        request.setLink("http://www.google.com");
+        request.setType(type);
         new AnnouncementController().createAnnouncement(request);
     }
 
 
     public void setNextPullTime() throws ParseException {
-        AnnouncementController.setNextPullTime("23/11/2015 23:45:00");
+        AnnouncementController.setNextPullTime("8/12/2015 15:15:00");
     }
     // <editor-fold default state="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 

@@ -14,6 +14,7 @@
 <link href="//code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css" rel="stylesheet" type="text/css" />
 <!-- Theme style -->
 <link href="template/css/AdminLTE.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="js/jquery.datetimepicker.css"/>
 <link href="js/jquery-ui-1.10.4.custom/css/ui-lightness/jquery-ui-1.10.4.custom.css" rel="stylesheet"
       type="text/css"/>
 <script type="text/javascript" src="js/jquery-ui-1.10.4.custom/js/jquery-1.10.2.js"></script>

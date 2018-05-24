@@ -37,9 +37,31 @@ and open the template in the editor.
 <div align="center">
     <input value="GO" title="go" type="button" onclick="testAPI()" style="width: 100px">
 </div>
+<hr>
+<div align="center">
+    <h3>Push Annoucement</h3>
+</div>
+
 </body>
 <script type="text/javascript">
     function testAPI() {
+        var jsonData = document.getElementById('jsonData').value;
+        var apiName = document.getElementById('apiName').value;
+        $.ajax({
+            url: apiName,
+            data: jsonData,
+            type: 'POST',
+            error: function () {
+                console.log("error occured!!!");
+            },
+            success: function (response) {
+                alert(response);
+                console.log(response);
+            }
+        });
+    }
+
+    function pushNotification() {
         var jsonData = document.getElementById('jsonData').value;
         var apiName = document.getElementById('apiName').value;
         $.ajax({
